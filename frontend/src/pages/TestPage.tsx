@@ -1,11 +1,11 @@
 import React from 'react';
 
-const PaymentsPage = () => {
+const TestPage = () => {
   return (
     <div className='h-128 bg-gray'>
-      <h1>Template</h1>
+      <h1>Delete this file later</h1>
     </div>
   );
 };
 
-export default PaymentsPage;
+export default TestPage;
