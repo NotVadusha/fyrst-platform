@@ -1,28 +1,54 @@
 import React from 'react';
-
-import { sum } from 'shared/sum';
-import logo from 'src/icons/logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import ErrorPage from './pages/ErrorPage';
+import AuthPage from './pages/AuthPage';
+import BookingPage from './pages/BookingPage';
+import TimeCardPage from './pages/TimeCard';
+import ProfilePage from './pages/ProfilePage';
+import MessangerPage from './pages/MessangerPage';
+import EmployesPage from './pages/EmployesPage';
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>sum(3, 2) = {sum(3, 2)}</p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path='booking' element={<BookingPage />}>
+        <Route index element={<div />} />
+        <Route path=':id' element={<div />} />
+        <Route path='create' element={<div />} />
+      </Route>
+
+      <Route path='timecard' element={<TimeCardPage />}>
+        <Route index element={<div />} />
+        <Route path=':id' element={<div />} />
+        <Route path='create' element={<div />} />
+      </Route>
+
+      <Route path='profile/:id' element={<ProfilePage />}>
+        <Route path='edit' element={<div />} />
+        <Route path='notifications' element={<div />} />
+        <Route path='security' element={<div />} />
+      </Route>
+
+      <Route path='messanger' element={<MessangerPage />}></Route>
+
+      <Route path='payment' element={<div />}>
+        <Route path=':id' element={<div />} />
+      </Route>
+
+      <Route path='auth' element={<AuthPage />}>
+        <Route path='login' element={<div />}>
+          <Route index element={<div />} />
+          <Route path='forgot' element={<div />} />
+          <Route path='reset' element={<div />} />
+          <Route path='final' element={<div />} />
+        </Route>
+        <Route path='signup' element={<div />} />
+      </Route>
+
+      <Route path='employe' element={<EmployesPage />} />
+      <Route path='*' element={<ErrorPage />} />
+    </Routes>
   );
 }
 
