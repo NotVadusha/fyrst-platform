@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import BookingPage from './pages/BookingPage';
 import TimeCardPage from './pages/TimeCard';
