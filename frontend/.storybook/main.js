@@ -7,14 +7,14 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/preset-create-react-app',
     '@storybook/addon-mdx-gfm',
-    // {
-    //   name: '@storybook/addon-styling',
-    //   options: {
-    //     postCss: {
-    //       implementation: require.resolve('postcss'),
-    //     },
-    //   },
-    // },
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        postcssLoaderOptions: {
+          implementation: require('postcss'),
+        },
+      },
+    },
   ],
 
   framework: {
