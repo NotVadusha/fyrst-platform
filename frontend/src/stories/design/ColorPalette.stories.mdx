@@ -1,0 +1,75 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import colorPalette from '../../../tailwind.config.js';
+
+<Meta title='Design/ColorPalette' />
+
+# Color Palette
+
+This document provides an overview of the color palette used in our design system.
+
+## Components Colors
+
+<ColorPalette>
+  <ColorItem
+    title='Field'
+    subtitle='Color of the field component'
+    colors={{ field: colorPalette.theme.colors.field }}
+  />
+  <ColorItem
+    title='Inactive'
+    subtitle='Color of the inactive component'
+    colors={{ inactive: colorPalette.theme.colors.inactive }}
+  />
+  <ColorItem
+    title='Placeholder'
+    subtitle='Color of the placeholder component'
+    colors={{ placeholder: colorPalette.theme.colors.placeholder }}
+  />
+  <ColorItem
+    title='Hover'
+    subtitle='Color of component hovering'
+    colors={{ hover: colorPalette.theme.colors.hover }}
+  />
+</ColorPalette>
+
+## Basic Colors
+
+<ColorPalette>
+  <ColorItem title='Transparent' colors={{ transparent: colorPalette.theme.colors.transparent }} />
+  <ColorItem
+    title='Grey'
+    subtitle='Main grey shades'
+    colors={{
+      grey: colorPalette.theme.colors.grey,
+      'dark-grey': colorPalette.theme.colors['dark-grey'],
+    }}
+  />
+  <ColorItem title='Black' colors={{ black: colorPalette.theme.colors.black }} />
+  <ColorItem title='Background' colors={{ background: colorPalette.theme.colors.background }} />
+  <ColorItem
+    title='Green'
+    subtitle='Main green shades'
+    colors={{
+      green: colorPalette.theme.colors.green,
+      'green-2': colorPalette.theme.colors['green-2'],
+    }}
+  />
+  <ColorItem
+    title='Blue'
+    subtitle='Main blue shades'
+    colors={{
+      blue: colorPalette.theme.colors.blue,
+      'dark-blue': colorPalette.theme.colors['dark-blue'],
+    }}
+  />
+  <ColorItem title='Orange' colors={{ orange: colorPalette.theme.colors.orange }} />
+  <ColorItem
+    title='Red'
+    subtitle='Main red shades'
+    colors={{
+      red: colorPalette.theme.colors.red,
+      'red-2': colorPalette.theme.colors['red-2'],
+    }}
+  />
+  <ColorItem title='White' colors={{ white: colorPalette.theme.colors.white }} />
+</ColorPalette>
