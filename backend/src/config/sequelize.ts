@@ -1,6 +1,6 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
-import { User } from 'src/user';
+import { User } from 'src/user/entities';
 
 export const sequelizeDevelopmentConfig: SequelizeModuleOptions = {
   username: process.env.POSTGRES_USER,
