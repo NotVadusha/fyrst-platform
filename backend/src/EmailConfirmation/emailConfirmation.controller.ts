@@ -1,8 +1,9 @@
-import { BadRequestException, Controller, Get, Param, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { EmailConfirmationService } from './emailConfirmation.service';
 
 @Controller('email-confirmation')
 export class EmailConfirmationController {
+  private readonly logger = new Logger(EmailConfirmationController.name);
   constructor(private readonly emailConfirmationService: EmailConfirmationService) {}
 
   @Get('confirm')
@@ -16,6 +17,7 @@ export class EmailConfirmationController {
         return 'Email not confirmed';
       }
     } catch (error) {
+      this.logger.error('Failed to confirm email', error);
       throw new BadRequestException('Failed to confirm email');
     }
   }
@@ -25,6 +27,7 @@ export class EmailConfirmationController {
       await this.emailConfirmationService.sendVerificationLink(email);
       return { message: 'Verification link sent successfully.' };
     } catch (error) {
+      this.logger.error('Failed to send link', error);
       throw new BadRequestException('Failed to send link');
     }
   }
