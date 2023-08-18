@@ -1,20 +1,17 @@
-import { Configuration, EmailsApi } from '@elasticemail/elasticemail-client-ts-axios';
-import { Injectable } from '@nestjs/common';
+import { EmailsApi } from '@elasticemail/elasticemail-client-ts-axios';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 
 @Injectable()
 export class MailService {
-  private emailsApi: EmailsApi;
-
-  constructor() {
-    this.emailsApi = new EmailsApi(new Configuration({ apiKey: process.env.MAIL_API_KEY }));
-  }
+  private readonly logger = new Logger(MailService.name);
+  constructor(private readonly emailsApi: EmailsApi) {}
 
   async sendEmail(recepient: string, subject: string, content: string) {
     try {
-      const response = await this.emailsApi.emailsPost({
+      await this.emailsApi.emailsPost({
         Recipients: [{ Email: recepient }],
         Content: {
-          From: `Ian Grytsov <${process.env.MAIL_DOMAIN}>`,
+          From: `Fyrst platform <${process.env.MAIL_DOMAIN}>`,
           Subject: subject,
           Body: [
             {
@@ -26,11 +23,10 @@ export class MailService {
         },
       });
 
-      console.log('Email sent successfully.');
-      console.log(response.data);
+      this.logger.log('Email sent successfully.');
     } catch (error) {
-      console.error('Error sending email:', error);
-      throw error;
+      this.logger.error('Error sending email:', error);
+      throw new InternalServerErrorException('Failed to sent email');
     }
   }
 }

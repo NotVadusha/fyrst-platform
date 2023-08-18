@@ -1,9 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/Mail/mail.service';
 
-import { Inject } from '@nestjs/common';
+import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 
 export class EmailConfirmationService {
+  private readonly logger = new Logger(EmailConfirmationService.name);
   constructor(
     @Inject(JwtService) private readonly jwtService: JwtService,
     private readonly mailService: MailService,
@@ -24,22 +25,23 @@ export class EmailConfirmationService {
 
     try {
       await this.mailService.sendEmail(email, subject, content);
-      console.log('Email confirmation link sent successfully.');
+      this.logger.log('Email confirmation link sent successfully.');
     } catch (error) {
-      console.error('Error sending email confirmation link:', error);
-      throw error;
+      this.logger.error('Error sending email confirmation link:', error);
+      throw new InternalServerErrorException('Failed to send email confirmation');
     }
   }
 
-  async confirmEmail(token: string): Promise<boolean> {
+  async confirmEmail(token: string) {
     try {
       const decodedToken = this.jwtService.verify(token, {
         secret: process.env.JWT_VERIFICATION_TOKEN_SECRET,
       });
 
-      console.log(decodedToken);
+      this.logger.log('Email confirmed:', JSON.stringify(decodedToken));
       return true;
     } catch (error) {
+      this.logger.error('Invalid token', error);
       return false;
     }
   }
