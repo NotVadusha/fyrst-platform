@@ -3,6 +3,7 @@ import styles from './Button.module.css';
 
 export interface ButtonProps {
   type: 'primary' | 'secondary' | 'tertiary';
+  label: string;
   state?: 'inactive';
   btnType?: 'submit' | 'button' | 'reset';
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -12,8 +13,8 @@ export interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   type,
+  label,
   state,
-  children,
   imgSrc,
   fullWidth,
   btnType = 'button',
@@ -47,10 +48,10 @@ const Button: React.FC<ButtonProps> = ({
       {imgSrc && type === 'primary' ? (
         <div className={styles.contentWrapper}>
           <img src={imgSrc} alt='button icon' className={styles.img} />
-          {children}
+          {label}
         </div>
       ) : (
-        children
+        label
       )}
     </button>
   );
