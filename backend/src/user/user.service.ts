@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities';
-
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
 
   async create() {
-    return 1;
+    return this.userRepository.create();
   }
 
   async findAll() {

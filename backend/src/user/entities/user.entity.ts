@@ -11,31 +11,31 @@ export class User extends Model {
   id: number;
 
   @Column({
-    type: DataType.Text,
+    type: DataType.TEXT,
   })
-  first_name: Text;
+  first_name: string;
 
   @Column({
-    type: DataType.Text,
+    type: DataType.TEXT,
   })
-  last_name: number;
+  last_name: string;
 
   @Column({
-    type: DataType.Text,
+    type: DataType.TEXT,
     unique: true,
   })
-  email: number;
+  email: string;
 
   @Column({
-    type: DataType.Text,
+    type: DataType.TEXT,
     allowNull: true,
   })
-  phone_number: number;
+  phone_number: string;
 
   @Column({
-    type: DataType.Text,
+    type: DataType.TEXT,
   })
-  city: number;
+  city: string;
 
   @Column({
     type: DataType.DATE,
@@ -43,9 +43,9 @@ export class User extends Model {
   birthdate: Date;
 
   @Column({
-    type: DataType.Text,
+    type: DataType.TEXT,
   })
-  password: number;
+  password: string;
 
   @Column({
     type: DataType.BOOLEAN,
