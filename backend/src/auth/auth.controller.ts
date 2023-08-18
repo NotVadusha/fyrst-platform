@@ -1,8 +1,8 @@
 import { Body, Controller, Post, Get, Request, UseGuards, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { IUser } from 'src/user';
-import { LoginDto } from './dto';
-import { RefreshTokenGuard, AccessTokenGuard, GoogleOauthGuard } from './guards';
+import { LoginDto, RefreshDto } from './dto';
+import { AccessTokenGuard, GoogleOauthGuard } from './guards';
 import { Response } from 'express';
 
 @Controller('auth')
@@ -25,10 +25,9 @@ export class AuthController {
     await this.authService.logout(req.user['email']);
   }
 
-  @UseGuards(RefreshTokenGuard)
   @Get('refresh')
-  async refresh(@Request() req) {
-    return await this.authService.refresh(req.user['email'], req.user['refreshToken']);
+  async refresh(@Body() refreshDto: RefreshDto) {
+    return await this.authService.refresh(refreshDto);
   }
 
   @Get('google')

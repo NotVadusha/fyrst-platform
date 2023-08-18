@@ -41,7 +41,8 @@
     "rimraf": "3.0.2",
     "rxjs": "7.8.1",
     "sequelize": "6.32.1",
-    "sequelize-typescript": "2.1.5"
+    "sequelize-typescript": "2.1.5",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@elasticemail/elasticemail-client-ts-axios": "^4.0.22",
@@ -56,6 +57,7 @@
     "@types/node": "16.18.40",
     "@types/sequelize": "4.28.15",
     "@types/supertest": "2.0.12",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "class-transformer": "^0.5.1",
