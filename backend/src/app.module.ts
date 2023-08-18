@@ -4,7 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { sequelizeDevelopmentConfig } from 'src/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [SequelizeModule.forRoot(sequelizeDevelopmentConfig), UserModule],

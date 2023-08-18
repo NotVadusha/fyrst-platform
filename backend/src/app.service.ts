@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
-
-import { sum } from 'shared/sum';
+import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World! 2 + 4 = ' + sum(2, 4);
-  }
+  constructor(private sequelize: Sequelize) {}
 }
