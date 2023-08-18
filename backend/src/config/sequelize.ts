@@ -1,11 +1,11 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
-import { User } from 'src/user/entities';
+import { User } from 'src/user';
 
 export const sequelizeDevelopmentConfig: SequelizeModuleOptions = {
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB,
+  username: 'postgres',
+  password: 'root',
+  database: 'postgres',
   port: 5432,
   host: 'localhost',
   dialect: 'postgres',
