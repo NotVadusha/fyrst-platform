@@ -28,8 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "storybook": "storybook dev -p 6006 public",
+    "build-storybook": "storybook build public"
   },
   "eslintConfig": {
     "extends": [
@@ -60,16 +60,18 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.19",
-    "@storybook/addon-essentials": "^6.4.19",
-    "@storybook/addon-interactions": "^6.4.19",
-    "@storybook/addon-links": "^6.4.19",
-    "@storybook/builder-webpack5": "^6.4.19",
-    "@storybook/manager-webpack5": "^6.4.19",
-    "@storybook/node-logger": "^6.4.19",
-    "@storybook/preset-create-react-app": "^4.0.1",
-    "@storybook/react": "^6.4.19",
-    "@storybook/testing-library": "^0.0.9",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@storybook/addon-actions": "^7.3.1",
+    "@storybook/addon-essentials": "^7.3.1",
+    "@storybook/addon-interactions": "^7.3.1",
+    "@storybook/addon-links": "^7.3.1",
+    "@storybook/addon-mdx-gfm": "^7.3.1",
+    "@storybook/addon-styling": "^1.3.6",
+    "@storybook/node-logger": "^7.3.1",
+    "@storybook/preset-create-react-app": "^7.3.1",
+    "@storybook/react": "^7.3.1",
+    "@storybook/react-webpack5": "^7.3.1",
+    "@storybook/testing-library": "^0.2.0",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
@@ -78,8 +80,10 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-storybook": "^0.6.13",
     "postcss": "^8.4.6",
     "prettier": "^2.7.1",
+    "storybook": "^7.3.1",
     "tailwindcss": "^3.0.23",
     "webpack": "^5.69.1"
   }
