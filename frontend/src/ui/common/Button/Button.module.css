@@ -1,0 +1,54 @@
+button {
+  @apply text-base inline-block justify-center items-center relative h-[47px] min-w-[154px] p-4 rounded-lg border-0 cursor-pointer !leading-none; 
+}
+
+ button.fullWidth {
+  @apply w-full;
+}
+
+.primary {
+  @apply bg-[#083D77] text-white hover:bg-[#083D77];
+}
+
+.primary.inactive {
+  @apply bg-[#DAE0E7] cursor-not-allowed;
+}
+.primary.pressed {
+   @apply bg-[#052D58]
+}
+
+.secondary {
+  @apply bg-white border text-[#083D77] border-solid border-[#083D77] hover:border-[#052D58];
+}
+
+.secondary.inactive {
+  @apply cursor-not-allowed text-[#DAE0E7] border-[#DAE0E7]
+}
+
+.secondary.pressed {
+    @apply border-[#052D58]
+}
+
+.tertiary {
+  @apply text-[#083D77] bg-transparent;
+}
+
+.tertiary.inactive {
+  @apply text-[#DAE0E7] cursor-not-allowed
+}
+
+.imgButton {
+  @apply bg-[#ffffff] text-[#083D77] hover:bg-[#ffffff] shadow-lg;
+}
+
+.imgButton.inactive:hover {
+  @apply  !bg-[#DAE0E7];
+}
+
+.contentWrapper {
+  @apply flex items-center justify-center; 
+}
+
+.img {
+  @apply min-w-[20px] min-h-[20px] mr-[10px]; 
+}
