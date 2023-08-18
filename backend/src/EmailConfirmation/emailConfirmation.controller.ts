@@ -11,11 +11,7 @@ export class EmailConfirmationController {
     try {
       const isConfirmed = await this.emailConfirmationService.confirmEmail(token);
 
-      if (isConfirmed) {
-        return 'Email confirmed';
-      } else {
-        return 'Email not confirmed';
-      }
+      return { isConfirmed };
     } catch (error) {
       this.logger.error('Failed to confirm email', error);
       throw new BadRequestException('Failed to confirm email');
