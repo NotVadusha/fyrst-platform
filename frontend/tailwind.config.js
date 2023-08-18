@@ -39,6 +39,7 @@ module.exports = {
       'dark-blue': '#052D58',
       hover: '#17569C',
       'red-2': '#F0544F',
+      'input-disabled': '#F5F5F5',
     },
   },
   variants: {
