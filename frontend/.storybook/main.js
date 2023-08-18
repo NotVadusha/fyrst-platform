@@ -10,8 +10,8 @@ module.exports = {
     {
       name: '@storybook/addon-styling',
       options: {
-        postCss: {
-          implementation: require.resolve('postcss'),
+        postcssLoaderOptions: {
+          implementation: require('postcss'),
         },
       },
     },
