@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Timecard } from './entities/timecard';
+import { Timecard } from './entities/timecard.entity';
 import { ITimecardRepository } from './interfaces/timecard-repostiory.interaface';
 import { InjectModel } from '@nestjs/sequelize';
 
