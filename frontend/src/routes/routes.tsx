@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import BookingPage from './pages/BookingPage';
-import TimeCardPage from './pages/TimeCard';
-import ProfilePage from './pages/ProfilePage';
-import MessangerPage from './pages/MessangerPage';
-import PaymentsPage from './pages/PaymentsPage';
-import AuthPage from './pages/AuthPage';
-import EmployesPage from './pages/EmployesPage';
-import ErrorPage from './pages/ErrorPage';
-import TestPage from './pages/TestPage';
-import NotFoundPage from './pages/NotFoundPage';
-import Layout from './pages/Layout';
+import BookingPage from '../pages/BookingPage';
+import TimeCardPage from '../pages/TimeCard';
+import ProfilePage from '../pages/ProfilePage';
+import MessangerPage from '../pages/MessangerPage';
+import PaymentsPage from '../pages/PaymentsPage';
+import AuthPage from '../pages/AuthPage';
+import EmployesPage from '../pages/EmployesPage';
+import ErrorPage from '../pages/ErrorPage';
+import TestPage from '../pages/TestPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import Layout from '../pages/Layout';
 
 export const router = createBrowserRouter([
   {
