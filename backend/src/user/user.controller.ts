@@ -9,9 +9,10 @@ import {
   ParseIntPipe,
   ValidationPipe,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 
 @Controller('user')
 export class UserController {
@@ -24,7 +25,7 @@ export class UserController {
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) userId: number) {
     const user = await this.UserService.findOne(userId);
-    if (!user) throw new BadRequestException("This user doesn't exist");
+    if (!user) throw new NotFoundException();
     return user;
   }
   @Get()
@@ -44,7 +45,7 @@ export class UserController {
       birthdate,
       password,
       is_confirmed,
-    }: CreateUserDto,
+    }: UpdateUserDto,
   ) {
     const updatedUserInfo = {
       first_name,
@@ -57,15 +58,14 @@ export class UserController {
       is_confirmed,
     };
     const updatedUser = await this.UserService.update(updatedUserInfo, userId);
-    if (updatedUser.length < 1) throw new BadRequestException("This user doesn't exist");
-
+    if (!updatedUser) throw new NotFoundException();
     return this.UserService.findOne(userId);
   }
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {
     const deleteStatus = await this.UserService.delete(userId);
-    if (!deleteStatus) throw new BadRequestException("This user doesn't exist");
+    if (!deleteStatus) throw new NotFoundException();
 
-    return { Message: 'Successfully deleted' };
+    return true;
   }
 }

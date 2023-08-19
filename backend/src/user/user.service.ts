@@ -8,7 +8,7 @@ export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
 
   async create(userInfo: CreateUserDto) {
-    return await this.userRepository.create({ ...userInfo });
+    return await this.userRepository.create({ phone_number: null, ...userInfo });
   }
 
   async findAll() {
@@ -20,7 +20,7 @@ export class UserService {
   }
 
   async update(updateInfo: UpdateUserDto, userId: number) {
-    return await this.userRepository.update({ ...updateInfo }, { where: { id: userId } });
+    return await this.userRepository.update(updateInfo, { where: { id: userId } });
   }
 
   async delete(userId: number) {
