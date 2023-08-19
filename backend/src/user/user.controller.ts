@@ -8,7 +8,6 @@ import {
   Delete,
   ParseIntPipe,
   ValidationPipe,
-  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -64,7 +63,7 @@ export class UserController {
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {
     const deleteStatus = await this.UserService.delete(userId);
-    if (!deleteStatus) throw new NotFoundException();
+    if (deleteStatus < 1) throw new NotFoundException();
 
     return true;
   }

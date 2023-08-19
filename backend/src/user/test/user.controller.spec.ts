@@ -1,7 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { CreateUserDto, UpdateUserDto } from 'src/user/dto';
 import { UserController, UserService } from 'src/user';
-import { userStub, existingId, TestUser, updateInfo } from './user.helpers';
+import { userStub, existingId, TestUser, updateInfo, nonExistingId } from './user.helpers';
+import { NotFoundError } from 'rxjs';
+import { NotFoundException } from '@nestjs/common';
 
 jest.mock('../user.service');
 
@@ -59,7 +61,7 @@ describe('UsersController', () => {
   describe('createUser', () => {
     describe('when createUser is called', () => {
       let user: TestUser;
-      let createUserDto: CreateUserDto;
+      let createUserDto: CreateUserDto = userStub()[0];
 
       beforeEach(async () => {
         user = await userController.create(userStub()[0]);
@@ -70,7 +72,7 @@ describe('UsersController', () => {
       });
 
       test('then it should return a user', () => {
-        expect(user).toEqual(userStub());
+        expect(user).toEqual(userStub()[0]);
       });
     });
   });
@@ -100,7 +102,6 @@ describe('UsersController', () => {
 
       beforeEach(async () => {
         user = await userController.delete(existingId);
-        console.log(user, existingId);
       });
 
       test('then it should call usersService', () => {
