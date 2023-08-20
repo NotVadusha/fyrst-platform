@@ -1,7 +1,5 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
-import { User } from 'src/user';
-
 export const sequelizeDevelopmentConfig: SequelizeModuleOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -10,5 +8,5 @@ export const sequelizeDevelopmentConfig: SequelizeModuleOptions = {
   host: 'db',
   dialect: 'postgres',
   autoLoadModels: true,
-  models: [User],
+  models: [],
 };
