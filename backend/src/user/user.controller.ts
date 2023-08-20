@@ -11,7 +11,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -35,36 +36,15 @@ export class UserController {
   async update(
     @Param('id', ParseIntPipe) userId: number,
     @Body(ValidationPipe)
-    {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      city: string,
-      birthdate,
-      password,
-      is_confirmed,
-    }: UpdateUserDto,
+    updateUserInfo: UpdateUserDto,
   ) {
-    const updatedUserInfo = {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      city: string,
-      birthdate,
-      password,
-      is_confirmed,
-    };
-    const updatedUser = await this.UserService.update(updatedUserInfo, userId);
+    const updatedUser = await this.UserService.update(updateUserInfo, userId);
     if (!updatedUser) throw new NotFoundException();
     return this.UserService.findOne(userId);
   }
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {
     const deleteStatus = await this.UserService.delete(userId);
-    if (deleteStatus < 1) throw new NotFoundException();
-
-    return true;
+    return Boolean(deleteStatus);
   }
 }
