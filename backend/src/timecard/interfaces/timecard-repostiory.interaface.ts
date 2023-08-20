@@ -1,5 +1,5 @@
 import { IBaseRepository } from 'shared/base-repository.interface';
-import { Timecard } from '../entities/timecard.entity';
+import { Timecard } from '../entities';
 
 export interface ITimecardRepository extends IBaseRepository<Timecard> {
   getAll(): Promise<Timecard[]>;

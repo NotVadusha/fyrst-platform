@@ -1,5 +1,5 @@
 import { UpdateTimecardDto, CreateTimecardDto } from '../dto';
-import { Timecard } from '../entities/timecard.entity';
+import { Timecard } from '../entities';
 
 export interface ITimecardService {
   create(createTimecardDto: CreateTimecardDto): Promise<Timecard>;

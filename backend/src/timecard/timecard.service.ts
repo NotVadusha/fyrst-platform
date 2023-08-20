@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTimecardDto, UpdateTimecardDto } from './dto';
-import { Timecard } from './entities/timecard.entity';
-import { ITimecardService } from './interfaces/timecard-service.interface';
+import { Timecard } from './entities';
+import { ITimecardService } from './interfaces';
 import { ITimecardRepository } from './interfaces/timecard-repostiory.interaface';
 
 @Injectable()
