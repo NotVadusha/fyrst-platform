@@ -1,21 +1,40 @@
 import { Test } from '@nestjs/testing';
-import { CreateUserDto, UpdateUserDto } from 'src/user/dto';
-import { UserController, UserService } from 'src/user';
-import { userStub, existingId, TestUser, updateInfo, nonExistingId } from './user.helpers';
-import { NotFoundError } from 'rxjs';
-import { NotFoundException } from '@nestjs/common';
-
-jest.mock('../user.service');
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { UserController } from 'src/user/user.controller';
+import { UserService } from 'src/user/user.service';
+import { usersMock, existingId, TestUser, updateInfo } from './user.helpers';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 describe('UsersController', () => {
   let userController: UserController;
   let userService: UserService;
+  let defaultUsers = usersMock();
 
   beforeEach(async () => {
+    jest.clearAllMocks();
+
     const moduleRef = await Test.createTestingModule({
-      imports: [],
+      providers: [
+        {
+          provide: UserService,
+          useValue: {
+            create: jest
+              .fn()
+              .mockImplementation((user: CreateUserDto) => Promise.resolve({ id: '1', ...user })),
+            findAll: jest.fn().mockResolvedValue(defaultUsers),
+            findOne: jest
+              .fn()
+              .mockImplementation((id: number) => Promise.resolve({ ...defaultUsers[0], id })),
+            update: jest
+              .fn()
+              .mockResolvedValue((id: number, updateUserInfo: UpdateUserDto) =>
+                Promise.resolve(updateUserInfo),
+              ),
+            delete: jest.fn().mockResolvedValue((id: number) => Promise.resolve(true)),
+          },
+        },
+      ],
       controllers: [UserController],
-      providers: [UserService],
     }).compile();
 
     userController = moduleRef.get<UserController>(UserController);
@@ -25,17 +44,18 @@ describe('UsersController', () => {
   describe('getUser', () => {
     describe('when getUser is called', () => {
       let user: TestUser;
+      const expectedUser = defaultUsers[0];
 
       beforeEach(async () => {
         user = await userController.getOne(existingId);
       });
 
       test('then it should call usersService', () => {
-        expect(userService.findOne).toBeCalledWith(userStub()[0].id);
+        expect(userService.findOne).toBeCalledWith(user.id);
       });
 
       test('then is should return a user', () => {
-        expect(user).toEqual(userStub()[0]);
+        expect(user).toEqual(expectedUser);
       });
     });
   });
@@ -53,7 +73,7 @@ describe('UsersController', () => {
       });
 
       test('then it should return users', () => {
-        expect(users).toEqual(userStub());
+        expect(users).toEqual(defaultUsers);
       });
     });
   });
@@ -61,18 +81,18 @@ describe('UsersController', () => {
   describe('createUser', () => {
     describe('when createUser is called', () => {
       let user: TestUser;
-      let createUserDto: CreateUserDto = userStub()[0];
+      let createUserDto: CreateUserDto = usersMock()[0];
 
       beforeEach(async () => {
-        user = await userController.create(userStub()[0]);
+        user = await userController.create(createUserDto);
       });
 
       test('then it should call usersService', () => {
-        expect(userService.create).toHaveBeenCalledWith(userStub()[0]);
+        expect(userService.create).toHaveBeenCalledWith(createUserDto);
       });
 
       test('then it should return a user', () => {
-        expect(user).toEqual(userStub()[0]);
+        expect(user).toEqual(createUserDto);
       });
     });
   });
@@ -80,7 +100,7 @@ describe('UsersController', () => {
   describe('updateUser', () => {
     describe('when updateUser is called', () => {
       let user: TestUser;
-      let updatedUser: TestUser = userStub()[0];
+      let updatedUser: TestUser = usersMock()[0];
 
       beforeEach(async () => {
         user = await userController.update(existingId, updateInfo);
