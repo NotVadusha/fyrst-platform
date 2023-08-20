@@ -19,7 +19,7 @@ export class UserController {
   constructor(private readonly UserService: UserService) {}
 
   @Post()
-  async create(@Body(ValidationPipe) userInfo: CreateUserDto) {
+  async create(@Body() userInfo: CreateUserDto) {
     return await this.UserService.create(userInfo);
   }
   @Get(':id')
@@ -35,7 +35,7 @@ export class UserController {
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) userId: number,
-    @Body(ValidationPipe)
+    @Body()
     updateUserInfo: UpdateUserDto,
   ) {
     const updatedUser = await this.UserService.update(updateUserInfo, userId);
