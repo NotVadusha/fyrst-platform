@@ -9,17 +9,19 @@ import {
   ParseIntPipe,
   ValidationPipe,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { SaveValidation } from './pipes/createUser.pipe';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly UserService: UserService) {}
 
   @Post()
-  async create(@Body(ValidationPipe) userInfo: CreateUserDto) {
+  async create(@Body(SaveValidation) userInfo: CreateUserDto) {
     return await this.UserService.create(userInfo);
   }
   @Get(':id')
