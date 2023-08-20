@@ -1,0 +1,27 @@
+.root {
+  @apply appearance-none relative rounded-full border border-solid border-field 
+  cursor-pointer checked:bg-blue checked:border-blue;
+}
+
+.root:after {
+  @apply absolute rounded-full checked:bg-white border border-solid border-white 
+  top-1/2 left-1/2;
+  transform: translate(-50%, -50%);
+  content: '';
+}
+
+.small {
+  @apply w-5 h-5;
+}
+
+.small:after {
+  @apply w-1.5 h-1.5 bg-transparent border-none;
+}
+
+.big {
+  @apply w-6 h-6;
+}
+
+.big:after {
+  @apply w-2 h-2 bg-transparent border-none;
+}

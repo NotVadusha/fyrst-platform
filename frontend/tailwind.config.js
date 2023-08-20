@@ -6,6 +6,20 @@ module.exports = {
       spacing: {
         128: '32rem',
       },
+      keyframes: {
+        spinAround: {
+          '0%': { transform: 'rotate(0deg) translate(2rem)' },
+          '100%': { transform: 'rotate(360deg) translate(2rem)' },
+        },
+        spinAroundSm: {
+          '0%': { transform: 'rotate(0deg) translate(1.5rem)' },
+          '100%': { transform: 'rotate(360deg) translate(1.5rem)' },
+        },
+        spinAroundLg: {
+          '0%': { transform: 'rotate(0deg) translate(3rem)' },
+          '100%': { transform: 'rotate(360deg) translate(3rem)' },
+        },
+      },
     },
     colors: {
       transparent: '#00000000',
