@@ -1,12 +1,6 @@
-import { CreateUserDto } from 'src/user';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
-export interface TestUser extends CreateUserDto {
-  id: number;
-  updatedAt?: Date;
-  createdAt?: Date;
-}
-
-export const userStub = (): TestUser[] => {
+export const usersMock = (): TestUser[] => {
   return [
     {
       id: 1,
@@ -37,6 +31,12 @@ export const userStub = (): TestUser[] => {
   ];
 };
 
+export interface TestUser extends CreateUserDto {
+  id: number;
+  updatedAt?: Date;
+  createdAt?: Date;
+}
+
 export const updateInfo = {
   first_name: 'string',
   last_name: 'string',
@@ -49,4 +49,3 @@ export const updateInfo = {
 };
 
 export const existingId = 1;
-export const nonExistingId = -1;
