@@ -37,7 +37,7 @@ export class TimecardController {
   }
 
   @Get()
-  async findAll() {
+  async getAll() {
     try {
       const timecards = await this.timecardService.getAll();
       this.logger.log('Successfully got all timecards');
@@ -49,7 +49,7 @@ export class TimecardController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async getById(@Param('id', ParseIntPipe) id: number) {
     try {
       const timecard = await this.timecardService.getById(id);
       this.logger.log('Successfully got timecard');
