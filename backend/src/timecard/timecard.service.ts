@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateTimecardDto, UpdateTimecardDto } from './dto';
 import { Timecard } from './entities';
 import { ITimecardService } from './interfaces';
 import { ITimecardRepository } from './interfaces/timecard-repostiory.interaface';
+import { TIMECARD_REPO_INJECTION_TOKEN } from './constants';
 
 @Injectable()
 export class TimecardService implements ITimecardService {
-  constructor(private readonly timecardRepo: ITimecardRepository) {}
+  constructor(
+    @Inject(TIMECARD_REPO_INJECTION_TOKEN) private readonly timecardRepo: ITimecardRepository,
+  ) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
     const timecard = this.timecardRepo.instantiateEntity(createTimecardDto);
