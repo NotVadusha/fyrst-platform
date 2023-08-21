@@ -36,7 +36,7 @@ export const Tertiary: Story = {
 export const Inactive: Story = {
   args: {
     type: 'primary',
-    state: 'inactive',
+    disabled: true,
   },
 };
 
