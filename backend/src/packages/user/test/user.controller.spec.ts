@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { UserController } from 'src/user/user.controller';
-import { UserService } from 'src/user/user.service';
+import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
+import { UserController } from 'src/packages/user/user.controller';
+import { UserService } from 'src/packages/user/user.service';
 import { usersMock, existingId, TestUser, updateInfo } from './user.helpers';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 describe('UsersController', () => {
   let userController: UserController;
   let userService: UserService;
-  let defaultUsers = usersMock();
+  const defaultUsers = usersMock();
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -81,7 +81,7 @@ describe('UsersController', () => {
   describe('createUser', () => {
     describe('when createUser is called', () => {
       let user: TestUser;
-      let createUserDto: CreateUserDto = usersMock()[0];
+      const createUserDto: CreateUserDto = usersMock()[0];
 
       beforeEach(async () => {
         user = await userController.create(createUserDto);
@@ -100,7 +100,7 @@ describe('UsersController', () => {
   describe('updateUser', () => {
     describe('when updateUser is called', () => {
       let user: TestUser;
-      let updatedUser: TestUser = usersMock()[0];
+      const updatedUser: TestUser = usersMock()[0];
 
       beforeEach(async () => {
         user = await userController.update(existingId, updateInfo);

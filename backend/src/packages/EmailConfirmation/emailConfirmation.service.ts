@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { MailService } from 'src/Mail/mail.service';
+import { MailService } from 'src/packages/Mail/mail.service';
 
 import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 
