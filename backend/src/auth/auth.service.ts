@@ -2,9 +2,10 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcryptjs';
-import { LoginDto, RefreshDto } from './dto';
-import { RedisService } from 'src/redis';
-import { GoogleDto } from './dto';
+import { LoginDto } from './dto/login.dto';
+import { RefreshDto } from './dto/refresh.dto';
+import { RedisService } from 'src/redis/redis.service';
+import { GoogleDto } from './dto/google.dto';
 import { v4 as uuid } from 'uuid';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { JWTPayload } from './types';
@@ -53,10 +54,13 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     try {
       const user = await this.userService.findOneByEmail(loginDto.email);
+
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
       if (!user.is_confirmed)
         throw new HttpException(`The user's email is not confirmed`, HttpStatus.FORBIDDEN);
+      if (!user.password)
+        throw new HttpException('Password does not exist', HttpStatus.BAD_REQUEST);
 
       const passwordsCompairing = await bcrypt.compare(loginDto.password, user.password);
       if (!passwordsCompairing)
@@ -75,11 +79,11 @@ export class AuthService {
   async refresh(refreshDto: RefreshDto) {
     try {
       const user = await this.userService.findOne(refreshDto.id);
-      if (!user || !refreshDto.refreshToken)
+      if (!user || !refreshDto.refresh_token)
         throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
       const currentRefreshToken = await this.redisService.get(user.id.toString());
-      if (currentRefreshToken !== refreshDto.refreshToken)
+      if (currentRefreshToken !== refreshDto.refresh_token)
         throw new HttpException('Access Denied', HttpStatus.FORBIDDEN);
 
       const tokens = await this.getTokens({ id: user.id });
@@ -114,8 +118,8 @@ export class AuthService {
 
       if (!user) {
         user = await this.userService.create({
-          first_name: googleDto.firstName,
-          last_name: googleDto.lastName,
+          first_name: googleDto.first_name,
+          last_name: googleDto.last_name,
           email: googleDto.email,
           is_confirmed: true,
         });

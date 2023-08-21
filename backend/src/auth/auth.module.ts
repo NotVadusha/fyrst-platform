@@ -3,8 +3,9 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { AccessTokenStrategy, GoogleStrategy } from './strategies';
-import { RedisModule } from 'src/redis';
+import { AccessTokenStrategy } from './strategies/access-token.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { RedisModule } from 'src/redis/redis.module';
 import { EmailConfirmationModule } from 'src/EmailConfirmation/emailConfirmation.module';
 
 @Module({

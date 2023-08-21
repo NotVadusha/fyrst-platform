@@ -1,4 +1,4 @@
 export type RefreshDto = {
   id: number;
-  refreshToken: string;
+  refresh_token: string;
 };

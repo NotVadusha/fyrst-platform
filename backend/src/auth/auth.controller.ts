@@ -1,7 +1,9 @@
 import { Body, Controller, Post, Get, Request, UseGuards, Res, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RefreshDto } from './dto';
-import { AccessTokenGuard, GoogleOauthGuard } from './guards';
+import { LoginDto } from './dto/login.dto';
+import { RefreshDto } from './dto/refresh.dto';
+import { AccessTokenGuard } from './guards/access-token.guard';
+import { GoogleOauthGuard } from './guards/google.guard';
 import { Response } from 'express';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 

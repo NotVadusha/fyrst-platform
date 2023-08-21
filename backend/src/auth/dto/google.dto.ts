@@ -1,5 +1,5 @@
 export type GoogleDto = {
   email: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
 };

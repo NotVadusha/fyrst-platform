@@ -1,7 +1,8 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { RedisService } from 'src/redis';
+import { RedisService } from 'src/redis/redis.service';
 import { UserService } from 'src/user/user.service';
-import { NewPasswordDto, ResetPasswordDto } from './dto';
+import { NewPasswordDto } from './dto/new-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { MailService } from 'src/Mail/mail.service';
@@ -54,7 +55,7 @@ export class ResetPasswordService {
 
       await this.redisService.delete(`${user.email}_r`);
 
-      const hashedPassword = await bcrypt.hash(newPasswordDto.newPassword, 5);
+      const hashedPassword = await bcrypt.hash(newPasswordDto.new_password, 5);
 
       await this.userService.update(
         {
