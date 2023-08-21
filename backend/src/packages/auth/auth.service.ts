@@ -1,15 +1,15 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/packages/user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
-import { RedisService } from 'src/redis/redis.service';
+import { RedisService } from 'src/packages/redis/redis.service';
 import { GoogleDto } from './dto/google.dto';
 import { v4 as uuid } from 'uuid';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 import { JWTPayload } from './types';
-import { EmailConfirmationService } from 'src/EmailConfirmation/emailConfirmation.service';
+import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);

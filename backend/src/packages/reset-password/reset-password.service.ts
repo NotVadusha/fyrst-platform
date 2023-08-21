@@ -1,12 +1,12 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { RedisService } from 'src/redis/redis.service';
-import { UserService } from 'src/user/user.service';
+import { RedisService } from 'src/packages/redis/redis.service';
+import { UserService } from 'src/packages/user/user.service';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
-import { MailService } from 'src/Mail/mail.service';
 import { getMessageContent } from './helpers/getMessageContent';
+import { MailService } from 'src/packages/mail/mail.service';
 
 @Injectable()
 export class ResetPasswordService {

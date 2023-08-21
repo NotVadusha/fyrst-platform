@@ -5,7 +5,7 @@ import { RefreshDto } from './dto/refresh.dto';
 import { AccessTokenGuard } from './guards/access-token.guard';
 import { GoogleOauthGuard } from './guards/google.guard';
 import { Response } from 'express';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {

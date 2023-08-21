@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ResetPasswordController } from './reset-password.controller';
 import { ResetPasswordService } from './reset-password.service';
-import { UserModule } from 'src/user/user.module';
-import { RedisModule } from 'src/redis/redis.module';
-import { MailModule } from 'src/Mail/mail.module';
+import { RedisModule } from 'src/packages/redis/redis.module';
+import { MailModule } from 'src/packages/mail/mail.module';
+import { UserModule } from 'src/packages/user/user.module';
 
 @Module({
   controllers: [ResetPasswordController],

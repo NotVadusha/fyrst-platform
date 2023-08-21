@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from 'src/packages/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenStrategy } from './strategies/access-token.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
-import { RedisModule } from 'src/redis/redis.module';
-import { EmailConfirmationModule } from 'src/EmailConfirmation/emailConfirmation.module';
+import { RedisModule } from 'src/packages/redis/redis.module';
+import { EmailConfirmationModule } from 'src/packages/email-confirmation/emailConfirmation.module';
 
 @Module({
   controllers: [AuthController],
