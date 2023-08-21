@@ -42,7 +42,7 @@ export const createTimecardDtoMock: CreateTimecardDto = {
 };
 
 export const updateTimecardDtoMock: UpdateTimecardDto = {
-  bookingId: 3,
+  bookingId: 2,
 };
 
 export const timecardFiltersDtoMock: TimecardFiltersDto = {
@@ -53,6 +53,11 @@ export const existingId = 0;
 export const notExistingId = -1;
 export const paginationLimitMock = 10;
 export const paginationOffsetMock = 10;
+
+export const expectedUpdatedTimecard = {
+  ...timecardsMock[existingId],
+  ...updateTimecardDtoMock,
+};
 
 export const mockTimecardService = {
   create: jest
@@ -74,25 +79,6 @@ export const mockTimecardService = {
       Promise.resolve({ ...timecardsMock[id], ...updateTimecardDto }),
     ),
   remove: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
-};
-
-export const mockTimecardRepository = {
-  instantiateEntity: jest.fn().mockImplementation((partial: Partial<Timecard>) => partial),
-  create: jest
-    .fn()
-    .mockImplementation((entity: Timecard) =>
-      Promise.resolve({ ...entity, id: expect.any(Number), createdAt: expect.any(Date) }),
-    ),
-  getAllFiltered: jest
-    .fn()
-    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) =>
-      Promise.resolve(
-        timecardsMock.filter(t => (t.approvedBy = filters.approvedBy)).slice(offset, limit),
-      ),
-    ),
-  getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
-  update: jest.fn().mockImplementation((entity: Timecard) => Promise.resolve(entity)),
-  remove: jest.fn().mockImplementation((entity: Timecard) => Promise.resolve(entity)),
 };
 
 const buildModelMock = jest.fn().mockImplementation((partial: Partial<Timecard>) => ({

@@ -3,16 +3,16 @@ import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { Timecard } from './entities/timecard.entity';
-import { TimecardRepository } from './timecard.repository';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class TimecardService {
-  constructor(private readonly timecardRepo: TimecardRepository) {}
+  constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
-    const timecard = this.timecardRepo.instantiateEntity(createTimecardDto);
+    const timecard = this.timecardModel.build(createTimecardDto as Partial<Timecard>);
 
-    return this.timecardRepo.create(timecard);
+    return await timecard.save();
   }
 
   async getAllFiltered(
@@ -20,22 +20,33 @@ export class TimecardService {
     limit?: number,
     offset?: number,
   ): Promise<Timecard[]> {
-    return this.timecardRepo.getAllFiltered(filters, limit, offset);
+    return await this.timecardModel.findAll({
+      where: { ...filters },
+      limit: limit,
+      offset: offset,
+    });
   }
 
   async getById(id: number): Promise<Timecard> {
-    return await this.timecardRepo.getById(id);
+    return await this.timecardModel.findOne({
+      where: {
+        id,
+      },
+      rejectOnEmpty: true,
+    });
   }
   async update(id: number, updateTimecardDto: UpdateTimecardDto): Promise<Timecard> {
-    const timecard = await this.timecardRepo.getById(id);
+    const timecard = await this.getById(id);
     Object.assign(timecard, updateTimecardDto);
 
-    return await this.timecardRepo.update(timecard);
+    return await timecard.save();
   }
 
   async remove(id: number): Promise<Timecard> {
-    const timecard = await this.timecardRepo.getById(id);
+    const timecard = await this.getById(id);
 
-    return await this.timecardRepo.remove(timecard);
+    await timecard.destroy();
+
+    return timecard;
   }
 }

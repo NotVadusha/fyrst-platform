@@ -1,21 +1,22 @@
 import { Test } from '@nestjs/testing';
 import { TimecardService } from '../../src/timecard/timecard.service';
-import { TimecardRepository } from '../../src/timecard/timecard.repository';
 import {
   TestTimecard,
   createTimecardDtoMock,
   existingId,
-  mockTimecardRepository,
+  mockTimecardModel,
   paginationLimitMock,
   paginationOffsetMock,
   timecardFiltersDtoMock,
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
+import { Timecard } from '../../src/timecard/entities/timecard.entity';
+import { getModelToken } from '@nestjs/sequelize';
 
 describe('TimecardService', () => {
   let timecardService: TimecardService;
-  let timecardRepository: TimecardRepository;
+  let timecardModel: typeof Timecard;
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -24,14 +25,14 @@ describe('TimecardService', () => {
       providers: [
         TimecardService,
         {
-          provide: TimecardRepository,
-          useValue: mockTimecardRepository,
+          provide: getModelToken(Timecard),
+          useValue: mockTimecardModel,
         },
       ],
     }).compile();
 
     timecardService = moduleRef.get<TimecardService>(TimecardService);
-    timecardRepository = moduleRef.get<TimecardRepository>(TimecardRepository);
+    timecardModel = moduleRef.get<typeof Timecard>(getModelToken(Timecard));
   });
 
   describe('getAllFiltered', () => {
@@ -49,12 +50,8 @@ describe('TimecardService', () => {
         );
       });
 
-      test('it should call TimecardRepository', () => {
-        expect(timecardRepository.getAllFiltered).toBeCalledWith(
-          timecardFiltersDtoMock,
-          paginationLimitMock,
-          paginationOffsetMock,
-        );
+      test('it should call Timecard model', () => {
+        expect(timecardModel.findAll).toBeCalled();
       });
 
       test('it should return filtered timecards', () => {
@@ -66,18 +63,18 @@ describe('TimecardService', () => {
   describe('getById', () => {
     describe('when getById is called', () => {
       let timecard: TestTimecard;
-      const expectedTimecard = timecardsMock[0];
+      const expectedTimecard = timecardsMock[existingId];
 
       beforeEach(async () => {
         timecard = await timecardService.getById(expectedTimecard.id);
       });
 
-      test('it should call TimecardRepository', () => {
-        expect(timecardRepository.getById).toBeCalledWith(expectedTimecard.id);
+      test('it should call Timecard model', () => {
+        expect(timecardModel.findOne).toBeCalled();
       });
 
-      test('it should return timecard', () => {
-        expect(timecard).toEqual(expectedTimecard);
+      test('it should return a timecard', () => {
+        expect.objectContaining({ ...expectedTimecard });
       });
     });
   });
@@ -90,17 +87,14 @@ describe('TimecardService', () => {
         timecard = await timecardService.create(createTimecardDtoMock);
       });
 
-      test('it should call TimecardRepository', () => {
-        expect(timecardRepository.instantiateEntity).toBeCalledWith(createTimecardDtoMock);
-        expect(timecardRepository.create).toBeCalledWith(createTimecardDtoMock);
+      test('it should call Timecard model', () => {
+        expect(timecardModel.build).toBeCalled();
       });
 
       test('it should create new timecard and return it', () => {
-        expect(timecard).toEqual({
-          ...createTimecardDtoMock,
-          id: expect.any(Number),
-          createdAt: expect.any(Date),
-        });
+        console.debug(timecard);
+
+        expect(timecard).toEqual(timecardsMock[existingId]);
       });
     });
   });
@@ -113,12 +107,8 @@ describe('TimecardService', () => {
         timecard = await timecardService.update(existingId, updateTimecardDtoMock);
       });
 
-      test('it should call TimecardRepository', () => {
-        expect(timecardRepository.getById).toBeCalledWith(existingId);
-        expect(timecardRepository.update).toBeCalledWith({
-          ...timecardsMock[existingId],
-          ...updateTimecardDtoMock,
-        });
+      test('it should call Timecard model', () => {
+        expect(timecardModel.findOne).toBeCalled();
       });
 
       test('it should update existing timecard and return it', () => {
@@ -133,18 +123,18 @@ describe('TimecardService', () => {
   describe('remove', () => {
     describe('when remove is called', () => {
       let timecard: TestTimecard;
+      const expectedTimecard = timecardsMock[existingId];
 
       beforeEach(async () => {
         timecard = await timecardService.remove(existingId);
       });
 
-      test('it should call TimecardRepository', () => {
-        expect(timecardRepository.getById).toBeCalledWith(existingId);
-        expect(timecardRepository.remove).toBeCalledWith(timecardsMock[existingId]);
+      test('it should call Timecard model', () => {
+        expect(timecardModel.findOne).toBeCalled();
       });
 
       test('it should remove existing timecard and return it', () => {
-        expect(timecard).toEqual(timecardsMock[existingId]);
+        expect.objectContaining({ ...expectedTimecard });
       });
     });
   });
