@@ -11,6 +11,10 @@ export class TimecardFiltersDto {
   approvedAt?: Date;
 
   @IsOptional()
+  @IsNumber()
+  approvedBy?: number;
+
+  @IsOptional()
   @IsEnum(TimecardStatus)
   status?: TimecardStatus;
 

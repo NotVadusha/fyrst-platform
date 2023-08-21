@@ -1,6 +1,6 @@
 import { EmptyResultError } from 'sequelize';
-import { CreateTimecardDto, UpdateTimecardDto } from '../../src/timecard/dto';
-import { Timecard } from '../../src/timecard/entities';
+import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from '../../src/timecard/dto';
+import { Timecard, TimecardStatus } from '../../src/timecard/entities';
 import { ITimecardRepository, ITimecardService } from '../../src/timecard/interfaces';
 
 export interface TestTimecard {
@@ -8,6 +8,9 @@ export interface TestTimecard {
   createdAt: Date;
   createdBy: number;
   bookingId: number;
+  approvedAt: Date | null;
+  approvedBy: number | null;
+  status: TimecardStatus;
 }
 
 export const timecardsMock: TestTimecard[] = [
@@ -16,12 +19,18 @@ export const timecardsMock: TestTimecard[] = [
     createdAt: new Date(),
     createdBy: 1,
     bookingId: 2,
+    approvedAt: null,
+    approvedBy: null,
+    status: TimecardStatus.Pending,
   },
   {
     id: 1,
     createdAt: new Date(),
     createdBy: 3,
     bookingId: 1,
+    approvedAt: null,
+    approvedBy: null,
+    status: TimecardStatus.Pending,
   },
 ];
 
@@ -34,8 +43,14 @@ export const updateTimecardDtoMock: UpdateTimecardDto = {
   bookingId: 3,
 };
 
+export const timecardFiltersDtoMock: TimecardFiltersDto = {
+  approvedBy: null,
+};
+
 export const existingId = 0;
 export const notExistingId = -1;
+export const paginationLimitMock = 10;
+export const paginationOffsetMock = 10;
 
 export const mockTimecardService: ITimecardService = {
   create: jest
@@ -43,7 +58,13 @@ export const mockTimecardService: ITimecardService = {
     .mockImplementation((createTimecardDto: CreateTimecardDto) =>
       Promise.resolve({ id: 1, createdAt: new Date(), ...createTimecardDto }),
     ),
-  getAll: jest.fn().mockResolvedValue(timecardsMock),
+  getAllFiltered: jest
+    .fn()
+    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) =>
+      Promise.resolve(
+        timecardsMock.filter(t => (t.approvedBy = filters.approvedBy)).slice(offset, limit),
+      ),
+    ),
   getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
   update: jest
     .fn()
@@ -60,7 +81,13 @@ export const mockTimecardRepository: ITimecardRepository = {
     .mockImplementation((entity: Timecard) =>
       Promise.resolve({ ...entity, id: expect.any(Number), createdAt: expect.any(Date) }),
     ),
-  getAll: jest.fn().mockResolvedValue(timecardsMock),
+  getAllFiltered: jest
+    .fn()
+    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) =>
+      Promise.resolve(
+        timecardsMock.filter(t => (t.approvedBy = filters.approvedBy)).slice(offset, limit),
+      ),
+    ),
   getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
   update: jest.fn().mockImplementation((entity: Timecard) => Promise.resolve(entity)),
   remove: jest.fn().mockImplementation((entity: Timecard) => Promise.resolve(entity)),

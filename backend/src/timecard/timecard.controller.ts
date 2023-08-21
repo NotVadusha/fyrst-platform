@@ -40,7 +40,7 @@ export class TimecardController {
 
   @Get()
   async getAllFiltered(
-    @Body() filters: TimecardFiltersDto,
+    @Body() filters?: TimecardFiltersDto,
     @Query('limit') limit = Number.MAX_SAFE_INTEGER,
     @Query('offset') offset = 0,
   ) {

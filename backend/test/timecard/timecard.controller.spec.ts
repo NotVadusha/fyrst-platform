@@ -6,6 +6,9 @@ import {
   createTimecardDtoMock,
   existingId,
   mockTimecardService,
+  paginationLimitMock,
+  paginationOffsetMock,
+  timecardFiltersDtoMock,
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
@@ -31,20 +34,31 @@ describe('TimecardController', () => {
     timecardService = moduleRef.get<TimecardService>(TIMECARD_SERVICE_INJECTION_TOKEN);
   });
 
-  describe('getAll', () => {
-    describe('when getAll is called', () => {
+  describe('getAllFiltered', () => {
+    describe('when getAllFiltered is called', () => {
       let timecards: TestTimecard[];
+      const expectedFilteredTimecards = timecardsMock
+        .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
+        .slice(paginationOffsetMock, paginationLimitMock);
 
       beforeEach(async () => {
-        timecards = await timecardController.getAll();
+        timecards = await timecardController.getAllFiltered(
+          timecardFiltersDtoMock,
+          paginationLimitMock,
+          paginationOffsetMock,
+        );
       });
 
       test('it should call TimecardService', () => {
-        expect(timecardService.getAll).toBeCalled();
+        expect(timecardService.getAllFiltered).toBeCalledWith(
+          timecardFiltersDtoMock,
+          paginationLimitMock,
+          paginationOffsetMock,
+        );
       });
 
-      test('it should return all timecards', () => {
-        expect(timecards).toEqual(timecardsMock);
+      test('it should return filtered timecards', () => {
+        expect(timecards).toEqual(expectedFilteredTimecards);
       });
     });
   });
