@@ -22,12 +22,16 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   };
 
   const statusClass = statusClassMap[booking.status];
-  const createdAt = new Intl.DateTimeFormat('de-DE').format(booking.created_at);
+  const createdAt = new Intl.DateTimeFormat('de-DE', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  }).format(booking.created_at);
   const startDate = new Intl.DateTimeFormat('fr-CA').format(booking.start_date);
   const endDate = new Intl.DateTimeFormat('fr-CA').format(booking.end_date);
 
   return (
-    <div className='rounded-lg  w-[295px] h-[279px] p-4 mx-auto bg-white drop-shadow-lg shadow-black'>
+    <div className='rounded-lg  p-4  bg-white drop-shadow-lg shadow-black'>
       <div className='flex justify-between mb-4 items-center'>
         <div className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}>
           {booking.status}
