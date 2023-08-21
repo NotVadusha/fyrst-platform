@@ -15,7 +15,7 @@ import { RedisModule } from 'src/redis';
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET || 'JWT_ACCESS_SECRET',
       signOptions: {
-        expiresIn: '1m',
+        expiresIn: process.env.JWT_ACCESS_EXPIRATION_TIME || '1m',
       },
     }),
   ],

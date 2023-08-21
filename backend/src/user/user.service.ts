@@ -35,4 +35,12 @@ export class UserService {
   async delete(userId: number) {
     return await this.userRepository.destroy({ where: { id: userId } });
   }
+
+  async updateUser(id: string, data: Partial<IUser>) {
+    const index = this.users.findIndex(item => item.id === id);
+    this.users[index] = {
+      ...this.users[index],
+      ...data,
+    };
+  }
 }

@@ -5,6 +5,7 @@ import { EmailConfirmationModule } from './EmailConfirmation/emailConfirmation.m
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth';
 import { RedisModule } from './redis';
+import { ResetPasswordModule } from './reset-password/reset-password.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RedisModule } from './redis';
     EmailConfirmationModule,
     AuthModule,
     RedisModule,
+    ResetPasswordModule,
   ],
   controllers: [],
   providers: [],
