@@ -12,7 +12,7 @@ import {
   mockTimecardRepository,
   timecardsMock,
   updateTimecardDtoMock,
-} from './timecard.mocks';
+} from './timecard.mock';
 
 describe('TimecardService', () => {
   let timecardService: TimecardService;

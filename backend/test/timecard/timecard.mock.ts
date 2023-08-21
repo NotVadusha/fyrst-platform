@@ -1,3 +1,4 @@
+import { EmptyResultError } from 'sequelize';
 import { CreateTimecardDto, UpdateTimecardDto } from '../../src/timecard/dto';
 import { Timecard } from '../../src/timecard/entities';
 import { ITimecardRepository, ITimecardService } from '../../src/timecard/interfaces';
@@ -63,4 +64,26 @@ export const mockTimecardRepository: ITimecardRepository = {
   getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
   update: jest.fn().mockImplementation((entity: Timecard) => Promise.resolve(entity)),
   remove: jest.fn().mockImplementation((entity: Timecard) => Promise.resolve(entity)),
+};
+
+const buildModelMock = jest.fn().mockImplementation((partial: Partial<Timecard>) => ({
+  ...partial,
+  save: jest.fn().mockImplementation(() => {
+    return Promise.resolve(timecardsMock[existingId]);
+  }),
+  destroy: jest.fn().mockImplementation(() => {
+    return Promise.resolve(timecardsMock[existingId]);
+  }),
+}));
+
+export const mockTimecardModel = {
+  findAll: jest.fn().mockResolvedValue(timecardsMock),
+  findOne: jest.fn().mockImplementation((options: { where: { id: number } }) => {
+    if (options.where.id === existingId) {
+      return Promise.resolve(buildModelMock(timecardsMock[existingId]));
+    } else {
+      throw new EmptyResultError('');
+    }
+  }),
+  build: buildModelMock,
 };

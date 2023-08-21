@@ -8,7 +8,7 @@ import {
   mockTimecardService,
   timecardsMock,
   updateTimecardDtoMock,
-} from './timecard.mocks';
+} from './timecard.mock';
 
 describe('TimecardController', () => {
   let timecardController: TimecardController;
