@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -11,9 +12,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TIMECARD_SERVICE_INJECTION_TOKEN } from './constants';
-import { CreateTimecardDto, UpdateTimecardDto } from './dto';
+import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from './dto';
 import { ITimecardService } from './interfaces';
 
 @Controller('timecard')
@@ -37,12 +39,20 @@ export class TimecardController {
   }
 
   @Get()
-  async getAll() {
+  async getAllFiltered(
+    @Body() filters: TimecardFiltersDto,
+    @Query('limit') limit = Number.MAX_SAFE_INTEGER,
+    @Query('offset') offset = 0,
+  ) {
     try {
-      const timecards = await this.timecardService.getAll();
+      const timecards = await this.timecardService.getAllFiltered(filters, limit, offset);
       this.logger.log('Successfully got all timecards');
       return timecards;
     } catch (error) {
+      if (isNaN(limit) || isNaN(offset)) {
+        throw new BadRequestException('Invalid pagination query params');
+      }
+
       this.logger.error("Couldn't get timecards", error);
       throw new InternalServerErrorException("Couldn't get timecards");
     }

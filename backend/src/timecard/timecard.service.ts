@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateTimecardDto, UpdateTimecardDto } from './dto';
+import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from './dto';
 import { Timecard } from './entities';
 import { ITimecardService } from './interfaces';
 import { ITimecardRepository } from './interfaces/timecard-repostiory.interaface';
@@ -17,8 +17,12 @@ export class TimecardService implements ITimecardService {
     return this.timecardRepo.create(timecard);
   }
 
-  async getAll(): Promise<Timecard[]> {
-    return this.timecardRepo.getAll();
+  async getAllFiltered(
+    filters: TimecardFiltersDto,
+    limit?: number,
+    offset?: number,
+  ): Promise<Timecard[]> {
+    return this.timecardRepo.getAllFiltered(filters, limit, offset);
   }
 
   async getById(id: number): Promise<Timecard> {

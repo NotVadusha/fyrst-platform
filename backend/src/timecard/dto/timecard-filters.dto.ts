@@ -1,0 +1,20 @@
+import { IsDate, IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { TimecardStatus } from '../entities';
+
+export class TimecardFiltersDto {
+  @IsOptional()
+  @IsDate()
+  createdAt?: Date;
+
+  @IsOptional()
+  @IsDate()
+  approvedAt?: Date;
+
+  @IsOptional()
+  @IsEnum(TimecardStatus)
+  status?: TimecardStatus;
+
+  @IsOptional()
+  @IsNumber()
+  createdBy?: number;
+}

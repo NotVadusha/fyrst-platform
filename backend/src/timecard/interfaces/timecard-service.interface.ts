@@ -1,10 +1,10 @@
-import { UpdateTimecardDto, CreateTimecardDto } from '../dto';
+import { UpdateTimecardDto, CreateTimecardDto, TimecardFiltersDto } from '../dto';
 import { Timecard } from '../entities';
 
 export interface ITimecardService {
   create(createTimecardDto: CreateTimecardDto): Promise<Timecard>;
 
-  getAll(): Promise<Timecard[]>;
+  getAllFiltered(filters: TimecardFiltersDto, limit?: number, offset?: number): Promise<Timecard[]>;
 
   getById(id: number): Promise<Timecard>;
 
