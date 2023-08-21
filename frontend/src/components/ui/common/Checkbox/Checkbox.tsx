@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styles from './Checkbox.module.css';
 
-const Checkbox = () => {
-  const [checked, setChecked] = useState(false);
+export interface CheckboxProps {
+  name: string;
+  label: string;
+  checked: boolean;
+}
 
-  const handleChecked = () => {
-    setChecked(!checked);
-  };
-
+const Checkbox = ({ name, label, checked }: CheckboxProps) => {
   return (
-    <input
-      type='checkbox'
-      checked={checked}
-      onClick={handleChecked}
-      className={styles.root}
-    ></input>
+    <label className={styles.label}>
+      <input type='checkbox' checked={checked} name={name} className={styles.check}></input>
+      {label}
+    </label>
   );
 };
 
