@@ -39,7 +39,7 @@ export class User extends Model {
   city: string;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.DATEONLY,
     allowNull: true,
   })
   birthdate: Date;
