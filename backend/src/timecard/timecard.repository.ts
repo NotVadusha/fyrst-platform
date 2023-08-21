@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UpdateTimecardDto } from './dto';
 import { Timecard } from './entities';
-import { ITimecardRepository } from './interfaces';
 
 @Injectable()
-export class TimecardRepository implements ITimecardRepository {
+export class TimecardRepository {
   constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
 
   instantiateEntity(partial: Partial<Timecard>): Timecard {

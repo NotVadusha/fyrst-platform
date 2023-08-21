@@ -14,17 +14,14 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { TIMECARD_SERVICE_INJECTION_TOKEN } from './constants';
 import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from './dto';
-import { ITimecardService } from './interfaces';
+import { TimecardService } from './timecard.service';
 
 @Controller('timecard')
 export class TimecardController {
   private readonly logger = new Logger(TimecardController.name);
 
-  constructor(
-    @Inject(TIMECARD_SERVICE_INJECTION_TOKEN) private readonly timecardService: ITimecardService,
-  ) {}
+  constructor(private readonly timecardService: TimecardService) {}
 
   @Post()
   async create(@Body() createTimecardDto: CreateTimecardDto) {

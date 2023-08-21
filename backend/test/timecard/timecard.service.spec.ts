@@ -1,9 +1,4 @@
 import { Test } from '@nestjs/testing';
-import {
-  TIMECARD_REPO_INJECTION_TOKEN,
-  TIMECARD_SERVICE_INJECTION_TOKEN,
-} from '../../src/timecard/constants';
-import { timecardServiceProvider } from '../../src/timecard/providers';
 import { TimecardRepository, TimecardService } from '../../src/timecard';
 import {
   TestTimecard,
@@ -26,16 +21,16 @@ describe('TimecardService', () => {
 
     const moduleRef = await Test.createTestingModule({
       providers: [
-        timecardServiceProvider,
+        TimecardService,
         {
-          provide: TIMECARD_REPO_INJECTION_TOKEN,
+          provide: TimecardRepository,
           useValue: mockTimecardRepository,
         },
       ],
     }).compile();
 
-    timecardService = moduleRef.get<TimecardService>(TIMECARD_SERVICE_INJECTION_TOKEN);
-    timecardRepository = moduleRef.get<TimecardRepository>(TIMECARD_REPO_INJECTION_TOKEN);
+    timecardService = moduleRef.get<TimecardService>(TimecardService);
+    timecardRepository = moduleRef.get<TimecardRepository>(TimecardRepository);
   });
 
   describe('getAllFiltered', () => {

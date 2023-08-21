@@ -1,7 +1,6 @@
 import { EmptyResultError } from 'sequelize';
 import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from '../../src/timecard/dto';
 import { Timecard, TimecardStatus } from '../../src/timecard/entities';
-import { ITimecardRepository, ITimecardService } from '../../src/timecard/interfaces';
 
 export interface TestTimecard {
   id?: number;
@@ -52,7 +51,7 @@ export const notExistingId = -1;
 export const paginationLimitMock = 10;
 export const paginationOffsetMock = 10;
 
-export const mockTimecardService: ITimecardService = {
+export const mockTimecardService = {
   create: jest
     .fn()
     .mockImplementation((createTimecardDto: CreateTimecardDto) =>
@@ -74,7 +73,7 @@ export const mockTimecardService: ITimecardService = {
   remove: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
 };
 
-export const mockTimecardRepository: ITimecardRepository = {
+export const mockTimecardRepository = {
   instantiateEntity: jest.fn().mockImplementation((partial: Partial<Timecard>) => partial),
   create: jest
     .fn()

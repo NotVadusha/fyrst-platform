@@ -1,5 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { TIMECARD_SERVICE_INJECTION_TOKEN } from '../../src/timecard/constants';
 import { TimecardController, TimecardService } from '../../src/timecard';
 import {
   TestTimecard,
@@ -24,14 +23,14 @@ describe('TimecardController', () => {
       controllers: [TimecardController],
       providers: [
         {
-          provide: TIMECARD_SERVICE_INJECTION_TOKEN,
+          provide: TimecardService,
           useValue: mockTimecardService,
         },
       ],
     }).compile();
 
     timecardController = moduleRef.get<TimecardController>(TimecardController);
-    timecardService = moduleRef.get<TimecardService>(TIMECARD_SERVICE_INJECTION_TOKEN);
+    timecardService = moduleRef.get<TimecardService>(TimecardService);
   });
 
   describe('getAllFiltered', () => {
