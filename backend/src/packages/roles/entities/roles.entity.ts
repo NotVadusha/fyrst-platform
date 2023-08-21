@@ -1,6 +1,6 @@
-import { Column, Model, Table, DataType } from 'sequelize-typescript';
+import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
 
-@Table
+@Table({ tableName: 'Roles', createdAt: false, updatedAt: false })
 export class Roles extends Model {
   @Column({
     type: DataType.INTEGER,

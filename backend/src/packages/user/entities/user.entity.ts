@@ -1,7 +1,19 @@
-import { Column, Model, Table, DataType } from 'sequelize-typescript';
+import { Inject } from '@nestjs/common';
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  ForeignKey,
+  HasOne,
+  BelongsTo,
+  BelongsToMany,
+} from 'sequelize-typescript';
+import { Roles } from 'src/packages/roles/entities/roles.entity';
 
-@Table
+@Table({ tableName: 'Users' })
 export class User extends Model {
+  @Inject(Roles)
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -51,4 +63,8 @@ export class User extends Model {
     type: DataType.BOOLEAN,
   })
   is_confirmed: boolean;
+
+  @ForeignKey(() => Roles)
+  @Column({ field: 'id' })
+  role_id: number;
 }

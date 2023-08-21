@@ -22,9 +22,9 @@ export class RolesController {
   }
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) roleId: number) {
-    const user = await this.rolesService.findOne(roleId);
-    if (!user) throw new NotFoundException();
-    return user;
+    const role = await this.rolesService.findOne(roleId);
+    if (!role) throw new NotFoundException();
+    return role;
   }
   @Get()
   async getAll() {

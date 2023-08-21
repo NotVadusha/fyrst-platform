@@ -1,16 +1,31 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { BadRequestException, Injectable, NotAcceptableException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RolesService } from '../roles/roles.service';
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User) private userRepository: typeof User) {}
+  constructor(
+    @InjectModel(User) private userRepository: typeof User,
+    private rolesService: RolesService,
+  ) {}
 
   async create(userInfo: CreateUserDto) {
     const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });
     if (sameEmailUser) throw new BadRequestException('This email is already in use');
-    return await this.userRepository.create({ phone_number: null, ...userInfo });
+    const role = await this.rolesService.findOne(userInfo.role_id);
+    if (!role) throw new NotFoundException("This role doesn't exist");
+    return await this.userRepository.create({
+      phone_number: null,
+      role_id: userInfo.role_id,
+      ...userInfo,
+    });
   }
 
   async findAll() {
@@ -26,9 +41,14 @@ export class UserService {
       const sameEmailUser = await this.userRepository.findOne({
         where: { email: updateInfo.email },
       });
-      if (sameEmailUser.id != userId)
+      if (sameEmailUser && sameEmailUser.id !== userId)
         throw new NotAcceptableException('This email is already in use');
     }
+    if (updateInfo.role_id) {
+      const role = await this.rolesService.findOne(updateInfo?.role_id);
+      if (!role) throw new NotFoundException("This role doesn't exist");
+    }
+
     return await this.userRepository.update(updateInfo, { where: { id: userId } });
   }
 
