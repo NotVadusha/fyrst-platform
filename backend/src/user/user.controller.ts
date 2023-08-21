@@ -1,33 +1,50 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  ValidationPipe,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly UserService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() userInfo: CreateUserDto) {
+    return await this.UserService.create(userInfo);
   }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.findOne(id);
+  async getOne(@Param('id', ParseIntPipe) userId: number) {
+    const user = await this.UserService.findOne(userId);
+    if (!user) throw new NotFoundException();
+    return user;
   }
-
+  @Get()
+  async getAll() {
+    return this.UserService.findAll();
+  }
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  async update(
+    @Param('id', ParseIntPipe) userId: number,
+    @Body()
+    updateUserInfo: UpdateUserDto,
+  ) {
+    const updatedUser = await this.UserService.update(updateUserInfo, userId);
+    if (!updatedUser) throw new NotFoundException();
+    return this.UserService.findOne(userId);
   }
-
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.remove(id);
+  async delete(@Param('id', ParseIntPipe) userId: number) {
+    const deleteStatus = await this.UserService.delete(userId);
+    return Boolean(deleteStatus);
   }
 }

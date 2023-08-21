@@ -1,36 +1,38 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { BadRequestException, Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-
-import { CreateUserDto, UpdateUserDto } from './dto';
-import { User } from './entities';
-
+import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
 
-  async create(createUserDto: CreateUserDto) {
-    return this.userRepository.create(createUserDto);
+  async create(userInfo: CreateUserDto) {
+    const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });
+    if (sameEmailUser) throw new BadRequestException('This email is already in use');
+    return await this.userRepository.create({ phone_number: null, ...userInfo });
   }
 
   async findAll() {
-    return this.userRepository.findAll();
+    return await this.userRepository.findAll();
   }
 
-  async findOne(id: number) {
-    const user = await this.userRepository.findByPk(id);
+  async findOne(userId: number) {
+    return await this.userRepository.findOne({ where: { id: userId } });
+  }
 
-    if (user === null) {
-      throw new NotFoundException('User not found');
+  async update(updateInfo: UpdateUserDto, userId: number) {
+    if (updateInfo.email) {
+      const sameEmailUser = await this.userRepository.findOne({
+        where: { email: updateInfo.email },
+      });
+      if (sameEmailUser.id != userId)
+        throw new NotAcceptableException('This email is already in use');
     }
-
-    return user;
+    return await this.userRepository.update(updateInfo, { where: { id: userId } });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  async remove(id: number) {
-    return `This action removes a #${id} user`;
+  async delete(userId: number) {
+    return await this.userRepository.destroy({ where: { id: userId } });
   }
 }
