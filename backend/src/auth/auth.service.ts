@@ -55,6 +55,9 @@ export class AuthService {
       const user = await this.userService.findOneByEmail(loginDto.email);
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
+      if (!user.is_confirmed)
+        throw new HttpException(`The user's email is not confirmed`, HttpStatus.FORBIDDEN);
+
       const passwordsCompairing = await bcrypt.compare(loginDto.password, user.password);
       if (!passwordsCompairing)
         throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
