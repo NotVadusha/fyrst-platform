@@ -1,9 +1,10 @@
 import React from 'react';
+import BookingOverview from './BookingOverview';
 
 const BookingPage = () => {
   return (
-    <div className='h-128 bg-gray'>
-      <h1>BookingPage</h1>
+    <div className=' bg-background'>
+      <BookingOverview />
     </div>
   );
 };

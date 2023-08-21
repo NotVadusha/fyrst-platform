@@ -6,7 +6,6 @@ import { ReactComponent as ArrowUp } from '../../icons/arrow-up.svg';
 import { NavItem as INavItem } from 'types';
 
 const Layout = () => {
-
   return (
     <div className='flex'>
       <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[280px]'>
