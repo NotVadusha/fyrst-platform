@@ -1,0 +1,39 @@
+.select__container {
+  @apply relative max-w-xs;
+}
+
+.select__header {
+  @apply relative block;
+}
+
+.select__placeholder {
+  @apply text-sm absolute top-3.5 left-2.5 text-grey font-medium transition-all;
+}
+
+.select__placeholder--active {
+  @apply -translate-y-2.5 text-xs;
+}
+
+.select__input {
+  @apply border-grey border border-solid outline-none px-2.5 pt-5 pb-2 rounded-lg text-sm font-medium text-blue leading-4 w-full;
+}
+
+.select__input--active {
+  @apply border-blue;
+}
+
+.select__button {
+  @apply absolute top-3.5 right-2.5 transition-transform;
+}
+
+.select__button--active {
+  @apply rotate-180;
+}
+
+.select__menu {
+  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2;
+}
+
+.select__menu-item {
+  @apply p-2 w-full rounded-lg text-left font-medium text-sm hover:bg-grey;
+}

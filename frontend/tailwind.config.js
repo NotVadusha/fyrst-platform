@@ -20,6 +20,12 @@ module.exports = {
           '100%': { transform: 'rotate(360deg) translate(3rem)' },
         },
       },
+      fontSize: {
+        xs: '0.625rem',
+      },
+      boxShadow: {
+        dropdown: '0px 4px 16px rgba(0, 0, 0, 0.10)',
+      },
     },
     colors: {
       transparent: '#00000000',
