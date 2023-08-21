@@ -6,6 +6,9 @@ module.exports = {
       spacing: {
         128: '32rem',
       },
+      maxWidth: {
+        inputs: '15.625rem',
+      },
     },
     colors: {
       transparent: '#00000000',
