@@ -1,36 +1,18 @@
 import { Test } from '@nestjs/testing';
-import { TIMECARD_SERVICE_INJECTION_TOKEN } from '../constants';
-import { CreateTimecardDto, UpdateTimecardDto } from '../dto';
-import { TimecardController } from '../timecard.controller';
-import { TimecardService } from '../timecard.service';
+import { TIMECARD_SERVICE_INJECTION_TOKEN } from '../../src/timecard/constants';
+import { TimecardController, TimecardService } from '../../src/timecard';
 import {
   TestTimecard,
   createTimecardDtoMock,
   existingId,
+  mockTimecardService,
   timecardsMock,
   updateTimecardDtoMock,
-} from './mocks';
-import { ITimecardService } from '../interfaces';
+} from './timecard.mocks';
 
 describe('TimecardController', () => {
   let timecardController: TimecardController;
   let timecardService: TimecardService;
-
-  const mockTimecardService: ITimecardService = {
-    create: jest
-      .fn()
-      .mockImplementation((createTimecardDto: CreateTimecardDto) =>
-        Promise.resolve({ id: 1, createdAt: new Date(), ...createTimecardDto }),
-      ),
-    getAll: jest.fn().mockResolvedValue(timecardsMock),
-    getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
-    update: jest
-      .fn()
-      .mockImplementation((id: number, updateTimecardDto: UpdateTimecardDto) =>
-        Promise.resolve({ ...timecardsMock[id], ...updateTimecardDto }),
-      ),
-    remove: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
-  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
