@@ -117,6 +117,7 @@ export class AuthService {
           first_name: googleDto.firstName,
           last_name: googleDto.lastName,
           email: googleDto.email,
+          is_confirmed: true,
         });
         await this.emailConfirmationService.sendVerificationLink(user.email);
         return {
