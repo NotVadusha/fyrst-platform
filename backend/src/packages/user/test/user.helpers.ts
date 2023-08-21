@@ -1,4 +1,4 @@
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 
 export const usersMock = (): TestUser[] => {
   return [

@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  ValidationPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -16,21 +15,21 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly UserService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   async create(@Body() userInfo: CreateUserDto) {
-    return await this.UserService.create(userInfo);
+    return await this.userService.create(userInfo);
   }
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) userId: number) {
-    const user = await this.UserService.findOne(userId);
+    const user = await this.userService.findOne(userId);
     if (!user) throw new NotFoundException();
     return user;
   }
   @Get()
   async getAll() {
-    return this.UserService.findAll();
+    return this.userService.findAll();
   }
   @Patch(':id')
   async update(
@@ -38,13 +37,13 @@ export class UserController {
     @Body()
     updateUserInfo: UpdateUserDto,
   ) {
-    const updatedUser = await this.UserService.update(updateUserInfo, userId);
+    const updatedUser = await this.userService.update(updateUserInfo, userId);
     if (!updatedUser) throw new NotFoundException();
-    return this.UserService.findOne(userId);
+    return this.userService.findOne(userId);
   }
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {
-    const deleteStatus = await this.UserService.delete(userId);
+    const deleteStatus = await this.userService.delete(userId);
     return Boolean(deleteStatus);
   }
 }
