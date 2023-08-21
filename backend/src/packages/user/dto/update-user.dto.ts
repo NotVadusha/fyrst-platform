@@ -1,12 +1,6 @@
-import {
-  IsOptional,
-  IsString,
-  IsBoolean,
-  IsNotEmpty,
-  IsEmail,
-  IsDateString,
-} from 'class-validator';
+import { IsOptional, IsString, IsBoolean, IsNotEmpty, IsEmail, IsDate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class UpdateUserDto {
   @ApiProperty()
@@ -39,8 +33,9 @@ export class UpdateUserDto {
   city: string;
 
   @ApiProperty()
-  @IsDateString()
   @IsNotEmpty()
+  @Transform(({ value }) => new Date(value))
+  @IsDate()
   @IsOptional()
   birthdate: Date;
 
