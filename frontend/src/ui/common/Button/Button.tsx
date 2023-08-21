@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styles from './Button.module.css';
-import { emitter } from 'src/utils/emitter';
+import { emitter } from '../../../utils/emitter';
 
 export interface ButtonProps {
   type: 'primary' | 'secondary' | 'tertiary';
