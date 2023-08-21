@@ -9,7 +9,6 @@ import { v4 as uuid } from 'uuid';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { JWTPayload } from './types';
 import { EmailConfirmationService } from 'src/EmailConfirmation/emailConfirmation.service';
-import { MailService } from 'src/Mail/mail.service';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -19,7 +18,6 @@ export class AuthService {
     private userService: UserService,
     private redisService: RedisService,
     private emailConfirmationService: EmailConfirmationService,
-    private mailService: MailService,
   ) {}
 
   async getTokens(payload: JWTPayload) {
@@ -73,7 +71,7 @@ export class AuthService {
 
   async refresh(refreshDto: RefreshDto) {
     try {
-      const user = await this.userService.findOneByEmail(refreshDto.email);
+      const user = await this.userService.findOne(refreshDto.id);
       if (!user || !refreshDto.refreshToken)
         throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 

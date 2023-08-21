@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Request, UseGuards, Res } from '@nestjs/common';
+import { Body, Controller, Post, Get, Request, UseGuards, Res, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, RefreshDto } from './dto';
 import { AccessTokenGuard, GoogleOauthGuard } from './guards';
@@ -15,6 +15,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @HttpCode(200)
   async login(@Body() loginDto: LoginDto) {
     return await this.authService.login(loginDto);
   }
@@ -25,7 +26,8 @@ export class AuthController {
     await this.authService.logout(req.user['id']);
   }
 
-  @Get('refresh')
+  @Post('refresh')
+  @HttpCode(200)
   async refresh(@Body() refreshDto: RefreshDto) {
     return await this.authService.refresh(refreshDto);
   }
@@ -38,7 +40,7 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   async googleCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.googleAuthentication(req.user);
-    result.message
+    result.message;
     if (!!result.accessToken) {
       res.cookie('accessToken', result.accessToken, {
         maxAge: 1000 * 60 * 10,

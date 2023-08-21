@@ -5,6 +5,7 @@ import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenStrategy, GoogleStrategy } from './strategies';
 import { RedisModule } from 'src/redis';
+import { EmailConfirmationModule } from 'src/EmailConfirmation/emailConfirmation.module';
 
 @Module({
   controllers: [AuthController],
@@ -12,6 +13,7 @@ import { RedisModule } from 'src/redis';
   imports: [
     UserModule,
     RedisModule,
+    EmailConfirmationModule,
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET || 'JWT_ACCESS_SECRET',
       signOptions: {

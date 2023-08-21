@@ -8,5 +8,6 @@ import { EmailConfirmationService } from './emailConfirmation.service';
   imports: [JwtModule, MailModule],
   providers: [EmailConfirmationService],
   controllers: [EmailConfirmationController],
+  exports: [EmailConfirmationService],
 })
 export class EmailConfirmationModule {}
