@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { UpdateTimecardDto } from './dto';
-import { Timecard } from './entities';
+import { UpdateTimecardDto } from './dto/update-timecard.dto';
+import { Timecard } from './entities/timecard.entity';
 
 @Injectable()
 export class TimecardRepository {

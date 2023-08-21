@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { TimecardStatus } from '../entities';
+import { TimecardStatus } from '../entities/timecard-status';
 
 export class TimecardFiltersDto {
   @IsOptional()

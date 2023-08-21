@@ -4,7 +4,6 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   InternalServerErrorException,
   Logger,
   NotFoundException,
@@ -14,7 +13,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from './dto';
+import { CreateTimecardDto } from './dto/create-timecard.dto';
+import { UpdateTimecardDto } from './dto/update-timecard.dto';
+import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { TimecardService } from './timecard.service';
 
 @Controller('timecard')

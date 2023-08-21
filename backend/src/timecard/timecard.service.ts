@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTimecardDto, TimecardFiltersDto, UpdateTimecardDto } from './dto';
-import { Timecard } from './entities';
+import { CreateTimecardDto } from './dto/create-timecard.dto';
+import { UpdateTimecardDto } from './dto/update-timecard.dto';
+import { TimecardFiltersDto } from './dto/timecard-filters.dto';
+import { Timecard } from './entities/timecard.entity';
 import { TimecardRepository } from './timecard.repository';
 
 @Injectable()
