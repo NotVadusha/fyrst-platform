@@ -9,6 +9,26 @@ module.exports = {
       maxWidth: {
         inputs: '15.625rem',
       },
+      keyframes: {
+        spinAround: {
+          '0%': { transform: 'rotate(0deg) translate(2rem)' },
+          '100%': { transform: 'rotate(360deg) translate(2rem)' },
+        },
+        spinAroundSm: {
+          '0%': { transform: 'rotate(0deg) translate(1.5rem)' },
+          '100%': { transform: 'rotate(360deg) translate(1.5rem)' },
+        },
+        spinAroundLg: {
+          '0%': { transform: 'rotate(0deg) translate(3rem)' },
+          '100%': { transform: 'rotate(360deg) translate(3rem)' },
+        },
+      },
+      fontSize: {
+        xs: '0.625rem',
+      },
+      boxShadow: {
+        dropdown: '0px 4px 16px rgba(0, 0, 0, 0.10)',
+      },
     },
     colors: {
       transparent: '#00000000',
@@ -28,6 +48,7 @@ module.exports = {
       'dark-blue': '#052D58',
       hover: '#17569C',
       'red-2': '#F0544F',
+      'input-disabled': '#F5F5F5',
     },
   },
   variants: {
