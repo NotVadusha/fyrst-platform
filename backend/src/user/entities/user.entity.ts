@@ -38,7 +38,7 @@ export class User extends Model {
   city: string;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.DATEONLY,
   })
   birthdate: Date;
 
