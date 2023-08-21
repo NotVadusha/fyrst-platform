@@ -1,14 +1,15 @@
-import React, { MouseEventHandler, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './Button.module.css';
+import { emitter } from 'src/utils/emitter';
 
 export interface ButtonProps {
   type: 'primary' | 'secondary' | 'tertiary';
   label: string;
   state?: 'inactive';
   btnType?: 'submit' | 'button' | 'reset';
-  onClick: MouseEventHandler<HTMLButtonElement>;
   imgSrc?: string;
   fullWidth?: boolean;
+  eventName: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,11 +19,16 @@ const Button: React.FC<ButtonProps> = ({
   imgSrc,
   fullWidth,
   btnType = 'button',
-  onClick,
+  eventName,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handleMouse = (mouseState: boolean) => state !== 'inactive' && setIsPressed(mouseState);
+  const handleButtonClick = () => {
+    if (eventName && emitter) {
+      emitter.emit(eventName);
+    }
+  };
 
   const buttonClasses = useMemo(() => {
     return [
@@ -41,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
       className={buttonClasses}
       onMouseUp={handleMouse.bind(null, false)}
       onMouseDown={handleMouse.bind(null, true)}
-      onClick={onClick}
+      onClick={handleButtonClick}
       disabled={state === 'inactive'}
       type={btnType}
     >
