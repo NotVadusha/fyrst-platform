@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UpdateTimecardDto } from './dto';
 import { Timecard } from './entities';
@@ -6,7 +6,6 @@ import { ITimecardRepository } from './interfaces';
 
 @Injectable()
 export class TimecardRepository implements ITimecardRepository {
-  private readonly logger = new Logger(TimecardRepository.name);
   constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
 
   instantiateEntity(partial: Partial<Timecard>): Timecard {
@@ -27,8 +26,6 @@ export class TimecardRepository implements ITimecardRepository {
     limit?: number,
     offset?: number,
   ): Promise<Timecard[]> {
-    this.logger.debug(limit, offset);
-
     return await this.timecardModel.findAll({
       where: { ...filters },
       limit: limit,

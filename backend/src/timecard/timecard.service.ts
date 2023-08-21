@@ -18,7 +18,7 @@ export class TimecardService implements ITimecardService {
   }
 
   async getAllFiltered(
-    filters: TimecardFiltersDto,
+    filters?: TimecardFiltersDto,
     limit?: number,
     offset?: number,
   ): Promise<Timecard[]> {

@@ -8,6 +8,9 @@ import {
   existingId,
   mockTimecardModel,
   notExistingId,
+  paginationLimitMock,
+  paginationOffsetMock,
+  timecardFiltersDtoMock,
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
@@ -26,7 +29,9 @@ describe('TimecardModule', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(
+      new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }),
+    );
     await app.init();
   });
 
@@ -38,6 +43,44 @@ describe('TimecardModule', () => {
         .get(`${timecardApiPrefix}/`)
         .expect(HttpStatus.OK)
         .expect(timecardsMock.map(t => ({ ...t, createdAt: t.createdAt.toISOString() })));
+    });
+
+    it('should return array of timecards matching passed filter', () => {
+      return request(app.getHttpServer())
+        .get(`${timecardApiPrefix}/`)
+        .send(timecardFiltersDtoMock)
+        .expect(HttpStatus.OK)
+        .expect(
+          timecardsMock
+            .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
+            .map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
+        );
+    });
+
+    it('should return array of timecards with pagination', () => {
+      return request(app.getHttpServer())
+        .get(`${timecardApiPrefix}/`)
+        .query({ limit: paginationLimitMock, offset: paginationOffsetMock })
+        .expect(HttpStatus.OK)
+        .expect(
+          timecardsMock
+            .slice(paginationOffsetMock, paginationLimitMock)
+            .map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
+        );
+    });
+
+    it('should return 400 when invalid filters are passed', () => {
+      return request(app.getHttpServer())
+        .get(`${timecardApiPrefix}/`)
+        .send({ approvedBy: 'lorem ipsum' })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should return 400 when invalid pagination params are passed', () => {
+      return request(app.getHttpServer())
+        .get(`${timecardApiPrefix}/`)
+        .query({ limit: 'lorem', offset: 'ipsum' })
+        .expect(HttpStatus.BAD_REQUEST);
     });
   });
 
@@ -66,8 +109,8 @@ describe('TimecardModule', () => {
         .send(createTimecardDtoMock)
         .expect(HttpStatus.CREATED)
         .expect({
+          ...timecardsMock[existingId],
           ...createTimecardDtoMock,
-          id: timecardsMock[existingId].id,
           createdAt: timecardsMock[existingId].createdAt.toISOString(),
         });
     });
@@ -87,8 +130,8 @@ describe('TimecardModule', () => {
         .send(updateTimecardDtoMock)
         .expect(HttpStatus.OK)
         .expect({
+          ...timecardsMock[existingId],
           ...createTimecardDtoMock,
-          id: timecardsMock[existingId].id,
           createdAt: timecardsMock[existingId].createdAt.toISOString(),
         });
     });

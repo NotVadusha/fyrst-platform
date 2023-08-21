@@ -104,7 +104,25 @@ const buildModelMock = jest.fn().mockImplementation((partial: Partial<Timecard>)
 }));
 
 export const mockTimecardModel = {
-  findAll: jest.fn().mockResolvedValue(timecardsMock),
+  findAll: jest
+    .fn()
+    .mockImplementation(
+      (options?: { where?: { approvedBy: number | null }; limit?: number; offset?: number }) => {
+        if (isNaN(options.limit) || isNaN(options.offset)) {
+          throw new Error();
+        }
+
+        return Promise.resolve(
+          timecardsMock
+            .filter(t =>
+              options.where.approvedBy === undefined
+                ? true
+                : t.approvedBy === options.where.approvedBy,
+            )
+            .slice(options.offset, options.limit),
+        );
+      },
+    ),
   findOne: jest.fn().mockImplementation((options: { where: { id: number } }) => {
     if (options.where.id === existingId) {
       return Promise.resolve(buildModelMock(timecardsMock[existingId]));
