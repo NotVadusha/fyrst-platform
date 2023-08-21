@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { TimecardService } from '../../src/timecard/timecard.service';
+import { TimecardService } from '../../src/packages/timecard/timecard.service';
 import {
   TestTimecard,
   createTimecardDtoMock,
@@ -11,7 +11,7 @@ import {
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
-import { Timecard } from '../../src/timecard/entities/timecard.entity';
+import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 import { getModelToken } from '@nestjs/sequelize';
 
 describe('TimecardService', () => {

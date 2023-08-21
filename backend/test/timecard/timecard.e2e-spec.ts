@@ -2,8 +2,8 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { getModelToken } from '@nestjs/sequelize';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { TimecardModule } from '../../src/timecard/timecard.module';
-import { Timecard } from '../../src/timecard/entities/timecard.entity';
+import { TimecardModule } from '../../src/packages/timecard/timecard.module';
+import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 import {
   createTimecardDtoMock,
   existingId,

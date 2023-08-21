@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { TimecardController } from '../../src/timecard/timecard.controller';
-import { TimecardService } from '../../src/timecard/timecard.service';
+import { TimecardController } from '../../src/packages/timecard/timecard.controller';
+import { TimecardService } from '../../src/packages/timecard/timecard.service';
 import {
   TestTimecard,
   createTimecardDtoMock,

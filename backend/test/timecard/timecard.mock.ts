@@ -1,9 +1,9 @@
 import { EmptyResultError } from 'sequelize';
-import { CreateTimecardDto } from '../../src/timecard/dto/create-timecard.dto';
-import { UpdateTimecardDto } from '../../src/timecard/dto/update-timecard.dto';
-import { TimecardFiltersDto } from '../../src/timecard/dto/timecard-filters.dto';
-import { Timecard } from '../../src/timecard/entities/timecard.entity';
-import { TimecardStatus } from '../../src/timecard/entities/timecard-status';
+import { CreateTimecardDto } from '../../src/packages/timecard/dto/create-timecard.dto';
+import { UpdateTimecardDto } from '../../src/packages/timecard/dto/update-timecard.dto';
+import { TimecardFiltersDto } from '../../src/packages/timecard/dto/timecard-filters.dto';
+import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
+import { TimecardStatus } from '../../src/packages/timecard/entities/timecard-status';
 
 export interface TestTimecard {
   id?: number;

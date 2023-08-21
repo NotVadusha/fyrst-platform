@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { sequelizeDevelopmentConfig } from 'src/config';
 import { EmailConfirmationModule } from './EmailConfirmation/emailConfirmation.module';
-import { TimecardModule } from './timecard/timecard.module';
+import { TimecardModule } from './packages/timecard/timecard.module';
 import { UserModule } from './user/user.module';
 
 @Module({
