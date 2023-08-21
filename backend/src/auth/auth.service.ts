@@ -6,17 +6,10 @@ import { LoginDto, RefreshDto } from './dto';
 import { RedisService } from 'src/redis';
 import { GoogleDto } from './dto';
 import { v4 as uuid } from 'uuid';
-
-type JWTPayload = {
-  email: string;
-  roleId: number;
-};
-
-type TokenResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
-
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { JWTPayload } from './types';
+import { EmailConfirmationService } from 'src/EmailConfirmation/emailConfirmation.service';
+import { MailService } from 'src/Mail/mail.service';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -25,6 +18,8 @@ export class AuthService {
     private jwtService: JwtService,
     private userService: UserService,
     private redisService: RedisService,
+    private emailConfirmationService: EmailConfirmationService,
+    private mailService: MailService,
   ) {}
 
   async getTokens(payload: JWTPayload) {
@@ -42,18 +37,14 @@ export class AuthService {
     }
   }
 
-  async registration(userDto: IUser) {
+  async registration(userDto: CreateUserDto) {
     try {
-      const candidate = await this.userService.findOneByEmail(userDto.email);
-      if (candidate)
-        throw new HttpException('User with this email is exist', HttpStatus.BAD_REQUEST);
-
       const hashedPassword = await bcrypt.hash(userDto.password, 5);
       const createdUser = await this.userService.create({ ...userDto, password: hashedPassword });
-
-      const tokens = await this.getTokens({ email: createdUser.email, roleId: createdUser.roleId });
-      this.updateRefreshToken(createdUser.id, tokens.refreshToken);
-      return tokens;
+      await this.emailConfirmationService.sendVerificationLink(createdUser.email);
+      return {
+        message: 'Email was sended',
+      };
     } catch (error) {
       this.logger.error('Error:', error.response || error);
       if (error instanceof HttpException) throw error;
@@ -70,7 +61,7 @@ export class AuthService {
       if (!passwordsCompairing)
         throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
 
-      const tokens = await this.getTokens({ email: user.email, roleId: user.roleId });
+      const tokens = await this.getTokens({ id: user.id });
       this.updateRefreshToken(user.id, tokens.refreshToken);
       return tokens;
     } catch (error) {
@@ -84,13 +75,13 @@ export class AuthService {
     try {
       const user = await this.userService.findOneByEmail(refreshDto.email);
       if (!user || !refreshDto.refreshToken)
-        throw new HttpException('User does not exist', HttpStatus.FORBIDDEN);
+        throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
-      const currentRefreshToken = await this.redisService.get(user.id);
+      const currentRefreshToken = await this.redisService.get(user.id.toString());
       if (currentRefreshToken !== refreshDto.refreshToken)
         throw new HttpException('Access Denied', HttpStatus.FORBIDDEN);
 
-      const tokens = await this.getTokens({ email: user.email, roleId: user.roleId });
+      const tokens = await this.getTokens({ id: user.id });
       this.updateRefreshToken(user.id, tokens.refreshToken);
       return tokens;
     } catch (error) {
@@ -100,11 +91,11 @@ export class AuthService {
     }
   }
 
-  async logout(email: string) {
+  async logout(id: number) {
     try {
-      const user = await this.userService.findOneByEmail(email);
-      if (!user) throw new HttpException('User does not exist', HttpStatus.FORBIDDEN);
-      this.redisService.delete(user.id);
+      const user = await this.userService.findOne(id);
+      if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
+      this.redisService.delete(user.id.toString());
     } catch (error) {
       this.logger.error('Error:', error.response || error);
       if (error instanceof HttpException) throw error;
@@ -112,27 +103,29 @@ export class AuthService {
     }
   }
 
-  async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
-    await this.redisService.set(id, refreshToken, 7 * 24 * 60 * 60);
+  async updateRefreshToken(id: number, refreshToken: string): Promise<void> {
+    await this.redisService.set(id.toString(), refreshToken, 7 * 24 * 60 * 60);
   }
 
-  async googleAuthentication(googleDto: GoogleDto): Promise<TokenResponse> {
+  async googleAuthentication(googleDto: GoogleDto): Promise<any> {
     try {
       let user = await this.userService.findOneByEmail(googleDto.email);
 
-      if (!user)
+      if (!user) {
         user = await this.userService.create({
-          id: 'sdsaf',
-          firstName: googleDto.firstName,
-          lastName: googleDto.lastName,
-          birthdate: new Date(),
+          first_name: googleDto.firstName,
+          last_name: googleDto.lastName,
           email: googleDto.email,
-          roleId: 1,
         });
-
-      const tokens = await this.getTokens({ email: user.email, roleId: user.roleId });
-      this.updateRefreshToken(user.id, tokens.refreshToken);
-      return tokens;
+        await this.emailConfirmationService.sendVerificationLink(user.email);
+        return {
+          message: 'Email was sended',
+        };
+      } else {
+        const tokens = await this.getTokens({ id: user.id });
+        this.updateRefreshToken(user.id, tokens.refreshToken);
+        return tokens;
+      }
     } catch (error) {
       this.logger.error('Error:', error.response || error);
       if (error instanceof HttpException) throw error;

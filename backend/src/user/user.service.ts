@@ -21,6 +21,10 @@ export class UserService {
     return await this.userRepository.findOne({ where: { id: userId } });
   }
 
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
   async update(updateInfo: UpdateUserDto, userId: number) {
     if (updateInfo.email) {
       const sameEmailUser = await this.userRepository.findOne({
@@ -34,13 +38,5 @@ export class UserService {
 
   async delete(userId: number) {
     return await this.userRepository.destroy({ where: { id: userId } });
-  }
-
-  async updateUser(id: string, data: Partial<IUser>) {
-    const index = this.users.findIndex(item => item.id === id);
-    this.users[index] = {
-      ...this.users[index],
-      ...data,
-    };
   }
 }
