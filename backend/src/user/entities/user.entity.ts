@@ -34,21 +34,25 @@ export class User extends Model {
 
   @Column({
     type: DataType.TEXT,
+    allowNull: true,
   })
   city: string;
 
   @Column({
     type: DataType.DATE,
+    allowNull: true,
   })
   birthdate: Date;
 
   @Column({
     type: DataType.TEXT,
+    allowNull: true,
   })
   password: string;
 
   @Column({
     type: DataType.BOOLEAN,
+    defaultValue: false,
   })
   is_confirmed: boolean;
 }

@@ -26,18 +26,18 @@ export class CreateUserDto {
   phone_number?: string;
 
   @IsString()
-  @IsNotEmpty()
-  city: string;
+  @IsOptional()
+  city?: string;
 
   @IsDateString()
-  @IsNotEmpty()
-  birthdate: Date;
+  @IsOptional()
+  birthdate?: Date;
 
   @IsString()
-  @IsNotEmpty()
-  password: string;
+  @IsOptional()
+  password?: string;
 
   @IsBoolean()
-  @IsNotEmpty()
-  is_confirmed: boolean;
+  @IsOptional()
+  is_confirmed?: boolean;
 }
