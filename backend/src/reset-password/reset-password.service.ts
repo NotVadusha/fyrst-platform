@@ -1,15 +1,21 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { RedisService } from 'src/redis';
-import { UserService } from 'src/user';
+import { UserService } from 'src/user/user.service';
 import { NewPasswordDto, ResetPasswordDto } from './dto';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
+import { MailService } from 'src/Mail/mail.service';
+import { getMessageContent } from './helpers/getMessageContent';
 
 @Injectable()
 export class ResetPasswordService {
   private readonly logger = new Logger(ResetPasswordService.name);
 
-  constructor(private redisService: RedisService, private userService: UserService) {}
+  constructor(
+    private redisService: RedisService,
+    private userService: UserService,
+    private mailService: MailService,
+  ) {}
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     try {
@@ -18,7 +24,11 @@ export class ResetPasswordService {
 
       const token = uuid();
 
-      //sendEmail
+      await this.mailService.sendEmail(
+        user.email,
+        'Reset password',
+        await getMessageContent(user.id, token),
+      );
 
       await this.redisService.set(`${user.email}_r`, token, 24 * 60 * 60);
 
@@ -34,7 +44,7 @@ export class ResetPasswordService {
 
   async updatePassword(newPasswordDto: NewPasswordDto) {
     try {
-      const user = await this.userService.findOneByEmail(newPasswordDto.email);
+      const user = await this.userService.findOne(newPasswordDto.id);
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
       const token = await this.redisService.get(`${user.email}_r`);
@@ -46,9 +56,12 @@ export class ResetPasswordService {
 
       const hashedPassword = await bcrypt.hash(newPasswordDto.newPassword, 5);
 
-      await this.userService.updateUser(user.id, {
-        password: hashedPassword,
-      });
+      await this.userService.update(
+        {
+          password: hashedPassword,
+        },
+        user.id,
+      );
 
       return {
         message: 'Password was updated',

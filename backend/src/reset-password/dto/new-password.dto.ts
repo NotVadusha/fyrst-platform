@@ -1,5 +1,5 @@
 export type NewPasswordDto = {
-  email: string;
+  id: number;
   newPassword: string;
   token: string;
 };
