@@ -53,16 +53,17 @@ export class ResetPasswordService {
       if (token !== newPasswordDto.token)
         throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
 
-      await this.redisService.delete(`${user.id}_r`);
-
       const hashedPassword = await bcrypt.hash(newPasswordDto.new_password, 5);
 
       await this.userService.update(
         {
           password: hashedPassword,
+          role_id: user.role_id,
         },
         user.id,
       );
+
+      await this.redisService.delete(`${user.id}_r`);
 
       return {
         message: 'Password was updated',

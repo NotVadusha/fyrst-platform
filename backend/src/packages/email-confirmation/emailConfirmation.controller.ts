@@ -1,6 +1,8 @@
 import { BadRequestException, Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { EmailConfirmationService } from './emailConfirmation.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('email')
 @Controller('email-confirmation')
 export class EmailConfirmationController {
   private readonly logger = new Logger(EmailConfirmationController.name);

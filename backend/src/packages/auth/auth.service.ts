@@ -7,9 +7,9 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { RedisService } from 'src/packages/redis/redis.service';
 import { GoogleDto } from './dto/google.dto';
-import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 import { JWTPayload } from './types';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
+import { RegistrationDto } from './dto/registration.dto';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -36,10 +36,15 @@ export class AuthService {
     }
   }
 
-  async registration(userDto: CreateUserDto) {
+  async registration(registrationDto: RegistrationDto) {
     try {
-      const hashedPassword = await bcrypt.hash(userDto.password, 5);
-      const createdUser = await this.userService.create({ ...userDto, password: hashedPassword });
+      const hashedPassword = await bcrypt.hash(registrationDto.password, 5);
+      const createdUser = await this.userService.create({
+        ...registrationDto,
+        password: hashedPassword,
+        role_id: 1,
+        is_confirmed: false
+      });
       await this.emailConfirmationService.sendVerificationLink(createdUser.email);
       return {
         message: 'Email was sended',
@@ -122,6 +127,7 @@ export class AuthService {
           last_name: googleDto.last_name,
           email: googleDto.email,
           is_confirmed: true,
+          role_id: 1,
         });
       }
 

@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from 'src/packages/auth/auth.service';
 import {
-  createUserDtoMock,
+  registrationMock,
   emailConfirmationServiceMock,
   googleDtoMock,
   jwtServiceMock,
@@ -90,7 +90,7 @@ describe('AuthService', () => {
       jest.spyOn(bcrypt, 'hash').mockImplementation(async () => 'password');
 
       beforeEach(async () => {
-        message = await authService.registration(createUserDtoMock);
+        message = await authService.registration(registrationMock);
       });
 
       test('it should create new user and return a message', () => {
@@ -99,14 +99,16 @@ describe('AuthService', () => {
 
       test('it should call User service', () => {
         expect(userService.create).toHaveBeenCalledWith({
-          ...createUserDtoMock,
+          ...registrationMock,
           password: 'password',
+          is_confirmed: false,
+          role_id: 1
         });
       });
 
       test('it should call Email confirmation service', () => {
         expect(emailConfirmationService.sendVerificationLink).toHaveBeenCalledWith(
-          createUserDtoMock.email,
+          registrationMock.email,
         );
       });
     });

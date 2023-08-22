@@ -3,6 +3,7 @@ import { TokenResponse } from 'src/helpers/responceClasses';
 import { GoogleDto } from 'src/packages/auth/dto/google.dto';
 import { LoginDto } from 'src/packages/auth/dto/login.dto';
 import { RefreshDto } from 'src/packages/auth/dto/refresh.dto';
+import { RegistrationDto } from 'src/packages/auth/dto/registration.dto';
 import { JWTPayload } from 'src/packages/auth/types';
 import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 
@@ -16,6 +17,7 @@ export interface TestUser {
   birthdate?: Date;
   password?: string;
   is_confirmed: boolean;
+  role_id: number;
 }
 
 export let usersMock: TestUser[] = [
@@ -29,6 +31,7 @@ export let usersMock: TestUser[] = [
     birthdate: new Date('2002-12-12T00:00:00.000Z'),
     password: 'string',
     is_confirmed: true,
+    role_id: 1,
   },
 ];
 
@@ -38,7 +41,7 @@ export const googleDtoMock: GoogleDto = {
   email: 'string@gmail.com',
 };
 
-export const createUserDtoMock: CreateUserDto = {
+export const registrationMock: RegistrationDto = {
   first_name: 'string',
   last_name: 'string',
   email: 'string@gmail.com',
@@ -69,7 +72,7 @@ export const existingId = 1;
 export const authServiceMock = {
   registration: jest
     .fn()
-    .mockImplementation((createUserDto: CreateUserDto) =>
+    .mockImplementation((createUserDto: RegistrationDto) =>
       Promise.resolve({ message: 'Email was sended' }),
     ),
   login: jest

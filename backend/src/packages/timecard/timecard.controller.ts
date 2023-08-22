@@ -17,7 +17,9 @@ import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { TimecardService } from './timecard.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('timecard')
 @Controller('timecard')
 export class TimecardController {
   private readonly logger = new Logger(TimecardController.name);

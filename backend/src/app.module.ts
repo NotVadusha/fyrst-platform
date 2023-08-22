@@ -1,25 +1,31 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { sequelizeDevelopmentConfig } from 'src/config';
-import { EmailConfirmationModule } from './packages/email-confirmation/emailConfirmation.module';
-import { UserModule } from './packages/user/user.module';
-import { AuthModule } from './packages/auth/auth.module';
-import { RedisModule } from './packages/redis/redis.module';
-import { ResetPasswordModule } from './packages/reset-password/reset-password.module';
-import { TimecardModule } from './packages/timecard/timecard.module';
+import { sequelizeDevelopmentConfig } from 'src/config/sequelize/sequelize.config';
+import {
+  EmailConfirmationModule,
+  UserModule,
+  TimecardModule,
+  BookingModule,
+  RolesModule,
+  AuthModule,
+  RedisModule,
+  ResetPasswordModule,
+} from './packages';
 import { RedisService } from './packages/redis/redis.service';
 
 @Module({
   imports: [
     SequelizeModule.forRoot(sequelizeDevelopmentConfig),
+    RolesModule,
     UserModule,
     EmailConfirmationModule,
     AuthModule,
     RedisModule,
     ResetPasswordModule,
     TimecardModule,
+    BookingModule,
   ],
   controllers: [],
-  providers: [RedisService],
+  providers: [],
 })
 export class AppModule {}

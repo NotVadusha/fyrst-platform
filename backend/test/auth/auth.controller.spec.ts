@@ -3,7 +3,7 @@ import { AuthController } from 'src/packages/auth/auth.controller';
 import { AuthService } from 'src/packages/auth/auth.service';
 import {
   authServiceMock,
-  createUserDtoMock,
+  registrationMock,
   existingId,
   googleDtoMock,
   loginDtoMock,
@@ -37,11 +37,11 @@ describe('AuthController', () => {
       let result: MessageResponse;
 
       beforeEach(async () => {
-        result = await authController.registration(createUserDtoMock);
+        result = await authController.registration(registrationMock);
       });
 
       test('it should call authService', () => {
-        expect(authService.registration).toHaveBeenCalledWith(createUserDtoMock);
+        expect(authService.registration).toHaveBeenCalledWith(registrationMock);
       });
 
       test('it should return a message', () => {

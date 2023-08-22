@@ -5,9 +5,9 @@ import { RefreshDto } from './dto/refresh.dto';
 import { AccessTokenGuard } from './guards/access-token.guard';
 import { GoogleOauthGuard } from './guards/google.guard';
 import { Response } from 'express';
-import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessageResponse, TokenResponse } from 'src/helpers/responceClasses';
+import { RegistrationDto } from './dto/registration.dto';
 
 @ApiTags('Authorization and authentication endpoints')
 @Controller('auth')
@@ -17,8 +17,8 @@ export class AuthController {
   @ApiOperation({ summary: 'User registration' })
   @ApiResponse({ status: 201, type: MessageResponse })
   @Post('registration')
-  async registration(@Body() createUserDto: CreateUserDto) {
-    return await this.authService.registration(createUserDto);
+  async registration(@Body() registrationDto: RegistrationDto) {
+    return await this.authService.registration(registrationDto);
   }
 
   @ApiOperation({ summary: 'User login' })
