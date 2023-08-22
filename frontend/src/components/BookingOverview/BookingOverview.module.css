@@ -3,14 +3,14 @@
 }
 
 .bookingContainer{
-	 @apply max-w-[955px] ml-[80px] mr-[77px] mb-[80px];
+	@apply max-w-[955px] ml-[80px] mr-[77px] mb-[80px];
 }
 
 .route{
 	@apply text-dark-grey text-[18px] flex items-center;
 }
 .route img {
-    @apply mr-4;
+  @apply mr-4;
 }
 
 .bookingHeader{
@@ -25,7 +25,6 @@
   @apply flex;
 }
 
-
 .bookingCard {
   @apply bg-white rounded-lg shadow-lg p-4;
 }
@@ -39,17 +38,15 @@
 }
 
 .cardDescription {
-  @apply max-w-[515px];
-  min-width: 360px;
-  margin-right: 32px
+  @apply max-w-[515px]  min-w-[360px] mr-[32px];
 }
 
 .cardDetails{
-  width: 405px
+  @apply w-[405px]
 }
 
 .cardStatus {
-   margin-top: 32px;
+  @apply mt-[32px];
 }
 
 .additionalDeailsContainer{
@@ -68,7 +65,6 @@
 	@apply text-dark-grey opacity-80
 }
 
-
 .additionalDeailsData{
 	@apply text-dark-grey flex items-center;
 }
@@ -84,60 +80,34 @@
 }
 
 .icons {
-    position: relative;
-    display: flex;
-    align-items: center;
+  @apply relative flex items-center;
 }
 
 .logo {
-    background: #fff;
-    z-index: 1;
-    margin-right: -10px;
-    width: 40px; 
-    height: 40px;
-     border-radius: 50%; 
-     border: 1px solid #fff;
+  @apply bg-white relative z-10 -mr-2.5 w-10 h-10 rounded-full border border-white;
 }
 
 .moreApplicants {
-    @apply bg-field text-dark-grey text-[14px];
-    z-index: 2;
-    border-radius: 50%; 
-    width: 40px; 
-    height: 40px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @apply bg-field text-dark-grey text-base z-20 rounded-full w-10 h-10 flex items-center justify-center;
 }
-
-
 
 @media screen and (max-width: 1164px) {
     .cardDescription{
-      max-width: 100%;
-        width: 100%;
-        order: -1;
+       @apply w-full max-w-full order-first;
     }
 
     .detailsAndStatusContainer {
-        margin-top: 32px;
-        width: 100%;
-        padding-buttom: 40px
+      @apply mt-8 w-full pb-10;
     }
     .cardDetails{
-       max-width: 100%;
-        width: 100%;
+      @apply w-full max-w-full;
     }
 
     .bookingBody {
-        flex-direction: column;
+      @apply flex flex-col;
     }
 
     .cardStatus{
-      margin-buttom: 300px
+      @apply mb-[300px]
     }
-}
-
-.descriptionList{
-  @apply mt-6 mb-[16px]
 }
