@@ -1,4 +1,12 @@
-import { IsOptional, IsString, IsDate, IsBoolean, IsNotEmpty, IsEmail } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsDate,
+  IsBoolean,
+  IsNotEmpty,
+  IsEmail,
+  IsNumber,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 export class CreateUserDto {
   @IsString()
@@ -33,4 +41,8 @@ export class CreateUserDto {
   @IsBoolean()
   @IsNotEmpty()
   is_confirmed: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  role_id: number;
 }
