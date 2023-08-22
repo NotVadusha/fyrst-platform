@@ -2,17 +2,18 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, Logger } from '@nestjs/common';
 import { BookingService, Booking } from 'src/packages/booking/booking';
 import { getModelToken } from '@nestjs/sequelize';
-import { mockedBooking, mockedBookings, mockedUpdatedBooking } from './booking.mock';
+import {
+  mockedBooking,
+  mockedBookings,
+  mockedUpdatedBooking,
+  userServiceMock,
+} from './booking.mock';
 import { UserService } from 'src/packages/user/user.service';
 
 describe('BookingService', () => {
   let bookingService: BookingService;
   let bookingModel: typeof Booking;
   let logger: Logger;
-
-  const userServiceMock = {
-    findOne: jest.fn().mockResolvedValue({ id: 1, name: 'Test User' }),
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
