@@ -42,4 +42,10 @@ export class UserService {
   async delete(userId: number) {
     return await this.userRepository.destroy({ where: { id: userId } });
   }
+  async markEmailAsConfirmed(email: string) {
+    return await this.userRepository.update({ is_confirmed: true }, { where: { email: email } });
+  }
+  async findByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email: email } });
+  }
 }

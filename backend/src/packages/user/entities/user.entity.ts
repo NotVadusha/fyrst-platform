@@ -2,6 +2,7 @@ import { Column, Model, Table, DataType, ForeignKey, BelongsTo } from 'sequelize
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 
 @Table({ tableName: 'Users' })
+@Table({ tableName: 'Users' })
 export class User extends Model {
   @Column({
     type: DataType.INTEGER,
@@ -52,6 +53,16 @@ export class User extends Model {
     type: DataType.BOOLEAN,
   })
   is_confirmed: boolean;
+
+  @BelongsTo(() => Roles)
+  role: Roles;
+
+  @ForeignKey(() => Roles)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  role_id: number;
 
   @BelongsTo(() => Roles)
   role: Roles;
