@@ -1,12 +1,7 @@
 import React from 'react';
-import BookingOverview from './BookingOverview';
 
 const BookingPage = () => {
-  return (
-    <div className=' bg-background'>
-      <BookingOverview />
-    </div>
-  );
+  return <div className=''></div>;
 };
 
 export default BookingPage;

@@ -1,0 +1,143 @@
+.header {
+  @apply text-3xl pt-8 pb-8 pl-20 bg-white text-dark-grey shadow-lg mb-[40px];
+}
+
+.bookingContainer{
+	 @apply max-w-[955px] ml-[80px] mr-[77px] mb-[80px];
+}
+
+.route{
+	@apply text-dark-grey text-[18px] flex items-center;
+}
+.route img {
+    @apply mr-4;
+}
+
+.bookingHeader{
+	@apply flex  justify-between mt-[24px] mb-[32px] max-w-[955px];
+}
+
+.jobTitle{
+	@apply text-black text-4xl pt-[11px]
+}
+
+.bookingBody {
+  @apply flex;
+}
+
+
+.bookingCard {
+  @apply bg-white rounded-lg shadow-lg p-4;
+}
+
+.bookingCardTitle{
+	@apply text-black text-[20px] mb-6
+}
+
+.bookingCardDescription{
+  @apply text-[18px] leading-[28px]
+}
+
+.cardDescription {
+  @apply max-w-[515px];
+  min-width: 360px;
+  margin-right: 32px
+}
+
+.cardDetails{
+  width: 405px
+}
+
+.cardStatus {
+   margin-top: 32px;
+}
+
+.additionalDeailsContainer{
+	@apply text-[18px];
+}
+
+.additionalDeailsContainer >:last-child {
+	@apply mb-0;
+}
+
+.additionalDeailsElement{
+	@apply flex justify-between mb-6 items-center;
+}
+
+.additionalDeailsProp{
+	@apply text-dark-grey opacity-80
+}
+
+
+.additionalDeailsData{
+	@apply text-dark-grey flex items-center;
+}
+.additionalDeailsData img{
+	@apply mr-[8px] w-[24px] h-[24px];
+}
+
+.statusContent{
+	@apply flex flex-col items-center mb-6
+}
+.statusRepives{
+	@apply mb-6
+}
+
+.icons {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    background: #fff;
+    z-index: 1;
+    margin-right: -10px;
+    width: 40px; 
+    height: 40px;
+     border-radius: 50%; 
+     border: 1px solid #fff;
+}
+
+.moreApplicants {
+    @apply bg-field text-dark-grey text-[14px];
+    z-index: 2;
+    border-radius: 50%; 
+    width: 40px; 
+    height: 40px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+@media screen and (max-width: 1164px) {
+    .cardDescription{
+      max-width: 100%;
+        width: 100%;
+        order: -1;
+    }
+
+    .detailsAndStatusContainer {
+        margin-top: 32px;
+        width: 100%;
+        padding-buttom: 40px
+    }
+    .cardDetails{
+       max-width: 100%;
+        width: 100%;
+    }
+
+    .bookingBody {
+        flex-direction: column;
+    }
+
+    .cardStatus{
+      margin-buttom: 300px
+    }
+}
+
+.descriptionList{
+  @apply mt-6 mb-[16px]
+}
