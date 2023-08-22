@@ -8,23 +8,23 @@ export interface RadioButtonProps {
   size: Sizes;
   name: string;
   label: string;
-  // checked: boolean;
+  checked: boolean;
   onChange?: (e: any) => void;
   value?: string;
-  // checked: boolean;
 }
+
 const RadioButton = React.forwardRef<HTMLInputElement, RadioButtonProps>(
-  ({ size, name, label, value, onChange, ...props }, ref) => {
+  ({ size, name, label, value, onChange, checked, ...props }, ref) => {
     return (
       <label className={styles.container}>
         <input
           {...props}
           ref={ref}
           type='radio'
-          checked={value === label}
-          value={value === label ? 'on' : 'off'}
+          checked={checked}
+          value={value}
           name={name}
-          onChange={() => onChange?.(label)}
+          onChange={() => onChange?.(value)}
           className={`${styles.radio} ${styles[size]}`}
         ></input>
         <span className={styles.label}>{label}</span>
@@ -32,5 +32,7 @@ const RadioButton = React.forwardRef<HTMLInputElement, RadioButtonProps>(
     );
   },
 );
+
+RadioButton.displayName = 'RadioButton';
 
 export default RadioButton;

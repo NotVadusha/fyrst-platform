@@ -1,7 +1,6 @@
 import React from 'react';
-import { Control, Path } from 'react-hook-form';
-import { FormField } from '../Form';
-import RadioButton from './RadioButton';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import RadioButton, { Sizes } from './RadioButton';
 
 export type RadioButtonGroupOption = {
   value: string;
@@ -9,27 +8,29 @@ export type RadioButtonGroupOption = {
   isDisabled?: boolean;
 };
 
-export type RadioButtonGroupProps<T extends typeof FormField> = {
+export type RadioButtonGroupProps<T extends FieldValues> = {
   name: Path<T>;
   options: RadioButtonGroupOption[];
   control: Control<T>;
+  sizes: Sizes;
 };
 
-const RadioButtonGroup = <T extends typeof FormField>({
+const RadioButtonGroup = <T extends FieldValues>({
   name,
   options,
   control,
+  sizes,
 }: RadioButtonGroupProps<T>) => {
   return (
-    <FormField
+    <Controller
       name={name}
       control={control}
       render={({ field }) => {
         return (
-          <div>
+          <div className='flex flex-col gap-4'>
             {options.map(opt => (
               <RadioButton
-                size='small'
+                size={sizes}
                 value={opt.value}
                 checked={field.value === opt.value}
                 name={name}
@@ -41,7 +42,7 @@ const RadioButtonGroup = <T extends typeof FormField>({
           </div>
         );
       }}
-    ></FormField>
+    ></Controller>
   );
 };
 
