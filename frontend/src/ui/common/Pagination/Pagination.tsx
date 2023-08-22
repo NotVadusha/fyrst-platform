@@ -1,0 +1,52 @@
+import React from 'react';
+import { ReactComponent as ChevronLeft } from '../../../icons/chevron-left.svg';
+import { ReactComponent as ChevronRight } from '../../../icons/chevron-right.svg';
+import { PaginationButton } from './PaginationButton';
+
+export interface PaginationProps {
+  value: number;
+  totalCount: number;
+  siblingsCount: number;
+  onChange: (currentPage: number) => void;
+}
+
+export function Pagination({ value, totalCount, siblingsCount, onChange }: PaginationProps) {
+  let start: number;
+  const visibleCount = 1 + siblingsCount * 2;
+
+  if (value <= siblingsCount) {
+    start = 1;
+  } else if (totalCount - value <= siblingsCount) {
+    start = totalCount - siblingsCount * 2;
+  } else {
+    start = value - siblingsCount;
+  }
+
+  const visiblePages: number[] = [];
+  for (let i = start; i < start + visibleCount; i++) {
+    visiblePages.push(i);
+  }
+
+  return (
+    <div className='flex items-center justify-center'>
+      <PaginationButton onClick={() => onChange(value - 1)} disabled={value === 1}>
+        <ChevronLeft className='w-6 h-6 inline-block' />
+      </PaginationButton>
+      <ul className='flex'>
+        {visiblePages.map(page => (
+          <li key={page}>
+            <PaginationButton
+              onClick={() => onChange(page)}
+              appearance={page === value ? 'active' : 'base'}
+            >
+              {page}
+            </PaginationButton>
+          </li>
+        ))}
+      </ul>
+      <PaginationButton onClick={() => onChange(value + 1)} disabled={value === totalCount}>
+        <ChevronRight className='w-6 h-6 inline-block' />
+      </PaginationButton>
+    </div>
+  );
+}
