@@ -1,46 +1,52 @@
 import React, { useState } from 'react';
 import styles from './TextInput.module.css';
 
-export interface TextInputProps {
+export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   type: 'text' | 'email';
   label: string;
-  defaultValue: string;
-  disabled?: boolean;
+  isFocused?: boolean;
   error?: string;
 }
 
 export const TextInput = ({
   id,
-  type,
-  label,
-  defaultValue = '',
-  disabled,
   error,
+  type,
+  className,
+  onFocus,
+  label,
+  value,
+  ...props
 }: TextInputProps) => {
-  const [value, setValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className={styles.wrapper}>
       <label
         htmlFor={id}
-        className={`${styles.label} ${isFocused || value ? styles['label-active'] : ''}`}
+        className={`${styles.label} ${
+          isFocused || value ? styles['label-active'] : ''
+        } ${className}`}
       >
         {label}
       </label>
       <input
         id={id}
         type={type}
-        disabled={disabled}
         placeholder=''
         value={value}
         className={`${styles.input} ${error ? styles['input-error'] : ''} ${
           value || isFocused ? styles['input-filled'] : ''
-        } ${isFocused ? styles['input-focused'] : ''} ${disabled ? styles['input-disabled'] : ''}`}
-        onChange={e => setValue(e.target.value)}
-        onFocus={() => setIsFocused(true)}
+        } ${isFocused ? styles['input-focused'] : ''} ${
+          props.disabled ? styles['input-disabled'] : ''
+        }`}
+        onFocus={e => {
+          onFocus?.(e);
+          setIsFocused(true);
+        }}
         onBlur={() => setIsFocused(false)}
+        {...props}
       />
       {error && <p className={styles['error-message']}>{error}</p>}
     </div>
