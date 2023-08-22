@@ -4,9 +4,13 @@ import { ReactComponent as ChevronRight } from '../../../icons/chevron-right.svg
 import { PaginationButton } from './PaginationButton';
 
 export interface PaginationProps {
+  /** Current page */
   value: number;
+  /** Total amount of pages */
   totalCount: number;
+  /** Amount of page buttons to show on each side of the current page button  */
   siblingsCount: number;
+  /** Fires every time the current page changes */
   onChange: (currentPage: number) => void;
 }
 
