@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: 'payment',
+        path: 'payments',
         errorElement: <ErrorPage />,
         children: [
           {
@@ -104,7 +104,7 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: 'Employe',
+        path: 'employee',
         errorElement: <ErrorPage />,
         children: [
           {

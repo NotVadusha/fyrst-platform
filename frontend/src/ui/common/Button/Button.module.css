@@ -1,0 +1,60 @@
+button {
+  @apply text-base inline-block justify-center items-center relative h-[47px] min-w-[154px] p-4 rounded-lg border-0 cursor-pointer !leading-none;
+  vertical-align: middle
+}
+
+button.fullWidth {
+  @apply w-full;
+}
+
+.primary {
+  @apply bg-blue text-white hover:bg-hover;
+}
+
+.primary:active{
+  @apply bg-dark-blue;
+}
+
+.primary.disabled {
+  @apply bg-inactive cursor-not-allowed;
+}
+
+.secondary {
+  @apply bg-white border text-blue border-solid border-blue hover:border-hover hover:text-hover;
+}
+
+.secondary:actve{
+  @apply border-dark-blue
+}
+
+.secondary.disabled {
+  @apply cursor-not-allowed text-inactive border-inactive;
+}
+
+.tertiary {
+  @apply text-blue bg-transparent;
+}
+
+.tertiary.disabled {
+  @apply text-inactive cursor-not-allowed;
+}
+
+.imgButton {
+  @apply bg-white text-blue hover:bg-white;
+}
+
+.imgButton.fullwidth {
+  @apply bg-inactive;
+}
+
+.imgButton.disabled:hover {
+  @apply bg-inactive;
+}
+
+.contentWrapper {
+  @apply flex items-center justify-center mr-[23px];
+}
+
+.img {
+  @apply min-w-[20px] min-h-[20px] mr-[10px];
+}
