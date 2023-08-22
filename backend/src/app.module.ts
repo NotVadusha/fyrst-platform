@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { sequelizeDevelopmentConfig } from 'src/config/sequelize/sequelize.config';
+import { sequelizeDevelopmentConfig } from 'src/config';
 import {
   EmailConfirmationModule,
   UserModule,
   TimecardModule,
   BookingModule,
   RolesModule,
+  UserProfileModule,
 } from './packages';
 
 @Module({
@@ -17,6 +18,7 @@ import {
     EmailConfirmationModule,
     TimecardModule,
     BookingModule,
+    UserProfileModule,
   ],
   controllers: [],
   providers: [],
