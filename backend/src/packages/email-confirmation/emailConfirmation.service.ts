@@ -1,13 +1,15 @@
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/packages/mail/mail.service';
 
-import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, Inject, InternalServerErrorException, Logger } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 
 export class EmailConfirmationService {
   private readonly logger = new Logger(EmailConfirmationService.name);
   constructor(
     @Inject(JwtService) private readonly jwtService: JwtService,
     private readonly mailService: MailService,
+    private readonly userService: UserService,
   ) {}
 
   async sendVerificationLink(email: string) {
@@ -18,7 +20,7 @@ export class EmailConfirmationService {
       expiresIn: process.env.JWT_VERIFICATION_TOKEN_EXPIRATION_TIME,
     });
 
-    const url = `${process.env.EMAIL_CONFIRMATION_URL}?token=${token}`;
+    const url = `<a href = "${process.env.EMAIL_CONFIRMATION_URL}?token=${token}">Confirm email</a>`;
 
     const subject = 'Email confirmation';
     const content = `Welcome to Fyrst. To confirm the email address, click here: ${url}`;
@@ -37,8 +39,15 @@ export class EmailConfirmationService {
       const decodedToken = this.jwtService.verify(token, {
         secret: process.env.JWT_VERIFICATION_TOKEN_SECRET,
       });
+      const email = decodedToken.email;
+      const user = await this.userService.findByEmail(email);
+
+      if (user.is_confirmed) {
+        throw new BadRequestException('Email is already confirmed');
+      }
 
       this.logger.log('Email confirmed:', JSON.stringify(decodedToken));
+      await this.userService.markEmailAsConfirmed(email);
       return true;
     } catch (error) {
       this.logger.error('Invalid token', error);
