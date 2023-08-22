@@ -7,7 +7,7 @@ import {
   TimecardModule,
   BookingModule,
   RolesModule,
-} from './packages/packages';
+} from './packages';
 
 @Module({
   imports: [

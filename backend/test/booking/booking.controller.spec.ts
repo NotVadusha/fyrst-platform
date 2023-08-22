@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { existingId, mockedBooking, mockedBookingService } from './booking.mock';
-import { BookingController, BookingService } from 'src/packages/booking/booking';
+import { BookingController } from 'src/packages/booking/booking.controller';
+import { BookingService } from 'src/packages/booking/booking.service';
 
 describe('BookingController', () => {
   let controller: BookingController;

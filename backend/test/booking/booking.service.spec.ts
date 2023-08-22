@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, Logger } from '@nestjs/common';
-import { BookingService, Booking } from 'src/packages/booking/booking';
 import { getModelToken } from '@nestjs/sequelize';
 import {
   mockedBooking,
@@ -9,6 +8,8 @@ import {
   userServiceMock,
 } from './booking.mock';
 import { UserService } from 'src/packages/user/user.service';
+import { BookingService } from 'src/packages/booking/booking.service';
+import { Booking } from 'src/packages/booking/entities/booking.entity';
 
 describe('BookingService', () => {
   let bookingService: BookingService;
