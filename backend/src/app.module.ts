@@ -5,6 +5,7 @@ import { EmailConfirmationModule } from './packages/email-confirmation/emailConf
 import { UserModule } from './packages/user/user.module';
 import { TimecardModule } from './packages/timecard/timecard.module';
 import { RolesModule } from './packages/roles/roles.module';
+import { UserProfileModule } from './packages/user-profile/user-profile.module';
 @Module({
   imports: [
     SequelizeModule.forRoot(sequelizeDevelopmentConfig),
@@ -12,6 +13,7 @@ import { RolesModule } from './packages/roles/roles.module';
     UserModule,
     EmailConfirmationModule,
     TimecardModule,
+    UserProfileModule,
   ],
   controllers: [],
   providers: [],
