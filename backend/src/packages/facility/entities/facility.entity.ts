@@ -1,5 +1,4 @@
-import { Model } from 'sequelize';
-import { AllowNull, AutoIncrement, Column, PrimaryKey, Table } from 'sequelize-typescript';
+import { AllowNull, AutoIncrement, Column, PrimaryKey, Table, Model } from 'sequelize-typescript';
 
 @Table({ tableName: 'Facility', updatedAt: false, deletedAt: false })
 export class Facility extends Model {
@@ -26,5 +25,5 @@ export class Facility extends Model {
 
   @AllowNull(false)
   @Column
-  desctiptions: string;
+  description: string;
 }

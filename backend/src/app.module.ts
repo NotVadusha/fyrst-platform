@@ -11,6 +11,7 @@ import {
   RedisModule,
   ResetPasswordModule,
   UserProfileModule,
+  FacilityModule,
 } from './packages';
 
 @Module({
@@ -25,6 +26,7 @@ import {
     TimecardModule,
     BookingModule,
     UserProfileModule,
+    FacilityModule,
   ],
   controllers: [],
   providers: [],

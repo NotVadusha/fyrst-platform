@@ -1,15 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { FacilityService } from './facility.service';
-import { CreateFacilityDto } from './dto/create-facility.dto';
-import { UpdateFacilityDto } from './dto/update-facility.dto';
+import { FacilityDto } from './dto/facility.dto';
 
 @Controller('facility')
 export class FacilityController {
   constructor(private readonly facilityService: FacilityService) {}
 
   @Post()
-  create(@Body() createFacilityDto: CreateFacilityDto) {
-    return this.facilityService.create(createFacilityDto);
+  create(@Body() facility: FacilityDto) {
+    return this.facilityService.create(facility);
   }
 
   @Get()
@@ -18,17 +17,17 @@ export class FacilityController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.facilityService.findOne(+id);
+  findById(@Param('id') id: number) {
+    return this.facilityService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFacilityDto: UpdateFacilityDto) {
-    return this.facilityService.update(+id, updateFacilityDto);
+  update(@Param('id') id: number, @Body() updateFacility: FacilityDto) {
+    return this.facilityService.update(id, updateFacility);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.facilityService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.facilityService.remove(id);
   }
 }
