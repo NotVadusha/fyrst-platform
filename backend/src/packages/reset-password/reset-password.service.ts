@@ -3,10 +3,10 @@ import { RedisService } from 'src/packages/redis/redis.service';
 import { UserService } from 'src/packages/user/user.service';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { getMessageContent } from './helpers/getMessageContent';
 import { MailService } from 'src/packages/mail/mail.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class ResetPasswordService {
@@ -23,7 +23,7 @@ export class ResetPasswordService {
       const user = await this.userService.findOneByEmail(resetPasswordDto.email);
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
-      const token = uuid();
+      const token = crypto.randomUUID();
 
       await this.mailService.sendEmail(
         user.email,

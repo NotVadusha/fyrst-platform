@@ -59,7 +59,6 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   async googleCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.googleAuthentication(req.user);
-    result.message;
     if (!!result.accessToken) {
       res.cookie('accessToken', result.accessToken, {
         maxAge: 1000 * 60 * 10,

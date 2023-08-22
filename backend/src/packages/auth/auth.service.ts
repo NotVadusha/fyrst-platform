@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/packages/user/user.service';
 import * as bcrypt from 'bcryptjs';
+import * as crypto from 'crypto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { RedisService } from 'src/packages/redis/redis.service';
 import { GoogleDto } from './dto/google.dto';
-import { v4 as uuid } from 'uuid';
 import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 import { JWTPayload } from './types';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
@@ -24,7 +24,7 @@ export class AuthService {
   async getTokens(payload: JWTPayload) {
     try {
       const accessToken = await this.jwtService.signAsync(payload);
-      const refreshToken = uuid();
+      const refreshToken = crypto.randomUUID();
       return {
         accessToken,
         refreshToken,
@@ -112,7 +112,7 @@ export class AuthService {
     await this.redisService.set(id.toString(), refreshToken, 7 * 24 * 60 * 60);
   }
 
-  async googleAuthentication(googleDto: GoogleDto): Promise<any> {
+  async googleAuthentication(googleDto: GoogleDto) {
     try {
       let user = await this.userService.findOneByEmail(googleDto.email);
 
@@ -123,15 +123,11 @@ export class AuthService {
           email: googleDto.email,
           is_confirmed: true,
         });
-        await this.emailConfirmationService.sendVerificationLink(user.email);
-        return {
-          message: 'Email was sended',
-        };
-      } else {
-        const tokens = await this.getTokens({ id: user.id });
-        this.updateRefreshToken(user.id, tokens.refreshToken);
-        return tokens;
       }
+
+      const tokens = await this.getTokens({ id: user.id });
+      this.updateRefreshToken(user.id, tokens.refreshToken);
+      return tokens;
     } catch (error) {
       this.logger.error('Error:', error.response || error);
       if (error instanceof HttpException) throw error;

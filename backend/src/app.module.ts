@@ -7,6 +7,7 @@ import { AuthModule } from './packages/auth/auth.module';
 import { RedisModule } from './packages/redis/redis.module';
 import { ResetPasswordModule } from './packages/reset-password/reset-password.module';
 import { TimecardModule } from './packages/timecard/timecard.module';
+import { RedisService } from './packages/redis/redis.service';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { TimecardModule } from './packages/timecard/timecard.module';
     TimecardModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [RedisService],
 })
 export class AppModule {}
