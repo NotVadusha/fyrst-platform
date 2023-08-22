@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { sequelizeDevelopmentConfig } from 'src/config/sequelize/sequelize.config';
+import { sequelizeDevelopmentConfig } from 'src/config';
 import {
   EmailConfirmationModule,
   UserModule,
@@ -10,8 +10,8 @@ import {
   AuthModule,
   RedisModule,
   ResetPasswordModule,
+  UserProfileModule,
 } from './packages';
-import { RedisService } from './packages/redis/redis.service';
 
 @Module({
   imports: [
@@ -24,6 +24,7 @@ import { RedisService } from './packages/redis/redis.service';
     ResetPasswordModule,
     TimecardModule,
     BookingModule,
+    UserProfileModule,
   ],
   controllers: [],
   providers: [],

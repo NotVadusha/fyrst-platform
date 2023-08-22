@@ -1,14 +1,4 @@
-import { Inject } from '@nestjs/common';
-import {
-  Column,
-  Model,
-  Table,
-  DataType,
-  ForeignKey,
-  HasOne,
-  BelongsTo,
-  BelongsToMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 
 @Table({ tableName: 'Users' })

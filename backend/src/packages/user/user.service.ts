@@ -1,16 +1,10 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import {
-  BadRequestException,
-  Injectable,
-  NotAcceptableException,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
-import { RoleDto } from '../roles/dto/role.dto';
-import { error } from 'console';
+
 @Injectable()
 export class UserService {
   constructor(
