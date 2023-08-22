@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Preparing to push changes..."
+echo "As part of the pre-push process, all tests will be executed."
+
+npm run test
+
+if [ $? -ne 0 ]; then
+  echo "One or more tests failed! Push aborted."
+  exit 1
+fi
+
+echo "All tests passed successfully! Proceeding with the push."
