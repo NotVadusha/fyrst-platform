@@ -13,7 +13,6 @@ import { Roles } from 'src/packages/roles/entities/roles.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
-  @Inject(Roles)
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -64,7 +63,13 @@ export class User extends Model {
   })
   is_confirmed: boolean;
 
+  @BelongsTo(() => Roles)
+  role: Roles;
+
   @ForeignKey(() => Roles)
-  @Column({ field: 'id' })
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
   role_id: number;
 }

@@ -9,6 +9,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
+import { RoleDto } from '../roles/dto/role.dto';
+import { error } from 'console';
 @Injectable()
 export class UserService {
   constructor(
@@ -23,7 +25,6 @@ export class UserService {
     if (!role) throw new NotFoundException("This role doesn't exist");
     return await this.userRepository.create({
       phone_number: null,
-      role_id: userInfo.role_id,
       ...userInfo,
     });
   }
@@ -37,17 +38,15 @@ export class UserService {
   }
 
   async update(updateInfo: UpdateUserDto, userId: number) {
-    if (updateInfo.email) {
-      const sameEmailUser = await this.userRepository.findOne({
-        where: { email: updateInfo.email },
-      });
-      if (sameEmailUser && sameEmailUser.id !== userId)
-        throw new NotAcceptableException('This email is already in use');
-    }
-    if (updateInfo.role_id) {
-      const role = await this.rolesService.findOne(updateInfo?.role_id);
-      if (!role) throw new NotFoundException("This role doesn't exist");
-    }
+    const sameEmailUser = await this.userRepository.findOne({
+      where: { email: updateInfo?.email },
+    });
+
+    if (sameEmailUser && sameEmailUser.id !== userId)
+      throw new NotAcceptableException('This email is already in use');
+
+    const role = await this.rolesService.findOne(updateInfo?.role_id);
+    if (!role) throw new NotFoundException("This role doesn't exist");
 
     return await this.userRepository.update(updateInfo, { where: { id: userId } });
   }
