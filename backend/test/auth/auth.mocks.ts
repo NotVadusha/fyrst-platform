@@ -65,7 +65,6 @@ export const payloadMock: JWTPayload = {
 };
 
 export const existingId = 1;
-export const existingEmail = 'string@gmail.com';
 
 export const authServiceMock = {
   registration: jest

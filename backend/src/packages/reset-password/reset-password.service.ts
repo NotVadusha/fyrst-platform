@@ -31,7 +31,7 @@ export class ResetPasswordService {
         await getMessageContent(user.id, token),
       );
 
-      await this.redisService.set(`${user.email}_r`, token, 24 * 60 * 60);
+      await this.redisService.set(`${user.id}_r`, token, 24 * 60 * 60);
 
       return {
         message: 'Email was sended',
@@ -48,12 +48,12 @@ export class ResetPasswordService {
       const user = await this.userService.findOne(newPasswordDto.id);
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
-      const token = await this.redisService.get(`${user.email}_r`);
+      const token = await this.redisService.get(`${user.id}_r`);
 
       if (token !== newPasswordDto.token)
         throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
 
-      await this.redisService.delete(`${user.email}_r`);
+      await this.redisService.delete(`${user.id}_r`);
 
       const hashedPassword = await bcrypt.hash(newPasswordDto.new_password, 5);
 

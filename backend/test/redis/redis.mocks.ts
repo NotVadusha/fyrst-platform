@@ -3,6 +3,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 const cache = new Map([
   ['string@gmail.com', 'rty'],
   ['1', 'r-e-f-r-e-s-h'],
+  ['1_r', 't-o-k-e-n-r'],
 ]);
 
 export const cacheMock = {
