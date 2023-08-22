@@ -1,25 +1,19 @@
 import * as React from 'react';
 
 import { useForm } from 'react-hook-form';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from 'src/components/ui/common/Form';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from './ui/common/Form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import * as y from 'yup';
 
-const formSchema = z.object({
-  username: z.string().min(2, {
+const formSchema = y.object({
+  username: y.string().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
-  password: z.string().max(12, { message: 'Password has to be at most 12 characters long' }),
+  password: y.string().max(12, { message: 'Password has to be at most 12 characters long' }),
 });
 
 export function CreateTimeCardForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<y.InferType<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
@@ -27,7 +21,7 @@ export function CreateTimeCardForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: y.InferType<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
