@@ -2,8 +2,10 @@ import styles from './RadioButton.module.css';
 
 import React from 'react';
 
-interface RadioButtonProps {
-  size: 'small' | 'big';
+export type Sizes = 'small' | 'big';
+
+export interface RadioButtonProps {
+  size: Sizes;
   name: string;
   label: string;
   // checked: boolean;
