@@ -1,5 +1,3 @@
-// Button.stories.ts|tsx
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 import React from 'react';
@@ -35,15 +33,4 @@ export const Checked: Story = {
     ...Primary.args,
     checked: true,
   },
-};
-
-export const Group: Story = {
-  decorators: [
-    Story => (
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
-        <Story args={Primary.args} />
-        <Story args={Checked.args} />
-      </div>
-    ),
-  ],
 };
