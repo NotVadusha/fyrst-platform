@@ -1,13 +1,4 @@
-import {
-  Column,
-  Model,
-  Table,
-  DataType,
-  HasMany,
-  BelongsTo,
-  ForeignKey,
-} from 'sequelize-typescript';
-import { User } from 'src/packages/user/entities/user.entity';
+import { Column, Model, Table, DataType } from 'sequelize-typescript';
 
 @Table({ tableName: 'Roles', createdAt: false, updatedAt: false })
 export class Roles extends Model {
