@@ -6,6 +6,7 @@ import { UserModule } from './packages/user/user.module';
 import { AuthModule } from './packages/auth/auth.module';
 import { RedisModule } from './packages/redis/redis.module';
 import { ResetPasswordModule } from './packages/reset-password/reset-password.module';
+import { TimecardModule } from './packages/timecard/timecard.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ResetPasswordModule } from './packages/reset-password/reset-password.mo
     AuthModule,
     RedisModule,
     ResetPasswordModule,
+    TimecardModule,
   ],
   controllers: [],
   providers: [],
