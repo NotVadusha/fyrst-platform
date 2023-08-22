@@ -3,11 +3,16 @@ import { NotFoundException, Logger } from '@nestjs/common';
 import { BookingService, Booking } from 'src/packages/booking/booking';
 import { getModelToken } from '@nestjs/sequelize';
 import { mockedBooking, mockedBookings, mockedUpdatedBooking } from './booking.mock';
+import { UserService } from 'src/packages/user/user.service';
 
 describe('BookingService', () => {
   let bookingService: BookingService;
   let bookingModel: typeof Booking;
   let logger: Logger;
+
+  const userServiceMock = {
+    findOne: jest.fn().mockResolvedValue({ id: 1, name: 'Test User' }),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,6 +32,10 @@ describe('BookingService', () => {
             log: jest.fn(),
           },
         },
+        {
+          provide: UserService,
+          useValue: userServiceMock,
+        },
       ],
     }).compile();
 
@@ -41,6 +50,7 @@ describe('BookingService', () => {
 
   describe('create', () => {
     it('should create a booking', async () => {
+      userServiceMock.findOne.mockResolvedValue({ id: 1, name: 'Test User' });
       const mockCreatedBooking = { id: 1, ...mockedBooking };
       bookingModel.create = jest.fn().mockResolvedValue(mockCreatedBooking);
 
@@ -50,6 +60,11 @@ describe('BookingService', () => {
       expect(logger.log).toHaveBeenCalledWith(`Created note with ID ${mockCreatedBooking.id}`, {
         createdBooking: mockCreatedBooking,
       });
+    });
+    it('should throw NotFoundException if user is not found', async () => {
+      userServiceMock.findOne.mockResolvedValue(null);
+
+      await expect(bookingService.create(mockedBooking)).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -88,6 +103,7 @@ describe('BookingService', () => {
 
   describe('update', () => {
     it('should update a booking', async () => {
+      userServiceMock.findOne.mockResolvedValue({ id: 1, name: 'Test User' });
       const mockBooking = { id: 1, update: jest.fn() };
       bookingService.find = jest.fn().mockResolvedValue(mockBooking);
 
@@ -98,6 +114,13 @@ describe('BookingService', () => {
       expect(logger.log).toHaveBeenCalledWith(`Updated booking with ID 1`, {
         booking: mockBooking,
       });
+    });
+    it('should throw NotFoundException if user is not found', async () => {
+      userServiceMock.findOne.mockResolvedValue(null);
+
+      await expect(bookingService.update(1, mockedUpdatedBooking)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
