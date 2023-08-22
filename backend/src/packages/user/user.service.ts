@@ -38,17 +38,11 @@ export class UserService {
   }
 
   async update(updateInfo: UpdateUserDto, userId: number) {
-    const sameEmailUser = await this.userRepository.findOne({
-      where: { email: updateInfo?.email },
-    });
-
-    if (sameEmailUser && sameEmailUser.id !== userId)
-      throw new NotAcceptableException('This email is already in use');
-
     const role = await this.rolesService.findOne(updateInfo?.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
-
-    return await this.userRepository.update(updateInfo, { where: { id: userId } });
+    const [updatedUser] = await this.userRepository.update(updateInfo, { where: { id: userId } });
+    if (!updatedUser) throw new NotFoundException('User do not exist');
+    return updatedUser;
   }
 
   async delete(userId: number) {
