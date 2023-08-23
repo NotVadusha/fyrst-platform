@@ -8,7 +8,7 @@ export interface ButtonProps {
   btnType?: 'submit' | 'button' | 'reset';
   imgSrc?: string;
   fullWidth?: boolean;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button: React.FC<ButtonProps> = ({
