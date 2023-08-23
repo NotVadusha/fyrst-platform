@@ -73,6 +73,8 @@ JWT_VERIFICATION_TOKEN_SECRET=qwerty
 JWT_VERIFICATION_TOKEN_EXPIRATION_TIME=2h
 RESET_PASSWORD_URL=http://localhost:${FRONTEND_PORT}/reset-password
 EMAIL_CONFIRMATION_URL=http://localhost:${BACKEND_PORT}/api/v1/email-confirmation/confirm
+
+REACT_APP_API_URL=http://localhost:8000/api/v1
 ```
 ---
 

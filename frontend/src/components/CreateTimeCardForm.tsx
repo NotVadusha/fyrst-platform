@@ -7,25 +7,33 @@ import * as y from 'yup';
 import { timecardSchema } from '../lib/validations/timecard';
 import { Button } from 'src/ui/common/Button';
 import TextInput from './ui/common/TextInput/TextInput';
+import { baseUrl } from 'src/routes/routes';
+
+import { useSubmit } from 'react-router-dom';
 
 type Inputs = y.InferType<typeof timecardSchema>;
 
 export function CreateTimeCardForm() {
+  const submit = useSubmit();
+
   const form = useForm<Inputs>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
-      type: '',
-      employeeName: '',
-      facility: '',
-      managerName: '',
-      lunchTaken: '',
+      type: 'something',
+      employeeName: 'Dan',
+      facility: 'Driver',
+      managerName: 'Nick',
+      lunchTaken: '2 hours',
     },
   });
 
-  function onSubmit(values: Inputs) {
+  async function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    submit(values, {
+      method: 'POST',
+      // action: `${baseUrl}/timecard`,
+    });
   }
 
   console.log(form.getValues());
