@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { sequelizeDevelopmentConfig } from 'src/config';
+
 import {
   EmailConfirmationModule,
   UserModule,
