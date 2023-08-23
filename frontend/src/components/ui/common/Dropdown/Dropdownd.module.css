@@ -31,7 +31,7 @@
 }
 
 .select__menu {
-  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2;
+  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2 absolute left-0 z-10;
 }
 
 .select__menu-item {
