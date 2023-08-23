@@ -2,6 +2,9 @@ import React from 'react';
 import styles from './PaymentsList.module.css';
 import Table, { ColumnInfo } from '../../ui/common/Table/Table';
 import { Dropdown } from '../ui/common/Dropdown/Dropdown';
+import TextInput from '../ui/common/TextInput/TextInput';
+import { FormProvider, useForm } from 'react-hook-form';
+import { getPaymentData } from './mockData';
 
 interface PaymentData {
   date: string;
@@ -13,48 +16,7 @@ interface PaymentData {
 }
 
 const PaymentsList = () => {
-  const payments: PaymentData[] = [
-    {
-      date: '2023-08-20',
-      worker: 'John Doe',
-      amountPaid: 1500,
-      type: 'Full-time',
-      instapayPercentage: 10,
-      status: 'Completed',
-    },
-    {
-      date: '2023-08-20',
-      worker: 'John Doe',
-      amountPaid: 1500,
-      type: 'Full-time',
-      instapayPercentage: 10,
-      status: 'Completed',
-    },
-    {
-      date: '2023-08-20',
-      worker: 'John Doe',
-      amountPaid: 1500,
-      type: 'Full-time',
-      instapayPercentage: 10,
-      status: 'Pending',
-    },
-    {
-      date: '2023-08-20',
-      worker: 'John Doe',
-      amountPaid: 1500,
-      type: 'Full-time',
-      instapayPercentage: 10,
-      status: 'Pending',
-    },
-    {
-      date: '2023-08-20',
-      worker: 'John Doe',
-      amountPaid: 1500,
-      type: 'Full-time',
-      instapayPercentage: 10,
-      status: 'Rejected',
-    },
-  ];
+  const payments = getPaymentData();
 
   const columns: ColumnInfo<PaymentData>[] = [
     {
@@ -74,23 +36,61 @@ const PaymentsList = () => {
       renderCell: item => item.type,
     },
     {
-      columnName: 'Instapay%',
+      columnName: 'Instapay %',
       renderCell: item => `${item.instapayPercentage}%`,
     },
     {
       columnName: 'Status',
-      renderCell: item => item.status,
+      renderCell: item => {
+        let statusColor;
+
+        switch (item.status) {
+          case 'Completed':
+            statusColor = 'text-green-2';
+            break;
+          case 'Pending':
+            statusColor = 'text-hover';
+            break;
+          case 'Failed':
+            statusColor = 'text-red-2';
+            break;
+          default:
+            statusColor = '';
+            break;
+        }
+
+        return <span className={statusColor}>{item.status}</span>;
+      },
     },
   ];
+  const methods = useForm();
 
   return (
     <div className={styles.paymentsContainer}>
-      <div>Payment</div>
-      <Dropdown defaultValue={''} options={[]} label={''} placeholder={''} namespace={''} />
-      <div>
-        <input />
-        <input />
-        <input />
+      <div className={styles.paymentsHeader}>Payments</div>
+      <div className={styles.paymentsFilters}>
+        <FormProvider {...methods}>
+          <Dropdown
+            defaultValue=''
+            options={['John Brown', 'Mike Dors', 'Linda Moon', 'Serj Potter']}
+            label='Worker'
+            placeholder='Select worker'
+            namespace={''}
+          />
+          <div>
+            <label className='text-blue'>Start date</label>
+            <TextInput
+              control={methods.control}
+              name='selectDate'
+              label='Select Date'
+              type='date'
+            />
+          </div>
+          <div>
+            <label className='text-blue'>End date</label>
+            <TextInput control={methods.control} name='endDate' label='End Date' type='date' />
+          </div>
+        </FormProvider>
       </div>
       <div>
         <Table items={payments} columns={columns} getRowId={item => item.date + item.worker} />

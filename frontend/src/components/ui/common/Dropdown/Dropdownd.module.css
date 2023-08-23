@@ -37,3 +37,7 @@
 .select__menu-item {
   @apply p-2 w-full rounded-lg text-left font-medium text-sm hover:bg-grey;
 }
+
+.select__container{
+  @apply text-blue;
+}
