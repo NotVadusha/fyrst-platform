@@ -9,11 +9,17 @@ import { Header } from 'src/components/ui/layout/Header/Header';
 import { camelCaseToWords } from 'src/lib/utils';
 
 export default function ViewTimeCardPage() {
-  const data = useLoaderData() as { timecard: Record<string, string> };
+  const { timecard } = useLoaderData() as {
+    timecard: {
+      responsobilities: string[];
+      description: string;
+      details: Record<string, string>;
+    };
+  };
 
-  console.log(data);
+  console.log(timecard);
 
-  if (!data?.timecard) {
+  if (!timecard) {
     return <div>No timecard found</div>;
   }
 
@@ -33,20 +39,23 @@ export default function ViewTimeCardPage() {
             <Card className='w-full max-w-[460px] !p-4  flex-initial'>
               <CardTitle>Job description</CardTitle>
               <CardContent>
-                Drivers are responsible for transporting clients or handling deliveries in a timely
-                manner, and they may have to work nights and weekends to accomplish their duties.
-                Common duties and responsibilities for drivers are to:
-                <ul>
-                  <li>Transport clients and/or packages to and from destinations</li>
-                  <li>Arrive at destinations on schedule</li>
-                  <li>Fulfill administrative needs, like office pickups</li>
-                </ul>
+                {timecard.description}
+                {timecard.responsobilities.length && (
+                  <>
+                    Common duties and responsibilities for drivers are to:
+                    <ul className='mt-4 pl-4 list-disc'>
+                      {timecard.responsobilities.map(responsobility => {
+                        return <li key={responsobility}>{responsobility}</li>;
+                      })}
+                    </ul>
+                  </>
+                )}
               </CardContent>
             </Card>
             <Card className='w-full max-w-[400px] !p-4 flex-initial'>
               <CardTitle>Additional details</CardTitle>
               <CardContent className='flex flex-col space-y-4 items-start'>
-                {Object.entries(data.timecard).map(([key, value]) => (
+                {Object.entries(timecard.details).map(([key, value]) => (
                   <div className='flex justify-between gap-2 w-full' key={key}>
                     <span>{camelCaseToWords(key)}</span>
                     <span>{value}</span>
