@@ -2,86 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
-import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
-import { TimecardFiltersForm } from './TimecardFiltersForm';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
-import { TimecardStatus } from 'shared/timecard-status';
-
-interface Timecard {
-  id: number;
-  createdAt: string;
-  createdBy: number;
-  approvedAt?: string;
-  approvedBy?: string;
-  status: TimecardStatus;
-}
-
-const columns: ColumnInfo<Timecard>[] = [
-  {
-    columnName: 'Created at',
-    renderCell(item) {
-      return item.createdAt;
-    },
-  },
-  {
-    columnName: 'Created by',
-    renderCell(item) {
-      return item.createdBy;
-    },
-  },
-  {
-    columnName: 'Approved at',
-    renderCell(item) {
-      return item.approvedAt ?? '---';
-    },
-  },
-  {
-    columnName: 'Approved by',
-    renderCell(item) {
-      return item.approvedBy ?? '---';
-    },
-  },
-  {
-    columnName: 'Status',
-    renderCell(item) {
-      return item.status;
-    },
-  },
-];
-
-const timecardsMock: Timecard[] = [
-  {
-    id: 1,
-    createdAt: new Date().toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    }),
-    createdBy: 1,
-    approvedAt: undefined,
-    approvedBy: undefined,
-    status: TimecardStatus.Pending,
-  },
-  {
-    id: 2,
-    createdAt: new Date('2023-08-22').toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    }),
-    createdBy: 2,
-    approvedAt: undefined,
-    approvedBy: undefined,
-    status: TimecardStatus.Pending,
-  },
-];
-
-const statusColors = {
-  completed: 'text-green-2',
-  pending: 'text-hover',
-  accepted: 'text-green',
-  rejected: 'text-red-2',
-};
+import Table from 'src/ui/common/Table/Table';
+import { TimecardFiltersForm } from './TimecardFiltersForm';
+import { timecardsMock, timecardsTableColumns } from './timecards-table-config';
 
 const TimeCardPage = () => {
   const timecards = timecardsMock;
@@ -102,7 +26,7 @@ const TimeCardPage = () => {
         <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
         <TimecardFiltersForm />
         {timecards.length > 0 ? (
-          <Table columns={columns} items={timecardsMock} getRowId={item => item.id} />
+          <Table columns={timecardsTableColumns} items={timecardsMock} getRowId={item => item.id} />
         ) : (
           <p className='text-body-default font-semibold'>
             No timecards to display here. Most probably, nothing matches your search query
