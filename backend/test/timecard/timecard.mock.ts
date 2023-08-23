@@ -3,7 +3,7 @@ import { CreateTimecardDto } from '../../src/packages/timecard/dto/create-timeca
 import { UpdateTimecardDto } from '../../src/packages/timecard/dto/update-timecard.dto';
 import { TimecardFiltersDto } from '../../src/packages/timecard/dto/timecard-filters.dto';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
-import { TimecardStatus } from '../../src/packages/timecard/entities/timecard-status';
+import { TimecardStatus } from 'shared/timecard-status';
 
 export interface TestTimecard {
   id?: number;

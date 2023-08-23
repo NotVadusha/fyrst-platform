@@ -7,7 +7,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { TimecardStatus } from './timecard-status';
+import { TimecardStatus } from 'shared/timecard-status';
 
 @Table({ tableName: 'Timecard', updatedAt: false, deletedAt: false })
 export class Timecard extends Model {

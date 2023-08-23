@@ -5,7 +5,7 @@ import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
 import * as yup from 'yup';
 import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
-import { TimecardStatus } from './TimeCard';
+import { TimecardStatus } from 'shared/timecard-status';
 
 export function TimecardFiltersForm() {
   const formSchema = yup.object({

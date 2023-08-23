@@ -5,14 +5,7 @@ import { Button } from 'src/ui/common/Button';
 import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
 import { TimecardFiltersForm } from './TimecardFiltersForm';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
-
-export enum TimecardStatus {
-  Pending = 'pending',
-  Approved = 'approved',
-  Rejected = 'rejected',
-  Completed = 'completed',
-  Paid = 'paid',
-}
+import { TimecardStatus } from 'shared/timecard-status';
 
 interface Timecard {
   id: number;
