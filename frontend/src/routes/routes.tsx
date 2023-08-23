@@ -11,7 +11,8 @@ import ErrorPage from '../pages/common/ErrorPage';
 import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
-import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
+import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
+import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +47,10 @@ export const router = createBrowserRouter([
           },
           {
             path: ':id',
-            element: <TestPage />,
+            element: <ViewTimeCardPage />,
+            loader: async ({ params }) => {
+              return fetch(`localhost:8000/api/v1/timecard/${params.id}`);
+            },
           },
           {
             path: 'create',
