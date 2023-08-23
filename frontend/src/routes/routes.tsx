@@ -12,6 +12,7 @@ import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
+import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
 
 export const router = createBrowserRouter([
   {
@@ -50,7 +51,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <TestPage />,
+            element: <CreateTimeCardPage />,
           },
         ],
       },

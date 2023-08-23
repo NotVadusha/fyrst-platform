@@ -6,6 +6,9 @@ module.exports = {
       spacing: {
         128: '32rem',
       },
+      maxWidth: {
+        inputs: '15.625rem',
+      },
       keyframes: {
         spinAround: {
           '0%': { transform: 'rotate(0deg) translate(2rem)' },
@@ -25,6 +28,7 @@ module.exports = {
       },
       boxShadow: {
         dropdown: '0px 4px 16px rgba(0, 0, 0, 0.10)',
+        header: '9px 4px 18px rgba(0, 0, 0, 0.10);',
       },
     },
     colors: {

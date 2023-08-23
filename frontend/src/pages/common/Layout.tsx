@@ -16,7 +16,7 @@ const Layout = () => {
           ))}
         </div>
       </nav>
-      <main className='w-full bg-grey'>
+      <main className='w-full bg-background'>
         <Outlet />
       </main>
     </div>

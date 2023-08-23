@@ -6,7 +6,9 @@ const testSlice = createSlice({
   name: 'test',
   initialState: initialState,
   reducers: {
-    // testAction() {},
+    testAction() {
+      return void null;
+    },
   },
 });
 

@@ -1,48 +1,62 @@
 import React, { useState } from 'react';
 import styles from './TextInput.module.css';
 
-export interface TextInputProps {
-  id: string;
-  type: 'text' | 'email';
+import {
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormMessage,
+  useFormField,
+  FormField,
+} from '../Form'; // Update this path accordingly
+
+export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  control: any;
+  name: string;
   label: string;
-  defaultValue: string;
-  disabled?: boolean;
-  error?: string;
+  isFocused?: boolean;
 }
 
-export const TextInput = ({
-  id,
-  type,
+const TextInput: React.FC<TextInputProps> = ({
+  control,
+  name,
   label,
-  defaultValue = '',
+  type,
   disabled,
-  error,
-}: TextInputProps) => {
-  const [value, setValue] = useState(defaultValue);
+  onFocus,
+  onBlur,
+  className,
+  ...props
+}) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div className={styles.wrapper}>
-      <label
-        htmlFor={id}
-        className={`${styles.label} ${isFocused || value ? styles['label-active'] : ''}`}
-      >
-        {label}
-      </label>
-      <input
-        id={id}
-        type={type}
-        disabled={disabled}
-        placeholder=''
-        value={value}
-        className={`${styles.input} ${error ? styles['input-error'] : ''} ${
-          value || isFocused ? styles['input-filled'] : ''
-        } ${isFocused ? styles['input-focused'] : ''} ${disabled ? styles['input-disabled'] : ''}`}
-        onChange={e => setValue(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
-      {error && <p className={styles['error-message']}>{error}</p>}
-    </div>
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className={styles.wrapper}>
+          <FormLabel className={`${styles.label} ${field.value ? styles.active : ''} ${className}`}>
+            {label}
+          </FormLabel>
+          <input
+            {...field}
+            type={type}
+            className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
+            placeholder=''
+            disabled={disabled}
+            onFocus={e => {
+              onFocus?.(e);
+              setIsFocused(true);
+            }}
+            onBlur={() => setIsFocused(false)}
+            {...props}
+          />
+          <FormMessage className={styles.error} />
+        </FormItem>
+      )}
+    />
   );
 };
+
+export default TextInput;
