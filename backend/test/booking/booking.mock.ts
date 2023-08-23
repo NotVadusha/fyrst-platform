@@ -47,6 +47,10 @@ const userServiceMock = {
   findOne: jest.fn().mockResolvedValue({ id: 1, name: 'Test User' }),
 };
 
+const facilityServiceMock = {
+  findById: jest.fn().mockResolvedValue({ id: 1, name: 'Test Facility' }),
+};
+
 export {
   mockedBookings,
   mockedBooking,
@@ -55,4 +59,5 @@ export {
   nonExistingId,
   mockedBookingService,
   userServiceMock,
+  facilityServiceMock,
 };
