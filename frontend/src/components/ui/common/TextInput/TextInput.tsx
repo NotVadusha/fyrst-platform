@@ -36,7 +36,11 @@ const TextInput: React.FC<TextInputProps> = ({
       name={name}
       render={({ field }) => (
         <FormItem className={styles.wrapper}>
-          <FormLabel className={`${styles.label} ${field.value ? styles.active : ''} ${className}`}>
+          <FormLabel
+            className={`${styles.label} ${
+              field.value ? styles.active : ''
+            } ${className} pointer-events-none`}
+          >
             {label}
           </FormLabel>
           <input
