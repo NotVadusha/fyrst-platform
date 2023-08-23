@@ -3,10 +3,10 @@ import { RedisService } from 'src/packages/redis/redis.service';
 import { UserService } from 'src/packages/user/user.service';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { getMessageContent } from './helpers/getMessageContent';
 import { MailService } from 'src/packages/mail/mail.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class ResetPasswordService {
@@ -23,7 +23,7 @@ export class ResetPasswordService {
       const user = await this.userService.findOneByEmail(resetPasswordDto.email);
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
-      const token = uuid();
+      const token = crypto.randomUUID();
 
       await this.mailService.sendEmail(
         user.email,
@@ -31,7 +31,7 @@ export class ResetPasswordService {
         await getMessageContent(user.id, token),
       );
 
-      await this.redisService.set(`${user.email}_r`, token, 24 * 60 * 60);
+      await this.redisService.set(`${user.id}_r`, token, 24 * 60 * 60);
 
       return {
         message: 'Email was sended',
@@ -48,21 +48,22 @@ export class ResetPasswordService {
       const user = await this.userService.findOne(newPasswordDto.id);
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
-      const token = await this.redisService.get(`${user.email}_r`);
+      const token = await this.redisService.get(`${user.id}_r`);
 
       if (token !== newPasswordDto.token)
         throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
-
-      await this.redisService.delete(`${user.email}_r`);
 
       const hashedPassword = await bcrypt.hash(newPasswordDto.new_password, 5);
 
       await this.userService.update(
         {
           password: hashedPassword,
+          role_id: user.role_id,
         },
         user.id,
       );
+
+      await this.redisService.delete(`${user.id}_r`);
 
       return {
         message: 'Password was updated',
