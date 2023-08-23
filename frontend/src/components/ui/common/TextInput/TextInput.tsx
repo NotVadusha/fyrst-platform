@@ -1,48 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './TextInput.module.css';
 
+import {
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormMessage,
+  useFormField,
+  FormField,
+} from '../Form'; // Update this path accordingly
+
 export interface TextInputProps {
-  id: string;
-  type: 'text' | 'email';
+  control: any;
+  name: string;
   label: string;
-  defaultValue: string;
+  type?: string;
   disabled?: boolean;
-  error?: string;
 }
 
-export const TextInput = ({
-  id,
-  type,
-  label,
-  defaultValue = '',
-  disabled,
-  error,
-}: TextInputProps) => {
-  const [value, setValue] = useState(defaultValue);
-  const [isFocused, setIsFocused] = useState(false);
-
+const TextInput: React.FC<TextInputProps> = ({ control, name, label, type, disabled }) => {
   return (
-    <div className={styles.wrapper}>
-      <label
-        htmlFor={id}
-        className={`${styles.label} ${isFocused || value ? styles['label-active'] : ''}`}
-      >
-        {label}
-      </label>
-      <input
-        id={id}
-        type={type}
-        disabled={disabled}
-        placeholder=''
-        value={value}
-        className={`${styles.input} ${error ? styles['input-error'] : ''} ${
-          value || isFocused ? styles['input-filled'] : ''
-        } ${isFocused ? styles['input-focused'] : ''} ${disabled ? styles['input-disabled'] : ''}`}
-        onChange={e => setValue(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
-      {error && <p className={styles['error-message']}>{error}</p>}
-    </div>
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className={styles.wrapper}>
+          <FormLabel className={`${styles.label} ${field.value ? styles.active : ''}`}>
+            {label}
+          </FormLabel>
+          <input
+            {...field}
+            type={type}
+            className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
+            placeholder=''
+            disabled={disabled}
+          />
+          <FormMessage className={styles.error} />
+        </FormItem>
+      )}
+    />
   );
 };
+
+export default TextInput;
