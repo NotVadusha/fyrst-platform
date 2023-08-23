@@ -6,6 +6,9 @@ module.exports = {
       spacing: {
         128: '32rem',
       },
+      maxWidth: {
+        inputs: '15.625rem',
+      },
       keyframes: {
         spinAround: {
           '0%': { transform: 'rotate(0deg) translate(2rem)' },

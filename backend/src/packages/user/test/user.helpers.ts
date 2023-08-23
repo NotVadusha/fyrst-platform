@@ -14,6 +14,7 @@ export const usersMock = (): TestUser[] => {
       is_confirmed: true,
       updatedAt: new Date('2023-08-19T17:18:28.307Z'),
       createdAt: new Date('2023-08-19T17:18:28.307Z'),
+      role_id: 1,
     },
     {
       id: 2,
@@ -27,6 +28,7 @@ export const usersMock = (): TestUser[] => {
       is_confirmed: true,
       updatedAt: new Date('2023-08-19T17:20:21.416Z'),
       createdAt: new Date('2023-08-19T17:20:21.416Z'),
+      role_id: 1,
     },
   ];
 };

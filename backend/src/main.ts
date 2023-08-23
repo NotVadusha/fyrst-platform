@@ -6,7 +6,13 @@ import { swaggerConfig } from './config/swagger/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
   app.setGlobalPrefix('api/v1');
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);

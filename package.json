@@ -15,7 +15,13 @@
     "seed:dev": "docker compose --env-file=.env.dev exec backend npx sequelize-cli db:seed:all",
     "start": "docker compose --env-file=.env.dev up -d",
     "start:build": "docker compose --env-file=.env.dev up --build -d",
-    "stop": "docker compose --env-file=.env.dev down"
+    "stop": "docker compose --env-file=.env.dev down",
+    "test": "npm run test --prefix backend && npm run test:all --prefix frontend"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run test"
+    }
   },
   "author": "",
   "devDependencies": {
@@ -24,6 +30,7 @@
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
