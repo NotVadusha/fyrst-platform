@@ -31,6 +31,10 @@ export class UserService {
     return await this.userRepository.findOne({ where: { id: userId } });
   }
 
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
   async update(updateInfo: UpdateUserDto, userId: number) {
     const role = await this.rolesService.findOne(updateInfo?.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");

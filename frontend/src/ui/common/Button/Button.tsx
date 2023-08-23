@@ -29,6 +29,7 @@ const Button: React.FC<ButtonProps> = ({
 
   const buttonClasses = useMemo(() => {
     return [
+      styles['btn'],
       styles[type],
       disabled && styles.disabled,
       fullWidth && styles.fullWidth,

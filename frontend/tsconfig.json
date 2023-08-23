@@ -1,23 +1,15 @@
 {
-   "compilerOptions": {
+  "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "src/*": [
-        "src/*",
-      ],
-      "shared/*": [
-        "../shared/src/*"
-      ]
+      "src/*": ["src/*"],
+      "shared/*": ["../shared/src/*"]
     },
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -29,7 +21,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "exclude": ["node_modules/**/*"]
 }

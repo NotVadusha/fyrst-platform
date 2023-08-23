@@ -11,6 +11,7 @@ import ErrorPage from '../pages/common/ErrorPage';
 import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
+import BookingOverview from '../components/BookingOverview/BookingOverview';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 
@@ -32,7 +33,7 @@ export const router = createBrowserRouter([
           },
           {
             path: ':id',
-            element: <TestPage />,
+            element: <BookingOverview />,
           },
           {
             path: 'create',
