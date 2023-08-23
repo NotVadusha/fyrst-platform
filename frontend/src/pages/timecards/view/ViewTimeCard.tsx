@@ -31,7 +31,7 @@ export default function ViewTimeCardPage() {
           </GoBackButton>
           <div className='flex items-center justify-between'>
             <h2 className='text-4xl font-bold'>Driver timecard</h2>
-            <Button type='primary' label='submit' eventName='Submit' />
+            <Button type='primary' label='submit' />
           </div>
           <div className='flex justify-between gap-4'>
             <Card className='w-full max-w-[460px] !p-4  flex-initial'>

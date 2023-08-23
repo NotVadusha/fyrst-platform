@@ -14,6 +14,7 @@ import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
+import Notifications from '../components/Notifications/Notifications';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -116,7 +117,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'notifications',
-            element: <TestPage />,
+            element: <Notifications />,
           },
           {
             path: 'security',
