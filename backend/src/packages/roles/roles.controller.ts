@@ -11,7 +11,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { RoleDto } from './dto/role.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('roles')
 @Controller('role')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}

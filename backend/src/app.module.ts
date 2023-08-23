@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { sequelizeDevelopmentConfig } from 'src/config/sequelize/sequelize.config';
-import { EmailConfirmationModule } from './packages/email-confirmation/emailConfirmation.module';
-import { UserModule } from './packages/user/user.module';
-import { TimecardModule } from './packages/timecard/timecard.module';
-import { RolesModule } from './packages/roles/roles.module';
+import { sequelizeDevelopmentConfig } from 'src/config';
+import {
+  EmailConfirmationModule,
+  UserModule,
+  TimecardModule,
+  BookingModule,
+  RolesModule,
+  UserProfileModule,
+} from './packages';
+
 @Module({
   imports: [
     SequelizeModule.forRoot(sequelizeDevelopmentConfig),
@@ -12,6 +17,8 @@ import { RolesModule } from './packages/roles/roles.module';
     UserModule,
     EmailConfirmationModule,
     TimecardModule,
+    BookingModule,
+    UserProfileModule,
   ],
   controllers: [],
   providers: [],
