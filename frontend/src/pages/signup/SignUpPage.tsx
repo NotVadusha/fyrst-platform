@@ -10,7 +10,6 @@ import { registrationSchema } from 'src/lib/validations/registration';
 import { FormField } from 'src/components/ui/common/Form';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
-import * as bcrypt from 'bcryptjs';
 import { authApi } from 'src/store/services';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
@@ -39,12 +38,12 @@ const SignUpPage = () => {
       first_name: data.fullname.split(' ')[0],
       last_name: data.fullname.split(' ')[1],
       email: data.email,
-      password: await bcrypt.hash(data.password, 5)
+      password: data.password
     }
 
     registration(body)
       .unwrap()
-      .then(() => navigate('/auth/login'))
+      .then(() => navigate('/auth/signin'))
       .catch(() => console.log(error))
   }
 
@@ -55,8 +54,8 @@ const SignUpPage = () => {
       image={authImage}
       text='Finding the right candidate has never been easier! A few clicks and the deal is ready.'
     >
-      <div className='flex flex-col gap-6 w-[410px]'>
-        <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Register now on <span className='text-blue'>Fyrst</span></h1>
+      <div className='flex flex-col gap-6 w-[450px]'>
+        <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Register now<br/>on <span className='text-blue'>Fyrst</span></h1>
         
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6'>
@@ -100,15 +99,12 @@ const SignUpPage = () => {
                 />
               )}
             />
-            {
-              isLoading
-                ? <Spinner size='sm'/>
-                : <Button btnType='submit' label='Sign up' type='primary' eventName='submit'/>
-            }
+
+            <Button fullWidth={true} btnType='submit' label='Sign up' type='primary' eventName='submit'  disabled={isLoading}/>
           </form>
         </FormProvider>
         <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='click'/>
-        <p className='text-body-default text-dark-grey font-semibold'>Already have an account? <a href='./signin' className='decoration-transparent text-blue'>Sign in now.</a></p>
+        <p className='text-body-default text-dark-grey font-semibold'>Already have an account? <a href='./signin' className='decoration-transparent text-blue hover:cursor-pointer'>Sign in now.</a></p>
       </div>
     </AuthWrapper>
   );

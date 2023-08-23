@@ -1,5 +1,5 @@
 .wrapper {
-  @apply relative block;
+  @apply relative block w-full;
 }
 
 .label {

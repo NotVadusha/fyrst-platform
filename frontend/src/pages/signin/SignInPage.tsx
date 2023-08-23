@@ -10,10 +10,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormField } from 'src/components/ui/common/Form';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
-import * as bcrypt from 'bcryptjs';
 import { authApi } from 'src/store/services';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
 import { loginSchema } from 'src/lib/validations/login';
+import { createIf } from 'typescript';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
@@ -36,7 +36,7 @@ const AuthPage = () => {
     try {
       const body = {
         email: data.email,
-        password: await bcrypt.hash(data.password, 5)
+        password: data.password
       }
   
       login(body)
@@ -47,7 +47,11 @@ const AuthPage = () => {
   }
 
   useEffect(() => {
-    console.log(data)
+    if(data) {
+      localStorage.setItem('accessToken', data.accessToken)
+      localStorage.setItem('refreshToken', data.refreshToken)
+      navigate('/')
+    }
   }, [data])
 
   const { errors } = useFormState({control})
@@ -57,8 +61,8 @@ const AuthPage = () => {
       image={authImage}
       text='Finding the right candidate has never been easier! A few clicks and the deal is ready.'
     >
-      <div className='flex flex-col gap-10 w-[410px]'>
-      <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Register now on <span className='text-blue'>Fyrst</span></h1>
+      <div className='flex flex-col gap-10 w-[450px]'>
+      <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Welcome back<br/>on <span className='text-blue'>Fyrst</span></h1>
         
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6'>
@@ -82,15 +86,14 @@ const AuthPage = () => {
                 />
               )}
             />
-            {
-              isLoading
-                ? <Spinner size='sm'/>
-                : <Button btnType='submit' label='Sign up' type='primary' eventName='submit'/>
-            }
+
+            <a className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'>Forgot password?</a>
+
+            <Button fullWidth={true} btnType='submit' label='Sign in' type='primary' eventName='submit' disabled={isLoading}/>
           </form>
         </FormProvider>
         <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='click'/>
-        <p className='text-body-default text-dark-grey font-semibold'>Already have an account? <a href='./signin' className='decoration-transparent text-blue'>Sign in now.</a></p>
+        <p className='text-body-default text-dark-grey font-semibold'>Don&apos;t have an account yet? <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>Register now.</a></p>
       </div>
     </AuthWrapper>
   );
