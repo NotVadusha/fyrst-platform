@@ -6,6 +6,7 @@ import { GoBackButton } from 'src/components/ui/common/GoBackButton';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { Button } from 'src/ui/common/Button';
 import { Header } from 'src/components/ui/layout/Header/Header';
+import { camelCaseToWords } from 'src/lib/utils';
 
 const timecard = {
   employee: 'Guy Hawkings',
@@ -21,14 +22,9 @@ export default function ViewTimeCardPage() {
 
   console.log(data);
 
-  if (!data) {
-    return <div>No timecard found</div>;
-  }
-
-  const { id } = useParams();
-
-  // get timecard by id
-  console.log(id);
+  //   if (!data) {
+  //     return <div>No timecard found</div>;
+  //   }
 
   return (
     <>
@@ -43,7 +39,7 @@ export default function ViewTimeCardPage() {
             <Button type='primary' label='submit' eventName='Submit' />
           </div>
           <div className='flex justify-between gap-4'>
-            <Card className='w-full max-w-[460px] !p-4'>
+            <Card className='w-full max-w-[460px] !p-4  flex-initial'>
               <CardTitle>Job description</CardTitle>
               <CardContent>
                 Drivers are responsible for transporting clients or handling deliveries in a timely
@@ -56,12 +52,12 @@ export default function ViewTimeCardPage() {
                 </ul>
               </CardContent>
             </Card>
-            <Card className='w-full max-w-[400px] !p-4'>
+            <Card className='w-full max-w-[400px] !p-4 flex-initial'>
               <CardTitle>Additional details</CardTitle>
               <CardContent className='flex flex-col space-y-4 items-start'>
                 {Object.entries(timecard).map(([key, value]) => (
-                  <div className='flex justify-between gap-2' key={key}>
-                    <span>{key}</span>
+                  <div className='flex justify-between gap-2 w-full' key={key}>
+                    <span>{camelCaseToWords(key)}</span>
                     <span>{value}</span>
                   </div>
                 ))}
