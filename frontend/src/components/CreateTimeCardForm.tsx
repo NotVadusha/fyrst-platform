@@ -28,6 +28,8 @@ export function CreateTimeCardForm() {
     console.log(values);
   }
 
+  console.log(form.getValues());
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -42,7 +44,6 @@ export function CreateTimeCardForm() {
                 id='text'
                 label='Timecard type'
                 {...field}
-                className='w-full'
               />
             </FormItem>
           )}
