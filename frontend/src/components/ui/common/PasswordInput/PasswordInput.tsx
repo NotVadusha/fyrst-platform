@@ -6,12 +6,12 @@ import { ReactComponent as EyeOf } from '../../../../icons/eye-off.svg';
 export interface PasswordInputProps {
   id: string;
   label: string;
-  defaultValue: string;
+  value: any;
+  setValue: (e: any) => void
   error?: string;
 }
 
-export const PasswordInput = ({ id, label, defaultValue = '', error }: PasswordInputProps) => {
-  const [value, setValue] = useState(defaultValue);
+export const PasswordInput = ({ id, label, error, value, setValue }: PasswordInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
 

@@ -5,7 +5,7 @@ import TimeCardPage from '../pages/timecards/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
 import MessangerPage from '../pages/messanger/MessangerPage';
 import PaymentsPage from '../pages/payments/PaymentsPage';
-import AuthPage from '../pages/authentication/AuthPage';
+import AuthPage from '../pages/signin/SignInPage';
 import EmployesPage from '../pages/EmployesPage';
 import ErrorPage from '../pages/common/ErrorPage';
 import TestPage from '../pages/common/TestPage';
@@ -13,6 +13,7 @@ import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
 import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
+import SignUpPage from 'src/pages/signup/SignUpPage';
 
 export const router = createBrowserRouter([
   {
@@ -123,7 +124,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: 'login',
+        path: 'signin',
         element: <AuthPage />,
       },
       {
@@ -140,7 +141,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'signup',
-        element: <TestPage />,
+        element: <SignUpPage />,
       },
     ],
   },
