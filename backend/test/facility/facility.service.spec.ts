@@ -8,7 +8,7 @@ import {
   mockedFacilityService,
   mockedFacility,
   mockedUpdateFacility,
-} from './facility.mock'; // Import from the facility.mock.js file
+} from './facility.mock';
 
 describe('FacilityService', () => {
   let service: FacilityService;
@@ -73,7 +73,6 @@ describe('FacilityService', () => {
   });
 
   describe('remove', () => {
-    // Change from 'delete' to 'remove'
     it('should delete a facility', async () => {
       const mockFacility = { destroy: jest.fn() };
       service.findById = jest.fn().mockResolvedValue(mockFacility);
