@@ -14,6 +14,8 @@ import Layout from '../pages/common/Layout';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 
+export const baseUrl = 'http://localhost:8000/api/v1';
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -48,13 +50,30 @@ export const router = createBrowserRouter([
           {
             path: ':id',
             element: <ViewTimeCardPage />,
-            loader: async ({ params }) => {
-              return fetch(`localhost:8000/api/v1/timecard/${params.id}`);
-            },
+            // loader: async ({ params }) => {
+            //   try {
+            //     return await fetch(`${baseUrl}/timecard/${params.id}`);
+            //   } catch (err) {
+            //     throw err;
+            //   }
+            // },
           },
           {
             path: 'create',
             element: <CreateTimeCardPage />,
+            // action: async ({ params, request }) => {
+            //   const body = await request.formData();
+
+            //   const res = await fetch(`${baseUrl}/timecard`, {
+            //     method: 'POST',
+            //     body,
+            //   });
+
+            //   if (!res.ok) {
+            //     throw res;
+            //   }
+            //   return { ok: true };
+            // },
           },
         ],
       },
