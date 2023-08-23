@@ -2,22 +2,26 @@ import * as React from 'react';
 
 import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from './ui/common/Form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
+import RadioButton from './ui/common/RadioButton/RadioButton';
 
-const formSchema = y.object({
-  username: y.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: y.string().max(12, { message: 'Password has to be at most 12 characters long' }),
-});
+const formSchema = y
+  .object()
+  .shape({
+    username: y.string().min(2, 'Username hast to be at most 3 characters long').required(),
+    password: y.string().min(3, 'Password hast to be at least 3 characters long').required(),
+    enum: y.mixed<'1' | '2' | '3'>().oneOf(['1', '2', '3']).required(),
+  })
+  .required();
 
 export function CreateTimeCardForm() {
   const form = useForm<y.InferType<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: yupResolver(formSchema),
     defaultValues: {
       username: '',
       password: '',
+      enum: '1',
     },
   });
 
@@ -26,6 +30,8 @@ export function CreateTimeCardForm() {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+
+  console.log(form.getValues());
 
   return (
     <Form {...form}>
@@ -51,6 +57,40 @@ export function CreateTimeCardForm() {
               <FormMessage />
             </FormItem>
           )}
+        />
+        <FormField
+          control={form.control}
+          name='enum'
+          render={({ field }) => {
+            return (
+              <FormItem className='flex flex-col'>
+                <FormLabel>Password</FormLabel>
+                <RadioButton
+                  size='big'
+                  label='1'
+                  {...field}
+                  // onChange={e => field.onChange(e.target.value !== '1' ? '1' : field.value)}
+                />
+                <FormMessage />
+                <FormLabel>Password</FormLabel>
+                <RadioButton
+                  size='big'
+                  label='2'
+                  {...field}
+                  // onChange={e => field.onChange(e.target.value !== '2' ? '2' : field.value)}
+                />
+                <FormMessage />
+                <FormLabel>Password</FormLabel>
+                <RadioButton
+                  size='big'
+                  label='3'
+                  {...field}
+                  // onChange={e => field.onChange(e.target.value !== '3' ? '3' : field.value)}
+                />
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
         <button type='submit'>Submit</button>
       </form>

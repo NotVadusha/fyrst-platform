@@ -1,28 +1,38 @@
 import styles from './RadioButton.module.css';
 
-import React, { useState } from 'react';
+import React from 'react';
 
-interface RadioButtonProps {
-  size: 'small' | 'big';
+export type Sizes = 'small' | 'big';
+
+export interface RadioButtonProps {
+  size: Sizes;
+  name: string;
+  label: string;
+  checked: boolean;
+  onChange?: (e: any) => void;
+  value?: string;
 }
 
-const RadioButton = (props: RadioButtonProps) => {
-  const { size } = props;
-  const [checked, setChecked] = useState(false);
+const RadioButton = React.forwardRef<HTMLInputElement, RadioButtonProps>(
+  ({ size, name, label, value, onChange, checked, ...props }, ref) => {
+    return (
+      <label className={styles.container}>
+        <input
+          {...props}
+          ref={ref}
+          type='radio'
+          checked={checked}
+          value={value}
+          name={name}
+          onChange={() => onChange?.(value)}
+          className={`${styles.radio} ${styles[size]}`}
+        ></input>
+        <span className={styles.label}>{label}</span>
+      </label>
+    );
+  },
+);
 
-  const handleChecked = () => setChecked(!checked);
-
-  return (
-    <>
-      <input
-        type='radio'
-        checked={checked}
-        onClick={handleChecked}
-        readOnly
-        className={`${styles.root} ${styles[size]}`}
-      ></input>
-    </>
-  );
-};
+RadioButton.displayName = 'RadioButton';
 
 export default RadioButton;
