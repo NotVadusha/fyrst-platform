@@ -8,23 +8,14 @@ import { Button } from 'src/ui/common/Button';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { camelCaseToWords } from 'src/lib/utils';
 
-const timecard = {
-  employee: 'Guy Hawkings',
-  facilityManager: 'Brooklyn Sirsad',
-  facility: 'Driver',
-  timecardType: 'Hourly',
-  hoursWorked: '16 hours',
-  lunchTaken: '3 hours',
-};
-
 export default function ViewTimeCardPage() {
-  const data = useLoaderData();
+  const data = useLoaderData() as { timecard: Record<string, string> };
 
   console.log(data);
 
-  //   if (!data) {
-  //     return <div>No timecard found</div>;
-  //   }
+  if (!data?.timecard) {
+    return <div>No timecard found</div>;
+  }
 
   return (
     <>
@@ -55,7 +46,7 @@ export default function ViewTimeCardPage() {
             <Card className='w-full max-w-[400px] !p-4 flex-initial'>
               <CardTitle>Additional details</CardTitle>
               <CardContent className='flex flex-col space-y-4 items-start'>
-                {Object.entries(timecard).map(([key, value]) => (
+                {Object.entries(data.timecard).map(([key, value]) => (
                   <div className='flex justify-between gap-2 w-full' key={key}>
                     <span>{camelCaseToWords(key)}</span>
                     <span>{value}</span>
