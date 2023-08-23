@@ -15,7 +15,7 @@ import BookingOverview from '../components/BookingOverview/BookingOverview';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 
-export const baseUrl = 'http://localhost:8000/api/v1';
+export const baseUrl = process.env.REACT_APP_API_URL;
 
 export const router = createBrowserRouter([
   {
@@ -51,13 +51,23 @@ export const router = createBrowserRouter([
           {
             path: ':id',
             element: <ViewTimeCardPage />,
-            // loader: async ({ params }) => {
-            //   try {
-            //     return await fetch(`${baseUrl}/timecard/${params.id}`);
-            //   } catch (err) {
-            //     throw err;
-            //   }
-            // },
+            loader: async ({ params }) => {
+              return {
+                timecard: {
+                  employee: 'Guy Hawkings',
+                  facilityManager: 'Brooklyn Sirsad',
+                  facility: 'Driver',
+                  timecardType: 'Hourly',
+                  hoursWorked: '16 hours',
+                  lunchTaken: '3 hours',
+                },
+              };
+              // try {
+              //   return await fetch(`${baseUrl}/timecard/${params.id}`);
+              // } catch (err) {
+              //   throw err;
+              // }
+            },
           },
           {
             path: 'create',
