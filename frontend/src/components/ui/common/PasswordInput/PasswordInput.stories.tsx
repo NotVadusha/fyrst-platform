@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { PasswordInput } from '../../../components/ui/common/PasswordInput/PasswordInput';
+import { PasswordInput } from './PasswordInput';
 
 const meta: Meta<typeof PasswordInput> = {
   component: PasswordInput,
