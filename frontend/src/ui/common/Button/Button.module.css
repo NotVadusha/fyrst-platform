@@ -1,9 +1,9 @@
-button {
-  @apply text-base inline-block justify-center items-center relative h-[47px] min-w-[154px] p-4 rounded-lg border-0 cursor-pointer !leading-none;
-  vertical-align: middle
+.btn {
+  @apply text-base inline-block justify-center items-center relative p-4 rounded-lg border-0 cursor-pointer !leading-none;
+  vertical-align: middle;
 }
 
-button.fullWidth {
+.fullWidth {
   @apply w-full;
 }
 
@@ -11,7 +11,7 @@ button.fullWidth {
   @apply bg-blue text-white hover:bg-hover;
 }
 
-.primary:active{
+.primary:active {
   @apply bg-dark-blue;
 }
 
@@ -23,8 +23,8 @@ button.fullWidth {
   @apply bg-white border text-blue border-solid border-blue hover:border-hover hover:text-hover;
 }
 
-.secondary:actve{
-  @apply border-dark-blue
+.secondary:actve {
+  @apply border-dark-blue;
 }
 
 .secondary.disabled {

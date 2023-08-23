@@ -7,6 +7,9 @@ import {
   TimecardModule,
   BookingModule,
   RolesModule,
+  AuthModule,
+  RedisModule,
+  ResetPasswordModule,
   UserProfileModule,
 } from './packages';
 
@@ -16,6 +19,9 @@ import {
     RolesModule,
     UserModule,
     EmailConfirmationModule,
+    AuthModule,
+    RedisModule,
+    ResetPasswordModule,
     TimecardModule,
     BookingModule,
     UserProfileModule,
