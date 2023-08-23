@@ -25,6 +25,18 @@ module.exports = {
       },
       fontSize: {
         xs: '0.625rem',
+        h1: '4rem',
+        h2: '3rem',
+        h3: '2.25rem',
+        h4: '1.875rem',
+        h5: '1.5rem',
+        h6: '1.25rem',
+        'body-large': '1.125rem',
+        'body-default': '1rem',
+        'body-small': '0.875rem',
+        line: '0.875rem',
+        field: '0.8125rem',
+        placeholder: '0.625rem',
       },
       boxShadow: {
         dropdown: '0px 4px 16px rgba(0, 0, 0, 0.10)',
