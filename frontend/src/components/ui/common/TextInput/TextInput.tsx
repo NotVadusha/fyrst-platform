@@ -7,7 +7,7 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
   control: any;
   name: string;
   label: string;
-  isFocused?: boolean;
+  disabled?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
