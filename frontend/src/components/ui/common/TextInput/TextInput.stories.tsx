@@ -24,9 +24,12 @@ interface Props extends Omit<TextInputProps, 'control'> {
 
 const FormTemplate = ({ name, label, type, disabled }: Props) => {
   const formSchema = y.object({
-    username: y.string().min(7, {
-      message: 'Username must be at least 7 characters.',
-    }).required(),
+    username: y
+      .string()
+      .min(7, {
+        message: 'Username must be at least 7 characters.',
+      })
+      .required(),
   });
 
   type FormData = y.InferType<typeof formSchema>;
