@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { MouseEventHandler, useMemo } from 'react';
 import styles from './Button.module.css';
-import { emitter } from '../../../utils/emitter';
 
 export interface ButtonProps {
   type: 'primary' | 'secondary' | 'tertiary';
@@ -9,7 +8,7 @@ export interface ButtonProps {
   btnType?: 'submit' | 'button' | 'reset';
   imgSrc?: string;
   fullWidth?: boolean;
-  eventName: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,14 +18,8 @@ const Button: React.FC<ButtonProps> = ({
   imgSrc,
   fullWidth,
   btnType = 'button',
-  eventName,
+  onClick,
 }) => {
-  const handleButtonClick = () => {
-    if (eventName && emitter) {
-      emitter.emit(eventName);
-    }
-  };
-
   const buttonClasses = useMemo(() => {
     return [
       styles['btn'],
@@ -40,12 +33,7 @@ const Button: React.FC<ButtonProps> = ({
   }, [type, disabled, imgSrc, fullWidth]);
 
   return (
-    <button
-      className={buttonClasses}
-      onClick={handleButtonClick}
-      disabled={disabled}
-      type={btnType}
-    >
+    <button className={buttonClasses} onClick={onClick} disabled={disabled} type={btnType}>
       {imgSrc && type === 'primary' ? (
         <div className={styles.contentWrapper}>
           <img src={imgSrc} alt='button icon' className={styles.img} />

@@ -41,7 +41,11 @@ Project description
     If you want to integrate Eslint with other code editors you can find information on how to do it
     [here](https://eslint.org/docs/user-guide/integrations#editors)
 
+#### 0.4. Swagger
+- For testing app, you can use Swagger / Open API. To access the project API, open `http://localhost:8000/api/v1/` url.
+  
 ---
+
 
 #### 1. Project init
 

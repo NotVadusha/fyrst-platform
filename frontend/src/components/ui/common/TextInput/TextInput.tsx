@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './TextInput.module.css';
 
-import {
-  FormItem,
-  FormLabel,
-  FormDescription,
-  FormMessage,
-  useFormField,
-  FormField,
-} from '../Form'; // Update this path accordingly
+import { FormItem, FormLabel, FormMessage, useFormField, FormField } from '../Form'; // Update this path accordingly
 
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
   name: string;
   label: string;
-  isFocused?: boolean;
+  disabled?: boolean;
 }
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
@@ -37,6 +30,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             <input
               {...field}
               type={type}
+              id={useFormField().id}
               className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
               placeholder=''
               disabled={disabled}
