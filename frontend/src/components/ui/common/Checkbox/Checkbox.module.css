@@ -1,9 +1,13 @@
+.wrapper {
+  @apply flex items-center gap-2;
+}
+
 .label {
-  @apply flex items-center gap-2 text-black font-medium;
+  @apply text-black font-medium cursor-pointer;
 }
 
 .check {
-  @apply appearance-none m-0 h-6 w-6 border border-field border-solid rounded-md transition-colors;
+  @apply appearance-none m-0 h-6 w-6 border border-field border-solid rounded-md transition-colors cursor-pointer;
 }
 
 .check:checked {

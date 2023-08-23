@@ -1,19 +1,33 @@
 import React from 'react';
 
 import styles from './Checkbox.module.css';
+import { FormField, FormItem, FormLabel, useFormField } from '../Form';
 
-export interface CheckboxProps {
+export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  control: any;
   name: string;
   label: string;
-  checked: boolean;
 }
 
-const Checkbox = ({ name, label, checked }: CheckboxProps) => {
+const Checkbox = ({ control, name, label, className, ...props }: CheckboxProps) => {
   return (
-    <label className={styles.label}>
-      <input type='checkbox' checked={checked} name={name} className={styles.check}></input>
-      {label}
-    </label>
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className={styles.wrapper}>
+          <input
+            {...field}
+            type='checkbox'
+            id={useFormField().id}
+            className={`${styles.check} ${className}`}
+            placeholder=''
+            {...props}
+          />
+          <FormLabel className={styles.label}>{label}</FormLabel>
+        </FormItem>
+      )}
+    />
   );
 };
 

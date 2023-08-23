@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './TextInput.module.css';
 
-import { FormItem, FormLabel, FormMessage, useFormField, FormField } from '../Form'; // Update this path accordingly
+import { FormItem, FormLabel, FormMessage, useFormField, FormField } from '../Form';
 
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
