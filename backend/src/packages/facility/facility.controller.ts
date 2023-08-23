@@ -24,8 +24,7 @@ export class FacilityController {
   @Post()
   async create(@Body() facility: CreateFacilityDto) {
     try {
-      const createdFacility = await this.facilityService.create(facility);
-      return createdFacility;
+      return await this.facilityService.create(facility);
     } catch (error) {
       this.logger.error('Failed to create facility', error);
       throw new BadRequestException('Failed to create facility');
@@ -35,8 +34,7 @@ export class FacilityController {
   @Get()
   async findAll() {
     try {
-      const facilities = await this.facilityService.findAll();
-      return facilities;
+      return await this.facilityService.findAll();
     } catch (error) {
       this.logger.error('Failed to retrieve facilities', error);
       throw new BadRequestException('Failed to retrieve facilities');
@@ -46,11 +44,7 @@ export class FacilityController {
   @Get(':id')
   async findById(@Param('id') id: number) {
     try {
-      const facility = await this.facilityService.findById(id);
-      if (!facility) {
-        throw new BadRequestException(`Facility with ID ${id} not found`);
-      }
-      return facility;
+      return await this.facilityService.findById(id);
     } catch (error) {
       this.logger.error(`Failed to retrieve facility with ID ${id}`, error);
       throw new BadRequestException(`Failed to retrieve facility with ID ${id}`);
@@ -60,11 +54,7 @@ export class FacilityController {
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateFacility: UpdateFacilityDto) {
     try {
-      const updatedFacility = await this.facilityService.update(id, updateFacility);
-      if (!updatedFacility) {
-        throw new BadRequestException(`Facility with ID ${id} not found`);
-      }
-      return updatedFacility;
+      return await this.facilityService.update(id, updateFacility);
     } catch (error) {
       this.logger.error(`Failed to update facility with ID ${id}`, error);
       throw new BadRequestException(`Failed to update facility with ID ${id}`);
@@ -74,11 +64,7 @@ export class FacilityController {
   @Delete(':id')
   async remove(@Param('id') id: number) {
     try {
-      const deletedFacility = await this.facilityService.remove(id);
-      if (!deletedFacility) {
-        throw new BadRequestException(`Facility with ID ${id} not found`);
-      }
-      return deletedFacility;
+      return await this.facilityService.remove(id);
     } catch (error) {
       this.logger.error(`Failed to delete facility with ID ${id}`, error);
       throw new BadRequestException(`Failed to delete facility with ID ${id}`);

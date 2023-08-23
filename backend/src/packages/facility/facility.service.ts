@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 
 import { InjectModel } from '@nestjs/sequelize';
@@ -17,7 +17,11 @@ export class FacilityService {
   }
 
   async findById(id: number): Promise<Facility> {
-    return await this.facilityModel.findOne({ where: { id }, rejectOnEmpty: true });
+    const facility = await this.facilityModel.findOne({ where: { id }, rejectOnEmpty: true });
+    if (!facility) {
+      throw new NotFoundException(`Facility with ID ${id} not found`);
+    }
+    return facility;
   }
 
   async update(id: number, updatedFacility: UpdateFacilityDto) {
