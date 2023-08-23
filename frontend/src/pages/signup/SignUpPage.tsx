@@ -12,7 +12,6 @@ import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
 import { useNavigate } from 'react-router-dom';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
 
@@ -103,7 +102,7 @@ const SignUpPage = () => {
             <Button fullWidth={true} btnType='submit' label='Sign up' type='primary' eventName='submit'  disabled={isLoading}/>
           </form>
         </FormProvider>
-        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='click'/>
+        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='google-click'/>
         <p className='text-body-default text-dark-grey font-semibold'>Already have an account? <a href='./signin' className='decoration-transparent text-blue hover:cursor-pointer'>Sign in now.</a></p>
       </div>
     </AuthWrapper>

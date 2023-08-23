@@ -11,9 +11,6 @@ import {
   RedisModule,
   ResetPasswordModule,
   UserProfileModule,
-  AuthModule,
-  RedisModule,
-  ResetPasswordModule,
 } from './packages';
 
 @Module({

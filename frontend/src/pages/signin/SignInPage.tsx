@@ -11,9 +11,7 @@ import { FormField } from 'src/components/ui/common/Form';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
 import { loginSchema } from 'src/lib/validations/login';
-import { createIf } from 'typescript';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
@@ -92,7 +90,7 @@ const AuthPage = () => {
             <Button fullWidth={true} btnType='submit' label='Sign in' type='primary' eventName='submit' disabled={isLoading}/>
           </form>
         </FormProvider>
-        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='click'/>
+        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='google-click'/>
         <p className='text-body-default text-dark-grey font-semibold'>Don&apos;t have an account yet? <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>Register now.</a></p>
       </div>
     </AuthWrapper>

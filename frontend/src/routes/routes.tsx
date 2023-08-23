@@ -14,6 +14,7 @@ import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
 import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
 import SignUpPage from 'src/pages/signup/SignUpPage';
+import GoogleSuccessPage from 'src/pages/google-success/GoogleSuccessPage';
 
 export const router = createBrowserRouter([
   {
@@ -142,6 +143,10 @@ export const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUpPage />,
+      },
+      {
+        path: 'google-sucess',
+        element: <GoogleSuccessPage />,
       },
     ],
   },
