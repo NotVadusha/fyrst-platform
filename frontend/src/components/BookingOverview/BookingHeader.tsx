@@ -10,7 +10,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ jobTitle }) => {
   return (
     <div className={styles.bookingHeader}>
       <div className={styles.jobTitle}>{jobTitle}</div>
-      <Button label='Apply' type='primary' eventName='' />
+      <Button label='Apply' type='primary' onClick={() => console.log('clicked')} />
     </div>
   );
 };

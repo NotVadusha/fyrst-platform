@@ -123,7 +123,13 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
-        <Button btnType='submit' eventName='submit' label='Publish' type='primary' fullWidth={true}>
+        <Button
+          btnType='submit'
+          onClick={() => 'submited'}
+          label='Publish'
+          type='primary'
+          fullWidth={true}
+        >
           Submit
         </Button>
       </form>
