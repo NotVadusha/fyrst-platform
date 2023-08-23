@@ -11,7 +11,7 @@ import ErrorPage from '../pages/common/ErrorPage';
 import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
-import { CreateTimeCardForm } from 'src/components/CreateTimeCardForm';
+import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
 
 export const router = createBrowserRouter([
   {
@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <CreateTimeCardForm />,
+            element: <CreateTimeCardPage />,
           },
         ],
       },

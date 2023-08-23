@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './TextInput.module.css';
 
 import {
@@ -10,22 +10,33 @@ import {
   FormField,
 } from '../Form'; // Update this path accordingly
 
-export interface TextInputProps {
+export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
   name: string;
   label: string;
-  type?: string;
-  disabled?: boolean;
+  isFocused?: boolean;
 }
 
-const TextInput: React.FC<TextInputProps> = ({ control, name, label, type, disabled }) => {
+const TextInput: React.FC<TextInputProps> = ({
+  control,
+  name,
+  label,
+  type,
+  disabled,
+  onFocus,
+  onBlur,
+  className,
+  ...props
+}) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem className={styles.wrapper}>
-          <FormLabel className={`${styles.label} ${field.value ? styles.active : ''}`}>
+          <FormLabel className={`${styles.label} ${field.value ? styles.active : ''} ${className}`}>
             {label}
           </FormLabel>
           <input
@@ -34,6 +45,12 @@ const TextInput: React.FC<TextInputProps> = ({ control, name, label, type, disab
             className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
             placeholder=''
             disabled={disabled}
+            onFocus={e => {
+              onFocus?.(e);
+              setIsFocused(true);
+            }}
+            onBlur={() => setIsFocused(false)}
+            {...props}
           />
           <FormMessage className={styles.error} />
         </FormItem>
