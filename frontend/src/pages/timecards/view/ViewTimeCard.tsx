@@ -17,8 +17,6 @@ export default function ViewTimeCardPage() {
     };
   };
 
-  console.log(timecard);
-
   if (!timecard) {
     return <div>No timecard found</div>;
   }

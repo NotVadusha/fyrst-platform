@@ -30,7 +30,6 @@ export function CreateTimeCardForm() {
   async function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     submit(values, {
       method: 'POST',
       // action: `${baseUrl}/timecard`,
