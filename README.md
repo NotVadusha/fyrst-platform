@@ -41,7 +41,11 @@ Project description
     If you want to integrate Eslint with other code editors you can find information on how to do it
     [here](https://eslint.org/docs/user-guide/integrations#editors)
 
+#### 0.4. Swagger
+- For testing app, you can use Swagger / Open API. To access the project API, open `http://localhost:8000/api/v1/` url.
+  
 ---
+
 
 #### 1. Project init
 
@@ -73,6 +77,8 @@ JWT_VERIFICATION_TOKEN_SECRET=qwerty
 JWT_VERIFICATION_TOKEN_EXPIRATION_TIME=2h
 RESET_PASSWORD_URL=http://localhost:${FRONTEND_PORT}/reset-password
 EMAIL_CONFIRMATION_URL=http://localhost:${BACKEND_PORT}/api/v1/email-confirmation/confirm
+
+REACT_APP_API_URL=http://localhost:8000/api/v1
 ```
 ---
 

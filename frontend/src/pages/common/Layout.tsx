@@ -40,9 +40,7 @@ function NavItem({ item }: { item: INavItem }) {
     <>
       <Link
         to={item.path}
-        className={
-          'p-2 rounded-md flex gap-2 w-full justify-between ' + `${isCurrentPath && 'bg-blue'}`
-        }
+        className={'p-2 rounded-md flex  w-full justify-between ' + `${isCurrentPath && 'bg-blue'}`}
       >
         <div className='flex gap-2 items-center'>
           {Icon && <Icon className={`${isCurrentPath && 'text-white'}`} title='asd' />}
@@ -50,7 +48,7 @@ function NavItem({ item }: { item: INavItem }) {
         </div>
         {isCurrentPath && item.items?.length ? (
           <button
-            className='flex items-center'
+            className='flex items-center p-0 h-auto'
             onClick={() => {
               setIsOpen(prev => !prev);
             }}
