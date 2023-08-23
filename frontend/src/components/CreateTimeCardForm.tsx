@@ -4,28 +4,25 @@ import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from './ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import RadioButton from './ui/common/RadioButton/RadioButton';
+import { timecardSchema } from '../lib/validations/timecard';
+import { Button } from 'src/ui/common/Button';
+import TextInput from './ui/common/TextInput/TextInput';
 
-const formSchema = y
-  .object()
-  .shape({
-    username: y.string().min(2, 'Username hast to be at most 3 characters long').required(),
-    password: y.string().min(3, 'Password hast to be at least 3 characters long').required(),
-    enum: y.mixed<'1' | '2' | '3'>().oneOf(['1', '2', '3']).required(),
-  })
-  .required();
+type Inputs = y.InferType<typeof timecardSchema>;
 
 export function CreateTimeCardForm() {
-  const form = useForm<y.InferType<typeof formSchema>>({
-    resolver: yupResolver(formSchema),
+  const form = useForm<Inputs>({
+    resolver: yupResolver(timecardSchema),
     defaultValues: {
-      username: '',
-      password: '',
-      enum: '1',
+      type: '',
+      employeeName: '',
+      facility: '',
+      managerName: '',
+      lunchTaken: '',
     },
   });
 
-  function onSubmit(values: y.InferType<typeof formSchema>) {
+  function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -38,61 +35,97 @@ export function CreateTimeCardForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name='username'
+          name='type'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Username</FormLabel>
-              <input type='text' {...field} />
-              <FormMessage />
+              <TextInput
+                control={form.control}
+                type='text'
+                id='text'
+                label='Timecard type'
+                {...field}
+              />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name='password'
+          name='employeeName'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Password</FormLabel>
-              <input placeholder='123s' {...field} />
-              <FormMessage />
+              <TextInput
+                control={form.control}
+                type='text'
+                id='employeeName'
+                label="Employee's name"
+                {...field}
+              />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name='enum'
-          render={({ field }) => {
-            return (
-              <FormItem className='flex flex-col'>
-                <FormLabel>Password</FormLabel>
-                <RadioButton
-                  size='big'
-                  label='1'
-                  {...field}
-                  // onChange={e => field.onChange(e.target.value !== '1' ? '1' : field.value)}
-                />
-                <FormMessage />
-                <FormLabel>Password</FormLabel>
-                <RadioButton
-                  size='big'
-                  label='2'
-                  {...field}
-                  // onChange={e => field.onChange(e.target.value !== '2' ? '2' : field.value)}
-                />
-                <FormMessage />
-                <FormLabel>Password</FormLabel>
-                <RadioButton
-                  size='big'
-                  label='3'
-                  {...field}
-                  // onChange={e => field.onChange(e.target.value !== '3' ? '3' : field.value)}
-                />
-                <FormMessage />
-              </FormItem>
-            );
-          }}
+          name='facility'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput
+                control={form.control}
+                type='text'
+                id='facility'
+                label='Facility'
+                {...field}
+              />
+            </FormItem>
+          )}
         />
-        <button type='submit'>Submit</button>
+        <FormField
+          control={form.control}
+          name='managerName'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput
+                control={form.control}
+                type='text'
+                id='managerName'
+                label='Facility Manager name'
+                {...field}
+              />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='hoursWorked'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput
+                control={form.control}
+                type='text'
+                id='hoursWorked'
+                label='Hours Worked'
+                {...field}
+              />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='lunchTaken'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput
+                control={form.control}
+                type='text'
+                id='lunchTaken'
+                label='Lunch Taken'
+                {...field}
+              />
+            </FormItem>
+          )}
+        />
+        <Button btnType='submit' eventName='submit' label='Publish' type='primary' fullWidth={true}>
+          Submit
+        </Button>
       </form>
     </Form>
   );
