@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { FacilityDto } from './dto/facility.dto';
+import { CreateFacilityDto } from './dto/create-facility.dto';
 
 import { InjectModel } from '@nestjs/sequelize';
 import { Facility } from './entities/facility.entity';
+import { UpdateFacilityDto } from './dto/update-facility.dto';
 
 @Injectable()
 export class FacilityService {
   constructor(@InjectModel(Facility) private readonly facilityModel: typeof Facility) {}
-  async create(facility: FacilityDto): Promise<Facility> {
+  async create(facility: CreateFacilityDto): Promise<Facility> {
     return await this.facilityModel.create({ ...facility });
   }
 
@@ -19,10 +20,10 @@ export class FacilityService {
     return await this.facilityModel.findOne({ where: { id }, rejectOnEmpty: true });
   }
 
-  async update(id: number, updatedFacility: FacilityDto) {
+  async update(id: number, updatedFacility: UpdateFacilityDto) {
     const facility = await this.findById(id);
-    Object.assign(facility, updatedFacility);
-    return facility.save();
+    await facility.update(updatedFacility);
+    return facility;
   }
 
   async remove(id: number): Promise<Facility> {

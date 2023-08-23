@@ -10,7 +10,8 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FacilityService } from './facility.service';
-import { FacilityDto } from './dto/facility.dto';
+import { CreateFacilityDto } from './dto/create-facility.dto';
+import { UpdateFacilityDto } from './dto/update-facility.dto';
 
 @Controller('facility')
 export class FacilityController {
@@ -19,7 +20,7 @@ export class FacilityController {
   constructor(private readonly facilityService: FacilityService) {}
 
   @Post()
-  async create(@Body() facility: FacilityDto) {
+  async create(@Body() facility: CreateFacilityDto) {
     try {
       const createdFacility = await this.facilityService.create(facility);
       return createdFacility;
@@ -55,7 +56,7 @@ export class FacilityController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateFacility: FacilityDto) {
+  async update(@Param('id') id: number, @Body() updateFacility: UpdateFacilityDto) {
     try {
       const updatedFacility = await this.facilityService.update(id, updateFacility);
       if (!updatedFacility) {
