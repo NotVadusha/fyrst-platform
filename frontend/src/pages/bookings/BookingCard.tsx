@@ -3,6 +3,7 @@ import { ReactComponent as ClockIcon } from '../../icons/clock.svg';
 import { ReactComponent as CalendrIcon } from '../../icons/calendar.svg';
 import { ReactComponent as ProfileIcon } from '../../icons/Profile.svg';
 import { Booking, BookingStatus } from 'shared/types/booking';
+import { Card } from 'src/components/ui/common/Card';
 
 interface BookingCardProps {
   booking: Booking;
@@ -31,7 +32,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   const endDate = new Intl.DateTimeFormat('fr-CA').format(booking.end_date);
 
   return (
-    <div className='rounded-lg  p-4  bg-white drop-shadow-lg shadow-black'>
+    <Card>
       <div className='flex justify-between mb-4 items-center'>
         <div className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}>
           {booking.status}
@@ -69,6 +70,6 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         </p>
         <p className='text-sm text-dark-grey'>{endDate}</p>
       </div>
-    </div>
+    </Card>
   );
 };

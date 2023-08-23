@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Booking } from 'shared/types/booking';
 import { BookingCard } from './BookingCard';
-import { ReactComponent as ArrowDownIncon } from '../../icons/arrow-down.svg';
+import { Pagination } from 'src/ui/common/Pagination/Pagination';
 
 interface BookingGridProps {
   bookings: Booking[];
@@ -18,18 +18,6 @@ const BookingGrid: React.FC<BookingGridProps> = ({ bookings, itemsPerPage }) => 
 
   const totalPages = Math.ceil(bookings.length / itemsPerPage);
 
-  const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -43,26 +31,13 @@ const BookingGrid: React.FC<BookingGridProps> = ({ bookings, itemsPerPage }) => 
           <BookingCard key={booking.id} booking={booking} />
         ))}
       </div>
-
-      <div className='flex float-right'>
-        <button onClick={prevPage} className='mr-2'>
-          <ArrowDownIncon className='rotate-90'></ArrowDownIncon>
-        </button>
-
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => goToPage(index + 1)}
-            className={`text-base  align-middle h-6 w-6 rounded-lg mr-2
-            ${currentPage === index + 1 ? 'bg-blue text-white' : 'text-blue'}`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button onClick={nextPage}>
-          <ArrowDownIncon className='-rotate-90'></ArrowDownIncon>
-        </button>
+      <div className=' float-right'>
+        <Pagination
+          value={currentPage}
+          totalCount={totalPages}
+          onChange={goToPage}
+          siblingsCount={1}
+        ></Pagination>
       </div>
     </div>
   );
