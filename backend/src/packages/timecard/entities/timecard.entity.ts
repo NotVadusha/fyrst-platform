@@ -13,7 +13,7 @@ import { TimecardStatus } from 'shared/timecard-status';
 export class Timecard extends Model {
   @AllowNull(false)
   @CreatedAt
-  @Column
+  @Column(DataType.DATEONLY)
   createdAt: Date;
 
   @AllowNull(false)
@@ -27,7 +27,7 @@ export class Timecard extends Model {
   @Column
   approvedBy: number;
 
-  @Column
+  @Column(DataType.DATEONLY)
   approvedAt: Date;
 
   @AllowNull(false)
