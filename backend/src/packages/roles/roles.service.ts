@@ -1,19 +1,12 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Roles } from './entities/roles.entity';
 import { RoleDto } from './dto/role.dto';
 import { BadRequestException, NotAcceptableException } from '@nestjs/common';
 
 @Injectable()
-export class RolesService implements OnModuleInit {
+export class RolesService {
   constructor(@InjectModel(Roles) private rolesRepository: typeof Roles) {}
-
-  async onModuleInit() {
-    if ((await this.rolesRepository.count()) === 0)
-      this.rolesRepository.create({
-        label: 'user',
-      });
-  }
 
   async create(Role: RoleDto) {
     const sameRoleExist = await this.rolesRepository.findOne({ where: { label: Role.label } });
