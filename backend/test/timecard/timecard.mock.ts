@@ -67,11 +67,15 @@ export const mockTimecardService = {
     ),
   getAllFiltered: jest
     .fn()
-    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) =>
-      Promise.resolve(
-        timecardsMock.filter(t => (t.approvedBy = filters.approvedBy)).slice(offset, limit),
-      ),
-    ),
+    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) => {
+      const items = timecardsMock
+        .filter(t => (t.approvedBy = filters.approvedBy))
+        .slice(offset, limit);
+
+      const total = timecardsMock.length;
+
+      return Promise.resolve({ items, total });
+    }),
   getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
   update: jest
     .fn()
@@ -119,4 +123,5 @@ export const mockTimecardModel = {
     }
   }),
   build: buildModelMock,
+  count: jest.fn().mockResolvedValue(timecardsMock.length),
 };
