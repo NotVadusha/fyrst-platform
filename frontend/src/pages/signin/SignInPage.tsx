@@ -74,13 +74,11 @@ const SignInPage = () => {
               label='Email'
               type='text'
               disabled={false}
-              className='w-full'
             />
             <PasswordInput 
               control={control}
               name='password'
               label='Password'
-              className='w-full'
             />
 
             <a className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'>Forgot password?</a>

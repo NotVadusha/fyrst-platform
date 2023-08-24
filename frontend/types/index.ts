@@ -22,6 +22,15 @@ export type SignInBody = {
   password: string;
 };
 
+export type MessageResponse = {
+  message: string;
+};
+
+export type TokenResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 // export interface NavItemWithChildren extends NavItem {
 //   items: NavItem[];
 // }

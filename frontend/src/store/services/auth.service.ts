@@ -1,27 +1,27 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { customBaseQuery } from './helpers/customBaseQuery';
-import { SignInBody, SignUpBody } from '../../../types';
+import { MessageResponse, SignInBody, SignUpBody, TokenResponse } from '../../../types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: customBaseQuery,
   tagTypes: [],
   endpoints: build => ({
-    registration: build.mutation({
-      query: (body: SignUpBody) => ({
+    registration: build.mutation<MessageResponse, SignUpBody>({
+      query: body => ({
         url: '/auth/registration',
         method: 'POST',
         body,
       }),
     }),
-    login: build.mutation({
-      query: (body: SignInBody) => ({
+    login: build.mutation<TokenResponse, SignInBody>({
+      query: body => ({
         url: '/auth/login',
         method: 'POST',
         body,
       }),
     }),
-    logout: build.mutation({
+    logout: build.mutation<undefined, undefined>({
       query: () => ({
         url: '/auth/logout',
       }),
