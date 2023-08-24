@@ -24,7 +24,7 @@ export class RolesService {
 
   async update(RoleInfo: RoleDto, roleId: number) {
     const sameRole = await this.rolesRepository.findOne({ where: { label: RoleInfo.label } });
-    if (sameRole?.id !== roleId)
+    if (sameRole && sameRole.id !== roleId)
       throw new NotAcceptableException('This role name is already in use');
 
     return await this.rolesRepository.update(RoleInfo, { where: { id: roleId } });
