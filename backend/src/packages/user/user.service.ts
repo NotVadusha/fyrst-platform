@@ -1,16 +1,30 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
   ) {}
+
+  onModuleInit() {
+    // this.userRepository.destroy({
+    //   where: {
+    //     email: 'slavikchernogor@gmail.com',
+    //   },
+    // });
+  }
 
   async create(userInfo: CreateUserDto) {
     const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });

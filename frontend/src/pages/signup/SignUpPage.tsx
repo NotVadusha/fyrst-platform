@@ -54,11 +54,11 @@ const SignUpPage = () => {
       image={authImage}
       text='Finding the right candidate has never been easier! A few clicks and the deal is ready.'
     >
-      <div className='flex flex-col gap-6 w-[450px]'>
+      <div className='flex flex-col gap-6 w-[450px] px-5'>
         <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Register now<br/>on <span className='text-blue'>Fyrst</span></h1>
         
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6'>
+          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6 [&>div]:w-full'>
             <TextInput 
               control={control}
               name='fullname'

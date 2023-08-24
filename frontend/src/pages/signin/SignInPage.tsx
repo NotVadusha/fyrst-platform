@@ -67,18 +67,20 @@ const SignInPage = () => {
       <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Welcome back<br/>on <span className='text-blue'>Fyrst</span></h1>
         
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6'>
+          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6 [&>div]:w-full'>
             <TextInput 
               control={control}
               name='email'
               label='Email'
               type='text'
               disabled={false}
+              className='w-full'
             />
             <PasswordInput 
               control={control}
               name='password'
               label='Password'
+              className='w-full'
             />
 
             <a className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'>Forgot password?</a>
