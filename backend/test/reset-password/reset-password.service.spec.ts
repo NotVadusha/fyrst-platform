@@ -8,7 +8,7 @@ import {
 } from './reset-password.mocks';
 import { UserService } from 'src/packages/user/user.service';
 import { RedisService } from 'src/packages/redis/redis.service';
-import { redisServiceMock } from 'test/redis/redis.mocks';
+import { redisServiceMock } from '../redis/redis.mocks';
 import { MailService } from 'src/packages/mail/mail.service';
 import { MessageResponse } from 'src/helpers/responceClasses';
 import { ResetPasswordService } from 'src/packages/reset-password/reset-password.service';

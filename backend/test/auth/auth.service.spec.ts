@@ -14,7 +14,7 @@ import {
 } from './auth.mocks';
 import { UserService } from 'src/packages/user/user.service';
 import { RedisService } from 'src/packages/redis/redis.service';
-import { redisServiceMock } from 'test/redis/redis.mocks';
+import { redisServiceMock } from '../redis/redis.mocks';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
@@ -102,7 +102,7 @@ describe('AuthService', () => {
           ...registrationMock,
           password: 'password',
           is_confirmed: false,
-          role_id: 1
+          role_id: 1,
         });
       });
 
