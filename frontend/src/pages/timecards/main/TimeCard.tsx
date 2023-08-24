@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
 import Table from 'src/ui/common/Table/Table';
 import { TimecardFiltersForm } from './TimecardFiltersForm';
-import { timecardsMock, timecardsTableColumns } from './timecards-table-config';
+import { timecardsTableColumns } from './timecards-table-config';
 import { useFetchTimecardsQuery } from '../../../store/features/apiSlice';
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFilters } from '../../../../types/TimecardFilters';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
 
+const LIMIT = 5;
+
 const TimeCardPage = () => {
-  const timecards = timecardsMock;
   const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState<number>(1);
 
   const filters: TimecardFilters = {
     createdAt: searchParams.get('createdAt'),
@@ -21,8 +23,8 @@ const TimeCardPage = () => {
     approvedBy: searchParams.get('approvedBy'),
     status: searchParams.get('status'),
     createdBy: searchParams.get('createdBy'),
-    limit: searchParams.get('limit'),
-    offset: searchParams.get('offset'),
+    limit: String(LIMIT),
+    offset: String((page - 1) * LIMIT),
   };
 
   Object.keys(filters).forEach(key => {
@@ -30,6 +32,11 @@ const TimeCardPage = () => {
   });
 
   const { data, isFetching } = useFetchTimecardsQuery(filters);
+
+  let totalPages = 0;
+  if (data) {
+    totalPages = Math.ceil(data.total / LIMIT);
+  }
 
   return (
     <section className='min-h-full'>
@@ -55,24 +62,32 @@ const TimeCardPage = () => {
             No timecards to display here. Most probably, nothing matches your search query
           </p>
         ) : (
-          <Table
-            columns={timecardsTableColumns}
-            items={data ? data.items : []}
-            getRowId={item => item.id}
-          />
-        )}
-        <div className='flex justify-end'>
-          {timecards.length > 0 && (
-            <Pagination
-              totalCount={10}
-              siblingsCount={2}
-              value={1}
-              onChange={_ => {
-                return;
-              }}
+          <>
+            <Table
+              columns={timecardsTableColumns}
+              items={data ? data.items : []}
+              getRowId={item => item.id}
             />
-          )}
-        </div>
+
+            <div className='flex justify-end'>
+              {totalPages > 1 && (
+                <Pagination
+                  totalCount={totalPages}
+                  siblingsCount={2}
+                  value={page}
+                  onChange={currentPage => {
+                    setPage(currentPage);
+
+                    const nextOffset = (currentPage - 1) * LIMIT;
+                    setSearchParams(
+                      new URLSearchParams({ limit: String(LIMIT), offset: String(nextOffset) }),
+                    );
+                  }}
+                />
+              )}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
