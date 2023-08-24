@@ -12,7 +12,8 @@ import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
-import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
+import { CreateTimeCardPage } from '../pages/timecards/create/CreateTimeCard';
+import ProfileEditPage from '../pages/profiles/ProfileEditPage';
 
 export const router = createBrowserRouter([
   {
@@ -64,12 +65,8 @@ export const router = createBrowserRouter([
             element: <ProfilePage />,
           },
           {
-            path: ':id',
-            element: <TestPage />,
-          },
-          {
             path: 'edit',
-            element: <TestPage />,
+            element: <ProfileEditPage />,
           },
           {
             path: 'notifications',
@@ -119,7 +116,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
