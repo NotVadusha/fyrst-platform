@@ -16,6 +16,9 @@ import SignUpPage from 'src/pages/signup/SignUpPage';
 import GoogleSuccessPage from 'src/pages/google-success/GoogleSuccessPage';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
+import ForgotPage from 'src/pages/forgot/ForgotPage';
+import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
+import ResetPage from 'src/pages/reset/ResetPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -172,16 +175,16 @@ export const router = createBrowserRouter([
         element: <SignInPage />,
       },
       {
+        path: 'forgot/email-sended',
+        element: <EmailSendedPage />,
+      },
+      {
         path: 'forgot',
-        element: <TestPage />,
+        element: <ForgotPage />,
       },
       {
         path: 'reset',
-        element: <TestPage />,
-      },
-      {
-        path: 'reset/:key',
-        element: <TestPage />,
+        element: <ResetPage />,
       },
       {
         path: 'signup',

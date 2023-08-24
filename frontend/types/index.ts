@@ -22,6 +22,16 @@ export type SignInBody = {
   password: string;
 };
 
+export type ForgotBody = {
+  email: string;
+};
+
+export type ResetBody = {
+  id: number;
+  token: string;
+  new_password: string;
+};
+
 export type MessageResponse = {
   message: string;
 };

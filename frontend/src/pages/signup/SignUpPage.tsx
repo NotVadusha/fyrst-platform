@@ -2,7 +2,7 @@ import React from 'react';
 import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
 import authImage from '../../assets/authimage.png'
 import * as yup from 'yup'
-import { FormProvider, useForm, useFormState } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,8 +19,9 @@ const SignUpPage = () => {
 
   const navigate = useNavigate()
 
-  const { control, handleSubmit } = useForm<RegistrationInputs>({
+  const form = useForm<RegistrationInputs>({
     resolver: yupResolver(registrationSchema),
+    mode: 'onTouched',
     defaultValues: {
       fullname: '',
       email: '',
@@ -29,7 +30,7 @@ const SignUpPage = () => {
     },
   });
 
-  const methods = useForm()
+  const { control, handleSubmit } = form
   
   const onSubmit = async (data: RegistrationInputs) => {
     const body = {
@@ -57,7 +58,7 @@ const SignUpPage = () => {
       <div className='flex flex-col gap-6 w-[450px] px-5'>
         <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>Register now<br/>on <span className='text-blue'>Fyrst</span></h1>
         
-        <FormProvider {...methods}>
+        <FormProvider {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-6 [&>div]:w-full'>
             <TextInput 
               control={control}
