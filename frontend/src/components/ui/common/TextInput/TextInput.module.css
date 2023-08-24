@@ -1,0 +1,39 @@
+.wrapper {
+  @apply relative block;
+}
+
+.label {
+  @apply text-placeholder absolute text-sm font-medium left-3 top-3.5 m-0 cursor-pointer transition-all;
+}
+
+.label:has(~ input:is(:focus, :not(:placeholder-shown))) {
+  @apply text-xs -translate-y-3;
+}
+
+.label.active {
+  @apply text-xs -translate-y-3;
+}
+
+.label:has(~ input:disabled) {
+  @apply pointer-events-none;
+}
+
+.input {
+  @apply px-2.5 py-2 pt-4 outline-none border-solid rounded-lg border-grey border text-sm font-medium text-blue leading-none w-full;
+}
+
+.input:focus {
+  @apply border-blue;
+}
+
+.input.invalid {
+  @apply border-red;
+}
+
+.input:disabled {
+  @apply border-transparent bg-input-disabled;
+}
+
+.error {
+  @apply m-0 mt-1 pl-3 text-xs text-red;
+}

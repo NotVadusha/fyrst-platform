@@ -41,7 +41,11 @@ Project description
     If you want to integrate Eslint with other code editors you can find information on how to do it
     [here](https://eslint.org/docs/user-guide/integrations#editors)
 
+#### 0.4. Swagger
+- For testing app, you can use Swagger / Open API. To access the project API, open `http://localhost:8000/api/v1/` url.
+  
 ---
+
 
 #### 1. Project init
 
@@ -55,6 +59,26 @@ DB_PORT=5432
 POSTGRES_DB=db
 POSTGRES_USER=user
 POSTGRES_PASSWORD=user
+
+REDIS_PORT=6379
+REDIS_PASS=user
+REDIS_URI=redis://default:${REDIS_PASS}@redis:${REDIS_PORT}
+
+JWT_ACCESS_SECRET=a7b99e28-98bc-4b65-8107-f905e8e91408
+JWT_ACCESS_EXPIRATION_TIME=5m
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK_URL=http://localhost:${BACKEND_PORT}/api/v1/auth/google/callback
+
+MAIL_DOMAIN=
+MAIL_API_KEY=
+JWT_VERIFICATION_TOKEN_SECRET=qwerty
+JWT_VERIFICATION_TOKEN_EXPIRATION_TIME=2h
+RESET_PASSWORD_URL=http://localhost:${FRONTEND_PORT}/reset-password
+EMAIL_CONFIRMATION_URL=http://localhost:${BACKEND_PORT}/api/v1/email-confirmation/confirm
+
+REACT_APP_API_URL=http://localhost:8000/api/v1
 ```
 ---
 

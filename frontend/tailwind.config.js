@@ -6,6 +6,9 @@ module.exports = {
       spacing: {
         128: '32rem',
       },
+      maxWidth: {
+        inputs: '15.625rem',
+      },
       keyframes: {
         spinAround: {
           '0%': { transform: 'rotate(0deg) translate(2rem)' },
@@ -19,6 +22,25 @@ module.exports = {
           '0%': { transform: 'rotate(0deg) translate(3rem)' },
           '100%': { transform: 'rotate(360deg) translate(3rem)' },
         },
+      },
+      fontSize: {
+        xs: '0.625rem',
+        h1: '4rem',
+        h2: '3rem',
+        h3: '2.25rem',
+        h4: '1.875rem',
+        h5: '1.5rem',
+        h6: '1.25rem',
+        'body-large': '1.125rem',
+        'body-default': '1rem',
+        'body-small': '0.875rem',
+        line: '0.875rem',
+        field: '0.8125rem',
+        placeholder: '0.625rem',
+      },
+      boxShadow: {
+        dropdown: '0px 4px 16px rgba(0, 0, 0, 0.10)',
+        header: '9px 4px 18px rgba(0, 0, 0, 0.10);',
       },
     },
     colors: {
@@ -39,6 +61,7 @@ module.exports = {
       'dark-blue': '#052D58',
       hover: '#17569C',
       'red-2': '#F0544F',
+      'input-disabled': '#F5F5F5',
     },
   },
   variants: {
