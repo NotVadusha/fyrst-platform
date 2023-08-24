@@ -4,14 +4,14 @@ import styles from './PhoneInput.module.css';
 import { FormItem, FormLabel, FormMessage, useFormField, FormField } from '../common/Form'; // Update this path accordingly
 import PhoneInput from 'react-phone-input-2';
 
-export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface PhoneInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
   name: string;
   label: string;
   isFocused?: boolean;
 }
 
-const CustomPhoneInput: React.FC<TextInputProps> = ({
+const CustomPhoneInput: React.FC<PhoneInputProps> = ({
   control,
   name,
   label,
@@ -35,7 +35,7 @@ const CustomPhoneInput: React.FC<TextInputProps> = ({
           </FormLabel>
           <PhoneInput
             {...field}
-            inputClass={`${styles.input} ${formField}`}
+            inputClass={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
             placeholder=''
             disabled={disabled}
             specialLabel={''}
@@ -43,7 +43,7 @@ const CustomPhoneInput: React.FC<TextInputProps> = ({
               setIsFocused(true);
             }}
             onBlur={() => setIsFocused(false)}
-            {...props}
+            onChange={(value, data, event) => (props.onChange ? props.onChange(event) : '')}
           />
           <FormMessage className={styles.error} />
         </FormItem>
