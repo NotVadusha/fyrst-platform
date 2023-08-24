@@ -7,11 +7,17 @@ import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
 import { TimecardStatus } from 'shared/timecard-status';
 
-export function TimecardFiltersForm() {
+export function TimecardFiltersForm({
+  handleInputChange,
+}: {
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const formSchema = yup.object({
     createdAt: yup.date(),
     approvedAt: yup.date(),
     status: yup.string().oneOf(Object.values(TimecardStatus)),
+    createdBy: yup.number(),
+    approvedBy: yup.number().nullable(),
   });
 
   type FormValues = yup.InferType<typeof formSchema>;
@@ -67,6 +73,50 @@ export function TimecardFiltersForm() {
                     type='date'
                     id='approvedAt'
                     label='approvedAt'
+                    {...field}
+                  />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className='flex flex-col gap-y-2'>
+            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
+              Created by
+            </label>
+            <FormField
+              control={form.control}
+              name='createdBy'
+              render={({ field }) => (
+                <FormItem>
+                  <TextInput
+                    control={form.control}
+                    type='number'
+                    id='createdBy'
+                    label='createdBy'
+                    {...field}
+                  />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className='flex flex-col gap-y-2'>
+            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
+              Approved by
+            </label>
+            <FormField
+              control={form.control}
+              name='approvedBy'
+              render={({ field }) => (
+                <FormItem>
+                  {/*eslint-disable-next-line */}
+                  {/*@ts-ignore*/}
+                  <TextInput
+                    control={form.control}
+                    type='number'
+                    id='approvedBy'
+                    label='approvedBy'
                     {...field}
                   />
                 </FormItem>

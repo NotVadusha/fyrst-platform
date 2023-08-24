@@ -1,25 +1,22 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './baseQuery';
 import { GetAllTimecardsDto } from '../../../types/GetAllTimecardsDto';
-import { TimecardFiltersDto } from '../../../types/TimecardFiltersDto';
+import { TimecardFilters } from '../../../types/TimecardFilters';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQuery,
   endpoints(builder) {
     return {
-      fetchTimecards: builder.query<
-        GetAllTimecardsDto,
-        TimecardFiltersDto & { limit?: number; offset?: number }
-      >({
+      fetchTimecards: builder.query<GetAllTimecardsDto, TimecardFilters>({
         query(args) {
           const params = new URLSearchParams();
 
           Object.keys(args).forEach(key =>
-            params.set(key, String(args[key as keyof TimecardFiltersDto])),
+            params.set(key, String(args[key as keyof TimecardFilters])),
           );
 
-          return '/timecard' + params;
+          return '/timecard?' + params;
         },
       }),
     };
