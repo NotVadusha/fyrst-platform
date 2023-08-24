@@ -1,15 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { Timecard } from './entities/timecard.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { validateOrReject } from 'class-validator';
-import { instanceToInstance } from 'class-transformer';
+import { GetAllTimecardsDto } from './dto/get-all-timecards.dto';
 
 @Injectable()
 export class TimecardService {
-  private readonly logger = new Logger(TimecardService.name);
   constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
@@ -22,7 +21,7 @@ export class TimecardService {
     filters?: TimecardFiltersDto,
     limit?: number,
     offset?: number,
-  ): Promise<Timecard[]> {
+  ): Promise<GetAllTimecardsDto> {
     Object.keys(filters).forEach(
       key => (filters[key] === undefined || isNaN(filters[key])) && delete filters[key],
     );
@@ -35,11 +34,15 @@ export class TimecardService {
 
     await validateOrReject(filters);
 
-    return await this.timecardModel.findAll({
+    const timecards = await this.timecardModel.findAll({
       where: { ...filters },
       limit: limit,
       offset: offset,
     });
+
+    const total = await this.timecardModel.count();
+
+    return { items: timecards, total };
   }
 
   async getById(id: number): Promise<Timecard> {
