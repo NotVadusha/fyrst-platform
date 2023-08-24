@@ -51,13 +51,18 @@ export const customBaseQuery: BaseQueryFn<
           extraOptions,
         );
 
-        const tokens = refreshResult.data as TokenResponse;
+        if (refreshResult.error) {
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+        } else {
+          const tokens = refreshResult.data as TokenResponse;
 
-        if (tokens) {
-          localStorage.setItem('accessToken', tokens.accessToken);
-          localStorage.setItem('refreshToken', tokens.refreshToken);
+          if (tokens) {
+            localStorage.setItem('accessToken', tokens.accessToken);
+            localStorage.setItem('refreshToken', tokens.refreshToken);
 
-          result = await baseQuery(args, api, extraOptions);
+            result = await baseQuery(args, api, extraOptions);
+          }
         }
       } finally {
         release();
