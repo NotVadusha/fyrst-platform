@@ -29,7 +29,7 @@ const TextInput: React.FC<TextInputProps> = ({
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-
+  const inputStyle = useFormField().invalid ? styles.invalid : '';
   return (
     <FormField
       control={control}
@@ -42,7 +42,7 @@ const TextInput: React.FC<TextInputProps> = ({
           <input
             {...field}
             type={type}
-            className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
+            className={`${styles.input} ${inputStyle}`}
             placeholder=''
             disabled={disabled}
             onFocus={e => {
