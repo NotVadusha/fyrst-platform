@@ -16,7 +16,7 @@ import { loginSchema } from 'src/lib/validations/login';
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
 const AuthPage = () => {
-  const [login, {isLoading, error, data}] = authApi.useLazyLoginQuery()
+  const [login, {isLoading, error, data}] = authApi.useLoginMutation()
 
   const navigate = useNavigate()
 
