@@ -41,8 +41,10 @@ export class BookingService {
   }
 
   async update(id: number, updatedData: UpdateBookingDto) {
+    if (updatedData && updatedData.createdBy) {
+      await this.validateUserExists(updatedData.createdBy);
+    }
     const booking = await this.find(id);
-    await this.validateUserExists(updatedData.createdBy);
 
     await booking.update(updatedData);
     this.logger.log(`Updated booking with ID ${id}`, { booking });
