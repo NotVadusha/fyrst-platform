@@ -1,6 +1,4 @@
 import React from 'react';
-import { emitter } from '../../utils/emitter';
-import { useNavigate } from 'react-router-dom';
 
 type AuthWrapperProps = {
   children: React.ReactNode,
@@ -9,12 +7,6 @@ type AuthWrapperProps = {
 }
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({children, image, text}) => {
-  const navigate = useNavigate()
-
-  emitter.on('google-click', () => {
-    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`)
-  })
-
   return (
     <div className='h-screen w-screen flex flex-row'>
       <section className='flex items-center justify-center w-full md:w-1/2 bg-white'>

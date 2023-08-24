@@ -7,7 +7,6 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from 'src/lib/validations/registration';
-import { FormField } from 'src/components/ui/common/Form';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
@@ -46,7 +45,9 @@ const SignUpPage = () => {
       .catch(() => console.log(error))
   }
 
-  const { errors } = useFormState({control})
+  const handleClick = () => {
+    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`)
+  }
   
   return (
     <AuthWrapper
@@ -72,37 +73,21 @@ const SignUpPage = () => {
               type='text'
               disabled={false}
             />
-            <FormField 
+            <PasswordInput 
               control={control}
               name='password'
-              render={({field}) => (
-                <PasswordInput 
-                  id='password-input'
-                  label='Password'
-                  error={errors.password?.message}
-                  value={field.value}
-                  setValue={field.onChange}
-                />
-              )}
+              label='Password'
             />
-            <FormField 
+            <PasswordInput 
               control={control}
               name='confirmPassword'
-              render={({field}) => (
-                <PasswordInput 
-                  id='confirm-password-input'
-                  label='Confirm password'
-                  error={errors.confirmPassword?.message}
-                  value={field.value}
-                  setValue={field.onChange}
-                />
-              )}
+              label='Confirm password'
             />
 
-            <Button fullWidth={true} btnType='submit' label='Sign up' type='primary' eventName='submit'  disabled={isLoading}/>
+            <Button fullWidth={true} btnType='submit' label='Sign up' type='primary' disabled={isLoading}/>
           </form>
         </FormProvider>
-        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='google-click'/>
+        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' onClick={handleClick}/>
         <p className='text-body-default text-dark-grey font-semibold'>Already have an account? <a href='./signin' className='decoration-transparent text-blue hover:cursor-pointer'>Sign in now.</a></p>
       </div>
     </AuthWrapper>

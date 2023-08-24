@@ -7,7 +7,6 @@ import { FormProvider, useForm, useFormState } from 'react-hook-form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormField } from 'src/components/ui/common/Form';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
@@ -15,13 +14,14 @@ import { loginSchema } from 'src/lib/validations/login';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
-const AuthPage = () => {
+const SignInPage = () => {
   const [login, {isLoading, error, data}] = authApi.useLoginMutation()
 
   const navigate = useNavigate()
 
   const { control, handleSubmit } = useForm<LoginInputs>({
     resolver: yupResolver(loginSchema),
+    mode: 'onTouched',
     defaultValues: {
       email: '',
       password: ''
@@ -42,6 +42,10 @@ const AuthPage = () => {
     catch {
       console.log(error)
     }
+  }
+
+  const handleClick = () => {
+    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`)
   }
 
   useEffect(() => {
@@ -71,30 +75,22 @@ const AuthPage = () => {
               type='text'
               disabled={false}
             />
-            <FormField 
+            <PasswordInput 
               control={control}
               name='password'
-              render={({field}) => (
-                <PasswordInput 
-                  id='password-input'
-                  label='Password'
-                  error={errors.password?.message}
-                  value={field.value}
-                  setValue={field.onChange}
-                />
-              )}
+              label='Password'
             />
 
             <a className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'>Forgot password?</a>
 
-            <Button fullWidth={true} btnType='submit' label='Sign in' type='primary' eventName='submit' disabled={isLoading}/>
+            <Button fullWidth={true} btnType='submit' label='Sign in' type='primary' disabled={isLoading}/>
           </form>
         </FormProvider>
-        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' eventName='google-click'/>
+        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' onClick={handleClick}/>
         <p className='text-body-default text-dark-grey font-semibold'>Don&apos;t have an account yet? <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>Register now.</a></p>
       </div>
     </AuthWrapper>
   );
 };
 
-export default AuthPage;
+export default SignInPage;

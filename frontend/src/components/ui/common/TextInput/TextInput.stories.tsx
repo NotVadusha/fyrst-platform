@@ -39,7 +39,7 @@ const FormTemplate = ({ name, label, type, disabled }: Props) => {
   });
 
   function onSubmit(values: y.InferType<typeof formSchema>) {
-    console.log(values);
+    // do smth
   }
 
   return (
