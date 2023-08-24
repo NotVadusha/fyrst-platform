@@ -11,8 +11,7 @@ export class Roles extends Model {
   id: number;
 
   @Column({
-    type: DataType.TEXT,
-    unique: true,
+    type: DataType.ENUM('WORKER', 'FACILITY_ADMIN', 'AGENCY_ADMIN', 'SUPER_ADMIN'),
   })
   label: string;
 }
