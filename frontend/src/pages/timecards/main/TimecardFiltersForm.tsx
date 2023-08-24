@@ -51,6 +51,7 @@ export function TimecardFiltersForm({
                     id='createdAt'
                     label='createdAt'
                     {...field}
+                    onChange={handleInputChange}
                   />
                 </FormItem>
               )}
@@ -74,6 +75,7 @@ export function TimecardFiltersForm({
                     id='approvedAt'
                     label='approvedAt'
                     {...field}
+                    onChange={handleInputChange}
                   />
                 </FormItem>
               )}
@@ -95,6 +97,7 @@ export function TimecardFiltersForm({
                     id='createdBy'
                     label='createdBy'
                     {...field}
+                    onChange={handleInputChange}
                   />
                 </FormItem>
               )}
@@ -118,6 +121,7 @@ export function TimecardFiltersForm({
                     id='approvedBy'
                     label='approvedBy'
                     {...field}
+                    onChange={handleInputChange}
                   />
                 </FormItem>
               )}

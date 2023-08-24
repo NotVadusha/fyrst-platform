@@ -38,21 +38,34 @@ const TimeCardPage = () => {
     totalPages = Math.ceil(data.total / LIMIT);
   }
 
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSearchParams(prevParams => {
+      if (e.target.value === '') {
+        prevParams.delete(e.target.name);
+      } else {
+        prevParams.set(e.target.name, e.target.value);
+      }
+
+      return prevParams;
+    });
+  }
+
   return (
     <section className='min-h-full'>
       <Header title='Timecards'>
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
             <Button type='secondary' label='Export CSV' eventName='dummy' />
-            <Link to='create'>
-              <Button type='primary' label='Create new timecard' eventName='dummy' />
+            <Link to='.'>
+              <Button type='primary' label='Create booking' eventName='dummy' />
             </Link>
           </div>
         </div>
       </Header>
+
       <div className='px-20 py-10 flex flex-col gap-y-6'>
         <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
-        <TimecardFiltersForm handleInputChange={_ => console.log('dummy')} />
+        <TimecardFiltersForm handleInputChange={handleInputChange} />
         {isFetching ? (
           <div className='flex justify-center min-h-[8rem]'>
             <Spinner size='lg' />
@@ -79,9 +92,11 @@ const TimeCardPage = () => {
                     setPage(currentPage);
 
                     const nextOffset = (currentPage - 1) * LIMIT;
-                    setSearchParams(
-                      new URLSearchParams({ limit: String(LIMIT), offset: String(nextOffset) }),
-                    );
+                    setSearchParams(prevParams => {
+                      prevParams.set('limit', String(LIMIT));
+                      prevParams.set('offset', String(nextOffset));
+                      return prevParams;
+                    });
                   }}
                 />
               )}
