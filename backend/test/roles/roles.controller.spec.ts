@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { rolesMock, existingId, TestRole, updateInfo } from './roles.helpers';
-import { RoleDto } from '../dto/role.dto';
-import { RolesController } from '../roles.controller';
-import { RolesService } from '../roles.service';
+import { RoleDto } from 'src/packages/roles/dto/role.dto';
+import { RolesController } from 'src/packages/roles/roles.controller';
+import { RolesService } from 'src/packages/roles/roles.service';
 
 describe('RolesContoller', () => {
   let rolesController: RolesController;

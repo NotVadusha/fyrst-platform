@@ -1,4 +1,4 @@
-import { RoleDto } from '../dto/role.dto';
+import { RoleDto } from 'src/packages/roles/dto/role.dto';
 
 export const rolesMock = (): TestRole[] => {
   return [
