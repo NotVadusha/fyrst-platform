@@ -41,6 +41,7 @@ export const AvatarUploader = ({
   };
 
   const onRefChange = useCallback(
+    //Fix img handling
     node => {
       if (node !== null) {
         setImage(savedImage);
