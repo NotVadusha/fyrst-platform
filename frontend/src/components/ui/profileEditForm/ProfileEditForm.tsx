@@ -9,6 +9,7 @@ import { profileSchema } from '../../../lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import styles from './PhoneInput.module.css';
 import CustomPhoneInput from './CustomPhoneInput';
+
 const src =
   'https://media.gettyimages.com/id/1410292561/photo/portrait-of-smiling-elderly-bald-man.jpg?s=612x612&w=gi&k=20&c=2EpnI1qluV0iRGpjBo6xEeNAgiVwcUNCcSI-6kYHFIU=';
 
@@ -146,7 +147,7 @@ export function ProfileEditForm() {
                 )}
               />
               <FormLabel>Date of birth</FormLabel>
-              <input type=''></input>
+
               <Button
                 btnType='submit'
                 eventName='submit'

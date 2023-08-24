@@ -35,7 +35,6 @@ const CustomPhoneInput: React.FC<TextInputProps> = ({
           </FormLabel>
           <PhoneInput
             {...field}
-            type={'tel'}
             inputClass={`${styles.input} ${formField}`}
             placeholder=''
             disabled={disabled}
