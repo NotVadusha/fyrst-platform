@@ -11,6 +11,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
+import { Facility } from 'src/packages/facility/entities/facility.entity';
 import { User } from 'src/packages/user/entities/user.entity';
 
 @Table
@@ -62,8 +63,12 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   @Column
   notes: string;
 
+  @ForeignKey(() => Facility)
   @Column
-  facilityId: number; //mock
+  facilityId: number;
+
+  @BelongsTo(() => Facility, 'facilityId')
+  facility: Facility;
 }
 
 export { Booking };

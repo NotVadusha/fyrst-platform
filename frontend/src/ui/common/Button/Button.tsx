@@ -1,47 +1,36 @@
 import React, { MouseEventHandler, useMemo } from 'react';
 import styles from './Button.module.css';
+import { VariantProps, cva } from 'class-variance-authority';
 
-export interface ButtonProps {
-  type: 'primary' | 'secondary' | 'tertiary';
-  label: string;
-  disabled?: boolean;
-  btnType?: 'submit' | 'button' | 'reset';
-  imgSrc?: string;
-  fullWidth?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-}
+const buttonVariants = cva(
+  'text-base flex align-middle inline-block justify-center items-center relative rounded-lg cursor-pointer !leading-none disabled:cursor-not-allowed',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-blue text-white hover:bg-hover active:bg-dark-blue disabled:bg-inactive',
+        secondary:
+          'bg-white border text-blue border-solid border-blue hover:border-hover hover:text-hover active:border-dark-blue disabled:text-inactive disabled:border-inactive',
+        tertiary: 'text-blue bg-transparent disabled:text-inactive',
+      },
+      size: {
+        default: 'h-12 py-4 px-8',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'default',
+    },
+  },
+);
 
-const Button: React.FC<ButtonProps> = ({
-  type,
-  label,
-  disabled,
-  imgSrc,
-  fullWidth,
-  btnType = 'button',
-  onClick,
-}) => {
-  const buttonClasses = useMemo(() => {
-    return [
-      styles['btn'],
-      styles[type],
-      disabled && styles.disabled,
-      fullWidth && styles.fullWidth,
-      imgSrc && styles.imgButton,
-    ]
-      .filter(Boolean)
-      .join(' ');
-  }, [type, disabled, imgSrc, fullWidth]);
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
 
+const Button: React.FC<ButtonProps> = ({ variant, size, className, children, ...props }) => {
   return (
-    <button className={buttonClasses} onClick={onClick} disabled={disabled} type={btnType}>
-      {imgSrc && type === 'primary' ? (
-        <div className={styles.contentWrapper}>
-          <img src={imgSrc} alt='button icon' className={styles.img} />
-          {label}
-        </div>
-      ) : (
-        label
-      )}
+    <button className={`${buttonVariants({ variant, size })} ${className}`} {...props}>
+      {children}
     </button>
   );
 };
