@@ -17,6 +17,7 @@ import GoogleSuccessPage from 'src/pages/google-success/GoogleSuccessPage';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 import Notifications from '../components/Notifications/Notifications';
+import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -40,7 +41,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <TestPage />,
+            element: <CreateBookingPage />,
           },
         ],
       },
