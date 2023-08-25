@@ -25,7 +25,7 @@ export class UserService {
     });
   }
 
-  async getAllByParams({ currentPage, filters }: { currentPage: number; filters: UserFiltersDto }) {
+  async getAllByParams({ currentPage, filters }: { currentPage: number; filters: Omit<UserFiltersDto, "currentPage"> }) {
     // Number of users to show per page
     const limit = 5;
 

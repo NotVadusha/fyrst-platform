@@ -18,7 +18,8 @@ export function UserListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const filters: UserFilters = {
-    name: searchParams.get('name'),
+    fist_name: searchParams.get('name')?.split('')[0],
+    last_name: searchParams.get('name')?.split('')[1],
     email: searchParams.get('email'),
     phone: searchParams.get('phone'),
     city: searchParams.get('city'),

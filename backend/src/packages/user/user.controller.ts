@@ -39,7 +39,14 @@ export class UserController {
   }> {
     return this.userService.getAllByParams({
       currentPage: query.currentPage,
-      filters: { ...query },
+      filters: {
+        bithdate: query.bithdate,
+        city: query.city,
+        email: query.email,
+        first_name: query.first_name,
+        is_confirmed: query.is_confirmed,
+        last_name: query.last_name,
+      },
     });
   }
   @Patch(':id')
