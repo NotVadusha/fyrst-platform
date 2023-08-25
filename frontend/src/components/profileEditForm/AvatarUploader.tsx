@@ -18,18 +18,18 @@ export const AvatarUploader = ({
   border,
   isShown,
   setShown,
-  savedImage,
   setImage,
 }: InputProps) => {
-  const [tempImage, setTempImage] = useState(savedImage);
+  const [tempImage, setTempImage] = useState('');
+  const imageInput = useRef(null);
+  const [rangeValue, setRangeValue] = useState(10);
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newImage = URL.createObjectURL(e.target.files[0]);
       setTempImage(newImage);
     }
   };
-  const imageInput = useRef(null);
-  const [rangeValue, setRangeValue] = useState(10);
 
   const onClose = () => {
     imageInput.current = null;
@@ -40,18 +40,10 @@ export const AvatarUploader = ({
     document.getElementById('avatar-image-upload')?.click();
   };
 
-  const onRefChange = useCallback(
-    //Fix img handling
-    node => {
-      if (node !== null) {
-        setImage(savedImage);
-      }
-    },
-    [savedImage],
-  );
-
   const handleSave = async () => {
     if (imageInput.current) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const dataUrl = imageInput.current.getImage().toDataURL();
       const result = await fetch(dataUrl);
       const blob = await result.blob();
@@ -74,6 +66,7 @@ export const AvatarUploader = ({
         className='relative w-fit ml-80 mt-6 px-20 py-10 bg-black'
       >
         <h5 className='text-white font-semibold text-2xl mb-8'>Replace profile picture</h5>
+
         <input
           accept='image/*'
           hidden
@@ -81,6 +74,7 @@ export const AvatarUploader = ({
           type='file'
           onChange={handleImageChange}
         />
+
         <AvatarEditor
           ref={imageInput}
           image={tempImage}
@@ -125,14 +119,7 @@ export const AvatarUploader = ({
           <button className='text-white py-2 px-2 mx-6 rounded-md' onClick={handleUploadImage}>
             Upload image
           </button>
-          <button
-            className='text-white py-2 px-14 rounded-md bg-blue'
-            onClick={() => {
-              handleSave();
-              setImage(tempImage);
-              setShown(false);
-            }}
-          >
+          <button className='text-white py-2 px-14 rounded-md bg-blue' onClick={handleSave}>
             Save
           </button>
         </div>
