@@ -55,9 +55,9 @@ const TimeCardPage = () => {
       <Header title='Timecards'>
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
-            <Button type='secondary' label='Export CSV' eventName='dummy' />
+            <Button variant='secondary'>Export CSV</Button>
             <Link to='.'>
-              <Button type='primary' label='Create booking' eventName='dummy' />
+              <Button variant='primary'>Create new booking</Button>
             </Link>
           </div>
         </div>
