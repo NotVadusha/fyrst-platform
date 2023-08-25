@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './Dropdownd.module.css';
 import { ReactComponent as ArrowIcon } from '../../../../icons/arrow-down.svg';
 import { FormField, FormItem, FormLabel, useFormField } from '../Form';
@@ -82,42 +82,47 @@ const Dropdown = React.forwardRef<HTMLInputElement, DropdownProps>(
       <FormField
         control={control}
         name={name}
-        render={({ field }) => (
-          <div className='relative'>
-            <div className={styles.header} onClick={() => setIsOpen(!isOpen)}>
-              <p className={heading({ type: ddType, hidden: !label })}>{label}</p>
+        render={({ field }) => {
+          const currentOption = useMemo(
+            () => options.find(opt => opt.value === field.value),
+            [field.value, options],
+          );
 
-              <div className={fieldVar({ type: ddType, active: isOpen })}>
-                {field.value ? (
-                  <p className={valueVar({ type: ddType })}>
-                    {options.find(opt => opt.value === field.value)?.label}
-                  </p>
-                ) : (
-                  <p className={styles.placeholder}>{placeholder}</p>
-                )}
-                <ArrowIcon className={arrow({ active: isOpen })} />
+          return (
+            <div className='relative'>
+              <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
+                <p className={heading({ type: ddType, hidden: !label })}>{label}</p>
+
+                <div className={fieldVar({ type: ddType, active: isOpen })}>
+                  {currentOption ? (
+                    <p className={valueVar({ type: ddType })}>{currentOption.label}</p>
+                  ) : (
+                    <p className={styles.placeholder}>{placeholder}</p>
+                  )}
+                  <ArrowIcon className={arrow({ active: isOpen })} />
+                </div>
+              </div>
+              <div className={menuVar({ closed: !isOpen })}>
+                {options.map(opt => (
+                  <FormItem className={styles.option} key={opt.value}>
+                    <FormLabel className='pointer-events-none'>{opt.label}</FormLabel>
+                    <input
+                      {...field}
+                      type='radio'
+                      id={useFormField().formItemId}
+                      value={opt.value}
+                      onChange={() => {
+                        field.onChange(opt.value);
+                        setIsOpen(false);
+                      }}
+                      {...props}
+                    />
+                  </FormItem>
+                ))}
               </div>
             </div>
-            <div className={menuVar({ closed: !isOpen })}>
-              {options.map(opt => (
-                <FormItem className={styles.option} key={opt.value}>
-                  <FormLabel className='pointer-events-none'>{opt.label}</FormLabel>
-                  <input
-                    {...field}
-                    type='radio'
-                    id={useFormField().formItemId}
-                    value={opt.value}
-                    onChange={() => {
-                      field.onChange(opt.value);
-                      setIsOpen(false);
-                    }}
-                    {...props}
-                  />
-                </FormItem>
-              ))}
-            </div>
-          </div>
-        )}
+          );
+        }}
       />
     );
   },
