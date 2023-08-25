@@ -1,7 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TestReducers } from './reducers/test.store';
+import { authApi } from './services';
+
+const rootReducer = combineReducers({
+  test: TestReducers,
+  [authApi.reducerPath]: authApi.reducer,
+});
+
 const store = configureStore({
-  reducer: { test: TestReducers },
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(authApi.middleware),
 });
 
 export default store;
