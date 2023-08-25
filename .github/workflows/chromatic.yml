@@ -18,5 +18,5 @@ jobs:
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
-          working-directory: frontend
+          workingDir: frontend
           projectToken: chpt_364654258a5148b
