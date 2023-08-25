@@ -23,7 +23,7 @@ export const customBaseQuery: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
-> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
+> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: Record<string, unknown>) => {
   await mutex.waitForUnlock();
 
   let result = await baseQuery(args, api, extraOptions);
