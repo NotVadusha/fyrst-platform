@@ -1,4 +1,4 @@
-import { Timecard } from './Models/Timecard';
+import { Timecard } from '../Models/Timecard';
 
 export interface GetAllTimecardsDto {
   items: Timecard[];
