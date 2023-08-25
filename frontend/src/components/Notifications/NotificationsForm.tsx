@@ -42,8 +42,8 @@ const NotificationsForm = () => {
               <Checkbox control={form.control} name='money_sent' label='Sent money success' />
             </div>
           </div>
-          <Button btnType='submit' label='Publish' type='primary' fullWidth>
-            Submit
+          <Button type='submit' className='w-full'>
+            Publish
           </Button>
         </form>
       </Form>

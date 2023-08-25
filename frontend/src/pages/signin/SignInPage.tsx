@@ -8,7 +8,7 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
-import GoogleLogo from '../../icons/google.svg';
+import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
 import { loginSchema } from 'src/lib/validations/login';
 
@@ -80,24 +80,15 @@ const SignInPage = () => {
             <a className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'>
               Forgot password?
             </a>
-
-            <Button
-              fullWidth={true}
-              btnType='submit'
-              label='Sign in'
-              type='primary'
-              disabled={isLoading}
-            />
+            <Button className='w-full' type='submit' disabled={isLoading}>
+              Sign in
+            </Button>
           </form>
         </FormProvider>
-        <Button
-          imgSrc={GoogleLogo}
-          fullWidth={true}
-          btnType='button'
-          label='Sign up with Google'
-          type='primary'
-          onClick={handleClick}
-        />
+        <Button className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+          <GoogleLogo />
+          Sign up with Google
+        </Button>
         <p className='text-body-default text-dark-grey font-semibold'>
           Don&apos;t have an account yet?{' '}
           <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>

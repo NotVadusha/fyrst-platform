@@ -8,7 +8,7 @@ import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordIn
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from 'src/lib/validations/registration';
 import { Button } from 'src/ui/common/Button';
-import GoogleLogo from '../../icons/google.svg';
+import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
 import { useNavigate } from 'react-router-dom';
 
@@ -77,24 +77,15 @@ const SignUpPage = () => {
             <TextInput control={control} name='email' label='Email' type='text' disabled={false} />
             <PasswordInput control={control} name='password' label='Password' />
             <PasswordInput control={control} name='confirmPassword' label='Confirm password' />
-
-            <Button
-              fullWidth={true}
-              btnType='submit'
-              label='Sign up'
-              type='primary'
-              disabled={isLoading}
-            />
+            <Button className='w-full' type='submit' disabled={isLoading}>
+              Sign up
+            </Button>
           </form>
         </FormProvider>
-        <Button
-          imgSrc={GoogleLogo}
-          fullWidth={true}
-          btnType='button'
-          label='Sign up with Google'
-          type='primary'
-          onClick={handleClick}
-        />
+        <Button className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+          <GoogleLogo />
+          Sign up with Google
+        </Button>
         <p className='text-body-default text-dark-grey font-semibold'>
           Already have an account?{' '}
           <a href='./signin' className='decoration-transparent text-blue hover:cursor-pointer'>
