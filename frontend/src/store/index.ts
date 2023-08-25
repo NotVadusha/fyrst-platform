@@ -1,18 +1,25 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TestReducers } from './reducers/test.store';
 import { authApi } from './services';
+import { resetPasswordApi } from './services/reset-password.service';
+import resetPasswordSlice from './reducers/reset-password.store';
 import { apiSlice } from './services/apiSlice';
 
 const rootReducer = combineReducers({
   test: TestReducers,
+  resetPassword: resetPasswordSlice,
   [authApi.reducerPath]: authApi.reducer,
+  [resetPasswordApi.reducerPath]: resetPasswordApi.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(authApi.middleware).concat(apiSlice.middleware),
+    getDefaultMiddleware()
+      .concat(authApi.middleware)
+      .concat(resetPasswordApi.middleware)
+      .concat(apiSlice.middleware),
 });
 
 export default store;

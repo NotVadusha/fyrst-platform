@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { registrationSchema } from 'src/lib/validations/registration';
+import { registrationSchema } from 'src/lib/validation-schemas/authentication/registration';
 import { Button } from 'src/ui/common/Button';
 import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
@@ -83,7 +83,7 @@ const SignUpPage = () => {
             </Button>
           </form>
         </FormProvider>
-        <Button className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+        <Button variant='tertiary' className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
           <GoogleLogo />
           Sign up with Google
         </Button>
