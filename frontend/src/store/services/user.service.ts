@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseUrl } from 'src/routes/routes';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { User } from 'types';
 import { UserFilters } from 'types/UserFilters';
+import { baseQuery } from './helpers/baseQuery';
 
 export interface getUsersQueryParams {
   currentPage: number;
@@ -15,7 +15,7 @@ interface getUsersPayload {
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: baseQuery,
   endpoints: builder => ({
     getUsers: builder.query<getUsersPayload, getUsersQueryParams>({
       query: args => {
