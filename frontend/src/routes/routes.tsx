@@ -13,11 +13,15 @@ import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
 import SignUpPage from 'src/pages/signup/SignUpPage';
-import GoogleSuccessPage from 'src/pages/google-success/GoogleSuccessPage';
+import SuccessGoogleAuthPage from 'src/pages/success-google-auth/SuccessGoogleAuthPage';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
+import ForgotPage from 'src/pages/forgot/ForgotPage';
+import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
+import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
 import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
+import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -41,7 +45,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <TestPage />,
+            element: <CreateBookingPage />,
           },
         ],
       },
@@ -174,24 +178,24 @@ export const router = createBrowserRouter([
         element: <SignInPage />,
       },
       {
+        path: 'forgot/email-sended',
+        element: <EmailSendedPage />,
+      },
+      {
         path: 'forgot',
-        element: <TestPage />,
+        element: <ForgotPage />,
       },
       {
         path: 'reset',
-        element: <TestPage />,
-      },
-      {
-        path: 'reset/:key',
-        element: <TestPage />,
+        element: <ResetPage />,
       },
       {
         path: 'signup',
         element: <SignUpPage />,
       },
       {
-        path: 'google-sucess',
-        element: <GoogleSuccessPage />,
+        path: 'google-success',
+        element: <SuccessGoogleAuthPage />,
       },
     ],
   },

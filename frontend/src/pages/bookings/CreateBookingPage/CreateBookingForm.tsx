@@ -1,29 +1,28 @@
-import * as React from 'react';
+import React from 'react';
 
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem, FormLabel, FormMessage } from './ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { timecardSchema } from '../lib/validation-schemas/timecard';
 import { Button } from 'src/ui/common/Button';
-import TextInput from './ui/common/TextInput/TextInput';
-import { baseUrl } from 'src/routes/routes';
-
 import { useSubmit } from 'react-router-dom';
+import { bookingSchema } from 'src/lib/validations/booking';
+import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
+import TextInput from 'src/components/ui/common/TextInput/TextInput';
 
-type Inputs = y.InferType<typeof timecardSchema>;
-
-export function CreateTimeCardForm() {
+type Inputs = y.InferType<typeof bookingSchema>;
+export function CreateBookingForm() {
   const submit = useSubmit();
 
   const form = useForm<Inputs>({
-    resolver: yupResolver(timecardSchema),
+    resolver: yupResolver(bookingSchema),
     defaultValues: {
-      type: 'something',
-      employeeName: 'Dan',
-      facility: 'Driver',
-      managerName: 'Nick',
-      lunchTaken: '2 hours',
+      employersName: 'Jhon doe',
+      facility: 'Healthcare worker',
+      positionsAvailable: 9,
+      payPerHour: 8,
+      startDate: '2023-08-08',
+      endDate: '2023-08-08',
+      notes: 'Hello world',
     },
   });
 
@@ -43,29 +42,14 @@ export function CreateTimeCardForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name='type'
+          name='employersName'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
                 type='text'
-                id='text'
-                label='Timecard type'
-                {...field}
-              />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='employeeName'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <TextInput
-                control={form.control}
-                type='text'
-                id='employeeName'
-                label="Employee's name"
+                id='employersName'
+                label="Employer's name"
                 {...field}
               />
             </FormItem>
@@ -88,14 +72,14 @@ export function CreateTimeCardForm() {
         />
         <FormField
           control={form.control}
-          name='managerName'
+          name='positionsAvailable'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
-                id='managerName'
-                label='Facility Manager name'
+                type='number'
+                id='positionsAvailable'
+                label='Positions available'
                 {...field}
               />
             </FormItem>
@@ -103,14 +87,14 @@ export function CreateTimeCardForm() {
         />
         <FormField
           control={form.control}
-          name='hoursWorked'
+          name='payPerHour'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
-                id='hoursWorked'
-                label='Hours Worked'
+                type='number'
+                id='payPerHour'
+                label='Pay per hour'
                 {...field}
               />
             </FormItem>
@@ -118,16 +102,40 @@ export function CreateTimeCardForm() {
         />
         <FormField
           control={form.control}
-          name='lunchTaken'
+          name='startDate'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
-                id='lunchTaken'
-                label='Lunch Taken'
+                type='date'
+                id='startDate'
+                label='Start date'
                 {...field}
               />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='endDate'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput
+                control={form.control}
+                type='date'
+                id='endDate'
+                label='End date'
+                {...field}
+              />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='notes'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput control={form.control} type='text' id='notes' label='Notes' {...field} />
             </FormItem>
           )}
         />
