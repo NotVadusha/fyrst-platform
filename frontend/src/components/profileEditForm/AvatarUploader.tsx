@@ -42,7 +42,7 @@ export const AvatarUploader = ({
 
   const handleSave = async () => {
     if (tempImage && imageInput.current) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const dataUrl = imageInput.current.getImage().toDataURL();
       const result = await fetch(dataUrl);
