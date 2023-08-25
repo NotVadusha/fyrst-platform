@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import BookingPage from '../pages/bookings/BookingPage';
 import TimeCardPage from '../pages/timecards/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
+import ProfileEditPage from '../pages/profiles/ProfileEditPage';
 import MessangerPage from '../pages/messanger/MessangerPage';
 import PaymentsPage from '../pages/payments/PaymentsPage';
 import SignInPage from '../pages/signin/SignInPage';
