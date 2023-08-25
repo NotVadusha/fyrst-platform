@@ -10,6 +10,19 @@ export interface NavItem {
   items?: NavItem[];
 }
 
+export interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number?: string | null;
+  city?: string | null;
+  birthdate?: string | null;
+  password?: string | null;
+  is_confirmed: boolean;
+  role_id: string;
+}
+
 // export interface NavItemWithChildren extends NavItem {
 //   items: NavItem[];
 // }

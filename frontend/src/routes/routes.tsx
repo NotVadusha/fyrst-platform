@@ -14,6 +14,7 @@ import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
+import { UserListPage } from 'src/pages/users/UserListPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -155,6 +156,16 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <EmployesPage />,
+          },
+        ],
+      },
+      {
+        path: 'users',
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            element: <UserListPage />,
           },
         ],
       },
