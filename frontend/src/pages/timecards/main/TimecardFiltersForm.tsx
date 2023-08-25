@@ -83,52 +83,6 @@ export function TimecardFiltersForm({
           </div>
 
           <div className='flex flex-col gap-y-2'>
-            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
-              Created by
-            </label>
-            <FormField
-              control={form.control}
-              name='createdBy'
-              render={({ field }) => (
-                <FormItem>
-                  <TextInput
-                    control={form.control}
-                    type='number'
-                    id='createdBy'
-                    label='createdBy'
-                    {...field}
-                    onChange={handleInputChange}
-                  />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='flex flex-col gap-y-2'>
-            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
-              Approved by
-            </label>
-            <FormField
-              control={form.control}
-              name='approvedBy'
-              render={({ field }) => (
-                <FormItem>
-                  {/*eslint-disable-next-line */}
-                  {/*@ts-ignore*/}
-                  <TextInput
-                    control={form.control}
-                    type='number'
-                    id='approvedBy'
-                    label='approvedBy'
-                    {...field}
-                    onChange={handleInputChange}
-                  />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='flex flex-col gap-y-2'>
             <label className='text-body-default text-blue font-medium' htmlFor='status'>
               Status
             </label>
