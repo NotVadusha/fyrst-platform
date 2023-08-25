@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './helpers/baseQuery';
 import { GetAllTimecardsDto } from '../../../types/GetAllTimecardsDto';
-import { TimecardFilters } from '../../../types/TimecardFilters';
+import { TimecardFilters } from '../../../types/Dto/TimecardFiltersDto';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
