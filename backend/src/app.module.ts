@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { sequelizeDevelopmentConfig } from 'src/config';
+import { ConfigModule } from '@nestjs/config';
 
 import {
   EmailConfirmationModule,
@@ -17,6 +18,7 @@ import {
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '../.env.dev' }),
     SequelizeModule.forRoot(sequelizeDevelopmentConfig),
     RolesModule,
     UserModule,
