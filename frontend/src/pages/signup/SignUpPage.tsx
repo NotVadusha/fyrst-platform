@@ -83,7 +83,12 @@ const SignUpPage = () => {
             </Button>
           </form>
         </FormProvider>
-        <Button variant='tertiary' className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+        <Button
+          variant='tertiary'
+          className='w-full flex items-center gap-2'
+          type='button'
+          onClick={handleClick}
+        >
           <GoogleLogo />
           Sign up with Google
         </Button>
