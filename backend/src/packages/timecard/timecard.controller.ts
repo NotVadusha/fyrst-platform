@@ -13,7 +13,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { TimecardStatus } from 'shared/timecard-status';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
@@ -39,26 +38,9 @@ export class TimecardController {
   }
 
   @Get()
-  async getAllFiltered(
-    @Query('limit') limit = Number.MAX_SAFE_INTEGER,
-    @Query('offset') offset = 0,
-    @Query('createdAt') createdAt?: Date,
-    @Query('approvedAt') approvedAt?: Date,
-    @Query('createdBy') createdBy?: number,
-    @Query('approvedBy') approvedBy?: number | null,
-    @Query('status') status?: TimecardStatus,
-  ) {
+  async getAllFiltered(@Query() query: TimecardFiltersDto) {
     try {
-      const filters = new TimecardFiltersDto();
-      Object.assign(filters, {
-        createdAt,
-        approvedAt,
-        status,
-        createdBy: +createdBy,
-        approvedBy: +approvedBy,
-      });
-
-      const timecards = await this.timecardService.getAllFiltered(filters, limit, offset);
+      const timecards = await this.timecardService.getAllFiltered(query);
       this.logger.log('Successfully got all timecards');
 
       return timecards;
