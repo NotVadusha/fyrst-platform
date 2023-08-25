@@ -4,6 +4,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
+import { UserFiltersDto } from './dto/user-filters.dto';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -23,17 +25,58 @@ export class UserService {
     });
   }
 
-  async getAllByParams({ currentPage }) {
+  async getAllByParams({ currentPage, filters }: { currentPage: number; filters: UserFiltersDto }) {
+    Object.keys(filters).forEach(
+      key =>
+        (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
+        delete filters[key],
+    );
+
     // Number of users to show per page
     const limit = 5;
 
     // To skip per page
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
-    return await this.userRepository.findAll({
+    const users = await this.userRepository.findAll({
+      where: {
+        ...filters,
+        first_name: {
+          [Op.substring]: filters.first_name ?? '',
+        },
+        last_name: {
+          [Op.substring]: filters.last_name ?? '',
+        },
+        email: {
+          [Op.substring]: filters.email ?? '',
+        },
+        city: {
+          [Op.substring]: filters.city ?? '',
+        },
+      },
       limit,
       offset,
     });
+
+    const totalCount = await this.userRepository.count({
+      where: {
+        ...filters,
+        first_name: {
+          [Op.substring]: filters.first_name ?? '',
+        },
+        last_name: {
+          [Op.substring]: filters.last_name ?? '',
+        },
+        email: {
+          [Op.substring]: filters.email ?? '',
+        },
+        city: {
+          [Op.substring]: filters.city ?? '',
+        },
+      },
+    });
+
+    return { users, totalCount };
   }
 
   async findOne(userId: number) {

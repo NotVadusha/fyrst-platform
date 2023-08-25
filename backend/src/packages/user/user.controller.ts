@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { UserFiltersDto } from './dto/user-filters.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -32,10 +33,34 @@ export class UserController {
     return user;
   }
   @Get()
-  async getAllByParams(@Query('currentPage', ParseIntPipe) currentPage: number): Promise<User[]> {
-    console.log(currentPage);
+  async getAllByParams(
+    @Query('currentPage', ParseIntPipe) currentPage: number,
+    @Query('name') name: string = '',
+    @Query('email') email: string = '',
+    @Query('city') city: string = '',
+    @Query('emailConfirmed') is_confirmed?: boolean,
+    @Query('birthDate') birthdate?: Date,
+  ): Promise<{
+    users: User[];
+    totalCount: number;
+  }> {
+    const filters = new UserFiltersDto();
+
+    const [first_name, last_name] = name.split(' ');
+
+    Object.assign(filters, {
+      first_name,
+      last_name,
+      email,
+      city,
+      is_confirmed,
+      birthdate,
+    });
+
+    console.log(filters);
+
     // data: User[], total: number
-    return this.userService.getAllByParams({ currentPage });
+    return this.userService.getAllByParams({ currentPage, filters });
   }
   @Patch(':id')
   async update(

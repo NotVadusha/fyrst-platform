@@ -2,7 +2,7 @@ import React, { MouseEventHandler, useMemo } from 'react';
 import styles from './Button.module.css';
 import { VariantProps, cva } from 'class-variance-authority';
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'text-base flex align-middle inline-block justify-center items-center relative rounded-lg cursor-pointer !leading-none disabled:cursor-not-allowed',
   {
     variants: {
