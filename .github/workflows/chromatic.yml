@@ -1,0 +1,16 @@
+name: 'Chromatic Publish'
+
+on:
+  pull_request:
+    branches: ['main', 'develop']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm
+      - uses: chromaui/action@v1
+        with:
+          projectToken: chpt_364654258a5148b
