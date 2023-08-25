@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfileEditForm } from '../../components/ui/profileEditForm/ProfileEditForm';
+import { ProfileEditForm } from 'src/components/profileEditForm/ProfileEditForm';
 const ProfileEditPage = () => {
   return (
     <>

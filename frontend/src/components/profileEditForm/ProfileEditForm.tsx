@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '../common/Form';
+import { Form, FormField, FormItem, FormLabel } from 'src/components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { Button } from '../../../ui/common/Button';
-import TextInput from '../common/TextInput/TextInput';
-import { profileSchema } from '../../../lib/validations/profile';
+import { Button } from 'src/ui/common/Button';
+import TextInput from 'src/components/ui/common/TextInput/TextInput';
+import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
-import styles from './PhoneInput.module.css';
 import CustomPhoneInput from './CustomPhoneInput';
-import { Dropdown } from '../common/Dropdown/Dropdown';
-import { useRef } from 'react';
-const src =
-  'https://media.gettyimages.com/id/1410292561/photo/portrait-of-smiling-elderly-bald-man.jpg?s=612x612&w=gi&k=20&c=2EpnI1qluV0iRGpjBo6xEeNAgiVwcUNCcSI-6kYHFIU=';
+import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -20,6 +16,9 @@ export function ProfileEditForm() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [avatarImage, setAvatarImage] = useState('');
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
+  const [selectedYear, setYear] = useState('2000');
+  const [selectedMonth, setMonth] = useState('1');
+  const [selectedDay, setDay] = useState('1');
 
   const form = useForm<Inputs>({
     resolver: yupResolver(profileSchema),
@@ -40,9 +39,9 @@ export function ProfileEditForm() {
   const openAvatarEditor = () => {
     setAvatarEditorShown(true);
   };
-  const days = ['1', '2'];
-  const monthes = ['December'];
-  const years = ['2000', '2001'];
+  const years = [...Array(100)].map(year => (2000 - year).toString()); // Change the range as needed
+  const months = [...Array(12)].map(month => (month + 1).toString());
+  const days = [...Array(31)].map(day => (day + 1).toString());
   return (
     <>
       {isAvatarEditorShown ? (
@@ -59,13 +58,8 @@ export function ProfileEditForm() {
         <div className='w-128 p-8 bg-white mx-20 shadow-xl'>
           <div className='pb-8'>
             <img
-              src={
-                avatarImage
-                  ? avatarImage
-                  : 'https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png'
-              }
-              alt='profileImg'
-              className='w-32 h-32 rounded-full mx-auto'
+              src={avatarImage}
+              className='w-32 h-32 rounded-full mx-auto border border-placeholder'
             />
             <p
               className='cursor-pointer w-fit mx-auto pt-4 text-blue body-small font-medium'
@@ -160,21 +154,21 @@ export function ProfileEditForm() {
                     <div className='flex flex-row'></div>
                     <FormItem>
                       <Dropdown
-                        defaultValue={days[0]}
+                        defaultValue={selectedDay}
                         options={days}
                         label=''
                         placeholder='Day'
                         namespace=''
                       />
                       <Dropdown
-                        defaultValue={monthes[0]}
-                        options={monthes}
+                        defaultValue={selectedMonth}
+                        options={months}
                         label=''
                         placeholder='Month'
                         namespace=''
                       />
                       <Dropdown
-                        defaultValue={years[0]}
+                        defaultValue={selectedYear}
                         options={years}
                         label=''
                         placeholder='Year'
@@ -185,13 +179,7 @@ export function ProfileEditForm() {
                 )}
               ></FormField>
 
-              <Button
-                btnType='submit'
-                eventName='submit'
-                label='Save'
-                type='primary'
-                fullWidth={true}
-              >
+              <Button type='submit' className='w-full'>
                 Submit
               </Button>
             </form>

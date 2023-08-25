@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import styles from './PhoneInput.module.css';
 
-import { FormItem, FormLabel, FormMessage, useFormField, FormField } from '../common/Form'; // Update this path accordingly
+import {
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useFormField,
+  FormField,
+} from 'src/components/ui/common/Form';
 import PhoneInput from 'react-phone-input-2';
 
 export interface PhoneInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

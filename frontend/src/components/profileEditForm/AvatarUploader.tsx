@@ -41,15 +41,15 @@ export const AvatarUploader = ({
   };
 
   const handleSave = async () => {
-    if (imageInput.current) {
+    if (tempImage && imageInput.current) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const dataUrl = imageInput.current.getImage().toDataURL();
       const result = await fetch(dataUrl);
       const blob = await result.blob();
       setImage(URL.createObjectURL(blob));
-      setShown(false);
     }
+    setShown(false);
   };
 
   if (!isShown) return <></>;
