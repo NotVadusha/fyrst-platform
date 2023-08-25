@@ -5,16 +5,19 @@ import TimeCardPage from '../pages/timecards/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
 import MessangerPage from '../pages/messanger/MessangerPage';
 import PaymentsPage from '../pages/payments/PaymentsPage';
-import AuthPage from '../pages/authentication/AuthPage';
+import SignInPage from '../pages/signin/SignInPage';
 import EmployesPage from '../pages/EmployesPage';
 import ErrorPage from '../pages/common/ErrorPage';
 import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
+import SignUpPage from 'src/pages/signup/SignUpPage';
+import GoogleSuccessPage from 'src/pages/google-success/GoogleSuccessPage';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 import { UserListPage } from 'src/pages/users/UserListPage';
+import Notifications from '../components/Notifications/Notifications';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -117,7 +120,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'notifications',
-            element: <TestPage />,
+            element: <Notifications />,
           },
           {
             path: 'security',
@@ -173,13 +176,12 @@ export const router = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        path: 'login',
-        element: <AuthPage />,
+        path: 'signin',
+        element: <SignInPage />,
       },
       {
         path: 'forgot',
@@ -195,7 +197,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'signup',
-        element: <TestPage />,
+        element: <SignUpPage />,
+      },
+      {
+        path: 'google-sucess',
+        element: <GoogleSuccessPage />,
       },
     ],
   },

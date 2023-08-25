@@ -1,10 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TestReducers } from './reducers/test.store';
 import { userApi } from './services/user.service';
+import { authApi } from './services';
+
+const rootReducer = combineReducers({
+  test: TestReducers,
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer
+});
 
 const store = configureStore({
-  reducer: { test: TestReducers, [userApi.reducerPath]: userApi.reducer },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(userApi.middleware),
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(authApi.middleware, userApi.middleware),
 });
 
 export default store;
