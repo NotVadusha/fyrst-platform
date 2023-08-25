@@ -20,6 +20,7 @@ jobs:
         working-directory: frontend
       - uses: chromaui/action-canary@v1
         with:
+          workingDir: frontend
           exitOnceUploaded: true
           onlyChanged: true
           traceChanged: true
