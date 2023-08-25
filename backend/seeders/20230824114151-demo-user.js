@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.bulkInsert("Users", [
+    return queryInterface.bulkInsert('Users', [
       {
         id: 14113,
         first_name: 'Tom',
@@ -101,9 +101,8 @@ module.exports = {
         password: 'michaelPass789',
         role_id: 1,
         phone_number: '+49123456789',
-      }
-      
-    ])
+      },
+    ]);
   },
 
   async down(queryInterface, Sequelize) {
