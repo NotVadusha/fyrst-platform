@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ColumnInfo } from 'src/ui/common/Table/Table';
 import { Timecard } from 'types/timecard';
 
@@ -14,6 +15,14 @@ export function StatusCell({ item }: { item: Timecard }) {
     <span className={statusColors[item.status]}>
       {item.status.charAt(0).toLocaleUpperCase() + item.status.slice(1)}
     </span>
+  );
+}
+
+export function ViewMoreCell({ item }: { item: Timecard }) {
+  return (
+    <Link className='text-blue underline' to={`./view/${item.id}`}>
+      View more
+    </Link>
   );
 }
 
@@ -45,5 +54,9 @@ export const timecardsTableColumns: ColumnInfo<Timecard>[] = [
   {
     columnName: 'Status',
     cellComponent: StatusCell,
+  },
+  {
+    columnName: 'View more',
+    cellComponent: ViewMoreCell,
   },
 ];

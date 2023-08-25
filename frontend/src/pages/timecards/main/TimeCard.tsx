@@ -5,7 +5,7 @@ import { Button } from 'src/ui/common/Button';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
 import Table from 'src/ui/common/Table/Table';
 import { TimecardFiltersForm } from './TimecardFiltersForm';
-import { timecardsTableColumns } from './timecards-table-config';
+import { timecardsTableColumns } from './timecardsTableConfig';
 import { useFetchTimecardsQuery } from '../../../store/services/apiSlice';
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFilters } from '../../../../types/TimecardFilters';
