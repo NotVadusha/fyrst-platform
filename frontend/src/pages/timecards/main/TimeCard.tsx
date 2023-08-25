@@ -8,7 +8,7 @@ import { TimecardFiltersForm } from './TimecardFiltersForm';
 import { timecardsTableColumns } from './timecardsTableConfig';
 import { useFetchTimecardsQuery } from '../../../store/reducers/timecards/timecardsApi';
 import { useSearchParams } from 'react-router-dom';
-import { TimecardFiltersDto } from '../../../../types/Dto/TimecardFiltersDto';
+import { TimecardFiltersDto } from '../../../../types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
 
 const LIMIT = 5;

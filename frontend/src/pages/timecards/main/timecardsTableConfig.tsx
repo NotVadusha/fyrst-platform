@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ColumnInfo } from '../../../ui/common/Table/Table';
-import { Timecard } from '../../../../types/Models/Timecard';
+import { Timecard } from '../../../../types/models/Timecard';
 
 const statusColors = {
   pending: 'text-hover',
