@@ -9,8 +9,8 @@ const Notifications = () => {
     <div>
       <Header title='Profile'>
         <div className='flex justify-end space-x-6 w-full'>
-          <Button type='secondary' label='Export CVS' />
-          <Button type='primary' label='Create booking' />
+          <Button variant='secondary'>Export CVS</Button>
+          <Button variant='secondary'>Create booking</Button>
         </div>
       </Header>
 
