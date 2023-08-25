@@ -43,9 +43,9 @@ services:
   redis:
     image: redis:latest
     ports: 
-      - ${REDIS_PORT}:6379
+      - ${REDIS_PORT}:${REDIS_PORT}
     env_file: ./.env.dev
-    command: redis-server --requirepass ${REDIS_PASS}
+    command: redis-server --requirepass ${REDIS_PASS} --port ${REDIS_PORT}
 
   rabbitmq:
     image: rabbitmq:3.12.3-management

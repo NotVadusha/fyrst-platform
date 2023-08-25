@@ -9,7 +9,3 @@ export interface NavItem {
   icon?: React.FunctionComponent<SVGIconProps>;
   items?: NavItem[];
 }
-
-// export interface NavItemWithChildren extends NavItem {
-//   items: NavItem[];
-// }

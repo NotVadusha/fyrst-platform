@@ -85,7 +85,7 @@ export class AuthController {
         secure: false,
       });
     }
-    res.redirect('http://localhost:3000/google-sucess');
+    res.redirect(process.env.GOOGLE_AUTH_SUCCESS_URL);
   }
 
   @Get('hello')
