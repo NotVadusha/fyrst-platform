@@ -163,8 +163,8 @@ const NotificationsForm = () => {
             </div>
           </div>
 
-          <Button btnType='submit' label='Publish' type='primary' fullWidth>
-            Submit
+          <Button type='submit' className='w-full'>
+            Publish
           </Button>
         </form>
       </Form>
