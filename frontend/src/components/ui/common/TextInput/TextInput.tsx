@@ -1,7 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './TextInput.module.css';
+import { cva } from 'class-variance-authority';
 
-import { FormItem, FormLabel, FormMessage, useFormField, FormField } from '../Form';
+import { FormItem, FormLabel, FormMessage, useFormField, FormField, FormControl } from '../Form';
+
+const labelVariants = cva(styles.label, {
+  variants: {
+    active: {
+      true: styles.active,
+      false: '',
+    },
+  },
+});
+
+const inputVariants = cva(styles.input, {
+  variants: {
+    invalid: {
+      true: styles.invalid,
+      false: '',
+    },
+  },
+});
 
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
@@ -11,37 +30,26 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
 }
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({ control, name, label, type, disabled, onFocus, onBlur, className, ...props }, ref) => {
-    const [isFocused, setIsFocused] = useState(false);
-
+  ({ control, name, label, type, disabled, className, ...props }, ref) => {
     return (
       <FormField
         control={control}
         name={name}
         render={({ field }) => (
           <FormItem className={styles.wrapper}>
-            <FormLabel
-              className={`${styles.label} ${
-                field.value ? styles.active : ''
-              } ${className} pointer-events-none`}
-            >
-              {label}
-            </FormLabel>
-            <input
-              {...field}
-              type={type}
-              id={useFormField().id}
-              className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
-              placeholder=''
-              disabled={disabled}
-              onFocus={e => {
-                onFocus?.(e);
-                setIsFocused(true);
-              }}
-              onBlur={() => setIsFocused(false)}
-              {...props}
-              ref={ref}
-            />
+            <FormControl>
+              <input
+                {...field}
+                type={type}
+                id={useFormField().formItemId}
+                className={`${inputVariants({ invalid: !!useFormField().error })} ${className}`}
+                disabled={disabled}
+                value={field.value || ''}
+                ref={ref}
+                {...props}
+              />
+              <FormLabel className={labelVariants({ active: !!field.value })}>{label}</FormLabel>
+            </FormControl>
             <FormMessage className={styles.error} />
           </FormItem>
         )}
