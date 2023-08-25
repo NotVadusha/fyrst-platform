@@ -100,7 +100,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           return (
             <div className={`${className} relative`} ref={combinedRef}>
               <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
-                <p className={heading({ type: ddType, hidden: !label })}>{label}</p>
+                <p className={heading({ type: ddType, hidden: !currentOption })}>{label}</p>
 
                 <div className={fieldVar({ type: ddType, active: isOpen })}>
                   {currentOption ? (

@@ -6,10 +6,10 @@
   @apply font-medium text-blue;
 }
 .heading.in-form {
-  @apply absolute text-xs left-3 top-1 text-grey;
+  @apply absolute text-xs left-3 top-1 text-grey transition-transform transition-opacity;
 }
 .heading.in-form.hidden {
-  @apply opacity-0;
+  @apply opacity-0 translate-y-1;
 }
 .heading.default {
   @apply text-blue mb-1;
@@ -39,6 +39,9 @@
 
 .placeholder {
   @apply text-sm text-grey font-medium leading-none;
+}
+.placeholder.in-form {
+  @apply translate-y-1;
 }
 
 .arrow {
