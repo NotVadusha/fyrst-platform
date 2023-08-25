@@ -5,6 +5,7 @@ import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { UserService } from '../user/user.service';
 import { FacilityService } from '../facility/facility.service';
 import { FilterBookingDto } from './dto/filter-booking.dto';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class BookingService {
@@ -29,7 +30,7 @@ export class BookingService {
   }
 
   async findAll() {
-    const bookings = await this.bookingRepository.findAll();
+    const bookings = await this.bookingRepository.findAll({ include: [User] });
     this.logger.log(`Retrieved ${bookings.length} bookings`, { bookings });
     return bookings;
   }
