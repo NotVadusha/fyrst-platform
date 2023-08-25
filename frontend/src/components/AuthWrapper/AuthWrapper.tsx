@@ -6,7 +6,7 @@ type AuthWrapperProps = {
   text?: string
 }
 
-const AuthWrapper: React.FC<AuthWrapperProps> = ({children, image, text}) => {
+const AuthWrapper: React.FC<AuthWrapperProps> = ({ children, image, text }) => {
   return (
     <div className='h-screen w-screen flex flex-row'>
       <section className='flex items-center justify-center w-full md:w-1/2 bg-white'>

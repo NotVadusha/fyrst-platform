@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
-import authImage from '../../assets/authimage.png'
+import authImage from '../../assets/authimage.png';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup'
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,23 +8,23 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
-import GoogleLogo from '../../icons/google.svg';
+import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
 import { loginSchema } from 'src/lib/validation-schemas/authentication/login';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
 const SignInPage = () => {
-  const [login, {isLoading, error, data}] = authApi.useLoginMutation()
+  const [login, { isLoading, error, data }] = authApi.useLoginMutation();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const form = useForm<LoginInputs>({
     resolver: yupResolver(loginSchema),
     mode: 'onTouched',
     defaultValues: {
       email: '',
-      password: ''
+      password: '',
     },
   });
 
@@ -34,25 +34,24 @@ const SignInPage = () => {
     try {
       const body = {
         email: data.email,
-        password: data.password
-      }
-  
-      login(body)
+        password: data.password,
+      };
+
+      login(body);
+    } catch {
+      console.log(error);
     }
-    catch {
-      console.log(error)
-    }
-  }
+  };
 
   const handleClick = () => {
-    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`)
-  }
+    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`);
+  };
 
   useEffect(() => {
-    if(data) {
-      localStorage.setItem('accessToken', data.accessToken)
-      localStorage.setItem('refreshToken', data.refreshToken)
-      navigate('/')
+    if (data) {
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      navigate('/');
     }
   }, [data])
   
@@ -81,11 +80,22 @@ const SignInPage = () => {
 
             <a href='./forgot' className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'>Forgot password?</a>
 
-            <Button fullWidth={true} btnType='submit' label='Sign in' type='primary' disabled={isLoading}/>
+            <Button className='w-full' type='submit' disabled={isLoading}>
+              Sign in
+            </Button>
           </form>
         </FormProvider>
-        <Button imgSrc={GoogleLogo} fullWidth={true} btnType='button' label='Sign up with Google' type='primary' onClick={handleClick}/>
-        <p className='text-body-default text-dark-grey font-semibold'>Don&apos;t have an account yet? <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>Register now.</a></p>
+        <Button variant='tertiary' className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+          <GoogleLogo />
+          Sign up with Google
+        </Button>
+
+        <p className='text-body-default text-dark-grey font-semibold'>
+          Don&apos;t have an account yet?{' '}
+          <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>
+            Register now.
+          </a>
+        </p>
       </div>
     </AuthWrapper>
   );

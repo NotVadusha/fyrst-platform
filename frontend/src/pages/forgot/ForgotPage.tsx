@@ -59,7 +59,7 @@ const ForgotPage = () => {
               disabled={false}
             />
 
-            <Button fullWidth={true} btnType='submit' label='Send reset link' type='primary' disabled={isLoading}/>
+            <Button className='w-full' variant="primary" size="default" type='submit' disabled={isLoading}>Send reset link</Button>
           </form>
         </FormProvider>
       </div>

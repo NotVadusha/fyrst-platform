@@ -39,7 +39,7 @@ const EmailSendedPage = () => {
         
             
         <a className='mb-6' href='/auth/signin'>
-          <Button fullWidth={true} btnType='submit' label='Sign in' type='primary'/>
+          <Button className='w-full' variant="primary" size="default">Sign in</Button>
         </a>
 
         <p className='text-body-default text-dark-grey font-semibold mb-8'>Don’t receive the link? <span className='text-blue cursor-pointer' onClick={handleClick}>Resend.</span></p>

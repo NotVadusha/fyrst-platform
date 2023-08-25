@@ -76,7 +76,7 @@ const ResetPage = () => {
               label='Confirm password'
             />
 
-            <Button fullWidth={true} btnType='submit' label='Confirm new password' type='primary' disabled={isLoading}/>
+            <Button className='w-full' variant="primary" size="default" type='submit' disabled={isLoading}>Confirm new password</Button>
           </form>
         </FormProvider>
       </div>
