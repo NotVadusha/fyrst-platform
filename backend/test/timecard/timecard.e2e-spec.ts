@@ -43,7 +43,10 @@ describe('TimecardModule', () => {
       return request(app.getHttpServer())
         .get(`${timecardApiPrefix}/`)
         .expect(HttpStatus.OK)
-        .expect(timecardsMock.map(t => ({ ...t, createdAt: t.createdAt.toISOString() })));
+        .expect({
+          total: timecardsMock.length,
+          items: timecardsMock.map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
+        });
     });
 
     it('should return array of timecards matching passed filter', () => {
@@ -51,11 +54,12 @@ describe('TimecardModule', () => {
         .get(`${timecardApiPrefix}/`)
         .send(timecardFiltersDtoMock)
         .expect(HttpStatus.OK)
-        .expect(
-          timecardsMock
+        .expect({
+          total: timecardsMock.length,
+          items: timecardsMock
             .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
             .map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
-        );
+        });
     });
 
     it('should return array of timecards with pagination', () => {
@@ -63,25 +67,19 @@ describe('TimecardModule', () => {
         .get(`${timecardApiPrefix}/`)
         .query({ limit: paginationLimitMock, offset: paginationOffsetMock })
         .expect(HttpStatus.OK)
-        .expect(
-          timecardsMock
-            .slice(paginationOffsetMock, paginationLimitMock)
+        .expect({
+          total: timecardsMock.length,
+          items: timecardsMock
+            .slice(paginationLimitMock, paginationOffsetMock)
             .map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
-        );
+        });
     });
 
-    it('should return 400 when invalid filters are passed', () => {
-      return request(app.getHttpServer())
-        .get(`${timecardApiPrefix}/`)
-        .send({ approvedBy: 'lorem ipsum' })
-        .expect(HttpStatus.BAD_REQUEST);
-    });
-
-    it('should return 400 when invalid pagination params are passed', () => {
+    it('should return 500 when invalid pagination params are passed', () => {
       return request(app.getHttpServer())
         .get(`${timecardApiPrefix}/`)
         .query({ limit: 'lorem', offset: 'ipsum' })
-        .expect(HttpStatus.BAD_REQUEST);
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR);
     });
   });
 

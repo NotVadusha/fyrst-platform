@@ -27,7 +27,7 @@ export function Pagination({ value, totalCount, siblingsCount, onChange }: Pagin
   }
 
   const visiblePages: number[] = [];
-  for (let i = start; i < start + visibleCount; i++) {
+  for (let i = start; i < Math.min(start + visibleCount, totalCount + 1); i++) {
     visiblePages.push(i);
   }
 
