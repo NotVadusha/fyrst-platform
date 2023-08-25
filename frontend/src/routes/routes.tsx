@@ -20,6 +20,7 @@ import ForgotPage from 'src/pages/forgot/ForgotPage';
 import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
 import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
+import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <TestPage />,
+            element: <CreateBookingPage />,
           },
         ],
       },
