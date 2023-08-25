@@ -8,11 +8,13 @@ import {
   Delete,
   ParseIntPipe,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
 @ApiTags('user')
 @Controller('user')
@@ -30,8 +32,10 @@ export class UserController {
     return user;
   }
   @Get()
-  async getAll() {
-    return this.userService.findAll();
+  async getAllByParams(@Query('currentPage', ParseIntPipe) currentPage: number): Promise<User[]> {
+    console.log(currentPage);
+    // data: User[], total: number
+    return this.userService.getAllByParams({ currentPage });
   }
   @Patch(':id')
   async update(

@@ -23,8 +23,17 @@ export class UserService {
     });
   }
 
-  async findAll() {
-    return await this.userRepository.findAll();
+  async getAllByParams({ currentPage }) {
+    // Number of users to show per page
+    const limit = 5;
+
+    // To skip per page
+    const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
+
+    return await this.userRepository.findAll({
+      limit,
+      offset,
+    });
   }
 
   async findOne(userId: number) {
