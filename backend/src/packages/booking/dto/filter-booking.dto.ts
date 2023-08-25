@@ -1,4 +1,5 @@
-import { IsDateString, IsIn, IsNumber, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDateString, IsIn, IsInt, IsOptional } from 'class-validator';
 
 export class FilterBookingDto {
   @IsOptional()
@@ -6,7 +7,8 @@ export class FilterBookingDto {
   status: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
+  @Type(() => Number)
   facilityId: number;
 
   @IsOptional()
@@ -16,4 +18,14 @@ export class FilterBookingDto {
   @IsOptional()
   @IsDateString()
   endDate: Date;
+
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  limit?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  offset?: number;
 }
