@@ -7,10 +7,30 @@ import { AccessTokenStrategy } from './strategies/access-token.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { RedisModule } from 'src/packages/redis/redis.module';
 import { EmailConfirmationModule } from 'src/packages/email-confirmation/emailConfirmation.module';
+import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, AccessTokenStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    AccessTokenStrategy,
+    GoogleStrategy,
+    {
+      provide: 'INVOICE_SERVICE',
+      useFactory() {
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [process.env.RABBITMQ_URL],
+            queue: 'invoice_queue',
+            queueOptions: {
+              durable: false,
+            },
+          },
+        });
+      },
+    },
+  ],
   imports: [
     UserModule,
     RedisModule,

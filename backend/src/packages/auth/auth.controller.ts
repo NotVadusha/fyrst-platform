@@ -1,4 +1,14 @@
-import { Body, Controller, Post, Get, Request, UseGuards, Res, HttpCode } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Request,
+  UseGuards,
+  Res,
+  HttpCode,
+  Inject,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
@@ -8,11 +18,15 @@ import { Response } from 'express';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessageResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { RegistrationDto } from './dto/registration.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @ApiTags('Authorization and authentication endpoints')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    @Inject('INVOICE_SERVICE') private readonly invoiceServiceClient: ClientProxy,
+  ) {}
 
   @ApiOperation({ summary: 'User registration' })
   @ApiResponse({ status: 201, type: MessageResponse })
@@ -72,5 +86,10 @@ export class AuthController {
       });
     }
     res.redirect('http://localhost:3000/google-sucess');
+  }
+
+  @Get('hello')
+  async hello() {
+    return this.invoiceServiceClient.send('get_hello', {});
   }
 }
