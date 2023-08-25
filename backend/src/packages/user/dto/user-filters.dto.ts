@@ -1,6 +1,9 @@
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UserFiltersDto {
+  @IsNumber()
+  currentPage: number;
+
   @IsOptional()
   @IsString()
   first_name?: string;

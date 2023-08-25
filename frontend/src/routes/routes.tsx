@@ -18,7 +18,7 @@ import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 import { UserListPage } from 'src/pages/users/UserListPage';
 import ForgotPage from 'src/pages/forgot/ForgotPage';
-import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
+import EmailSentPage from 'src/pages/email-sent/EmailSentPage';
 import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
@@ -189,7 +189,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'forgot/email-sended',
-        element: <EmailSendedPage />,
+        element: <EmailSentPage />,
       },
       {
         path: 'forgot',

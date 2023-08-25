@@ -33,34 +33,14 @@ export class UserController {
     return user;
   }
   @Get()
-  async getAllByParams(
-    @Query('currentPage', ParseIntPipe) currentPage: number,
-    @Query('name') name: string = '',
-    @Query('email') email: string = '',
-    @Query('city') city: string = '',
-    @Query('emailConfirmed') is_confirmed?: boolean,
-    @Query('birthDate') birthdate?: Date,
-  ): Promise<{
+  async getAllByParams(@Query() query: UserFiltersDto): Promise<{
     users: User[];
     totalCount: number;
   }> {
-    const filters = new UserFiltersDto();
-
-    const [first_name, last_name] = name.split(' ');
-
-    Object.assign(filters, {
-      first_name,
-      last_name,
-      email,
-      city,
-      is_confirmed,
-      birthdate,
+    return this.userService.getAllByParams({
+      currentPage: query.currentPage,
+      filters: { ...query },
     });
-
-    console.log(filters);
-
-    // data: User[], total: number
-    return this.userService.getAllByParams({ currentPage, filters });
   }
   @Patch(':id')
   async update(

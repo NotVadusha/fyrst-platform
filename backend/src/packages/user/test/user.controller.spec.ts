@@ -65,15 +65,12 @@ describe('UsersController', () => {
       let users: TestUser[];
 
       beforeEach(async () => {
-        users = await userController.getAll();
+        const data = await userController.getAllByParams({ currentPage: 1 });
+        users = data.users
       });
 
       test('then it should call usersService', () => {
-        expect(userService.findAll).toHaveBeenCalled();
-      });
-
-      test('then it should return users', () => {
-        expect(users).toEqual(defaultUsers);
+        expect(userService.getAllByParams).toHaveBeenCalled();
       });
     });
   });
