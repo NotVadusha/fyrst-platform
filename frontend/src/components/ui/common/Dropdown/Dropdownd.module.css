@@ -66,29 +66,5 @@
   @apply block p-2;
 }
 .option input {
-  @apply absolute right-4 top-2;
-}
-
-.select__placeholder {
-  @apply text-sm absolute top-3.5 left-2.5 text-grey font-medium transition-all;
-}
-
-.select__placeholder--active {
-  @apply -translate-y-2.5 text-xs;
-}
-
-.select__input--active {
-  @apply border-blue;
-}
-
-.select__button--active {
-  @apply rotate-180;
-}
-
-.select__menu {
-  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2;
-}
-
-.select__menu-item {
-  @apply p-2 w-full rounded-lg text-left font-medium text-sm hover:bg-grey;
+  @apply absolute right-4 top-2 appearance-none;
 }

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import styles from './Dropdownd.module.css';
 import { ReactComponent as ArrowIcon } from '../../../../icons/arrow-down.svg';
-import { FormField, FormItem, FormLabel, useFormField } from '../Form';
+import { FormControl, FormField, FormItem, FormLabel, useFormField } from '../Form';
 import { cva } from 'class-variance-authority';
 
 const arrow = cva(styles.arrow, {
@@ -71,7 +71,7 @@ export interface DropdownProps extends React.InputHTMLAttributes<HTMLInputElemen
   placeholder: string;
 }
 
-const Dropdown = React.forwardRef<HTMLInputElement, DropdownProps>(
+const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
   (
     { control, name, options, ddType = 'default', label, placeholder, className, ...props },
     ref,
@@ -89,7 +89,7 @@ const Dropdown = React.forwardRef<HTMLInputElement, DropdownProps>(
           );
 
           return (
-            <div className='relative'>
+            <div className={`${className} relative`} ref={ref}>
               <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
                 <p className={heading({ type: ddType, hidden: !label })}>{label}</p>
 
@@ -105,18 +105,20 @@ const Dropdown = React.forwardRef<HTMLInputElement, DropdownProps>(
               <div className={menuVar({ closed: !isOpen })}>
                 {options.map(opt => (
                   <FormItem className={styles.option} key={opt.value}>
-                    <FormLabel className='pointer-events-none'>{opt.label}</FormLabel>
-                    <input
-                      {...field}
-                      type='radio'
-                      id={useFormField().formItemId}
-                      value={opt.value}
-                      onChange={() => {
-                        field.onChange(opt.value);
-                        setIsOpen(false);
-                      }}
-                      {...props}
-                    />
+                    <FormLabel>{opt.label}</FormLabel>
+                    <FormControl>
+                      <input
+                        {...field}
+                        type='radio'
+                        id={useFormField().formItemId}
+                        value={opt.value}
+                        onChange={() => {
+                          field.onChange(opt.value);
+                          setIsOpen(false);
+                        }}
+                        {...props}
+                      />
+                    </FormControl>
                   </FormItem>
                 ))}
               </div>
