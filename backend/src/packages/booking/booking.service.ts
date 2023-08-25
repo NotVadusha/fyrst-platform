@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Booking } from './entities/booking.entity';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { UserService } from '../user/user.service';
+import { FacilityService } from '../facility/facility.service';
 
 @Injectable()
 export class BookingService {
@@ -12,10 +13,12 @@ export class BookingService {
     private readonly bookingRepository: typeof Booking,
     private readonly logger: Logger,
     private readonly userService: UserService,
+    private readonly facilityService: FacilityService,
   ) {}
 
   async create(createdData: CreateBookingDto) {
     await this.validateUserExists(createdData.createdBy);
+    await this.validateFacilityExists(createdData.facilityId);
 
     const createdBooking = await this.bookingRepository.create(createdData);
     this.logger.log(`Created note with ID ${createdBooking.id}`, {
@@ -43,6 +46,7 @@ export class BookingService {
   async update(id: number, updatedData: UpdateBookingDto) {
     const booking = await this.find(id);
     await this.validateUserExists(updatedData.createdBy);
+    await this.validateFacilityExists(updatedData.facilityId);
 
     await booking.update(updatedData);
     this.logger.log(`Updated booking with ID ${id}`, { booking });
@@ -59,5 +63,10 @@ export class BookingService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+  }
+
+  private async validateFacilityExists(facilityId: number) {
+    const facility = await this.facilityService.findById(facilityId);
+    if (!facility) throw new NotFoundException('Facility not found');
   }
 }

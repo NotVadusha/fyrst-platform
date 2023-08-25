@@ -19,6 +19,7 @@ import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 import ForgotPage from 'src/pages/forgot/ForgotPage';
 import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
 import ResetPage from 'src/pages/reset/ResetPage';
+import Notifications from '../components/Notifications/Notifications';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -121,7 +122,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'notifications',
-            element: <TestPage />,
+            element: <Notifications />,
           },
           {
             path: 'security',
