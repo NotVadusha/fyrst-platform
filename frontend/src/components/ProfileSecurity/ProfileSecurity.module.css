@@ -1,0 +1,15 @@
+.profileSecurityContainer{
+    @apply max-w-[515px] ml-[80px] mr-[77px] mb-[80px] mt-[40px];
+}
+
+.profileHeaderTitle{
+    @apply text-dark-grey text-[20px] pt-[11px] mb-[16px];
+}
+
+.profileSecuriyCard {
+  @apply bg-white rounded-lg shadow-lg p-8 mt-[24px];
+}
+
+.passwordInputs > *{
+    @apply mb-[32px]
+}
