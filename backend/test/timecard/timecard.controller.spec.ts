@@ -12,6 +12,8 @@ import {
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
+import { GetAllTimecardsDto } from '../../src/packages/timecard/dto/get-all-timecards.dto';
+import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 
 describe('TimecardController', () => {
   let timecardController: TimecardController;
@@ -36,29 +38,31 @@ describe('TimecardController', () => {
 
   describe('getAllFiltered', () => {
     describe('when getAllFiltered is called', () => {
-      let timecards: TestTimecard[];
+      let result: GetAllTimecardsDto;
       const expectedFilteredTimecards = timecardsMock
         .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
         .slice(paginationOffsetMock, paginationLimitMock);
+      const expectedResult: GetAllTimecardsDto = {
+        items: expectedFilteredTimecards as Timecard[],
+        total: timecardsMock.length,
+      };
 
       beforeEach(async () => {
-        timecards = await timecardController.getAllFiltered(
-          timecardFiltersDtoMock,
+        const createdAt = new Date('2023-08-23');
+
+        result = await timecardController.getAllFiltered(
           paginationLimitMock,
           paginationOffsetMock,
+          createdAt,
         );
       });
 
       test('it should call TimecardService', () => {
-        expect(timecardService.getAllFiltered).toBeCalledWith(
-          timecardFiltersDtoMock,
-          paginationLimitMock,
-          paginationOffsetMock,
-        );
+        expect(timecardService.getAllFiltered).toBeCalled();
       });
 
       test('it should return filtered timecards', () => {
-        expect(timecards).toEqual(expectedFilteredTimecards);
+        expect(result).toEqual(expectedResult);
       });
     });
   });

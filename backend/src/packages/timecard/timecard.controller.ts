@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -13,11 +12,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateTimecardDto } from './dto/create-timecard.dto';
-import { UpdateTimecardDto } from './dto/update-timecard.dto';
-import { TimecardFiltersDto } from './dto/timecard-filters.dto';
-import { TimecardService } from './timecard.service';
 import { ApiTags } from '@nestjs/swagger';
+import { TimecardStatus } from 'shared/timecard-status';
+import { CreateTimecardDto } from './dto/create-timecard.dto';
+import { TimecardFiltersDto } from './dto/timecard-filters.dto';
+import { UpdateTimecardDto } from './dto/update-timecard.dto';
+import { TimecardService } from './timecard.service';
 
 @ApiTags('timecard')
 @Controller('timecard')
@@ -40,19 +40,29 @@ export class TimecardController {
 
   @Get()
   async getAllFiltered(
-    @Body() filters?: TimecardFiltersDto,
     @Query('limit') limit = Number.MAX_SAFE_INTEGER,
     @Query('offset') offset = 0,
+    @Query('createdAt') createdAt?: Date,
+    @Query('approvedAt') approvedAt?: Date,
+    @Query('createdBy') createdBy?: number,
+    @Query('approvedBy') approvedBy?: number | null,
+    @Query('status') status?: TimecardStatus,
   ) {
     try {
+      const filters = new TimecardFiltersDto();
+      Object.assign(filters, {
+        createdAt,
+        approvedAt,
+        status,
+        createdBy: +createdBy,
+        approvedBy: +approvedBy,
+      });
+
       const timecards = await this.timecardService.getAllFiltered(filters, limit, offset);
       this.logger.log('Successfully got all timecards');
+
       return timecards;
     } catch (error) {
-      if (isNaN(limit) || isNaN(offset)) {
-        throw new BadRequestException('Invalid pagination query params');
-      }
-
       this.logger.error("Couldn't get timecards", error);
       throw new InternalServerErrorException("Couldn't get timecards");
     }
