@@ -1,5 +1,6 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import GoogleLogo from '../../../icons/google.svg';
+import { ReactComponent as GoogleLogo } from '../../../icons/google.svg';
 import Button from './Button';
 
 const meta: Meta<typeof Button> = {
@@ -7,8 +8,8 @@ const meta: Meta<typeof Button> = {
 
   tags: ['autodocs'],
   args: {
-    type: 'primary',
-    label: 'Button',
+    variant: 'primary',
+    children: 'Button',
   },
 };
 
@@ -17,40 +18,45 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    type: 'primary',
+    variant: 'primary',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
   },
 };
 
 export const Tertiary: Story = {
   args: {
-    type: 'tertiary',
+    variant: 'tertiary',
   },
 };
 
 export const Inactive: Story = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     disabled: true,
   },
 };
 
 export const ButtonWithIcon: Story = {
   args: {
-    type: 'primary',
-    imgSrc: GoogleLogo,
-    fullWidth: true,
+    variant: 'primary',
+    children: (
+      <div className='flex items-center gap-2'>
+        <GoogleLogo />
+        Sign in with Google
+      </div>
+    ),
+    className: 'w-full',
   },
 };
 
-export const ButtonWithFullWidth: Story = {
+export const ButtonWithCustomClasses: Story = {
   args: {
-    type: 'primary',
-    fullWidth: true,
+    variant: 'primary',
+    className: 'w-full bg-red hover:bg-red-2',
   },
 };

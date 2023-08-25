@@ -1,18 +1,28 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import BookingPage from '../pages/bookings/BookingPage';
-import TimeCardPage from '../pages/timecards/TimeCard';
+import TimeCardPage from '../pages/timecards/main/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
 import MessangerPage from '../pages/messanger/MessangerPage';
 import PaymentsPage from '../pages/payments/PaymentsPage';
-import AuthPage from '../pages/authentication/AuthPage';
+import SignInPage from '../pages/signin/SignInPage';
 import EmployesPage from '../pages/EmployesPage';
 import ErrorPage from '../pages/common/ErrorPage';
 import TestPage from '../pages/common/TestPage';
 import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
-import { CreateTimeCardPage } from 'src/pages/timecards/create/CreateTimeCard';
+import SignUpPage from 'src/pages/signup/SignUpPage';
+import SuccessGoogleAuthPage from 'src/pages/success-google-auth/SuccessGoogleAuthPage';
+import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
+import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
+import ForgotPage from 'src/pages/forgot/ForgotPage';
+import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
+import ResetPage from 'src/pages/reset/ResetPage';
+import Notifications from '../components/Notifications/Notifications';
+import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
+
+export const baseUrl = process.env.REACT_APP_API_URL;
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +44,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <TestPage />,
+            element: <CreateBookingPage />,
           },
         ],
       },
@@ -47,11 +57,51 @@ export const router = createBrowserRouter([
           },
           {
             path: ':id',
-            element: <TestPage />,
+            element: <ViewTimeCardPage />,
+            loader: async ({ params }) => {
+              return {
+                timecard: {
+                  responsobilities: [
+                    'Transport clients and/or packages to and from destinations',
+                    'Arrive at destinations on schedule',
+                    'Fulfill administrative needs, like office pickups',
+                    'Research and plan for traffic, construction and weather delays',
+                  ],
+                  description: `Drivers are responsible for transporting clients or handling deliveries in a timely
+                  manner, and they may have to work nights and weekends to accomplish their duties.`,
+                  details: {
+                    employee: 'Guy Hawkings',
+                    facilityManager: 'Brooklyn Sirsad',
+                    facility: 'Driver',
+                    timecardType: 'Hourly',
+                    hoursWorked: '16 hours',
+                    lunchTaken: '3 hours',
+                  },
+                },
+              };
+              // try {
+              //   return await fetch(`${baseUrl}/timecard/${params.id}`);
+              // } catch (err) {
+              //   throw err;
+              // }
+            },
           },
           {
             path: 'create',
             element: <CreateTimeCardPage />,
+            // action: async ({ params, request }) => {
+            //   const body = await request.formData();
+
+            //   const res = await fetch(`${baseUrl}/timecard`, {
+            //     method: 'POST',
+            //     body,
+            //   });
+
+            //   if (!res.ok) {
+            //     throw res;
+            //   }
+            //   return { ok: true };
+            // },
           },
         ],
       },
@@ -73,7 +123,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'notifications',
-            element: <TestPage />,
+            element: <Notifications />,
           },
           {
             path: 'security',
@@ -119,29 +169,32 @@ export const router = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        path: 'login',
-        element: <AuthPage />,
+        path: 'signin',
+        element: <SignInPage />,
+      },
+      {
+        path: 'forgot/email-sended',
+        element: <EmailSendedPage />,
       },
       {
         path: 'forgot',
-        element: <TestPage />,
+        element: <ForgotPage />,
       },
       {
         path: 'reset',
-        element: <TestPage />,
-      },
-      {
-        path: 'reset/:key',
-        element: <TestPage />,
+        element: <ResetPage />,
       },
       {
         path: 'signup',
-        element: <TestPage />,
+        element: <SignUpPage />,
+      },
+      {
+        path: 'google-success',
+        element: <SuccessGoogleAuthPage />,
       },
     ],
   },

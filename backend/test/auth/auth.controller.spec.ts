@@ -117,7 +117,12 @@ describe('AuthController', () => {
       });
 
       test('it should call redirect to google succes page', () => {
-        expect(responseMock.redirect).toHaveBeenCalledWith('http://localhost:3000/google-sucess');
+        process.env = Object.assign(process.env, {
+          GOOGLE_AUTH_SUCCESS_URL: 'http://localhost:3000/auth/google-success',
+        });
+        expect(responseMock.redirect).toHaveBeenCalledWith(
+          'http://localhost:3000/auth/google-success',
+        );
       });
 
       test('it should pass the access token to the cookie', () => {

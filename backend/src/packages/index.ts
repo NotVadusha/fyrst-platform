@@ -7,3 +7,4 @@ export { RedisModule } from './redis/redis.module';
 export { AuthModule } from './auth/auth.module';
 export { ResetPasswordModule } from './reset-password/reset-password.module';
 export { UserProfileModule } from './user-profile/user-profile.module';
+export { FacilityModule } from './facility/facility.module';

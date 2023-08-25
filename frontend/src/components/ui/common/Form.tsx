@@ -33,6 +33,24 @@ const FormField = <
   );
 };
 
+const FormControl = React.forwardRef(({ children, ...props }: { children: any }, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
+
+  const elements = children;
+
+  return React.Children.map(elements, child =>
+    React.cloneElement(child, {
+      ref: ref,
+      id: formItemId,
+      'aria-describedby': !error ? formDescriptionId : `${formDescriptionId} ${formMessageId}`,
+      'aria-invalid': !!error,
+      ...props,
+    }),
+  );
+});
+
+FormControl.displayName = 'FormControl';
+
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
@@ -68,7 +86,7 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
 
     return (
       <FormItemContext.Provider value={{ id }}>
-        <div ref={ref} className={`${className}`} {...props} />
+        <div ref={ref} className={` ${className}`} {...props} />
       </FormItemContext.Provider>
     );
   },
@@ -128,4 +146,13 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = 'FormMessage';
 
-export { useFormField, Form, FormItem, FormLabel, FormDescription, FormMessage, FormField };
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormMessage,
+  FormControl,
+  FormField,
+};

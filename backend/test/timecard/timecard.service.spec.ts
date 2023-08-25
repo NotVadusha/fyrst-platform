@@ -13,6 +13,7 @@ import {
 } from './timecard.mock';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 import { getModelToken } from '@nestjs/sequelize';
+import { GetAllTimecardsDto } from 'src/packages/timecard/dto/get-all-timecards.dto';
 
 describe('TimecardService', () => {
   let timecardService: TimecardService;
@@ -37,13 +38,17 @@ describe('TimecardService', () => {
 
   describe('getAllFiltered', () => {
     describe('when getAllFiltered is called', () => {
-      let timecards: TestTimecard[];
+      let result: GetAllTimecardsDto;
       const expectedFilteredTimecards = timecardsMock
         .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
         .slice(paginationOffsetMock, paginationLimitMock);
+      const expectedResult: GetAllTimecardsDto = {
+        items: expectedFilteredTimecards as Timecard[],
+        total: timecardsMock.length,
+      };
 
       beforeEach(async () => {
-        timecards = await timecardService.getAllFiltered(
+        result = await timecardService.getAllFiltered(
           timecardFiltersDtoMock,
           paginationLimitMock,
           paginationOffsetMock,
@@ -55,7 +60,7 @@ describe('TimecardService', () => {
       });
 
       test('it should return filtered timecards', () => {
-        expect(timecards).toEqual(expectedFilteredTimecards);
+        expect(result).toEqual(expectedResult);
       });
     });
   });
@@ -92,8 +97,6 @@ describe('TimecardService', () => {
       });
 
       test('it should create new timecard and return it', () => {
-        console.debug(timecard);
-
         expect(timecard).toEqual(timecardsMock[existingId]);
       });
     });

@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { TimecardStatus } from '../entities/timecard-status';
+import { TimecardStatus } from 'shared/timecard-status';
 
 export class TimecardFiltersDto {
   @IsOptional()
@@ -12,7 +12,7 @@ export class TimecardFiltersDto {
 
   @IsOptional()
   @IsNumber()
-  approvedBy?: number;
+  approvedBy?: number | null;
 
   @IsOptional()
   @IsEnum(TimecardStatus)

@@ -43,7 +43,7 @@ export class AuthService {
         ...registrationDto,
         password: hashedPassword,
         role_id: 1,
-        is_confirmed: false
+        is_confirmed: false,
       });
       await this.emailConfirmationService.sendVerificationLink(createdUser.email);
       return {

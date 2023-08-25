@@ -3,7 +3,7 @@ import { CreateTimecardDto } from '../../src/packages/timecard/dto/create-timeca
 import { UpdateTimecardDto } from '../../src/packages/timecard/dto/update-timecard.dto';
 import { TimecardFiltersDto } from '../../src/packages/timecard/dto/timecard-filters.dto';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
-import { TimecardStatus } from '../../src/packages/timecard/entities/timecard-status';
+import { TimecardStatus } from 'shared/timecard-status';
 
 export interface TestTimecard {
   id?: number;
@@ -67,11 +67,15 @@ export const mockTimecardService = {
     ),
   getAllFiltered: jest
     .fn()
-    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) =>
-      Promise.resolve(
-        timecardsMock.filter(t => (t.approvedBy = filters.approvedBy)).slice(offset, limit),
-      ),
-    ),
+    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) => {
+      const items = timecardsMock
+        .filter(t => (t.approvedBy = filters.approvedBy))
+        .slice(offset, limit);
+
+      const total = timecardsMock.length;
+
+      return Promise.resolve({ items, total });
+    }),
   getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
   update: jest
     .fn()
@@ -119,4 +123,5 @@ export const mockTimecardModel = {
     }
   }),
   build: buildModelMock,
+  count: jest.fn().mockResolvedValue(timecardsMock.length),
 };
