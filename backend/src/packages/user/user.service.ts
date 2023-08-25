@@ -25,7 +25,19 @@ export class UserService {
     });
   }
 
-  async getAllByParams({ currentPage, filters }: { currentPage: number; filters: Omit<UserFiltersDto, "currentPage"> }) {
+  async getAllByParams({
+    currentPage,
+    filters,
+  }: {
+    currentPage: number;
+    filters: Omit<UserFiltersDto, 'currentPage'>;
+  }) {
+    Object.keys(filters).forEach(
+      key =>
+        (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
+        delete filters[key],
+    );
+
     // Number of users to show per page
     const limit = 5;
 

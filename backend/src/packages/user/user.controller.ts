@@ -38,7 +38,7 @@ export class UserController {
     totalCount: number;
   }> {
     return this.userService.getAllByParams({
-      currentPage: query.currentPage,
+      currentPage: +query.currentPage,
       filters: {
         bithdate: query.bithdate,
         city: query.city,
