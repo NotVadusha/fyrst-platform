@@ -4,6 +4,8 @@ import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { Timecard } from './entities/timecard.entity';
 import { InjectModel } from '@nestjs/sequelize';
+import { validateOrReject } from 'class-validator';
+import { GetAllTimecardsDto } from './dto/get-all-timecards.dto';
 
 @Injectable()
 export class TimecardService {
@@ -19,12 +21,28 @@ export class TimecardService {
     filters?: TimecardFiltersDto,
     limit?: number,
     offset?: number,
-  ): Promise<Timecard[]> {
-    return await this.timecardModel.findAll({
+  ): Promise<GetAllTimecardsDto> {
+    Object.keys(filters).forEach(
+      key => (filters[key] === undefined || isNaN(filters[key])) && delete filters[key],
+    );
+
+    //eslint-disable-next-line
+    //@ts-ignore
+    if (filters.approvedBy === 'null') {
+      filters.approvedBy = null;
+    }
+
+    await validateOrReject(filters);
+
+    const timecards = await this.timecardModel.findAll({
       where: { ...filters },
       limit: limit,
       offset: offset,
     });
+
+    const total = await this.timecardModel.count();
+
+    return { items: timecards, total };
   }
 
   async getById(id: number): Promise<Timecard> {
