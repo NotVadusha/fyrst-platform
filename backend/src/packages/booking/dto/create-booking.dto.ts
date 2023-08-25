@@ -1,4 +1,13 @@
-import { IsIn, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 class CreateBookingDto {
   @IsNotEmpty()
@@ -56,6 +65,12 @@ class CreateBookingDto {
   @IsInt()
   @Min(1)
   readonly facilityId: number;
+  @IsNotEmpty()
+  @IsDateString()
+  readonly startDate: Date;
+  @IsNotEmpty()
+  @IsDateString()
+  readonly endDate: Date;
 }
 
 export { CreateBookingDto };
