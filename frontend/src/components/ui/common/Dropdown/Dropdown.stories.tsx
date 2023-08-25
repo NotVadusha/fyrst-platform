@@ -42,7 +42,6 @@ const FormTemplate = ({
 
   function onSubmit(values: y.InferType<typeof formSchema>) {
     // do smth
-    console.log(values.city);
   }
 
   return (
