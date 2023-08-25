@@ -18,8 +18,8 @@ export function UserListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const filters: UserFilters = {
-    fist_name: searchParams.get('name')?.split('')[0],
-    last_name: searchParams.get('name')?.split('')[1],
+    fist_name: searchParams.get('name')?.split(' ')[0] ?? null,
+    last_name: searchParams.get('name')?.split(' ')[1] ?? null,
     email: searchParams.get('email'),
     phone: searchParams.get('phone'),
     city: searchParams.get('city'),
@@ -32,10 +32,6 @@ export function UserListPage() {
   });
 
   const { data, isLoading, isSuccess, isError, error } = useGetUsersQuery({ currentPage, filters });
-
-  if (!data) {
-    return <div>Nothing found</div>;
-  }
 
   const columns: ColumnInfo<User>[] = [
     {
@@ -68,7 +64,7 @@ export function UserListPage() {
     },
   ];
 
-  const totalPages = Math.ceil(data.totalCount / 5);
+  const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchParams(prevParams => {
@@ -103,17 +99,19 @@ export function UserListPage() {
             <Table
               className='w-full'
               columns={columns}
-              items={data.users ?? []}
+              items={data?.users ?? []}
               getRowId={item => {
                 return item.id;
               }}
             />
-            <Pagination
-              onChange={setCurrentPage}
-              value={currentPage}
-              siblingsCount={2}
-              totalCount={totalPages}
-            />
+            {!!totalPages && (
+              <Pagination
+                onChange={setCurrentPage}
+                value={currentPage}
+                siblingsCount={2}
+                totalCount={totalPages}
+              />
+            )}
           </div>
         </div>
       </div>
