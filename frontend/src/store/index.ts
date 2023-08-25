@@ -13,17 +13,15 @@ const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
-const setupStore = () => {
-  return configureStore({
-    reducer: rootReducer,
-    middleware: getDefaultMiddleware =>
-      getDefaultMiddleware().concat(authApi.middleware).concat(resetPasswordApi.middleware).concat(apiSlice.middleware),
-  });
-}
-
-const store = setupStore()
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware()
+      .concat(authApi.middleware)
+      .concat(resetPasswordApi.middleware)
+      .concat(apiSlice.middleware),
+});
 
 export default store;
 export type RootState = ReturnType<typeof store.getState>;
-export type AppStore = ReturnType<typeof setupStore>;
-export type AppDispatch = AppStore['dispatch'];
+export type AppDispatch = typeof store.dispatch;
