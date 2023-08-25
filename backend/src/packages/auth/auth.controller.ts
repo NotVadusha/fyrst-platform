@@ -71,6 +71,6 @@ export class AuthController {
         secure: false,
       });
     }
-    res.redirect(process.env.GOOGLE_AUTH_SUCCES_URL);
+    res.redirect(process.env.GOOGLE_AUTH_SUCCESS_URL);
   }
 }
