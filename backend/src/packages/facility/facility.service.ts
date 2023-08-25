@@ -17,7 +17,7 @@ export class FacilityService {
   }
 
   async findById(id: number): Promise<Facility> {
-    const facility = await this.facilityModel.findOne({ where: { id }, rejectOnEmpty: true });
+    const facility = await this.facilityModel.findOne({ where: { id } });
     if (!facility) {
       throw new NotFoundException(`Facility with ID ${id} not found`);
     }

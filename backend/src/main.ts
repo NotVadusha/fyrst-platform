@@ -16,11 +16,11 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   app.enableCors();
 
-
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/v1', app, document);
 
+  app.enableCors();
 
   await app.listen(process.env.BACKEND_PORT);
-} 
+}
 bootstrap();

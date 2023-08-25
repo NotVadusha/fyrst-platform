@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, Logger } from '@nestjs/common';
 import { getModelToken } from '@nestjs/sequelize';
 import {
+  facilityServiceMock,
   mockedBooking,
   mockedBookings,
   mockedUpdatedBooking,
@@ -10,6 +11,7 @@ import {
 import { UserService } from 'src/packages/user/user.service';
 import { BookingService } from 'src/packages/booking/booking.service';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
+import { FacilityService } from 'src/packages/facility/facility.service';
 
 describe('BookingService', () => {
   let bookingService: BookingService;
@@ -38,6 +40,7 @@ describe('BookingService', () => {
           provide: UserService,
           useValue: userServiceMock,
         },
+        { provide: FacilityService, useValue: facilityServiceMock },
       ],
     }).compile();
 
@@ -65,6 +68,12 @@ describe('BookingService', () => {
     });
     it('should throw NotFoundException if user is not found', async () => {
       userServiceMock.findOne.mockResolvedValue(null);
+
+      await expect(bookingService.create(mockedBooking)).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw NotFoundException if facility is not found', async () => {
+      facilityServiceMock.findById.mockResolvedValue(null);
 
       await expect(bookingService.create(mockedBooking)).rejects.toThrow(NotFoundException);
     });
@@ -101,11 +110,18 @@ describe('BookingService', () => {
 
       await expect(bookingService.find(1)).rejects.toThrow(NotFoundException);
     });
+
+    it('should throw NotFoundException if facility is not found', async () => {
+      facilityServiceMock.findById.mockResolvedValue(null);
+
+      await expect(bookingService.create(mockedBooking)).rejects.toThrow(NotFoundException);
+    });
   });
 
   describe('update', () => {
     it('should update a booking', async () => {
       userServiceMock.findOne.mockResolvedValue({ id: 1, name: 'Test User' });
+      facilityServiceMock.findById.mockResolvedValue({ id: 1, name: 'Test Facility' });
       const mockBooking = { id: 1, update: jest.fn() };
       bookingService.find = jest.fn().mockResolvedValue(mockBooking);
 
@@ -123,6 +139,12 @@ describe('BookingService', () => {
       await expect(bookingService.update(1, mockedUpdatedBooking)).rejects.toThrow(
         NotFoundException,
       );
+    });
+
+    it('should throw NotFoundException if facility is not found', async () => {
+      facilityServiceMock.findById.mockResolvedValue(null);
+
+      await expect(bookingService.create(mockedBooking)).rejects.toThrow(NotFoundException);
     });
   });
 
