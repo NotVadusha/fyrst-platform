@@ -8,7 +8,7 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
 import { resetPasswordApi } from 'src/store/services/reset-password.service';
-import { forgotSchema } from 'src/lib/validations/forgot';
+import { forgotSchema } from 'src/lib/validation-schemas/authentication/forgot';
 import { useAppDispatch } from 'src/hooks/redux';
 import { setEmail } from 'src/store/reducers/reset-password.store';
 

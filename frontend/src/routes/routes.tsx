@@ -13,7 +13,7 @@ import NotFoundPage from '../pages/common/NotFoundPage';
 import Layout from '../pages/common/Layout';
 import BookingOverview from '../components/BookingOverview/BookingOverview';
 import SignUpPage from 'src/pages/signup/SignUpPage';
-import GoogleSuccessPage from 'src/pages/google-success/GoogleSuccessPage';
+import SuccessGoogleAuthPage from 'src/pages/success-google-auth/SuccessGoogleAuthPage';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
 import ForgotPage from 'src/pages/forgot/ForgotPage';
@@ -192,8 +192,8 @@ export const router = createBrowserRouter([
         element: <SignUpPage />,
       },
       {
-        path: 'google-sucess',
-        element: <GoogleSuccessPage />,
+        path: 'google-success',
+        element: <SuccessGoogleAuthPage />,
       },
     ],
   },

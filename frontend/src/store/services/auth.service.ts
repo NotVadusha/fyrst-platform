@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { customBaseQuery } from './helpers/customBaseQuery';
-import { MessageResponse, SignInBody, SignUpBody, TokenResponse } from '../../../types';
+import { MessageResponse, SignInBody, SignUpBody, TokenResponse } from '../../../types/authentication';
 
 export const authApi = createApi({
   reducerPath: 'authApi',

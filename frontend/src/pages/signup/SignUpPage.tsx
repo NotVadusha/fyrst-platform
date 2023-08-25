@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { registrationSchema } from 'src/lib/validations/registration';
+import { registrationSchema } from 'src/lib/validation-schemas/authentication/registration';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
 import { authApi } from 'src/store/services';

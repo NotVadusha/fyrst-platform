@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
 import GoogleLogo from '../../icons/google.svg';
 import { authApi } from 'src/store/services';
-import { loginSchema } from 'src/lib/validations/login';
+import { loginSchema } from 'src/lib/validation-schemas/authentication/login';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 

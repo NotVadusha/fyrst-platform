@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
 import { resetPasswordApi } from 'src/store/services/reset-password.service';
-import { resetSchema } from 'src/lib/validations/reset';
+import { resetSchema } from 'src/lib/validation-schemas/authentication/reset';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { useAppDispatch } from 'src/hooks/redux';
 import { setEmail } from 'src/store/reducers/reset-password.store';

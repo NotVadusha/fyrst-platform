@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { customBaseQuery } from './helpers/customBaseQuery';
-import { ForgotBody, MessageResponse, ResetBody } from '../../../types';
+import { ForgotBody, MessageResponse, ResetBody } from '../../../types/authentication';
 
 export const resetPasswordApi = createApi({
   reducerPath: 'resetPasswordApi',

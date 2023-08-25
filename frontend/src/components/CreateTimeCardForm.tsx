@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from './ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { timecardSchema } from '../lib/validations/timecard';
+import { timecardSchema } from '../lib/validation-schemas/timecard';
 import { Button } from 'src/ui/common/Button';
 import TextInput from './ui/common/TextInput/TextInput';
 import { baseUrl } from 'src/routes/routes';
