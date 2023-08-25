@@ -117,8 +117,11 @@ describe('AuthController', () => {
       });
 
       test('it should call redirect to google succes page', () => {
+        process.env = Object.assign(process.env, {
+          GOOGLE_AUTH_SUCCESS_URL: 'http://localhost:3000/auth/google-success',
+        });
         expect(responseMock.redirect).toHaveBeenCalledWith(
-          'http://localhost:3000/auth/google-sucess',
+          'http://localhost:3000/auth/google-success',
         );
       });
 
