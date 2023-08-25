@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-const GoogleSuccessPage = () => {
+const SuccessGoogleAuthPage = () => {
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
     const refreshToken = Cookies.get('refreshToken');
@@ -14,4 +14,4 @@ const GoogleSuccessPage = () => {
   return <Navigate to={'/'} />;
 };
 
-export default GoogleSuccessPage;
+export default SuccessGoogleAuthPage;
