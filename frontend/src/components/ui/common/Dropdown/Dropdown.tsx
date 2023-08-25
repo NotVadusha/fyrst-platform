@@ -3,6 +3,8 @@ import styles from './Dropdownd.module.css';
 import { ReactComponent as ArrowIcon } from '../../../../icons/arrow-down.svg';
 import { FormControl, FormField, FormItem, FormLabel, useFormField } from '../Form';
 import { cva } from 'class-variance-authority';
+import { useDetectClickOutside } from 'react-detect-click-outside';
+import { useCombinedRefs } from '../../../../hooks/useCombinedRef';
 
 const arrow = cva(styles.arrow, {
   variants: {
@@ -62,7 +64,7 @@ export interface DropdownOption {
   value: string | number;
 }
 
-export interface DropdownProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   control: any;
   name: string;
   options: DropdownOption[];
@@ -78,6 +80,13 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
   ) => {
     const [isOpen, setIsOpen] = useState(false);
 
+    const closeDropdown = () => {
+      setIsOpen(false);
+    };
+
+    const dropdownRef = useDetectClickOutside({ onTriggered: closeDropdown });
+    const combinedRef = useCombinedRefs(dropdownRef, ref);
+
     return (
       <FormField
         control={control}
@@ -89,7 +98,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           );
 
           return (
-            <div className={`${className} relative`} ref={ref}>
+            <div className={`${className} relative`} ref={combinedRef}>
               <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
                 <p className={heading({ type: ddType, hidden: !label })}>{label}</p>
 
