@@ -7,32 +7,28 @@ import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
 import { TimecardStatus } from 'shared/timecard-status';
 
+const formSchema = yup.object({
+  createdAt: yup.date(),
+  approvedAt: yup.date(),
+  status: yup.string().oneOf(Object.values(TimecardStatus)),
+  createdBy: yup.number(),
+  approvedBy: yup.number().nullable(),
+});
+
+type FormValues = yup.InferType<typeof formSchema>;
+
 export function TimecardFiltersForm({
   handleInputChange,
 }: {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
-  const formSchema = yup.object({
-    createdAt: yup.date(),
-    approvedAt: yup.date(),
-    status: yup.string().oneOf(Object.values(TimecardStatus)),
-    createdBy: yup.number(),
-    approvedBy: yup.number().nullable(),
-  });
-
-  type FormValues = yup.InferType<typeof formSchema>;
-
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(formSchema),
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form>
         <div className='flex gap-x-4'>
           <div className='flex flex-col gap-y-2'>
             <label className='text-body-default text-blue font-medium' htmlFor='createdAt'>
