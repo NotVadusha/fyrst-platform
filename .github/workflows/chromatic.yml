@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm
+      - run: npm i
       - uses: chromaui/action@v1
         with:
           projectToken: chpt_364654258a5148b
