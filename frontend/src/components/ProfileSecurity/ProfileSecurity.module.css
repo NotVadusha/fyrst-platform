@@ -2,8 +2,15 @@
     @apply max-w-[515px] ml-[80px] mr-[77px] mb-[80px] mt-[40px];
 }
 
+.profileHeader{
+    @apply text-dark-grey 
+}
 .profileHeaderTitle{
-    @apply text-dark-grey text-[20px] pt-[11px] mb-[16px];
+    @apply  text-[20px] pt-[11px] mb-[16px];
+}
+
+.profileHeaderText{
+    @apply text-[16px]
 }
 
 .profileSecuriyCard {
@@ -12,4 +19,8 @@
 
 .passwordInputs > *{
     @apply mb-[32px]
+}
+
+.inputContainer > * {
+    @apply mb-8
 }
