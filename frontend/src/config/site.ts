@@ -25,12 +25,6 @@ export const siteConfig = {
       title: 'Timecards',
       icon: Timecard,
       path: '/timecard',
-      items: [
-        {
-          title: 'Create timecard',
-          path: '/timecard/create',
-        },
-      ],
     },
     {
       title: 'Profile',
