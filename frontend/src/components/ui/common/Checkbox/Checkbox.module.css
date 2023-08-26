@@ -3,11 +3,11 @@
 }
 
 .label {
-  @apply text-black font-medium cursor-pointer;
+  @apply text-black font-medium;
 }
 
 .check {
-  @apply appearance-none m-0 h-6 w-6 border border-field border-solid rounded-md transition-colors cursor-pointer;
+  @apply appearance-none m-0 h-6 w-6 border border-field border-solid rounded-md transition-colors;
 }
 
 .check:checked {

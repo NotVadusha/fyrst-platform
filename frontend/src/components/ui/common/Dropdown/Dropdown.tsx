@@ -119,7 +119,6 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                       <input
                         {...field}
                         type='radio'
-                        id={useFormField().formItemId}
                         value={opt.value}
                         onChange={() => {
                           field.onChange(opt.value);

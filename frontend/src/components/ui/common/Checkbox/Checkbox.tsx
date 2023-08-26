@@ -20,7 +20,6 @@ const Checkbox = ({ control, name, label, className, ...props }: CheckboxProps) 
             <input
               {...field}
               type='checkbox'
-              id={useFormField().formItemId}
               className={`${styles.check} ${className}`}
               placeholder=''
               {...props}

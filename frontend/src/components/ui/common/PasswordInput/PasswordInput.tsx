@@ -43,7 +43,6 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
               <input
                 {...field}
                 type={isHidden ? 'password' : 'text'}
-                id={useFormField().formItemId}
                 className={`${inputVariants({ invalid: !!useFormField().error })} ${className}`}
                 value={field.value || ''}
                 ref={ref}
