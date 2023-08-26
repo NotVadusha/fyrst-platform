@@ -49,7 +49,7 @@ export class TimecardService {
       offset: filters.offset,
       include: [
         { model: User, as: 'employee', include: [Roles] },
-        { model: User, as: 'facilityMaganer', include: [Roles] },
+        { model: User, as: 'facilityManager', include: [Roles] },
         { model: Booking, include: [Facility] },
       ],
     });
@@ -67,7 +67,7 @@ export class TimecardService {
       rejectOnEmpty: true,
       include: [
         { model: User, as: 'employee', include: [Roles] },
-        { model: User, as: 'facilityMaganer', include: [Roles] },
+        { model: User, as: 'facilityManager', include: [Roles] },
         { model: Booking, include: [Facility] },
       ],
     });
@@ -76,7 +76,9 @@ export class TimecardService {
     const timecard = await this.getById(id);
     Object.assign(timecard, updateTimecardDto);
 
-    return await timecard.save();
+    await timecard.save();
+
+    return await this.getById(id);
   }
 
   async remove(id: number): Promise<Timecard> {
