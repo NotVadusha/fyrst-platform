@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import Dropdown, { DropdownOption, DropdownProps } from './Dropdown';
+import { Dropdown, DropdownOption, DropdownProps } from './Dropdown';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

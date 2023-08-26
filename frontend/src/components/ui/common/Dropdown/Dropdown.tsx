@@ -73,7 +73,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   placeholder: string;
 }
 
-const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
+export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
   (
     { control, name, options, ddType = 'default', label, placeholder, className, ...props },
     ref,
@@ -140,5 +140,3 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 );
 
 Dropdown.displayName = 'Dropdown';
-
-export default Dropdown;
