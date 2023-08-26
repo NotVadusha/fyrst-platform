@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem, FormLabel } from 'src/components/ui/common/Form';
+import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
 import { Button } from 'src/ui/common/Button';
@@ -8,8 +8,8 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
-import { DateSelect } from 'react-ymd-date-select';
-import CityInput from './CityInput';
+import { UserApi } from 'src/store/services/user.service/user.service';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -17,8 +17,17 @@ export function ProfileEditForm() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [avatarImage, setAvatarImage] = useState('');
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
-  const [selectedDate, setDate] = useState(new Date());
-  const [city, setCity] = useState('');
+
+  const [getUser] = UserApi.useGetUserMutation();
+  const [updateUser] = UserApi.useUpdateUserMutation();
+  const [updateUserProfile] = UserApi.useUpdateUserProfileMutation();
+  const userToken = localStorage.getItem('accessToken');
+  const navigate = useNavigate();
+  const location = useLocation();
+  // if (!userToken) {
+  // navigate('/auth/login', { state: { from: location }, replace: true });
+  // }
+  //   const userInfo = getUser({ id: userTokenId });
 
   const form = useForm<Inputs>({
     resolver: yupResolver(profileSchema),
@@ -27,13 +36,14 @@ export function ProfileEditForm() {
       secondName: '',
       email: '',
       phoneNumber: phoneNumber,
-      city: city,
-      dateOfBirth: selectedDate,
+      city: '',
+      dateOfBirth: new Date(),
     },
   });
 
-  function onSubmit(values: Inputs) {
-    console.log(values, avatarImage);
+  function onSubmit(valuesFromForm: Inputs) {
+    const valuesToSend = { ...valuesFromForm, avatar: avatarImage };
+    console.log(valuesToSend);
   }
 
   const openAvatarEditor = () => {
@@ -76,7 +86,7 @@ export function ProfileEditForm() {
                     <TextInput
                       control={form.control}
                       type='text'
-                      id='text'
+                      id='firstName'
                       label='First name'
                       {...field}
                     />
@@ -91,7 +101,7 @@ export function ProfileEditForm() {
                     <TextInput
                       control={form.control}
                       type='text'
-                      id='text'
+                      id='secondName'
                       label='Second name'
                       {...field}
                     />
@@ -106,7 +116,7 @@ export function ProfileEditForm() {
                     <TextInput
                       control={form.control}
                       type='text'
-                      id='text'
+                      id='Email'
                       label='Email'
                       {...field}
                     />
@@ -133,12 +143,11 @@ export function ProfileEditForm() {
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    <CityInput
+                    <TextInput
                       control={form.control}
+                      type='text'
+                      id='city'
                       label='City'
-                      setCity={(city: string) => {
-                        setCity(city);
-                      }}
                       {...field}
                     />
                   </FormItem>
@@ -148,23 +157,21 @@ export function ProfileEditForm() {
                 control={form.control}
                 name='dateOfBirth'
                 render={({ field }) => (
-                  <>
-                    <FormLabel className='mt-8 mb-2 block'>Date of birth</FormLabel>
-                    <FormItem>
-                      <DateSelect
-                        value={selectedDate.toString()}
-                        onChange={e => console.log(1)}
-                        render={renderArgs => (
-                          <p>
-                            {renderArgs.dateValue}
-                            {console.log(renderArgs)}
-                          </p>
-                        )}
+                  <FormItem>
+                    {
+                      // @ts-ignore
+                      <TextInput
+                        control={form.control}
+                        type='date'
+                        id='DateOfBirth'
+                        label='Date of birth'
+                        {...field}
                       />
-                    </FormItem>
-                  </>
+                    }
+                  </FormItem>
                 )}
-              ></FormField>
+              />
+
               <Button type='submit' className='w-full'>
                 Submit
               </Button>
