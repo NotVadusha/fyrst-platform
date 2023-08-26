@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './PhoneInput.module.css';
+import styles from './DefaultInput.module.css';
 
 import {
   FormItem,
