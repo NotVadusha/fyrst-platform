@@ -9,6 +9,7 @@ import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
 import { DateSelect } from 'react-ymd-date-select';
+import CityInput from './CityInput';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -17,6 +18,7 @@ export function ProfileEditForm() {
   const [avatarImage, setAvatarImage] = useState('');
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
   const [selectedDate, setDate] = useState(new Date());
+  const [city, setCity] = useState('');
 
   const form = useForm<Inputs>({
     resolver: yupResolver(profileSchema),
@@ -25,7 +27,7 @@ export function ProfileEditForm() {
       secondName: '',
       email: '',
       phoneNumber: phoneNumber,
-      city: '',
+      city: city,
       dateOfBirth: selectedDate,
     },
   });
@@ -131,11 +133,12 @@ export function ProfileEditForm() {
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    <TextInput
+                    <CityInput
                       control={form.control}
-                      type='text'
-                      id='text'
                       label='City'
+                      setCity={(city: string) => {
+                        setCity(city);
+                      }}
                       {...field}
                     />
                   </FormItem>
@@ -150,7 +153,7 @@ export function ProfileEditForm() {
                     <FormItem>
                       <DateSelect
                         value={selectedDate.toString()}
-                        onChange={e => console.log(e)}
+                        onChange={e => console.log(1)}
                         render={renderArgs => (
                           <p>
                             {renderArgs.dateValue}
@@ -162,7 +165,6 @@ export function ProfileEditForm() {
                   </>
                 )}
               ></FormField>
-
               <Button type='submit' className='w-full'>
                 Submit
               </Button>
