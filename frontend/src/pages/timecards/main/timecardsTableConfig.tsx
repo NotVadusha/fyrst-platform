@@ -20,7 +20,7 @@ export function StatusCell({ item }: { item: Timecard }) {
 
 export function ViewMoreCell({ item }: { item: Timecard }) {
   return (
-    <Link className='text-blue underline' to={`./view/${item.id}`}>
+    <Link className='text-blue underline' to={`${item.id}`}>
       View more
     </Link>
   );
@@ -36,7 +36,7 @@ export const timecardsTableColumns: ColumnInfo<Timecard>[] = [
   {
     columnName: 'Created by',
     renderCell(item) {
-      return item.createdBy;
+      return `${item.employee.first_name} ${item.employee.last_name}`;
     },
   },
   {
@@ -48,7 +48,9 @@ export const timecardsTableColumns: ColumnInfo<Timecard>[] = [
   {
     columnName: 'Approved by',
     renderCell(item) {
-      return item.approvedBy ?? '---';
+      return item.approvedBy
+        ? `${item.facilityManager.first_name} ${item.facilityManager.last_name}`
+        : '---';
     },
   },
   {
