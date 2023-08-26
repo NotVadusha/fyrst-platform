@@ -12,6 +12,8 @@ const mockedBookings = [
     pricePerHour: 10,
     notes: 'Cool girl',
     facilityId: 10,
+    startDate: new Date('2023-08-08'),
+    endDate: new Date('2023-08-08'),
   },
   {
     status: 'pending',
@@ -26,6 +28,8 @@ const mockedBookings = [
     pricePerHour: 20,
     notes: 'Cool boy',
     facilityId: 5,
+    startDate: new Date('2023-08-08'),
+    endDate: new Date('2023-08-08'),
   },
 ];
 

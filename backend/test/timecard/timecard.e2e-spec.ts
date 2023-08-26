@@ -9,8 +9,6 @@ import {
   existingId,
   mockTimecardModel,
   notExistingId,
-  paginationLimitMock,
-  paginationOffsetMock,
   timecardFiltersDtoMock,
   timecardsMock,
   updateTimecardDtoMock,
@@ -56,30 +54,28 @@ describe('TimecardModule', () => {
         .expect(HttpStatus.OK)
         .expect({
           total: timecardsMock.length,
-          items: timecardsMock
-            .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
-            .map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
+          items: timecardsMock.map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
         });
     });
 
     it('should return array of timecards with pagination', () => {
       return request(app.getHttpServer())
         .get(`${timecardApiPrefix}/`)
-        .query({ limit: paginationLimitMock, offset: paginationOffsetMock })
+        .query({ limit: timecardFiltersDtoMock.limit, offset: timecardFiltersDtoMock.offset })
         .expect(HttpStatus.OK)
         .expect({
           total: timecardsMock.length,
           items: timecardsMock
-            .slice(paginationLimitMock, paginationOffsetMock)
+            .slice(timecardFiltersDtoMock.offset, timecardFiltersDtoMock.limit)
             .map(t => ({ ...t, createdAt: t.createdAt.toISOString() })),
         });
     });
 
-    it('should return 500 when invalid pagination params are passed', () => {
+    it('should return 400 when invalid filters are passed', () => {
       return request(app.getHttpServer())
         .get(`${timecardApiPrefix}/`)
         .query({ limit: 'lorem', offset: 'ipsum' })
-        .expect(HttpStatus.INTERNAL_SERVER_ERROR);
+        .expect(HttpStatus.BAD_REQUEST);
     });
   });
 
