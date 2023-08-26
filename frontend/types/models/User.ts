@@ -2,14 +2,14 @@ import { Role } from './Role';
 
 export interface User {
   id: number;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
   city: string;
   birthdate: Date;
   password: string;
-  isConfirmed: boolean;
-  roleId: number;
+  is_confirmed: boolean;
+  role_id: number;
   role: Role;
 }

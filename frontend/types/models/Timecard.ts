@@ -7,8 +7,8 @@ export interface Timecard {
   createdAt: string;
   createdBy: number;
   employee: User;
-  approvedAt?: string;
-  approvedBy?: string;
+  approvedAt?: string | null;
+  approvedBy?: number | null;
   facilityManager: User;
   status: TimecardStatus;
   bookingId: number;

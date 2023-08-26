@@ -4,5 +4,6 @@ import { baseQuery } from '../services/helpers/baseQuery';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQuery,
+  tagTypes: ['Timecards'],
   endpoints: () => ({}),
 });

@@ -16,14 +16,27 @@ const timecardsApi = apiSlice.injectEndpoints({
 
           return '/timecard?' + params;
         },
+        providesTags: ['Timecards'],
       }),
       fetchTimecard: builder.query<Timecard, number>({
         query(id) {
           return `/timecard/${id}`;
         },
+        providesTags: ['Timecards'],
+      }),
+      updateTimecard: builder.mutation<Timecard, Partial<Timecard> & Pick<Timecard, 'id'>>({
+        query({ id, ...body }) {
+          return {
+            url: `timecard/${id}`,
+            method: 'PATCH',
+            body,
+          };
+        },
+        invalidatesTags: ['Timecards'],
       }),
     };
   },
 });
 
-export const { useFetchTimecardsQuery, useFetchTimecardQuery } = timecardsApi;
+export const { useFetchTimecardsQuery, useFetchTimecardQuery, useUpdateTimecardMutation } =
+  timecardsApi;
