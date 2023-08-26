@@ -6,8 +6,6 @@ import {
   createTimecardDtoMock,
   existingId,
   mockTimecardService,
-  paginationLimitMock,
-  paginationOffsetMock,
   timecardFiltersDtoMock,
   timecardsMock,
   updateTimecardDtoMock,
@@ -40,21 +38,15 @@ describe('TimecardController', () => {
     describe('when getAllFiltered is called', () => {
       let result: GetAllTimecardsDto;
       const expectedFilteredTimecards = timecardsMock
-        .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
-        .slice(paginationOffsetMock, paginationLimitMock);
+        .filter(t => t.approvedAt === timecardFiltersDtoMock.approvedAt)
+        .slice(timecardFiltersDtoMock.offset, timecardFiltersDtoMock.limit);
       const expectedResult: GetAllTimecardsDto = {
         items: expectedFilteredTimecards as Timecard[],
         total: timecardsMock.length,
       };
 
       beforeEach(async () => {
-        const createdAt = new Date('2023-08-23');
-
-        result = await timecardController.getAllFiltered(
-          paginationLimitMock,
-          paginationOffsetMock,
-          createdAt,
-        );
+        result = await timecardController.getAllFiltered(timecardFiltersDtoMock);
       });
 
       test('it should call TimecardService', () => {

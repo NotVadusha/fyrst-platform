@@ -63,6 +63,12 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   @Column
   notes: string;
 
+  @Column
+  startDate: Date;
+
+  @Column
+  endDate: Date;
+
   @ForeignKey(() => Facility)
   @Column
   facilityId: number;
