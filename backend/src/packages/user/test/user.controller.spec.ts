@@ -31,6 +31,16 @@ describe('UsersController', () => {
               .mockResolvedValue((id: number, updateUserInfo: UpdateUserDto) =>
                 Promise.resolve(updateUserInfo),
               ),
+              getAllByParams: jest.fn().mockResolvedValue(({ currentPage }: { currentPage: string }) => {
+                const mockData = {
+                  users: [
+                    { id: '1', first_name: 'John', last_name: 'Doe' },
+                    { id: '2', first_name: 'Jane', last_name: 'Smith' },
+                  ],
+                  totalPages: 3,
+                };
+                return Promise.resolve(mockData);
+              }),
             delete: jest.fn().mockResolvedValue((id: number) => Promise.resolve(true)),
           },
         },
@@ -61,21 +71,21 @@ describe('UsersController', () => {
     });
   });
 
-  // describe('getUsers', () => {
-  //   describe('when getUsers is called', () => {
-  //     let users: TestUser[];
-  //     const userFiltersDto: UserFiltersDto = { currentPage: 1, first_name: '', last_name: '' };
+  describe('getUsersByParams', () => {
+    describe('when getUsersByParams is called', () => {
+      let users: TestUser[];
+      const userFiltersDto: UserFiltersDto = { currentPage: '1', first_name: '', last_name: '' };
 
-  //     beforeEach(async () => {
-  //       const data = await userController.getAllByParams(userFiltersDto);
-  //       users = data.users;
-  //     });
+      beforeEach(async () => {
+        const data = await userController.getAllByParams(userFiltersDto);
+        users = data.users;
+      });
 
-  //     test('then it should call usersService', () => {
-  //       expect(userService.getAllByParams).toHaveBeenCalled();
-  //     });
-  //   });
-  // });
+      test('then it should call usersService', () => {
+        expect(userService.getAllByParams).toHaveBeenCalled();
+      });
+    });
+  });
 
   describe('createUser', () => {
     describe('when createUser is called', () => {
