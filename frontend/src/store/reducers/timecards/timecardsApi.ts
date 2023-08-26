@@ -2,6 +2,7 @@ import { apiSlice } from '../apiSlice';
 import { Timecard } from '../../../../types/models/Timecard';
 import { TimecardFiltersDto } from '../../../../types/dto/TimecardFiltersDto';
 import { GetAllTimecardsDto } from '../../../../types/dto/GetAllTimecardsDto';
+import { CreateTimecardDto } from '../../../../types/dto/CreateTimecardDto';
 
 const timecardsApi = apiSlice.injectEndpoints({
   endpoints(builder) {
@@ -34,9 +35,23 @@ const timecardsApi = apiSlice.injectEndpoints({
         },
         invalidatesTags: ['Timecards'],
       }),
+      createTimecard: builder.mutation<Timecard, CreateTimecardDto>({
+        query(dto) {
+          return {
+            url: `/timecard`,
+            method: 'POST',
+            body: dto,
+          };
+        },
+        invalidatesTags: ['Timecards'],
+      }),
     };
   },
 });
 
-export const { useFetchTimecardsQuery, useFetchTimecardQuery, useUpdateTimecardMutation } =
-  timecardsApi;
+export const {
+  useFetchTimecardsQuery,
+  useFetchTimecardQuery,
+  useUpdateTimecardMutation,
+  useCreateTimecardMutation,
+} = timecardsApi;

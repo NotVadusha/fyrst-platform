@@ -60,21 +60,8 @@ export const router = createBrowserRouter([
             element: <ViewTimeCardPage />,
           },
           {
-            path: 'create',
+            path: 'create/:bookingId',
             element: <CreateTimeCardPage />,
-            // action: async ({ params, request }) => {
-            //   const body = await request.formData();
-
-            //   const res = await fetch(`${baseUrl}/timecard`, {
-            //     method: 'POST',
-            //     body,
-            //   });
-
-            //   if (!res.ok) {
-            //     throw res;
-            //   }
-            //   return { ok: true };
-            // },
           },
         ],
       },

@@ -5,10 +5,6 @@ export const timecardSchema = y
   .shape({
     type: y.string().min(3, 'Type must be at least 2 characters.').required(),
     employeeName: y.string().min(2, 'Name has to be at lets 2 characters long').required(),
-    facility: y
-      .string()
-      .max(16, 'Facility has to be at most 16 characters long')
-      .required('Facility is a required field'),
     managerName: y.string().required('Manager name is a required field'),
     hoursWorked: y
       .number()
