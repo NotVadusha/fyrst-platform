@@ -10,12 +10,10 @@ import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
 import { UserApi } from 'src/store/services/user.service/user.service';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import CityInput from './CityInput';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [avatarImage, setAvatarImage] = useState('');
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
   const [getUser] = UserApi.useGetUserMutation();
@@ -28,6 +26,10 @@ export function ProfileEditForm() {
   // navigate('/auth/login', { state: { from: location }, replace: true });
   // }
   //   const userInfo = getUser({ id: userTokenId });
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [avatarImage, setAvatarImage] = useState('');
+  const [city, setCity] = useState('');
 
   const form = useForm<Inputs>({
     resolver: yupResolver(profileSchema),
@@ -143,13 +145,7 @@ export function ProfileEditForm() {
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    <TextInput
-                      control={form.control}
-                      type='text'
-                      id='city'
-                      label='City'
-                      {...field}
-                    />
+                    <CityInput control={form.control} {...field} setCity={setCity} />
                   </FormItem>
                 )}
               />
