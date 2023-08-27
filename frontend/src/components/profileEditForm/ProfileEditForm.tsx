@@ -8,7 +8,7 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
-import { UserApi } from 'src/store/services/user.service';
+import { userApi } from 'src/store/services/user.service';
 import CityInput from './CityInput';
 import { useLoaderData } from 'react-router-dom';
 import DateInput from './DateInput';
@@ -19,9 +19,9 @@ type Inputs = y.InferType<typeof profileSchema>;
 export function ProfileEditForm() {
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
-  const [getUser] = UserApi.useGetUserMutation();
-  const [updateUser] = UserApi.useUpdateUserMutation();
-  const [updateUserProfile] = UserApi.useUpdateUserProfileMutation();
+  const [getUser] = userApi.useGetUserMutation();
+  const [updateUser] = userApi.useUpdateUserMutation();
+  const [updateUserProfile] = userApi.useUpdateUserProfileMutation();
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [avatarImage, setAvatarImage] = useState('');

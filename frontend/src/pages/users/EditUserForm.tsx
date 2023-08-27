@@ -14,14 +14,14 @@ import * as y from 'yup';
 import { userSchema } from 'src/lib/validations/user';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation, useEditUserMutation } from 'src/store/services/user.service';
+import { useAddUserMutation, useUpdateUserMutation } from 'src/store/services/user.service';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'types';
 
 type Inputs = y.InferType<typeof userSchema>;
 
 export function EditUserForm({ user }: { user: User }) {
-  const [editUser, result] = useEditUserMutation();
+  const [editUser, result] = useUpdateUserMutation();
   const navigate = useNavigate();
 
   const form = useForm<Inputs>({
@@ -34,15 +34,15 @@ export function EditUserForm({ user }: { user: User }) {
       last_name: user.last_name,
       password: user.password,
       phone_number: user.phone_number,
-      role_id: user.role_id
+      role_id: user.role_id,
     },
   });
 
   async function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    editUser({id: user.id, user: values});
-    navigate(0);
+    editUser({ id: user.id, user: values });
+    // navigate(0);
   }
 
   return (
@@ -138,9 +138,7 @@ export function EditUserForm({ user }: { user: User }) {
             </FormItem>
           )}
         />
-        {/* <button type='submit'>Submit</button> */}
         <Button
-          onClick={form.handleSubmit(onSubmit)}
           type='submit'
           variant='primary'
           className='w-full'

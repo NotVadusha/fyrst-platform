@@ -111,10 +111,13 @@ export function UserFiltersForm({
                     {/*eslint-disable-next-line */}
                     {/*@ts-ignore*/}
                     <Dropdown
-                      label=''
-                      namespace='dummy'
-                      placeholder='Email confirmed'
-                      options={['true', 'false']}
+                      placeholder='Email'
+                      ddType='in-form'
+                      control={form.control}
+                      options={[
+                        { label: 'true', value: 'true' },
+                        { label: 'false', value: 'true' },
+                      ]}
                       {...field}
                     />
                   </FormControl>
@@ -138,6 +141,7 @@ export function UserFiltersForm({
                       control={form.control}
                       type='date'
                       label='Birthdate'
+                      required
                       {...field}
                       onChange={handleInputChange}
                     />

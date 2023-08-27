@@ -1,28 +1,20 @@
 export interface UserDefaultResponse {
   id: number;
-  phone_number: string;
   first_name: string;
   last_name: string;
   email: string;
-  city: string;
-  birthdate: Date;
-  password: string;
+  phone_number?: string;
+  city?: string;
+  birthdate?: string;
+  password?: string;
   is_confirmed: boolean;
   role_id: number;
-  updatedAt: Date;
-  createdAt: Date;
 }
 
-export interface UpdateUserBody {
-  id: number;
-  phone_number?: string;
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  city?: string;
-  birthdate?: Date;
-  role_id?: number;
-}
+export type UpdateUserBody = Omit<
+  UserDefaultResponse,
+  'id' | 'password' | 'is_confirmed' | 'updatedAt' | 'createdAt'
+>;
 
 export interface EditUserPage {
   id: number;

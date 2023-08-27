@@ -7,7 +7,7 @@ export const userSchema = yup.object().shape({
   email: yup.string().email('Email has to be valid').required(),
   phone_number: yup.string().max(11).optional(),
   city: yup.string().max(32).optional(),
-  birthdate: yup.string(),
+  birthdate: yup.string().optional(),
   password: yup.string().max(20, 'Password is too long').optional(),
   role_id: yup.number().required("Role id is a required field"),
 }).required();
