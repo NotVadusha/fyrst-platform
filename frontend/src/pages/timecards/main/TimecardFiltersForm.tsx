@@ -1,7 +1,6 @@
 import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
 import * as yup from 'yup';
 import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
@@ -72,28 +71,6 @@ export function TimecardFiltersForm({
                     label='approvedAt'
                     {...field}
                     onChange={handleInputChange}
-                  />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='flex flex-col gap-y-2'>
-            <label className='text-body-default text-blue font-medium' htmlFor='status'>
-              Status
-            </label>
-            <FormField
-              control={form.control}
-              name='status'
-              render={({ field }) => (
-                <FormItem>
-                  <Dropdown
-                    defaultValue='paid'
-                    label=''
-                    namespace='dummy'
-                    placeholder='Status'
-                    options={Object.values(TimecardStatus)}
-                    {...field}
                   />
                 </FormItem>
               )}

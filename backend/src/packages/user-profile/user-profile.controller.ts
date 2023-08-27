@@ -22,10 +22,10 @@ export class UserProfileController {
     return await this.profileService.create(profileInfo);
   }
   @Get(':id')
-  async getOne(@Param('id', ParseIntPipe) profileId: number) {
-    const user = await this.profileService.findOne(profileId);
-    if (!user) throw new NotFoundException('Profile do not exist');
-    return user;
+  async getOne(@Param('id', ParseIntPipe) userId: number) {
+    const userProfile = await this.profileService.findOne(userId);
+    if (!userProfile) throw new NotFoundException('Profile do not exist');
+    return userProfile;
   }
   @Get()
   async getAll() {
@@ -33,12 +33,12 @@ export class UserProfileController {
   }
   @Patch(':id')
   async update(
-    @Param('id', ParseIntPipe) profileId: number,
+    @Param('id', ParseIntPipe) userId: number,
     @Body()
     updateProfileInfo: UpdateProfileDto,
   ) {
-    await this.profileService.update(updateProfileInfo, profileId);
-    return await this.profileService.findOne(profileId);
+    await this.profileService.update(updateProfileInfo, userId);
+    return await this.profileService.findOne(userId);
   }
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {

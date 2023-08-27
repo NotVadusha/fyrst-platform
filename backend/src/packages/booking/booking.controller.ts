@@ -1,7 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch, ParseIntPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Patch,
+  ParseIntPipe,
+  Query,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FilterBookingDto } from './dto/filter-booking.dto';
 
 @ApiTags('booking')
 @Controller('booking')
@@ -16,6 +28,16 @@ export class BookingController {
   @Get()
   async getAllBookings() {
     return this.bookingService.findAll();
+  }
+
+  @Get('get-by')
+  async getAllFiltered(@Query() filters?: FilterBookingDto) {
+    try {
+      const { limit = Number.MAX_SAFE_INTEGER, offset = 0, ...filterParams } = filters;
+      return this.bookingService.getAllFiltered(filterParams, limit, offset);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to fetch bookings');
+    }
   }
 
   @Get(':id')

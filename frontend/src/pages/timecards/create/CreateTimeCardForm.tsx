@@ -1,42 +1,34 @@
 import * as React from 'react';
 
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem, FormLabel, FormMessage } from './ui/common/Form';
+import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { timecardSchema } from '../lib/validation-schemas/timecard';
+import { timecardSchema } from '../../../lib/validation-schemas/timecard';
 import { Button } from 'src/ui/common/Button';
-import TextInput from './ui/common/TextInput/TextInput';
-import { baseUrl } from 'src/routes/routes';
+import TextInput from '../../../components/ui/common/TextInput/TextInput';
 
-import { useSubmit } from 'react-router-dom';
+export type CreateTimecardFormValues = y.InferType<typeof timecardSchema>;
 
-type Inputs = y.InferType<typeof timecardSchema>;
-
-export function CreateTimeCardForm() {
-  const submit = useSubmit();
-
-  const form = useForm<Inputs>({
+export function CreateTimeCardForm({
+  handleSubmit,
+}: {
+  handleSubmit: (values: CreateTimecardFormValues) => void;
+}) {
+  const form = useForm<CreateTimecardFormValues>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
-      type: 'something',
+      type: 'Weekly',
       employeeName: 'Dan',
-      facility: 'Driver',
       managerName: 'Nick',
       lunchTaken: '2 hours',
+      hoursWorked: 12,
     },
   });
 
-  async function onSubmit(values: Inputs) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    submit(values, {
-      method: 'POST',
-      // action: `${baseUrl}/timecard`,
-    });
+  async function onSubmit(values: CreateTimecardFormValues) {
+    handleSubmit(values);
   }
-
-  console.log(form.getValues());
 
   return (
     <Form {...form}>
@@ -56,6 +48,7 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name='employeeName'
@@ -71,21 +64,7 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name='facility'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <TextInput
-                control={form.control}
-                type='text'
-                id='facility'
-                label='Facility'
-                {...field}
-              />
-            </FormItem>
-          )}
-        />
+
         <FormField
           control={form.control}
           name='managerName'
@@ -101,6 +80,7 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name='hoursWorked'
@@ -116,6 +96,7 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name='lunchTaken'
@@ -131,8 +112,10 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
-        <button>Submit</button>
-        <Button type='submit' variant='primary'></Button>
+
+        <Button type='submit' variant='primary'>
+          Submit
+        </Button>
       </form>
     </Form>
   );
