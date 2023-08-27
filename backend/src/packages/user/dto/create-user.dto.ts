@@ -8,6 +8,7 @@ import {
   IsNumber,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
@@ -39,7 +40,7 @@ export class CreateUserDto {
   password?: string;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   is_confirmed: boolean;
 
   @IsNumber()
