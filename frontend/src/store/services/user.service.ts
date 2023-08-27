@@ -27,12 +27,19 @@ export const userApi = createApi({
 
         const result = `/user?currentPage=${args.currentPage}&` + params;
 
-        console.log(result);
-
         return result;
+      },
+    }),
+    addUsers: builder.mutation<any, User[]>({
+      query: users => {
+        return {
+          url: `/user/many`,
+          method: 'POST',
+          body: users,
+        };
       },
     }),
   }),
 });
 
-export const { useGetUsersQuery } = userApi;
+export const { useGetUsersQuery, useAddUsersMutation } = userApi;

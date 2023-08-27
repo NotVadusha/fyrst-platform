@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
-import { useGetUsersQuery } from '../../store/services/user.service';
+import { useAddUsersMutation, useGetUsersQuery } from 'src/store/services/user.service';
 import type { User } from 'types';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
 import { buttonVariants } from 'src/ui/common/Button/Button';
-import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
-import styles from '../../components/ui/common/TextInput/TextInput.module.css';
 import { UserFiltersForm } from './UserFiltersForm';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserFilters } from 'types/UserFilters';
+import Papa from 'papaparse';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [addUsers, result] = useAddUsersMutation();
+
+  const navigate = useNavigate();
 
   const filters: UserFilters = {
     fist_name: searchParams.get('name')?.split(' ')[0] ?? null,
@@ -78,6 +80,41 @@ export function UserListPage() {
     });
   }
 
+  function handleExport() {
+    if (!data?.users) return;
+
+    const csvData = Papa.unparse(data.users);
+
+    const blob = new Blob([csvData], { type: 'text/csv' });
+
+    const blobURL = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = blobURL;
+    downloadLink.download = 'users.csv';
+
+    downloadLink.textContent = 'Download CSV';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    URL.revokeObjectURL(blobURL);
+    document.body.removeChild(downloadLink);
+  }
+
+  function handleImport(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!event.target.files?.[0]) return;
+
+    const csv = Papa.parse(event.target.files[0] as any, {
+      header: true,
+      complete: result => {
+        console.log(result.data);
+        addUsers(result.data as User[]);
+        navigate(0);
+      },
+    });
+  }
+
   return (
     <>
       <Header title='Users' />
@@ -89,8 +126,17 @@ export function UserListPage() {
               <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
                 Import Users
               </label>
-              <input id='files' className='hidden' type='file' name='file' accept='.csv' />
-              <Button variant='secondary'>Export Users CSV</Button>
+              <input
+                id='files'
+                className='hidden'
+                type='file'
+                name='file'
+                accept='.csv'
+                onChange={handleImport}
+              />
+              <Button variant='secondary' onClick={handleExport}>
+                Export Users CSV
+              </Button>
               <Button variant='primary'>Add User</Button>
             </div>
           </div>

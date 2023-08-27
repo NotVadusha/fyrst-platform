@@ -25,6 +25,11 @@ export class UserService {
     });
   }
 
+  async createMany(userInfo: CreateUserDto[]) {
+    const createPromises = userInfo.map(user => this.create(user));
+    return await Promise.all(createPromises);
+  }
+
   async getAllByParams({
     currentPage,
     filters,
