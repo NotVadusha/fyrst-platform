@@ -125,7 +125,7 @@ export const router = createBrowserRouter([
                   email: 'jd@gmail.com',
                   phone_number: '+3',
                   city: 'New York',
-                  birthdate: '12.12.2004',
+                  birthdate: '2004-12-12',
                   role_id: 1,
                 },
               };

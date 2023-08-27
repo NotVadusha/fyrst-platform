@@ -1,4 +1,5 @@
 import * as y from 'yup';
+import { intervalToDuration } from 'date-fns';
 
 export const profileSchema = y
   .object()
@@ -8,6 +9,16 @@ export const profileSchema = y
     email: y.string().email('Invalid email input').required('Email is required field'),
     phoneNumber: y.string().required('Phone number is a required field'),
     city: y.string().min(2).max(58).required('City is required field'),
-    dateOfBirth: y.date().required('Birthdate is required field'),
+    dateOfBirth: y
+      .string()
+      .required('Birthdate is required field')
+      .test('IsAdult', `You're too young`, (value: string) => {
+        const { years } = intervalToDuration({
+          start: new Date(value),
+          end: new Date(),
+        });
+        if (years) return years >= 18;
+        return false;
+      }),
   })
   .required();

@@ -11,6 +11,7 @@ import CustomPhoneInput from './CustomPhoneInput';
 import { UserApi } from 'src/store/services/user.service';
 import CityInput from './CityInput';
 import { useLoaderData } from 'react-router-dom';
+import DateInput from './DateInput';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
@@ -31,7 +32,7 @@ export function ProfileEditForm() {
       email: string;
       phone_number: string;
       city: string;
-      birthdate: Date;
+      birthdate: string;
       role_id: number;
     };
     userProfile: {
@@ -51,7 +52,7 @@ export function ProfileEditForm() {
       email: user.email,
       phoneNumber: user.phone_number,
       city: user.city,
-      dateOfBirth: new Date(user.birthdate),
+      dateOfBirth: user.birthdate,
     },
   });
 
@@ -166,16 +167,13 @@ export function ProfileEditForm() {
                 name='dateOfBirth'
                 render={({ field }) => (
                   <FormItem>
-                    {
-                      // @ts-ignore
-                      <TextInput
-                        control={form.control}
-                        type='date'
-                        id='DateOfBirth'
-                        label='Date of birth'
-                        {...field}
-                      />
-                    }
+                    <DateInput
+                      label='Date of birth'
+                      control={form.control}
+                      type='date'
+                      id='DateOfBirth'
+                      {...field}
+                    />
                   </FormItem>
                 )}
               />
