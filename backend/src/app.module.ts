@@ -13,6 +13,7 @@ import {
   ResetPasswordModule,
   UserProfileModule,
   FacilityModule,
+  InvoiceModule,
 } from './packages';
 
 @Module({
@@ -28,6 +29,7 @@ import {
     BookingModule,
     UserProfileModule,
     FacilityModule,
+    InvoiceModule,
   ],
   controllers: [],
   providers: [],

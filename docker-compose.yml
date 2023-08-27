@@ -50,7 +50,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.12.3-management
     ports: 
-      - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+      - ${RABBITMQ_PORT}:5672
       - 15672:15672
     env_file: ./.env.dev
 
@@ -66,5 +66,7 @@ services:
       - ./shared/dist:/app/node_modules/shared
       - ./microservices/invoice/test:/app/test
     depends_on:
-      - backend
       - rabbitmq
+
+  gotenberg:
+    image: thecodingmachine/gotenberg:7

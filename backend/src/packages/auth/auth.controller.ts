@@ -25,7 +25,6 @@ import { ClientProxy } from '@nestjs/microservices';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    @Inject('INVOICE_SERVICE') private readonly invoiceServiceClient: ClientProxy,
   ) {}
 
   @ApiOperation({ summary: 'User registration' })
@@ -86,10 +85,5 @@ export class AuthController {
       });
     }
     res.redirect(process.env.GOOGLE_AUTH_SUCCESS_URL);
-  }
-
-  @Get('hello')
-  async hello() {
-    return this.invoiceServiceClient.send('get_hello', {});
   }
 }
