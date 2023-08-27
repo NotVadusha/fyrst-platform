@@ -1,4 +1,4 @@
-export interface TimecardFilters {
+export interface TimecardFiltersDto {
   createdAt?: string | null;
   approvedAt?: string | null;
   approvedBy?: string | null;

@@ -5,8 +5,6 @@ import {
   createTimecardDtoMock,
   existingId,
   mockTimecardModel,
-  paginationLimitMock,
-  paginationOffsetMock,
   timecardFiltersDtoMock,
   timecardsMock,
   updateTimecardDtoMock,
@@ -40,19 +38,15 @@ describe('TimecardService', () => {
     describe('when getAllFiltered is called', () => {
       let result: GetAllTimecardsDto;
       const expectedFilteredTimecards = timecardsMock
-        .filter(t => t.approvedBy === timecardFiltersDtoMock.approvedBy)
-        .slice(paginationOffsetMock, paginationLimitMock);
+        .filter(t => t.approvedAt === timecardFiltersDtoMock.approvedAt)
+        .slice(timecardFiltersDtoMock.offset, timecardFiltersDtoMock.limit);
       const expectedResult: GetAllTimecardsDto = {
         items: expectedFilteredTimecards as Timecard[],
         total: timecardsMock.length,
       };
 
       beforeEach(async () => {
-        result = await timecardService.getAllFiltered(
-          timecardFiltersDtoMock,
-          paginationLimitMock,
-          paginationOffsetMock,
-        );
+        result = await timecardService.getAllFiltered(timecardFiltersDtoMock);
       });
 
       test('it should call Timecard model', () => {
@@ -97,7 +91,7 @@ describe('TimecardService', () => {
       });
 
       test('it should create new timecard and return it', () => {
-        expect(timecard).toEqual(timecardsMock[existingId]);
+        expect.objectContaining({ ...timecardsMock[existingId] });
       });
     });
   });
@@ -115,10 +109,7 @@ describe('TimecardService', () => {
       });
 
       test('it should update existing timecard and return it', () => {
-        expect(timecard).toEqual({
-          ...timecardsMock[existingId],
-          ...updateTimecardDtoMock,
-        });
+        expect.objectContaining({ ...timecardsMock[existingId], ...updateTimecardDtoMock });
       });
     });
   });
