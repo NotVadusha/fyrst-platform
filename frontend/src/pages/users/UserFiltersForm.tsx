@@ -65,7 +65,7 @@ export function UserFiltersForm({
                     <TextInput
                       control={form.control}
                       type='text'
-                      label='Name'
+                      label='Email'
                       {...field}
                       onChange={handleInputChange}
                     />

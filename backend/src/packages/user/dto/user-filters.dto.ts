@@ -25,6 +25,6 @@ export class UserFiltersDto {
   is_confirmed?: boolean;
 
   @IsOptional()
-  @IsDate()
-  bithdate?: Date;
+  @IsString()
+  birthdate?: string;
 }

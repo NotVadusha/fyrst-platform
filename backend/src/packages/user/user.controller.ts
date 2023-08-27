@@ -33,21 +33,23 @@ export class UserController {
     return await this.userService.createMany(userInfo)
   }
   
+  
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) userId: number) {
     const user = await this.userService.findOne(userId);
     if (!user) throw new NotFoundException();
     return user;
   }
+
   @Get()
   async getAllByParams(@Query() query: UserFiltersDto): Promise<{
     users: User[];
     totalCount: number;
   }> {
     return this.userService.getAllByParams({
-      currentPage: +query.currentPage,
+      currentPage: Number(query.currentPage),
       filters: {
-        bithdate: query.bithdate,
+        birthdate: query.birthdate,
         city: query.city,
         email: query.email,
         first_name: query.first_name,

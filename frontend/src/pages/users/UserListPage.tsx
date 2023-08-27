@@ -9,7 +9,9 @@ import { buttonVariants } from 'src/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserFilters } from 'types/UserFilters';
+import { UserActions } from './UserActions';
 import Papa from 'papaparse';
+import { AddUserButton } from './AddUserButton';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,13 +22,13 @@ export function UserListPage() {
   const navigate = useNavigate();
 
   const filters: UserFilters = {
-    fist_name: searchParams.get('name')?.split(' ')[0] ?? null,
+    first_name: searchParams.get('name')?.split(' ')[0] ?? null,
     last_name: searchParams.get('name')?.split(' ')[1] ?? null,
     email: searchParams.get('email'),
     phone: searchParams.get('phone'),
     city: searchParams.get('city'),
     emailConfirmed: searchParams.get('emailConfirmed'),
-    birthDate: searchParams.get('birthDate'),
+    birthdate: searchParams.get('birthDate'),
   };
 
   Object.keys(filters).forEach(key => {
@@ -46,7 +48,7 @@ export function UserListPage() {
     },
     {
       columnName: 'Phone',
-      renderCell: ({ phone_number }) => phone_number,
+      renderCell: ({ phone_number }) => phone_number ?? '',
     },
     {
       columnName: 'City',
@@ -137,7 +139,7 @@ export function UserListPage() {
               <Button variant='secondary' onClick={handleExport}>
                 Export Users CSV
               </Button>
-              <Button variant='primary'>Add User</Button>
+              <AddUserButton />
             </div>
           </div>
           <UserFiltersForm handleInputChange={handleInputChange} />
@@ -162,13 +164,5 @@ export function UserListPage() {
         </div>
       </div>
     </>
-  );
-}
-
-function UserActions({ user }: { user: User }) {
-  return (
-    <div className='w-full flex items-center'>
-      <span>*</span>
-    </div>
   );
 }

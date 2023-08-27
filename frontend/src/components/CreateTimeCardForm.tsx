@@ -131,9 +131,8 @@ export function CreateTimeCardForm() {
             </FormItem>
           )}
         />
-        <Button type='submit' variant='primary'>
-          Submit
-        </Button>
+        <button>Submit</button>
+        <Button type='submit' variant='primary'></Button>
       </form>
     </Form>
   );
