@@ -117,6 +117,33 @@ export const router = createBrowserRouter([
           {
             path: 'edit',
             element: <ProfileEditPage />,
+            loader: async ({ params }) => {
+              return {
+                user: {
+                  first_name: 'Joe',
+                  last_name: 'Doe',
+                  email: 'jd@gmail.com',
+                  phone_number: '+3',
+                  city: 'New York',
+                  birthdate: '12.12.2004',
+                  role_id: 1,
+                },
+              };
+              // try {
+              // const navigate = useNavigate();
+              // const location = useLocation();
+              //   const userToken = jwt.decide(localStorage.getItem('accessToken'));
+              //   const userId = user.payload.id
+              // if (!userTokenID) {
+              //   navigate('/auth/login', { state: { from: location }, replace: true });
+              // }
+              //   const user = await fetch(`${baseUrl}/user/${userId}`);
+              //   const userProfile = await fetch(`${baseUrl}/profile/${userId}`)
+              //   return {user: {...user}, profile: {...profile}}
+              // } catch (err) {
+              //   throw err;
+              // }
+            },
           },
           {
             path: 'notifications',

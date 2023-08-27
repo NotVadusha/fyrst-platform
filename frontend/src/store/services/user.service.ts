@@ -6,7 +6,7 @@ import {
   UserDefaultResponse,
 } from 'types/user';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
-import { baseQuery } from '../helpers/baseQuery';
+import { baseQuery } from './helpers/baseQuery';
 
 export const UserApi = createApi({
   reducerPath: 'userApi',

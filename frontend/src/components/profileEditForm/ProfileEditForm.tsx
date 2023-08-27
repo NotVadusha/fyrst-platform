@@ -8,9 +8,9 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
-import { UserApi } from 'src/store/services/user.service/user.service';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { UserApi } from 'src/store/services/user.service';
 import CityInput from './CityInput';
+import { useLoaderData } from 'react-router-dom';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
@@ -19,27 +19,39 @@ export function ProfileEditForm() {
   const [getUser] = UserApi.useGetUserMutation();
   const [updateUser] = UserApi.useUpdateUserMutation();
   const [updateUserProfile] = UserApi.useUpdateUserProfileMutation();
-  const userToken = localStorage.getItem('accessToken');
-  const navigate = useNavigate();
-  const location = useLocation();
-  // if (!userToken) {
-  // navigate('/auth/login', { state: { from: location }, replace: true });
-  // }
-  //   const userInfo = getUser({ id: userTokenId });
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [avatarImage, setAvatarImage] = useState('');
   const [city, setCity] = useState('');
 
+  const { user, userProfile } = useLoaderData() as {
+    user: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      phone_number: string;
+      city: string;
+      birthdate: Date;
+      role_id: number;
+    };
+    userProfile: {
+      languages: string[];
+      description: string;
+      education: string;
+      sex: string;
+      avatar: string;
+    };
+  };
+
   const form = useForm<Inputs>({
     resolver: yupResolver(profileSchema),
     defaultValues: {
-      firstName: '',
-      secondName: '',
-      email: '',
-      phoneNumber: phoneNumber,
-      city: '',
-      dateOfBirth: new Date(),
+      firstName: user.first_name,
+      secondName: user.last_name,
+      email: user.email,
+      phoneNumber: user.phone_number,
+      city: user.city,
+      dateOfBirth: new Date(user.birthdate),
     },
   });
 

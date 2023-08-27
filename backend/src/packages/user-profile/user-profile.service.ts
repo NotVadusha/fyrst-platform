@@ -27,18 +27,18 @@ export class UserProfileService {
   }
 
   async findOne(userId: number) {
+    return await this.profileRepository.findOne({ where: { user_id: userId } });
+  }
+
+  async update(updateInfo: UpdateProfileDto, userId: number) {
+    const [updatedProfile] = await this.profileRepository.update(updateInfo, {
+      where: { user_id: userId },
+    });
+    if (!updatedProfile) throw new NotFoundException('This profile doesnt exist');
     return await this.profileRepository.findOne({ where: { id: userId } });
   }
 
-  async update(updateInfo: UpdateProfileDto, profileId: number) {
-    const [updatedProfile] = await this.profileRepository.update(updateInfo, {
-      where: { id: profileId },
-    });
-    if (!updatedProfile) throw new NotFoundException('This profile doesnt exist');
-    return await this.profileRepository.findOne({ where: { id: profileId } });
-  }
-
-  async delete(profileId: number) {
-    return await this.profileRepository.destroy({ where: { id: profileId } });
+  async delete(userId: number) {
+    return await this.profileRepository.destroy({ where: { user_id: userId } });
   }
 }
