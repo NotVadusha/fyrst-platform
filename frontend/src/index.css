@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.pac-container{
+  border-radius: .5rem;
+}
+  
+.pac-icon {
+  display: none;
+}
