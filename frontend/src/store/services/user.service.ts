@@ -1,10 +1,5 @@
-import {
-  GetUser,
-  GetUserProfile,
-  UpdateUserBody,
-  UpdateUserProfileBody,
-  UserDefaultResponse,
-} from 'types/user';
+import { UpdateUserBody, UserDefaultResponse } from 'types/dto/UserDto';
+import { UserProfile } from 'types/models/UserProfile';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { baseQuery } from './helpers/baseQuery';
 
@@ -13,7 +8,7 @@ export const UserApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [],
   endpoints: build => ({
-    getUser: build.mutation<UserDefaultResponse, GetUser>({
+    getUser: build.mutation<UserDefaultResponse, { id: number }>({
       query: body => ({
         url: `/user/${body.id}`,
         method: 'GET',
@@ -27,14 +22,14 @@ export const UserApi = createApi({
         body,
       }),
     }),
-    getUserProfile: build.mutation<UserDefaultResponse, GetUserProfile>({
+    getUserProfile: build.mutation<UserDefaultResponse, { id: number }>({
       query: body => ({
         url: `/profile/${body.id}`,
         method: 'GET',
         body,
       }),
     }),
-    updateUserProfile: build.mutation<UserDefaultResponse, UpdateUserProfileBody>({
+    updateUserProfile: build.mutation<UserDefaultResponse, UserProfile>({
       query: body => ({
         url: `/profile/${body.id}`,
         method: 'PATCH',

@@ -12,6 +12,8 @@ import { UserApi } from 'src/store/services/user.service';
 import CityInput from './CityInput';
 import { useLoaderData } from 'react-router-dom';
 import DateInput from './DateInput';
+import { UserProfile } from 'types/models/UserProfile';
+import { EditUserPage } from 'types/dto/UserDto';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
@@ -26,22 +28,8 @@ export function ProfileEditForm() {
   const [city, setCity] = useState('');
 
   const { user, userProfile } = useLoaderData() as {
-    user: {
-      first_name: string;
-      last_name: string;
-      email: string;
-      phone_number: string;
-      city: string;
-      birthdate: string;
-      role_id: number;
-    };
-    userProfile: {
-      languages: string[];
-      description: string;
-      education: string;
-      sex: string;
-      avatar: string;
-    };
+    user: EditUserPage;
+    userProfile: UserProfile;
   };
 
   const form = useForm<Inputs>({

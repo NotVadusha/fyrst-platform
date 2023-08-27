@@ -1,12 +1,4 @@
-export type GetUser = {
-  id: number;
-};
-
-export type GetUserProfile = {
-  id: number;
-};
-
-export type UserDefaultResponse = {
+export interface UserDefaultResponse {
   id: number;
   phone_number: string;
   first_name: string;
@@ -19,9 +11,9 @@ export type UserDefaultResponse = {
   role_id: number;
   updatedAt: Date;
   createdAt: Date;
-};
+}
 
-export type UpdateUserBody = {
+export interface UpdateUserBody {
   id: number;
   phone_number?: string;
   first_name?: string;
@@ -29,14 +21,16 @@ export type UpdateUserBody = {
   email?: string;
   city?: string;
   birthdate?: Date;
-  role_id: number;
-};
+  role_id?: number;
+}
 
-export type UpdateUserProfileBody = {
+export interface EditUserPage {
   id: number;
-  languages?: string[];
-  description?: string;
-  education?: string;
-  sex?: string;
-  avatar?: string;
-};
+  phone_number: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  city: string;
+  birthdate: string;
+  role_id: number;
+}
