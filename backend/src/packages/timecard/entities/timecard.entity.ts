@@ -41,7 +41,7 @@ export class Timecard extends Model {
   approvedBy: number;
 
   @BelongsTo(() => User, { foreignKey: 'approvedBy' })
-  facilityMaganer: User | null;
+  facilityManager: User | null;
 
   @Column(DataType.DATEONLY)
   approvedAt: Date;
