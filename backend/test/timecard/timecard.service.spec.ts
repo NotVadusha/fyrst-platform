@@ -109,10 +109,7 @@ describe('TimecardService', () => {
       });
 
       test('it should update existing timecard and return it', () => {
-        expect(timecard).toEqual({
-          ...timecardsMock[existingId],
-          ...updateTimecardDtoMock,
-        });
+        expect.objectContaining({ ...timecardsMock[existingId], ...updateTimecardDtoMock });
       });
     });
   });

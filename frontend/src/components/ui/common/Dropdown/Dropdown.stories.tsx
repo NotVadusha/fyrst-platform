@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import Dropdown, { DropdownOption, DropdownProps } from './Dropdown';
+import { Dropdown, DropdownOption, DropdownProps } from './Dropdown';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,7 +42,6 @@ const FormTemplate = ({
 
   function onSubmit(values: y.InferType<typeof formSchema>) {
     // do smth
-    console.log(values.city);
   }
 
   return (

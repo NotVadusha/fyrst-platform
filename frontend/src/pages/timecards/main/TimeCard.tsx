@@ -6,9 +6,9 @@ import { Pagination } from 'src/ui/common/Pagination/Pagination';
 import Table from 'src/ui/common/Table/Table';
 import { TimecardFiltersForm } from './TimecardFiltersForm';
 import { timecardsTableColumns } from './timecardsTableConfig';
-import { useFetchTimecardsQuery } from 'src/store/services/apiSlice';
+import { useFetchTimecardsQuery } from '../../../store/reducers/timecards/timecardsApi';
 import { useSearchParams } from 'react-router-dom';
-import { TimecardFilters } from 'types/TimecardFilters';
+import { TimecardFiltersDto } from '../../../../types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
 
 const LIMIT = 5;
@@ -17,7 +17,7 @@ const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
 
-  const filters: TimecardFilters = {
+  const filters: TimecardFiltersDto = {
     createdAt: searchParams.get('createdAt'),
     approvedAt: searchParams.get('approvedAt'),
     approvedBy: searchParams.get('approvedBy'),
@@ -28,7 +28,8 @@ const TimeCardPage = () => {
   };
 
   Object.keys(filters).forEach(key => {
-    filters[key as keyof TimecardFilters] === null && delete filters[key as keyof TimecardFilters];
+    filters[key as keyof TimecardFiltersDto] === null &&
+      delete filters[key as keyof TimecardFiltersDto];
   });
 
   const { data, isFetching } = useFetchTimecardsQuery(filters);
