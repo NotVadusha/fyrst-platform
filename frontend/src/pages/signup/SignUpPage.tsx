@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from 'src/lib/validation-schemas/authentication/registration';
 import { Button } from 'src/ui/common/Button';
 import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
-import { authApi } from 'src/store/services';
+import { authApi } from 'src/store/reducers/user/authApi';
 import { useNavigate } from 'react-router-dom';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
@@ -83,7 +83,12 @@ const SignUpPage = () => {
             </Button>
           </form>
         </FormProvider>
-        <Button variant='tertiary' className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+        <Button
+          variant='tertiary'
+          className='w-full flex items-center gap-2'
+          type='button'
+          onClick={handleClick}
+        >
           <GoogleLogo />
           Sign up with Google
         </Button>

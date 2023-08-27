@@ -7,7 +7,7 @@ interface UserState {
 const initialState: UserState = { id: null };
 
 const userSlice = createSlice({
-  name: 'resetPassword',
+  name: 'user',
   initialState: initialState,
   reducers: {
     setUserId(state, action: PayloadAction<number | null>) {

@@ -7,17 +7,10 @@ import {
 import { Mutex } from 'async-mutex';
 import { baseQuery } from './baseQuery';
 import jwtDecode from 'jwt-decode';
+import { JwtPayload } from 'types';
+import { TokenResponseDto } from 'types/dto/authentication/TokenResponseDto';
 
 const mutex = new Mutex();
-
-type JwtPayload = {
-  id: number;
-};
-
-type TokenResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -55,7 +48,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
         } else {
-          const tokens = refreshResult.data as TokenResponse;
+          const tokens = refreshResult.data as TokenResponseDto;
 
           if (tokens) {
             localStorage.setItem('accessToken', tokens.accessToken);

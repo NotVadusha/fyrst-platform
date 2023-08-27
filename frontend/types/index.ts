@@ -9,3 +9,7 @@ export interface NavItem {
   icon?: React.FunctionComponent<SVGIconProps>;
   items?: NavItem[];
 }
+
+export type JwtPayload = {
+  id: number;
+};
