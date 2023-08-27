@@ -44,7 +44,7 @@ export function TimecardFiltersForm({
                     control={form.control}
                     type='date'
                     id='createdAt'
-                    label='createdAt'
+                    label=''
                     {...field}
                     onChange={handleInputChange}
                   />
@@ -68,7 +68,7 @@ export function TimecardFiltersForm({
                     control={form.control}
                     type='date'
                     id='approvedAt'
-                    label='approvedAt'
+                    label=''
                     {...field}
                     onChange={handleInputChange}
                   />
