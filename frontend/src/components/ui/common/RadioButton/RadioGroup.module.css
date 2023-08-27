@@ -1,9 +1,5 @@
 .container {
-  @apply max-w-inputs w-full flex gap-2.5 items-center border border-solid border-grey p-2.5 rounded-lg;
-}
-
-.label {
-  @apply text-sm font-medium leading-none text-blue;
+  @apply w-full flex gap-2.5 items-center border border-solid border-grey p-2.5 rounded-lg text-sm font-medium leading-none text-blue;
 }
 
 .radio {

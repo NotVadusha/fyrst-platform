@@ -36,7 +36,7 @@ const FormTemplate = ({ name, label }: Props) => {
   type FormData = y.InferType<typeof formSchema>;
 
   const form = useForm<FormData>({
-    resolver: yupResolver(formSchema),
+    resolver: yupResolver<FormData>(formSchema),
   });
 
   function onSubmit(values: y.InferType<typeof formSchema>) {
