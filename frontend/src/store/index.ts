@@ -3,7 +3,7 @@ import { TestReducers } from './reducers/test.store';
 import { authApi } from './services';
 import { resetPasswordApi } from './services/reset-password.service';
 import resetPasswordSlice from './reducers/reset-password.store';
-import { apiSlice } from './services/apiSlice';
+import { apiSlice } from './reducers/apiSlice';
 
 const rootReducer = combineReducers({
   test: TestReducers,
