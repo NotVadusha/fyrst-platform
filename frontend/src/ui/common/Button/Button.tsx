@@ -1,8 +1,9 @@
 import React, { MouseEventHandler, useMemo } from 'react';
 import styles from './Button.module.css';
 import { VariantProps, cva } from 'class-variance-authority';
+import { cn } from 'src/lib/utils';
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'text-base flex align-middle inline-block justify-center items-center relative rounded-lg cursor-pointer !leading-none disabled:cursor-not-allowed',
   {
     variants: {
@@ -29,7 +30,7 @@ export interface ButtonProps
 
 const Button: React.FC<ButtonProps> = ({ variant, size, className, children, ...props }) => {
   return (
-    <button className={`${buttonVariants({ variant, size })} ${className}`} {...props}>
+    <button className={cn(buttonVariants({ variant, size }), className)} {...props}>
       {children}
     </button>
   );

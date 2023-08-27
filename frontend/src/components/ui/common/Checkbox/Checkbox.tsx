@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './Checkbox.module.css';
-import { FormField, FormItem, FormLabel, useFormField } from '../Form';
+import { FormControl, FormField, FormItem, FormLabel, useFormField } from '../Form';
 
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
@@ -17,15 +17,15 @@ const Checkbox = ({ control, name, label, className, checked, ...props }: Checkb
       name={name}
       render={({ field }) => (
         <FormItem className={styles.wrapper}>
-          <input
-            {...field}
-            type='checkbox'
-            id={useFormField().id}
-            className={`${styles.check} ${className}`}
-            checked={checked || field.value}
-            placeholder=''
-            {...props}
-          />
+          <FormControl>
+            <input
+              {...field}
+              type='checkbox'
+              className={`${styles.check} ${className}`}
+              placeholder=''
+              {...props}
+            />
+          </FormControl>
           <FormLabel className={styles.label}>{label}</FormLabel>
         </FormItem>
       )}

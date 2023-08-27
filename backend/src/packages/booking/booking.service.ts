@@ -4,6 +4,7 @@ import { Booking } from './entities/booking.entity';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { UserService } from '../user/user.service';
 import { FacilityService } from '../facility/facility.service';
+import { FilterBookingDto } from './dto/filter-booking.dto';
 
 @Injectable()
 export class BookingService {
@@ -41,6 +42,16 @@ export class BookingService {
     }
     this.logger.log(`Finding booking with ID ${id}`, { booking });
     return booking;
+  }
+
+  async getAllFiltered(filters?: FilterBookingDto, limit?: number, offset?: number) {
+    const bookings = await this.bookingRepository.findAll({
+      where: { ...filters },
+      limit: limit,
+      offset: offset,
+    });
+    const total = await this.bookingRepository.count();
+    return { bookings, total };
   }
 
   async update(id: number, updatedData: UpdateBookingDto) {
