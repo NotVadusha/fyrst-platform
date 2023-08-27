@@ -19,7 +19,7 @@ type TokenResponse = {
   refreshToken: string;
 };
 
-export const customBaseQuery: BaseQueryFn<
+export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
