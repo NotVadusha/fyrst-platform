@@ -4,7 +4,7 @@ import Table, { ColumnInfo } from '../../ui/common/Table/Table';
 import { Dropdown } from '../ui/common/Dropdown/Dropdown';
 import TextInput from '../ui/common/TextInput/TextInput';
 import { FormProvider, useForm } from 'react-hook-form';
-import { getPaymentData } from './mockData';
+import { getPaymentData, workerOptions } from './mockData';
 
 interface PaymentData {
   date: string;
@@ -17,6 +17,12 @@ interface PaymentData {
 
 const PaymentsList = () => {
   const payments = getPaymentData();
+
+  const statusColors = [
+    { status: 'Completed', color: 'text-green-2' },
+    { status: 'Pending', color: 'text-hover' },
+    { status: 'Failed', color: 'text-red-2' },
+  ];
 
   const columns: ColumnInfo<PaymentData>[] = [
     {
@@ -42,27 +48,14 @@ const PaymentsList = () => {
     {
       columnName: 'Status',
       renderCell: item => {
-        let statusColor;
-
-        switch (item.status) {
-          case 'Completed':
-            statusColor = 'text-green-2';
-            break;
-          case 'Pending':
-            statusColor = 'text-hover';
-            break;
-          case 'Failed':
-            statusColor = 'text-red-2';
-            break;
-          default:
-            statusColor = '';
-            break;
-        }
+        const foundStatus = statusColors.find(s => s.status === item.status);
+        const statusColor = foundStatus ? foundStatus.color : '';
 
         return <span className={statusColor}>{item.status}</span>;
       },
     },
   ];
+
   const methods = useForm();
 
   return (
@@ -72,10 +65,12 @@ const PaymentsList = () => {
         <FormProvider {...methods}>
           <Dropdown
             defaultValue=''
-            options={['John Brown', 'Mike Dors', 'Linda Moon', 'Serj Potter']}
+            options={workerOptions}
             label='Worker'
             placeholder='Select worker'
-            namespace={''}
+            control={undefined}
+            name={''}
+            ddType={'default'}
           />
           <div>
             <label className='text-blue'>Start date</label>
