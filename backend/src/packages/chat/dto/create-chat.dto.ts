@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsInt, Min } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, Min, IsArray, IsOptional } from 'class-validator';
 
 class CreateChatDto {
   @IsNotEmpty()
@@ -8,7 +8,11 @@ class CreateChatDto {
   @IsNotEmpty()
   @IsInt()
   @Min(1)
-  readonly userId: number;
+  readonly ownerId: number;
+
+  @IsArray()
+  @IsOptional()
+  readonly memberIds: number[];
 }
 
 export { CreateChatDto };

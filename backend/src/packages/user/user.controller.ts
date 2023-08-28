@@ -29,7 +29,7 @@ export class UserController {
 
   @Get('/many')
   async getAll() {
-    return this.userService.findAll();
+    return await this.userService.findAll();
   }
 
   @Post('/many')

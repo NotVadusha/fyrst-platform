@@ -1,5 +1,14 @@
-import { Column, Model, Table, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  BelongsToMany,
+} from 'sequelize-typescript';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
+import { Chat } from 'src/packages/chat/entities/chat.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
@@ -66,4 +75,22 @@ export class User extends Model {
     allowNull: false,
   })
   role_id: number;
+
+  @ForeignKey(() => Chat)
+  @Column
+  chatId: number;
+
+  @BelongsToMany(() => Chat, () => UserChat)
+  chats: Chat[];
+}
+
+@Table
+export class UserChat extends Model {
+  @ForeignKey(() => User)
+  @Column
+  userId: number;
+
+  @ForeignKey(() => Chat)
+  @Column
+  chatId: number;
 }

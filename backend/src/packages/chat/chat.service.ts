@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Chat } from './entities/chat.entity';
 import { CreateChatDto, UpdateChatDto } from './dto/dto';
 import { UserService } from '../user/user.service';
+import { Message } from '../message/entities/message.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class ChatService {
@@ -15,9 +17,15 @@ export class ChatService {
   ) {}
 
   async create(createdData: CreateChatDto) {
-    await this.validateUserExists(createdData.userId);
+    await this.validateUserExists(createdData.ownerId);
 
     const createdChat = await this.chatRepository.create(createdData);
+
+    if (createdData.memberIds && createdData.memberIds.length > 0) {
+      const chat = await this.find(createdChat.id);
+      await chat.$add('members', createdData.memberIds);
+    }
+
     this.logger.log(`Created chat with ID ${createdChat.id}`, {
       createdChat,
     });
@@ -29,13 +37,15 @@ export class ChatService {
     this.logger.log(`Retrieved ${chats.length} chats`, { chats });
     return chats;
   }
-
   async find(id: number) {
-    const chat = await this.chatRepository.findByPk(id);
+    const chat = await this.chatRepository.findByPk(id, {
+      include: [{ model: Message }, { model: User, as: 'members' }],
+    });
 
     if (!chat) {
       throw new NotFoundException('Chat not found');
     }
+
     this.logger.log(`Finding chat with ID ${id}`, { chat });
     return chat;
   }
@@ -43,8 +53,8 @@ export class ChatService {
   async update(id: number, updatedData: UpdateChatDto) {
     const chat = await this.find(id);
 
-    if (updatedData && updatedData.userId) {
-      await this.validateUserExists(updatedData.userId);
+    if (updatedData && updatedData.ownerId) {
+      await this.validateUserExists(updatedData.ownerId);
     }
 
     await chat.update(updatedData);

@@ -7,9 +7,10 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
-import { User } from 'src/packages/user/entities/user.entity';
+import { User, UserChat } from 'src/packages/user/entities/user.entity';
 import { Message } from 'src/packages/message/entities/message.entity';
 
 @Table
@@ -24,13 +25,16 @@ class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
 
   @Column
   @ForeignKey(() => User)
-  userId: number;
+  ownerId: number;
 
-  @BelongsTo(() => User, 'userId')
+  @BelongsTo(() => User, 'ownerId')
   user: User;
 
   @HasMany(() => Message)
-  messages: Message[]; // ??? Do i need that?
+  messages: Message[];
+
+  @BelongsToMany(() => User, () => UserChat)
+  members: User[];
 }
 
 export { Chat };
