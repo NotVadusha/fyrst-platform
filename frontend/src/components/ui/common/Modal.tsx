@@ -14,17 +14,17 @@ export function Modal({
 }) {
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          onOpenChange(false);
-        }
-        return;
+      if (e.key === 'Escape') {
+        onOpenChange(false);
       }
+      return;
+    };
 
     window.addEventListener('keydown', listener);
 
     return () => {
-        window.removeEventListener('keydown', listener);
-    }
+      window.removeEventListener('keydown', listener);
+    };
   });
 
   return (
