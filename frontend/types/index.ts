@@ -10,6 +10,10 @@ export interface NavItem {
   items?: NavItem[];
 }
 
+export type JwtPayload = {
+  id: number;
+};
+
 export interface User {
   id: number;
   first_name: string;
@@ -22,28 +26,3 @@ export interface User {
   is_confirmed: boolean;
   role_id: number;
 }
-
-export type SignUpBody = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-};
-
-export type SignInBody = {
-  email: string;
-  password: string;
-};
-
-export type MessageResponse = {
-  message: string;
-};
-
-export type TokenResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
-
-// export interface NavItemWithChildren extends NavItem {
-//   items: NavItem[];
-// }

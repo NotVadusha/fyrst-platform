@@ -1,8 +1,8 @@
-import React, { EffectCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
 import imageSent from '../../assets/imageSent.png';
 import { Button } from 'src/ui/common/Button';
-import { resetPasswordApi } from 'src/store/services/reset-password.service';
+import { resetPasswordApi } from 'src/store/reducers/user/resetPasswordApi';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { setEmail } from 'src/store/reducers/reset-password.store';

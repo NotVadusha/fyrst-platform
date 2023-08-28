@@ -8,12 +8,13 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
-import { userApi } from 'src/store/services/user.service';
+import { userApi } from 'src/store/reducers/user/userApi';
 import CityInput from './CityInput';
 import { useLoaderData } from 'react-router-dom';
 import DateInput from './DateInput';
 import { UserProfile } from 'types/models/UserProfile';
 import { EditUserPage } from 'types/dto/UserDto';
+import { Controller } from 'react-hook-form';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
@@ -33,6 +34,7 @@ export function ProfileEditForm() {
   };
 
   const form = useForm<Inputs>({
+    // @ts-ignore
     resolver: yupResolver(profileSchema),
     defaultValues: {
       firstName: user.first_name,
@@ -150,22 +152,15 @@ export function ProfileEditForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='dateOfBirth'
-                render={({ field }) => (
-                  <FormItem>
-                    <DateInput
-                      label='Date of birth'
-                      control={form.control}
-                      type='date'
-                      id='DateOfBirth'
-                      {...field}
-                    />
-                  </FormItem>
-                )}
-              />
-
+              <div>
+                <Controller
+                  name='dateOfBirth'
+                  control={form.control}
+                  render={({ field }) => (
+                    <DateInput control={form.control} label='Date of birth' {...field} />
+                  )}
+                />
+              </div>
               <Button type='submit' className='w-full'>
                 Submit
               </Button>

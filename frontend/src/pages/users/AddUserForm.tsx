@@ -14,7 +14,7 @@ import * as y from 'yup';
 import { userSchema } from 'src/lib/validations/user';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation } from 'src/store/services/user.service';
+import { useAddUserMutation } from 'src/store/reducers/user/userApi';
 import { useNavigate } from 'react-router-dom';
 
 type Inputs = y.InferType<typeof userSchema>;
@@ -39,7 +39,7 @@ export function AddUserForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     addUser(values);
-    navigate(0)
+    navigate(0);
   }
 
   return (
