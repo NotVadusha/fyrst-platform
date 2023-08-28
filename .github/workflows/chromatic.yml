@@ -1,30 +1,19 @@
-name: 'Chromatic Publish'
+name: 'Chromatic - Public'
 
-on:
-  pull_request:
-    branches: ['main', 'develop']
+on: pull_request
 
 jobs:
-  test:
+  chromatic-frontend:
     runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: Install dependencies
-        run: npm i
+    defaults:
+      run:
         working-directory: frontend
-      - uses: chromaui/action@v1
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: npm install
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
         with:
           workingDir: frontend
-          exitOnceUploaded: true
-          onlyChanged: true
-          traceChanged: true
-          diagnostics: true
-          debug: true
-        env:
-          CHROMATIC_PROJECT_TOKEN: chpt_364654258a5148b
+          projectToken: chpt_364654258a5148b
