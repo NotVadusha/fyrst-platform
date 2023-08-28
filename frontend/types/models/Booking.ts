@@ -18,4 +18,6 @@ export interface Booking {
   notes: string;
   facilityId: number;
   facility: Facility;
+  startDate: Date;
+  endDate: Date;
 }

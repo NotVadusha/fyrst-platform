@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import BookingPage from '../pages/bookings/BookingPage';
+import BookingPage from '../pages/bookings/ListBookingPage/BookingPage';
 import TimeCardPage from '../pages/timecards/main/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
 import ProfileEditPage from '../pages/profiles/ProfileEditPage';

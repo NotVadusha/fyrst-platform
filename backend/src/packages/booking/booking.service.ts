@@ -5,6 +5,8 @@ import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { UserService } from '../user/user.service';
 import { FacilityService } from '../facility/facility.service';
 import { FilterBookingDto } from './dto/filter-booking.dto';
+import { User } from '../user/entities/user.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class BookingService {
@@ -29,7 +31,7 @@ export class BookingService {
   }
 
   async findAll() {
-    const bookings = await this.bookingRepository.findAll();
+    const bookings = await this.bookingRepository.findAll({ include: [User] });
     this.logger.log(`Retrieved ${bookings.length} bookings`, { bookings });
     return bookings;
   }
@@ -44,11 +46,27 @@ export class BookingService {
     return booking;
   }
 
-  async getAllFiltered(filters?: FilterBookingDto, limit?: number, offset?: number) {
+  async getAllFiltered(filters?: FilterBookingDto) {
+    const {
+      limit = Number.MAX_SAFE_INTEGER,
+      offset = 0,
+      startDate,
+      endDate,
+      status,
+      facilityId,
+    } = filters;
+    const where: any = {
+      ...(startDate && { startDate: { [Op.gt]: startDate } }),
+      ...(endDate && { endDate: { [Op.lt]: endDate } }),
+      ...(status && { status: status }),
+      ...(facilityId && { facilityId: facilityId }),
+    };
+
     const bookings = await this.bookingRepository.findAll({
-      where: { ...filters },
+      where: where,
       limit: limit,
       offset: offset,
+      include: User,
     });
     const total = await this.bookingRepository.count();
     return { bookings, total };
