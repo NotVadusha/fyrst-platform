@@ -19,7 +19,7 @@ export class UserService {
     if (sameEmailUser) throw new BadRequestException('This email is already in use');
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
-    console.log("creating");
+    console.log('creating');
     return await this.userRepository.create({
       phone_number: null,
       is_confirmed: false,
@@ -51,21 +51,37 @@ export class UserService {
     // To skip per page
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
+    const opSubstringFilters = {
+      ...(filters.first_name && {
+        first_name: {
+          [Op.substring]: filters.first_name ?? '',
+          [Op.substring]: filters.first_name,
+        },
+      }),
+      ...(filters.last_name && {
+        last_name: {
+          [Op.substring]: filters.last_name ?? '',
+          [Op.substring]: filters.last_name,
+        },
+      }),
+      ...(filters.email && {
+        email: {
+          [Op.substring]: filters.email ?? '',
+          [Op.substring]: filters.email,
+        },
+      }),
+      ...(filters.city && {
+        city: {
+          [Op.substring]: filters.city ?? '',
+          [Op.substring]: filters.city,
+        },
+      }),
+    };
+
     const users = await this.userRepository.findAll({
       where: {
         ...filters,
-        first_name: {
-          [Op.substring]: filters.first_name ?? '',
-        },
-        last_name: {
-          [Op.substring]: filters.last_name ?? '',
-        },
-        email: {
-          [Op.substring]: filters.email ?? '',
-        },
-        city: {
-          [Op.substring]: filters.city ?? '',
-        },       
+        ...opSubstringFilters,
       },
       limit,
       offset,
@@ -74,18 +90,7 @@ export class UserService {
     const totalCount = await this.userRepository.count({
       where: {
         ...filters,
-        first_name: {
-          [Op.substring]: filters.first_name ?? '',
-        },
-        last_name: {
-          [Op.substring]: filters.last_name ?? '',
-        },
-        email: {
-          [Op.substring]: filters.email ?? '',
-        },
-        city: {
-          [Op.substring]: filters.city ?? '',
-        },
+        ...opSubstringFilters,
       },
     });
 
