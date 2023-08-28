@@ -35,6 +35,7 @@ export function Spinner({ size }: NonNullableMapped<VariantProps<typeof spinnerV
   for (let i = 0; i < 8; i++) {
     dots.push(
       <span
+        key={i}
         className={spinnerVariants({ size })}
         style={{
           animationDelay: `-${500 + i * 300}ms`,
