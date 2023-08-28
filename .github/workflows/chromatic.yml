@@ -9,21 +9,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: Install dependencies
-        run: npm ci
-        working-directory: frontend
-      - uses: chromaui/action-canary@v1
+        run: npm i
+      - uses: chromaui/action@v1
         with:
           workingDir: frontend
           exitOnceUploaded: true
           onlyChanged: true
           traceChanged: true
           diagnostics: true
+          debug: true
         env:
           CHROMATIC_PROJECT_TOKEN: chpt_364654258a5148b
