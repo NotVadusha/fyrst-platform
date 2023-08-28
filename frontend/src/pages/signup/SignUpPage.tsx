@@ -77,13 +77,17 @@ const SignUpPage = () => {
             <TextInput control={control} name='email' label='Email' type='text' disabled={false} />
             <PasswordInput control={control} name='password' label='Password' />
             <PasswordInput control={control} name='confirmPassword' label='Confirm password' />
-
             <Button className='w-full' type='submit' disabled={isLoading}>
               Sign up
             </Button>
           </form>
         </FormProvider>
-        <Button variant='tertiary' className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+        <Button
+          variant='tertiary'
+          className='w-full flex items-center gap-2'
+          type='button'
+          onClick={handleClick}
+        >
           <GoogleLogo />
           Sign up with Google
         </Button>
