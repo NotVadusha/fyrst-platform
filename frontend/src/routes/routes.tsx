@@ -23,6 +23,7 @@ import EmailSentPage from 'src/pages/email-sent/EmailSentPage';
 import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
+import { ChatPage } from 'src/pages/messanger/common/chat/Chat';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -119,10 +120,11 @@ export const router = createBrowserRouter([
       {
         path: '/chat',
         errorElement: <ErrorPage />,
+        element: <MessangerPage />,
         children: [
           {
-            index: true,
-            element: <MessangerPage />,
+            path: ':chatId',
+            element: <ChatPage />,
           },
         ],
       },

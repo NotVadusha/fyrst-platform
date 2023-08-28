@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const mockMessages = [
   {
@@ -33,7 +34,7 @@ const mockMessages = [
   },
 ];
 
-const Messages: React.FC = () => {
+export const Conversations: React.FC = () => {
   return (
     <>
       <input
@@ -43,26 +44,24 @@ const Messages: React.FC = () => {
       />
       <div className='mt-8 grid gap-8'>
         {mockMessages.map(message => (
-          <div
-            key={message.id}
-            className='w-full h-20 bg-white drop-shadow rounded-2xl p-4 grid grid-flow-col gap-6'
-          >
-            <span className='bg-[#DBDBDB] w-12 h-12 rounded-full'></span>
-            <div className='w-52 h-12 grid gap-1'>
-              <span className='text-body-default font-semibold text-black leading-6'>
-                {message.name}
+          <Link to={`/chat/${message.id}`} key={message.id}>
+            <div className='w-full h-20 bg-white drop-shadow rounded-2xl p-4 grid grid-flow-col gap-6'>
+              <span className='bg-[#DBDBDB] w-12 h-12 rounded-full'></span>
+              <div className='w-52 h-12 grid gap-1'>
+                <span className='text-body-default font-semibold text-black leading-6'>
+                  {message.name}
+                </span>
+                <p className='text-dark-grey text-body-small font-normal leading-5 whitespace-nowrap overflow-hidden overflow-ellipsis'>
+                  {message.text}
+                </p>
+              </div>
+              <span className='text-body-small text-dark-grey opacity-80 font-normal leading-5 flex items-center text-center'>
+                {message.time}
               </span>
-              <p className='text-dark-grey text-body-small font-normal leading-5 whitespace-nowrap overflow-hidden overflow-ellipsis'>
-                {message.text}
-              </p>
             </div>
-            <span className='text-body-small text-dark-grey opacity-80 font-normal leading-5 flex items-center text-center'>
-              {message.time}
-            </span>
-          </div>
+          </Link>
         ))}
       </div>
     </>
   );
 };
-export { Messages };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Chat } from './common/chat/Chat';
+import { Messanger } from './common/messanger/Messanger';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import { ReactComponent as PencilIcon } from 'src/icons/pencil.svg';
@@ -39,7 +39,7 @@ const MessangerPage = () => {
               New Group Chat
             </Button>
           </div>
-          <Chat />
+          <Messanger />
         </div>
       </div>
       <Modal open={isModalOpen} onOpenChange={closeModal} title='New Conversation'>
