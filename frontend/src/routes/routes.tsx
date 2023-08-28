@@ -117,7 +117,7 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: 'messanger',
+        path: '/chat',
         errorElement: <ErrorPage />,
         children: [
           {

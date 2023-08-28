@@ -48,7 +48,7 @@ export const siteConfig = {
     {
       title: 'Messages',
       icon: Message,
-      path: '/messanger',
+      path: '/chat',
       items: [],
     },
     {
