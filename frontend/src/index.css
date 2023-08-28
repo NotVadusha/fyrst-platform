@@ -2,10 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-.pac-container{
-  border-radius: .5rem;
+.pac-container {
+  border-radius: 0.5rem;
 }
-  
+
 .pac-icon {
   display: none;
+}
+@layer base {
+  html {
+    font-family: 'Mukta', sans-serif;
+  }
 }
