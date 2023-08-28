@@ -9,6 +9,7 @@ import { baseQuery } from './baseQuery';
 import jwtDecode from 'jwt-decode';
 import { JwtPayload } from 'types';
 import { TokenResponseDto } from 'types/dto/authentication/TokenResponseDto';
+import { toast } from 'src/components/ui/common/Toast/useToast';
 
 const mutex = new Mutex();
 
@@ -64,6 +65,15 @@ export const baseQueryWithReauth: BaseQueryFn<
       await mutex.waitForUnlock();
       result = await baseQuery(args, api, extraOptions);
     }
+  } else if (result?.error) {
+    const { data } = result.error as { data?: { message?: string } };
+    console.log('here');
+
+    toast({
+      variant: 'destructive',
+      title: 'Something went wrong',
+      description: data?.message ?? 'Please, try again later.',
+    });
   }
 
   return result;
