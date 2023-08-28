@@ -130,9 +130,10 @@ export const userServiceMock = {
     });
     return usersMock[1];
   }),
-  findOneByEmail: jest
-    .fn()
-    .mockImplementation(async (email: string) => usersMock.find(user => user.email === email)),
+  findOneByEmail: jest.fn().mockImplementation(async (email: string) => ({
+    ...usersMock.find(user => user.email === email),
+    dataValues: usersMock.find(user => user.email === email),
+  })),
   findOne: jest
     .fn()
     .mockImplementation(async (id: number) => usersMock.find(user => user.id === id)),
