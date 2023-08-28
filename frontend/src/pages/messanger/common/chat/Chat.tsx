@@ -1,5 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { ReactComponent as SearchLoupe } from 'src/icons/search-loupe.svg';
+import { useGetAllMessagesQuery } from 'src/store/services/chat.service';
 
 const mockMessages = [
   {
@@ -20,6 +22,12 @@ const mockMessages = [
 ];
 
 export const ChatPage: React.FC = () => {
+  const { chatId } = useParams();
+
+  if (!chatId) return <>No Chat with this Id was found</>;
+
+  const { data } = useGetAllMessagesQuery({ chatId });
+
   return (
     <>
       <div className='flex items-center justify-between mb-8'>
