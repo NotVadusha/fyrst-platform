@@ -4,7 +4,7 @@ import { ReactComponent as CalendrIcon } from '../../icons/calendar.svg';
 import { ReactComponent as ProfileIcon } from '../../icons/Profile.svg';
 
 import { Card } from 'src/components/ui/common/Card';
-import { Booking } from 'types';
+import { Booking } from 'types/models/Booking';
 
 interface BookingCardProps {
   booking: Booking;
