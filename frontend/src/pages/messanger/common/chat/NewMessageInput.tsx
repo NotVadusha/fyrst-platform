@@ -13,7 +13,6 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
       chatId,
       message: {
         messageContent: value,
-        time: format(new Date(), 'yyyy-mm-dd'),
       },
     });
   }

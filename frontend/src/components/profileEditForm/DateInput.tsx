@@ -7,7 +7,6 @@ import {
   FormField,
   FormLabel,
 } from 'src/components/ui/common/Form';
-import { formatISO } from 'date-fns';
 
 export interface DateInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
@@ -26,7 +25,7 @@ const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props })
       control={control}
       name={name}
       render={({ field }) => (
-        <>
+        <div>
           <FormItem className={styles.wrapper}>
             <FormLabel className={`${styles.label} ${field.value ? styles.active : ''}`}>
               {label}
@@ -35,13 +34,12 @@ const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props })
               className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
               type='date'
               placeholder=''
-              {...field}
-              min={'1900-01-01'}
               max={maxDateFormatted}
+              {...field}
             />
             <FormMessage className={styles.error} />
           </FormItem>
-        </>
+        </div>
       )}
     />
   );

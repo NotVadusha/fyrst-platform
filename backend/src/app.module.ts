@@ -15,6 +15,7 @@ import {
   FacilityModule,
   ChatModule,
   MessageModule,
+  NotificationConfigModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
 @Module({
@@ -32,6 +33,7 @@ import { AppGateway } from './app.gateway';
     FacilityModule,
     ChatModule,
     MessageModule,
+    NotificationConfigModule,
   ],
   controllers: [],
   providers: [AppGateway],

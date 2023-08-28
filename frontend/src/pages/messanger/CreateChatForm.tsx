@@ -7,25 +7,39 @@ import * as y from 'yup';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { chatSchema } from 'src/lib/validations/chat';
+import { useCreateChatMutation } from 'src/store/reducers/chat/chatApi';
 
 export type Inputs = y.InferType<typeof chatSchema>;
 
 export function CreateChatForm() {
+  const [createChat, result] = useCreateChatMutation();
+
   const form = useForm<Inputs>({
     resolver: yupResolver(chatSchema),
     defaultValues: {
-      member: '',
+      name: 'asda',
+      member: 'asd@gmail.com',
     },
   });
 
   async function onSubmit(values: Inputs) {
     // handleSubmit(values);
     console.log(values);
+    createChat({ name: values.name, members: [values.member] });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput control={form.control} type='text' label='Group name' {...field} />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name='member'
@@ -35,7 +49,7 @@ export function CreateChatForm() {
             </FormItem>
           )}
         />
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' className='w-full'>
           Create
         </Button>
       </form>

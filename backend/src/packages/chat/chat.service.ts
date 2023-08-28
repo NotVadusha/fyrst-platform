@@ -5,38 +5,85 @@ import { CreateChatDto, UpdateChatDto } from './dto/dto';
 import { UserService } from '../user/user.service';
 import { Message } from '../message/entities/message.entity';
 import { User } from '../user/entities/user.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ChatService {
   constructor(
     @InjectModel(Chat)
-    @Inject(UserService)
     private readonly chatRepository: typeof Chat,
+    @InjectModel(User)
+    private readonly userRepository: typeof User,
     private readonly logger: Logger,
+    @Inject(UserService)
     private readonly userService: UserService,
   ) {}
 
-  async create(createdData: CreateChatDto) {
-    await this.validateUserExists(createdData.ownerId);
+  async create(createdData: CreateChatDto & { ownerId: number }) {
+    const members = await this.userRepository.findAll({ where: { email: createdData.members } });
 
-    const createdChat = await this.chatRepository.create(createdData);
+    if (!members.length) {
+      const plural = createdData.members.length > 1;
 
-    if (createdData.memberIds && createdData.memberIds.length > 0) {
-      const chat = await this.find(createdChat.id);
-      await chat.$add('members', createdData.memberIds);
+      throw new NotFoundException(
+        `Member${plural ? 's' : ''} with email${plural ? 's' : ''} ${createdData.members.join(
+          ' ',
+        )} ${plural ? 'werent' : 'wasnt'} found.`,
+      );
     }
 
-    this.logger.log(`Created chat with ID ${createdChat.id}`, {
-      createdChat,
+    const owner = await this.userRepository.findOne({ where: { id: createdData.ownerId } });
+
+    const chat = await this.chatRepository.create({
+      name: createdData.name,
+      ownerId: createdData.ownerId,
     });
-    return createdChat;
+
+    // members should include the owner
+    chat.$set('members', [...members, owner]);
+
+    this.logger.log(`Created chat with ID ${chat.id}`, {
+      chat,
+    });
+
+    return chat;
   }
 
-  async findAll() {
-    const chats = await this.chatRepository.findAll();
+  async getAll() {
+    const chats = await this.chatRepository.findAll({
+      include: [
+        { model: User, as: 'members' },
+        { model: User, as: 'user' },
+      ],
+    });
     this.logger.log(`Retrieved ${chats.length} chats`, { chats });
     return chats;
   }
+
+  async findAllByUserId(id: number) {
+    // for each chat we get the members and the last message
+    const chats = await this.chatRepository.findAll({
+      include: [
+        { model: User, as: 'members', required: true, where: { id } },
+        {
+          model: Message,
+          as: 'messages',
+          separate: true,
+          limit: 1,
+          order: [['createdAt', 'DESC']],
+          include: [
+            {
+              model: User,
+              as: 'user',
+            },
+          ],
+        },
+      ],
+    });
+    this.logger.log(`Retrieved ${chats.length} chats`, { chats });
+    return chats;
+  }
+
   async find(id: number) {
     const chat = await this.chatRepository.findByPk(id, {
       include: [{ model: Message }, { model: User, as: 'members' }],
@@ -50,14 +97,16 @@ export class ChatService {
     return chat;
   }
 
-  async update(id: number, updatedData: UpdateChatDto) {
+  async update(id: number, updatedData: UpdateChatDto & { ownerId: number }) {
     const chat = await this.find(id);
 
     if (updatedData && updatedData.ownerId) {
       await this.validateUserExists(updatedData.ownerId);
     }
 
-    await chat.update(updatedData);
+    const members = await this.userRepository.findAll({ where: { email: updatedData.members } });
+
+    await chat.update({ name: updatedData.name, ownerId: updatedData.ownerId, members });
 
     this.logger.log(`Updated chat with ID ${id}`, { chat });
     return chat;

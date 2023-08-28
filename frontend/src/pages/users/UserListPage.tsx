@@ -114,7 +114,7 @@ export function UserListPage() {
       header: true,
       complete: result => {
         console.log(result.data);
-        addUsers(result.data as User[]);
+        // addUsers(result.data as User[]);
         navigate(0);
       },
     });

@@ -11,10 +11,14 @@ export interface UserDefaultResponse {
   role_id: number;
 }
 
-export type UpdateUserBody = Omit<
-  UserDefaultResponse,
-  'id' | 'password' | 'is_confirmed' | 'updatedAt' | 'createdAt'
->;
+export type UpdateUserBody = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number?: string;
+  city?: string;
+  birthdate: string;
+};
 
 export interface EditUserPage {
   id: number;

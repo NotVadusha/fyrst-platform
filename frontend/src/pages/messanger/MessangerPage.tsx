@@ -4,8 +4,8 @@ import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import { useGetAllUsersQuery } from 'src/store/reducers/user/userApi';
 import { Modal } from 'src/components/ui/common/Modal';
-import { UserDefaultResponse } from 'types/dto/UserDto';
 import { CreateChatForm } from './CreateChatForm';
+import { useAppSelector } from 'src/hooks/redux';
 
 const MessangerPage = () => {
   const { data: users } = useGetAllUsersQuery();

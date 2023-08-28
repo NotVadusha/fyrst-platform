@@ -10,3 +10,4 @@ export { UserProfileModule } from './user-profile/user-profile.module';
 export { FacilityModule } from './facility/facility.module';
 export { ChatModule } from './chat/chat.module';
 export { MessageModule } from './message/message.module';
+export { NotificationConfigModule } from './notifications-config/notifications-config.module';

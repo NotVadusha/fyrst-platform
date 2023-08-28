@@ -40,6 +40,8 @@ export function AddUserForm() {
     // ✅ This will be type-safe and validated.
     addUser(values);
     navigate(0);
+    // addUser(values);
+    navigate(0);
   }
 
   return (

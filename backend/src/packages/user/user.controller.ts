@@ -67,6 +67,7 @@ export class UserController {
     @Body()
     updateUserInfo: UpdateUserDto,
   ) {
+    console.log(userId, updateUserInfo);
     const updatedUser = await this.userService.update(updateUserInfo, userId);
     if (!updatedUser) throw new NotFoundException();
     return this.userService.findOne(userId);

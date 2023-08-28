@@ -9,7 +9,6 @@ import {
 import { Server, Socket } from 'socket.io';
 import {
   ClientToServerEvents,
-  SendMessagePayload,
   ServerToClientEvents,
 } from 'shared/socketEvents';
 

@@ -1,21 +1,40 @@
-import { Body, Controller, Delete, Get, Param, Post, ParseIntPipe, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  ParseIntPipe,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
 import { CreateChatDto, UpdateChatDto } from './dto/dto';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @ApiTags('chat')
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Post()
-  async createChat(@Body() createdData: CreateChatDto) {
-    return this.chatService.create(createdData);
+  async createChat(@Request() req, @Body() createdData: CreateChatDto) {
+    return this.chatService.create({ ...createdData, ownerId: req.user['id'] });
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get()
+  async getAllUserChats(@Request() req) {
+    return this.chatService.findAllByUserId(req.user['id']);
+  }
+
+  @Get('all')
   async getAllChats() {
-    return this.chatService.findAll();
+    return this.chatService.getAll();
   }
 
   @Get(':id')
@@ -23,9 +42,14 @@ export class ChatController {
     return this.chatService.find(id);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Patch(':id')
-  async updateChat(@Param('id', ParseIntPipe) id: number, @Body() updatedData: UpdateChatDto) {
-    return this.chatService.update(id, updatedData);
+  async updateChat(
+    @Request() req,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedData: UpdateChatDto,
+  ) {
+    return this.chatService.update(id, { ...updatedData, ownerId: req.user['id'] });
   }
 
   @Delete(':id')

@@ -3,8 +3,28 @@ import { apiSlice } from '../apiSlice';
 import { Message } from 'shared/socketEvents';
 import { UserDefaultResponse } from 'types/dto/UserDto';
 
+interface NewChatPayload {
+  name: string;
+  members: string[];
+}
+
 export const chatApi = apiSlice.injectEndpoints({
   endpoints: build => ({
+    getAllUserChats: build.query({
+      query: () => `/chat`,
+    }),
+    createChat: build.mutation({
+      query: (payload: NewChatPayload) => {
+        return {
+          url: '/chat',
+          method: 'POST',
+          body: payload,
+        };
+      },
+    }),
+    getChatById: build.query({
+      query: (id: string) => `/chat/${id}`,
+    }),
     getAllMessages: build.query<
       { messages: Message[]; members: UserDefaultResponse[] },
       { chatId: string }
@@ -26,4 +46,10 @@ export const chatApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllMessagesQuery, useSendNewMessageMutation } = chatApi;
+export const {
+  useGetChatByIdQuery,
+  useGetAllUserChatsQuery,
+  useCreateChatMutation,
+  useGetAllMessagesQuery,
+  useSendNewMessageMutation,
+} = chatApi;

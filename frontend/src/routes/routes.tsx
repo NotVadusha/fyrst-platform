@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import BookingPage from '../pages/bookings/BookingPage';
+import BookingPage from '../pages/bookings/ListBookingPage/BookingPage';
 import TimeCardPage from '../pages/timecards/main/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
 import ProfileEditPage from '../pages/profiles/ProfileEditPage';
@@ -26,6 +26,7 @@ import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
 import { ChatPage } from 'src/pages/messanger/common/chat/Chat';
+import { useStore } from 'react-redux';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -95,33 +96,6 @@ export const router = createBrowserRouter([
               {
                 path: 'edit',
                 element: <ProfileEditPage />,
-                loader: async ({ params }) => {
-                  return {
-                    user: {
-                      first_name: 'Joe',
-                      last_name: 'Doe',
-                      email: 'jd@gmail.com',
-                      phone_number: '+3',
-                      city: 'New York',
-                      birthdate: '2004-12-12',
-                      role_id: 1,
-                    },
-                  };
-                  // try {
-                  // const navigate = useNavigate();
-                  // const location = useLocation();
-                  //   const userToken = jwt.decide(localStorage.getItem('accessToken'));
-                  //   const userId = user.payload.id
-                  // if (!userTokenID) {
-                  //   navigate('/auth/login', { state: { from: location }, replace: true });
-                  // }
-                  //   const user = await fetch(`${baseUrl}/user/${userId}`);
-                  //   const userProfile = await fetch(`${baseUrl}/profile/${userId}`)
-                  //   return {user: {...user}, profile: {...profile}}
-                  // } catch (err) {
-                  //   throw err;
-                  // }
-                },
               },
               {
                 path: 'notifications',

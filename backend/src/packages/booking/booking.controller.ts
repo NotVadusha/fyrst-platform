@@ -33,8 +33,7 @@ export class BookingController {
   @Get('get-by')
   async getAllFiltered(@Query() filters?: FilterBookingDto) {
     try {
-      const { limit = Number.MAX_SAFE_INTEGER, offset = 0, ...filterParams } = filters;
-      return this.bookingService.getAllFiltered(filterParams, limit, offset);
+      return this.bookingService.getAllFiltered(filters);
     } catch (error) {
       throw new InternalServerErrorException('Failed to fetch bookings');
     }

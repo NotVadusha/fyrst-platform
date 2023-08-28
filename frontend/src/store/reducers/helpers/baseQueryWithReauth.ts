@@ -22,12 +22,14 @@ export const baseQueryWithReauth: BaseQueryFn<
 
   let result = await baseQuery(args, api, extraOptions);
 
+  console.log(result);
+
   if (result?.error?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
 
       try {
-        const payload = jwtDecode<JwtPayload>(localStorage.getItem('accessToken') || '');
+        const payload = jwtDecode<JwtPayload>(localStorage.getItem('accessToken') ?? '');
 
         const refreshResult = await baseQuery(
           {
@@ -45,6 +47,8 @@ export const baseQueryWithReauth: BaseQueryFn<
           extraOptions,
         );
 
+        console.log(refreshResult);
+
         if (refreshResult.error) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
@@ -58,6 +62,12 @@ export const baseQueryWithReauth: BaseQueryFn<
             result = await baseQuery(args, api, extraOptions);
           }
         }
+      } catch (err) {
+        toast({
+          variant: 'destructive',
+          title: 'Unauthorized',
+          description: 'Try to log in first',
+        });
       } finally {
         release();
       }

@@ -26,30 +26,23 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({
   onFocus,
   onBlur,
   className,
-  ...props
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
   const formField = useFormField().invalid ? styles.invalid : '';
   return (
     <FormField
       control={control}
-      name={'phoneNumber'}
-      render={({ field }) => (
+      name={name}
+      render={({ field, fieldState }) => (
         <FormItem className={styles.wrapper}>
           <FormLabel className={`${styles.label} ${field.value ? styles.active : ''}`}>
             {label}
           </FormLabel>
           <PhoneInput
-            {...field}
-            inputClass={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
+            inputClass={`${styles.input} ${fieldState.invalid ? styles.invalid : ''}`}
             placeholder=''
             disabled={disabled}
             specialLabel={''}
-            onFocus={() => {
-              setIsFocused(true);
-            }}
-            onBlur={() => setIsFocused(false)}
-            onChange={(value, data, event) => (props.onChange ? props.onChange(event) : '')}
+            {...field}
           />
           <FormMessage className={styles.error} />
         </FormItem>

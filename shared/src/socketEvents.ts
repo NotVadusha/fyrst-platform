@@ -1,7 +1,6 @@
 export interface Message {
   id: number;
   messageContent: string;
-  time: string;
   attachments?: string[];
   chatId: number;
   userId: number;
