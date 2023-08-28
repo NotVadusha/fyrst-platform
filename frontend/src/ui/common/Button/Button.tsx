@@ -1,5 +1,4 @@
-import React, { MouseEventHandler, useMemo } from 'react';
-import styles from './Button.module.css';
+import React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from 'src/lib/utils';
 

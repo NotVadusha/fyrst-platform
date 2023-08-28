@@ -22,6 +22,7 @@ import ForgotPage from 'src/pages/forgot/ForgotPage';
 import EmailSentPage from 'src/pages/email-sent/EmailSentPage';
 import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
+import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
@@ -112,7 +113,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'security',
-            element: <TestPage />,
+            element: <ProfileSecurity />,
           },
         ],
       },
