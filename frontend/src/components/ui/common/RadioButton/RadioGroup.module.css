@@ -1,0 +1,19 @@
+.container {
+  @apply w-full flex gap-2.5 items-center border border-solid border-grey p-2.5 rounded-lg text-sm font-medium leading-none text-blue;
+}
+
+.radio {
+  @apply relative appearance-none border border-solid border-field rounded-full;
+}
+
+.radio:checked {
+  @apply border-8 border-blue;
+}
+
+.small {
+  @apply w-5 h-5;
+}
+
+.big {
+  @apply w-6 h-6;
+}

@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from 'src/lib/validation-schemas/authentication/registration';
 import { Button } from 'src/ui/common/Button';
 import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
-import { authApi } from 'src/store/services';
+import { authApi } from 'src/store/reducers/user/authApi';
 import { useNavigate } from 'react-router-dom';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
@@ -47,7 +47,7 @@ const SignUpPage = () => {
   };
 
   const handleClick = () => {
-    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`);
+    window.location.assign(`${process.env.REACT_APP_API_URL}/auth/google`);
   };
 
   return (
@@ -77,13 +77,17 @@ const SignUpPage = () => {
             <TextInput control={control} name='email' label='Email' type='text' disabled={false} />
             <PasswordInput control={control} name='password' label='Password' />
             <PasswordInput control={control} name='confirmPassword' label='Confirm password' />
-
             <Button className='w-full' type='submit' disabled={isLoading}>
               Sign up
             </Button>
           </form>
         </FormProvider>
-        <Button variant='tertiary' className='w-full flex items-center gap-2' type='button' onClick={handleClick}>
+        <Button
+          variant='tertiary'
+          className='w-full flex items-center gap-2'
+          type='button'
+          onClick={handleClick}
+        >
           <GoogleLogo />
           Sign up with Google
         </Button>

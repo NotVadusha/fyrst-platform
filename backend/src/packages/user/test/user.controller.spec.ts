@@ -4,6 +4,7 @@ import { UserController } from 'src/packages/user/user.controller';
 import { UserService } from 'src/packages/user/user.service';
 import { usersMock, existingId, TestUser, updateInfo } from './user.helpers';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserFiltersDto } from '../dto/user-filters.dto';
 
 describe('UsersController', () => {
   let userController: UserController;
@@ -30,6 +31,16 @@ describe('UsersController', () => {
               .mockResolvedValue((id: number, updateUserInfo: UpdateUserDto) =>
                 Promise.resolve(updateUserInfo),
               ),
+              getAllByParams: jest.fn().mockResolvedValue(({ currentPage }: { currentPage: string }) => {
+                const mockData = {
+                  users: [
+                    { id: '1', first_name: 'John', last_name: 'Doe' },
+                    { id: '2', first_name: 'Jane', last_name: 'Smith' },
+                  ],
+                  totalPages: 3,
+                };
+                return Promise.resolve(mockData);
+              }),
             delete: jest.fn().mockResolvedValue((id: number) => Promise.resolve(true)),
           },
         },
@@ -60,20 +71,18 @@ describe('UsersController', () => {
     });
   });
 
-  describe('getUsers', () => {
-    describe('when getUsers is called', () => {
+  describe('getUsersByParams', () => {
+    describe('when getUsersByParams is called', () => {
       let users: TestUser[];
+      const userFiltersDto: UserFiltersDto = { currentPage: '1', first_name: '', last_name: '' };
 
       beforeEach(async () => {
-        users = await userController.getAll();
+        const data = await userController.getAllByParams(userFiltersDto);
+        users = data.users;
       });
 
       test('then it should call usersService', () => {
-        expect(userService.findAll).toHaveBeenCalled();
-      });
-
-      test('then it should return users', () => {
-        expect(users).toEqual(defaultUsers);
+        expect(userService.getAllByParams).toHaveBeenCalled();
       });
     });
   });

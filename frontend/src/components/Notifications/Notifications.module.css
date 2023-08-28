@@ -13,6 +13,6 @@
 	 @apply bg-white rounded-lg shadow-lg;
 }
 
-.customCheckbox{
-	@apply w-6 h-6 rounded-md mr-[8px];
+.checkboxContainer > * {
+    @apply mb-8
 }

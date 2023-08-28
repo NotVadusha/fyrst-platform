@@ -18,7 +18,7 @@ export interface TestTimecard {
 export const timecardsMock: TestTimecard[] = [
   {
     id: 0,
-    createdAt: new Date(),
+    createdAt: new Date('2023-08-25'),
     createdBy: 1,
     bookingId: 2,
     approvedAt: null,
@@ -27,7 +27,7 @@ export const timecardsMock: TestTimecard[] = [
   },
   {
     id: 1,
-    createdAt: new Date(),
+    createdAt: new Date('2023-08-25'),
     createdBy: 3,
     bookingId: 1,
     approvedAt: null,
@@ -46,13 +46,13 @@ export const updateTimecardDtoMock: UpdateTimecardDto = {
 };
 
 export const timecardFiltersDtoMock: TimecardFiltersDto = {
-  approvedBy: null,
+  approvedAt: new Date('2023-08-25'),
+  limit: 10,
+  offset: 10,
 };
 
 export const existingId = 0;
 export const notExistingId = -1;
-export const paginationLimitMock = 10;
-export const paginationOffsetMock = 10;
 
 export const expectedUpdatedTimecard = {
   ...timecardsMock[existingId],
@@ -65,17 +65,15 @@ export const mockTimecardService = {
     .mockImplementation((createTimecardDto: CreateTimecardDto) =>
       Promise.resolve({ id: 1, createdAt: new Date(), ...createTimecardDto }),
     ),
-  getAllFiltered: jest
-    .fn()
-    .mockImplementation((filters: TimecardFiltersDto, limit: number, offset: number) => {
-      const items = timecardsMock
-        .filter(t => (t.approvedBy = filters.approvedBy))
-        .slice(offset, limit);
+  getAllFiltered: jest.fn().mockImplementation((filters: TimecardFiltersDto) => {
+    const items = timecardsMock
+      .filter(t => (t.approvedAt = filters.approvedAt))
+      .slice(filters.offset, filters.limit);
 
-      const total = timecardsMock.length;
+    const total = timecardsMock.length;
 
-      return Promise.resolve({ items, total });
-    }),
+    return Promise.resolve({ items, total });
+  }),
   getById: jest.fn().mockImplementation((id: number) => Promise.resolve(timecardsMock[id])),
   update: jest
     .fn()
@@ -99,7 +97,7 @@ export const mockTimecardModel = {
   findAll: jest
     .fn()
     .mockImplementation(
-      (options?: { where?: { approvedBy: number | null }; limit?: number; offset?: number }) => {
+      (options?: { where?: { approvedAt: Date }; limit?: number; offset?: number }) => {
         if (isNaN(options.limit) || isNaN(options.offset)) {
           throw new Error();
         }
@@ -107,9 +105,9 @@ export const mockTimecardModel = {
         return Promise.resolve(
           timecardsMock
             .filter(t =>
-              options.where.approvedBy === undefined
+              options.where.approvedAt === undefined
                 ? true
-                : t.approvedBy === options.where.approvedBy,
+                : t.approvedAt === options.where.approvedAt,
             )
             .slice(options.offset, options.limit),
         );

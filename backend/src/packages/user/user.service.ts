@@ -4,6 +4,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
+import { UserFiltersDto } from './dto/user-filters.dto';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -17,14 +19,82 @@ export class UserService {
     if (sameEmailUser) throw new BadRequestException('This email is already in use');
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
+    console.log('creating');
     return await this.userRepository.create({
       phone_number: null,
+      is_confirmed: false,
       ...userInfo,
     });
   }
 
-  async findAll() {
-    return await this.userRepository.findAll();
+  async createMany(userInfo: CreateUserDto[]) {
+    const createPromises = userInfo.map(user => this.create(user));
+    return await Promise.all(createPromises);
+  }
+
+  async getAllByParams({
+    currentPage,
+    filters,
+  }: {
+    currentPage: number;
+    filters: Omit<UserFiltersDto, 'currentPage'>;
+  }) {
+    Object.keys(filters).forEach(
+      key =>
+        (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
+        delete filters[key],
+    );
+
+    // Number of users to show per page
+    const limit = 5;
+
+    // To skip per page
+    const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
+
+    const opSubstringFilters = {
+      ...(filters.first_name && {
+        first_name: {
+          [Op.substring]: filters.first_name ?? '',
+          [Op.substring]: filters.first_name,
+        },
+      }),
+      ...(filters.last_name && {
+        last_name: {
+          [Op.substring]: filters.last_name ?? '',
+          [Op.substring]: filters.last_name,
+        },
+      }),
+      ...(filters.email && {
+        email: {
+          [Op.substring]: filters.email ?? '',
+          [Op.substring]: filters.email,
+        },
+      }),
+      ...(filters.city && {
+        city: {
+          [Op.substring]: filters.city ?? '',
+          [Op.substring]: filters.city,
+        },
+      }),
+    };
+
+    const users = await this.userRepository.findAll({
+      where: {
+        ...filters,
+        ...opSubstringFilters,
+      },
+      limit,
+      offset,
+    });
+
+    const totalCount = await this.userRepository.count({
+      where: {
+        ...filters,
+        ...opSubstringFilters,
+      },
+    });
+
+    return { users, totalCount };
   }
 
   async findOne(userId: number) {
