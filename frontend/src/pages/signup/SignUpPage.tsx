@@ -47,7 +47,7 @@ const SignUpPage = () => {
   };
 
   const handleClick = () => {
-    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`);
+    window.location.assign(`${process.env.REACT_APP_API_URL}/auth/google`);
   };
 
   return (
@@ -77,7 +77,6 @@ const SignUpPage = () => {
             <TextInput control={control} name='email' label='Email' type='text' disabled={false} />
             <PasswordInput control={control} name='password' label='Password' />
             <PasswordInput control={control} name='confirmPassword' label='Confirm password' />
-
             <Button className='w-full' type='submit' disabled={isLoading}>
               Sign up
             </Button>

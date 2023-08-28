@@ -1,13 +1,13 @@
-import React, { EffectCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
-import sendedImage from '../../assets/sendedimage.png';
+import imageSent from '../../assets/imageSent.png';
 import { Button } from 'src/ui/common/Button';
 import { resetPasswordApi } from 'src/store/reducers/user/resetPasswordApi';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { setEmail } from 'src/store/reducers/reset-password.store';
 
-const EmailSendedPage = () => {
+const EmailSentPage = () => {
   const [forgot, { error }] = resetPasswordApi.useLazyForgotQuery();
   const email = useAppSelector(state => state.resetPassword.email);
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const EmailSendedPage = () => {
   };
 
   return (
-    <AuthWrapper image={sendedImage}>
+    <AuthWrapper image={imageSent}>
       <div className='flex flex-col w-[450px]'>
         <h1 className='text-h3 text-black font-bold mb-4'>The link has been sent!</h1>
 
@@ -53,4 +53,4 @@ const EmailSendedPage = () => {
   );
 };
 
-export default EmailSendedPage;
+export default EmailSentPage;

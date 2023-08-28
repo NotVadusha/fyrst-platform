@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import BookingPage from '../pages/bookings/BookingPage';
 import TimeCardPage from '../pages/timecards/main/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
+import ProfileEditPage from '../pages/profiles/ProfileEditPage';
 import MessangerPage from '../pages/messanger/MessangerPage';
 import PaymentsPage from '../pages/payments/PaymentsPage';
 import SignInPage from '../pages/signin/SignInPage';
@@ -16,10 +17,12 @@ import SignUpPage from 'src/pages/signup/SignUpPage';
 import SuccessGoogleAuthPage from 'src/pages/success-google-auth/SuccessGoogleAuthPage';
 import CreateTimeCardPage from 'src/pages/timecards/create/CreateTimeCard';
 import ViewTimeCardPage from 'src/pages/timecards/view/ViewTimeCard';
+import { UserListPage } from 'src/pages/users/UserListPage';
 import ForgotPage from 'src/pages/forgot/ForgotPage';
-import EmailSendedPage from 'src/pages/email-sended/EmailSendedPage';
+import EmailSentPage from 'src/pages/email-sent/EmailSentPage';
 import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
+import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
@@ -74,12 +77,35 @@ export const router = createBrowserRouter([
             element: <ProfilePage />,
           },
           {
-            path: ':id',
-            element: <TestPage />,
-          },
-          {
             path: 'edit',
-            element: <TestPage />,
+            element: <ProfileEditPage />,
+            loader: async ({ params }) => {
+              return {
+                user: {
+                  first_name: 'Joe',
+                  last_name: 'Doe',
+                  email: 'jd@gmail.com',
+                  phone_number: '+3',
+                  city: 'New York',
+                  birthdate: '2004-12-12',
+                  role_id: 1,
+                },
+              };
+              // try {
+              // const navigate = useNavigate();
+              // const location = useLocation();
+              //   const userToken = jwt.decide(localStorage.getItem('accessToken'));
+              //   const userId = user.payload.id
+              // if (!userTokenID) {
+              //   navigate('/auth/login', { state: { from: location }, replace: true });
+              // }
+              //   const user = await fetch(`${baseUrl}/user/${userId}`);
+              //   const userProfile = await fetch(`${baseUrl}/profile/${userId}`)
+              //   return {user: {...user}, profile: {...profile}}
+              // } catch (err) {
+              //   throw err;
+              // }
+            },
           },
           {
             path: 'notifications',
@@ -87,7 +113,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'security',
-            element: <TestPage />,
+            element: <ProfileSecurity />,
           },
         ],
       },
@@ -125,6 +151,16 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: 'users',
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            element: <UserListPage />,
+          },
+        ],
+      },
     ],
   },
   {
@@ -138,7 +174,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'forgot/email-sended',
-        element: <EmailSendedPage />,
+        element: <EmailSentPage />,
       },
       {
         path: 'forgot',

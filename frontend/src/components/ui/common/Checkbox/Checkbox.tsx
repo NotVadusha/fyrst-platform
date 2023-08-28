@@ -7,9 +7,10 @@ export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElemen
   control: any;
   name: string;
   label: string;
+  checked?: boolean;
 }
 
-const Checkbox = ({ control, name, label, className, ...props }: CheckboxProps) => {
+const Checkbox = ({ control, name, label, className, checked, ...props }: CheckboxProps) => {
   return (
     <FormField
       control={control}
