@@ -11,7 +11,7 @@ export const buttonVariants = cva(
         secondary:
           'bg-white border text-blue border-solid border-blue hover:border-hover hover:text-hover active:border-dark-blue disabled:text-inactive disabled:border-inactive',
         tertiary: 'text-blue bg-transparent disabled:text-inactive',
-        message: 'bg-white text-dark-blue text-base rounded-lg shadow-md', //default-body-message
+        message: 'bg-white text-dark-blue text-base rounded-lg shadow-md flex items-center', //default-body-message
       },
       size: {
         default: 'h-12 py-4 px-8',
