@@ -19,7 +19,7 @@ export const userApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [],
   endpoints: build => ({
-    getUsers: build.query<getUsersPayload, getUsersQueryParams>({
+    getUsersByParams: build.query<getUsersPayload, getUsersQueryParams>({
       query: args => {
         const params = new URLSearchParams();
 
@@ -31,6 +31,9 @@ export const userApi = createApi({
 
         return result;
       },
+    }),
+    getAllUsers: build.query<UserDefaultResponse[], void>({
+      query: () => '/user/many',
     }),
     addUsers: build.mutation<UserDefaultResponse[], UserDefaultResponse[]>({
       query: users => {
@@ -85,12 +88,13 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetUsersQuery,
+  useGetUsersByParamsQuery,
+  useGetAllUsersQuery,
   useGetUserMutation,
   useAddUsersMutation,
   useAddUserMutation,
   useGetUserProfileMutation,
-  useLazyGetUsersQuery,
+  useLazyGetUsersByParamsQuery,
   useUpdateUserMutation,
   useUpdateUserProfileMutation,
 } = userApi;
