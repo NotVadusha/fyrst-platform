@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
-import { useAddUsersMutation, useGetUsersQuery } from 'src/store/services/user.service';
+import { useAddUsersMutation, useGetUsersByParamsQuery } from 'src/store/services/user.service';
 import type { User } from 'types';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
 import { buttonVariants } from 'src/ui/common/Button/Button';
@@ -35,7 +35,10 @@ export function UserListPage() {
     filters[key as keyof UserFilters] === null && delete filters[key as keyof UserFilters];
   });
 
-  const { data, isLoading, isSuccess, isError, error } = useGetUsersQuery({ currentPage, filters });
+  const { data, isLoading, isSuccess, isError, error } = useGetUsersByParamsQuery({
+    currentPage,
+    filters,
+  });
 
   const columns: ColumnInfo<User>[] = [
     {
