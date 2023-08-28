@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useAppDispatch } from 'src/hooks/redux';
-import jwtDecode from 'jwt-decode';
 import { setUser } from 'src/store/reducers/user.store';
 
 const SuccessGoogleAuthPage = () => {

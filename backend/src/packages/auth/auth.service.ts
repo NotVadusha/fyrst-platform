@@ -71,7 +71,7 @@ export class AuthService {
       if (!passwordsCompairing)
         throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
 
-      const userInfo = { ...user };
+      const userInfo = { ...user.dataValues };
       delete userInfo.password;
       delete userInfo.is_confirmed;
 
@@ -139,7 +139,7 @@ export class AuthService {
         });
       }
 
-      const userInfo = { ...user };
+      const userInfo = { ...user.dataValues };
       delete userInfo.password;
       delete userInfo.is_confirmed;
 
