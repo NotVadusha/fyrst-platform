@@ -7,20 +7,13 @@ import {
 import { Mutex } from 'async-mutex';
 import { baseQuery } from './baseQuery';
 import jwtDecode from 'jwt-decode';
+import { JwtPayload } from 'types';
+import { TokenResponseDto } from 'types/dto/authentication/TokenResponseDto';
 import { toast } from 'src/components/ui/common/Toast/useToast';
 
 const mutex = new Mutex();
 
-type JwtPayload = {
-  id: number;
-};
-
-type TokenResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
-
-export const customBaseQuery: BaseQueryFn<
+export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
@@ -56,7 +49,7 @@ export const customBaseQuery: BaseQueryFn<
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
         } else {
-          const tokens = refreshResult.data as TokenResponse;
+          const tokens = refreshResult.data as TokenResponseDto;
 
           if (tokens) {
             localStorage.setItem('accessToken', tokens.accessToken);
@@ -74,6 +67,7 @@ export const customBaseQuery: BaseQueryFn<
     }
   } else if (result?.error) {
     const { data } = result.error as { data?: { message?: string } };
+    console.log('here');
 
     toast({
       variant: 'destructive',

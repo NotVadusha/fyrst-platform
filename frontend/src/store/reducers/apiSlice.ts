@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { customBaseQuery } from '../services/helpers/customBaseQuery';
+import { baseQueryWithReauth } from './helpers/baseQueryWithReauth';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: customBaseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Timecards'],
   endpoints: () => ({}),
 });

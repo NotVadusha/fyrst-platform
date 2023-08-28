@@ -8,7 +8,7 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
-import { userApi } from 'src/store/services/user.service';
+import { userApi } from 'src/store/reducers/user/userApi';
 import CityInput from './CityInput';
 import { useLoaderData } from 'react-router-dom';
 import DateInput from './DateInput';

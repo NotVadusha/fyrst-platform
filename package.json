@@ -25,7 +25,6 @@
   },
   "author": "",
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "eslint": "^8.18.0",
