@@ -19,7 +19,6 @@ const ProfileSecurityForm = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
     form.reset();
   };
 

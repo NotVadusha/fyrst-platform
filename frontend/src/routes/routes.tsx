@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <TestPage />,
+            element: <TimeCardPage />,
           },
           {
             path: ':id',
