@@ -3,8 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useAppDispatch } from 'src/hooks/redux';
 import jwtDecode from 'jwt-decode';
-import { JwtPayload } from 'types';
-import { setUserId } from 'src/store/reducers/user.store';
+import { setUser } from 'src/store/reducers/user.store';
 
 const SuccessGoogleAuthPage = () => {
   const dispatch = useAppDispatch();
@@ -12,10 +11,10 @@ const SuccessGoogleAuthPage = () => {
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
     const refreshToken = Cookies.get('refreshToken');
+    const userInfoJson = Cookies.get('user');
+    const userInfo = JSON.parse(userInfoJson || '');
 
-    const payload = jwtDecode<JwtPayload>(accessToken!);
-
-    dispatch(setUserId(payload.id));
+    dispatch(setUser(userInfo));
 
     localStorage.setItem('accessToken', accessToken!);
     localStorage.setItem('refreshToken', refreshToken!);

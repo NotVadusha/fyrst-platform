@@ -14,7 +14,7 @@ import { loginSchema } from 'src/lib/validation-schemas/authentication/login';
 import jwtDecode from 'jwt-decode';
 import { JwtPayload } from 'types';
 import { useAppDispatch } from 'src/hooks/redux';
-import { setUserId } from 'src/store/reducers/user.store';
+import { setUser } from 'src/store/reducers/user.store';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
@@ -58,9 +58,7 @@ const SignInPage = () => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
-      const payload = jwtDecode<JwtPayload>(data.accessToken);
-
-      dispatch(setUserId(payload.id));
+      dispatch(setUser(data.userInfo));
 
       navigate('/');
     }
