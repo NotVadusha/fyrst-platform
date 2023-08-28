@@ -62,11 +62,19 @@ services:
     ports:
       - ${INVOICE_SERVICE_PORT}:${INVOICE_SERVICE_PORT}
     volumes:
-      - ./microservices/invoice/src:/app/src
-      - ./shared/dist:/app/node_modules/shared
-      - ./microservices/invoice/test:/app/test
+      - ./microservices/invoice/src:/app/invoice/src
+      - ./shared/dist:/app/invoice/node_modules/shared
+      - ./microservices/invoice/test:/app/invoice/test
     depends_on:
       - rabbitmq
+      - gotenberg
+      - backend
 
   gotenberg:
     image: thecodingmachine/gotenberg:7
+    ports: 
+      - ${GOTENBERG_PORT}:${GOTENBERG_PORT}
+    command:
+      - "gotenberg"
+      - "--api-port=${GOTENBERG_PORT}"
+      
