@@ -74,14 +74,12 @@ const SignInPage = () => {
           >
             <TextInput control={control} name='email' label='Email' type='text' disabled={false} />
             <PasswordInput control={control} name='password' label='Password' />
-
             <a
               href='./forgot'
               className='text-dark-grey text-body-small font-semibold hover:cursor-pointer decoration-transparent self-start'
             >
               Forgot password?
             </a>
-
             <Button className='w-full' type='submit' disabled={isLoading}>
               Sign in
             </Button>
@@ -96,7 +94,6 @@ const SignInPage = () => {
           <GoogleLogo />
           Sign up with Google
         </Button>
-
         <p className='text-body-default text-dark-grey font-semibold'>
           Don&apos;t have an account yet?{' '}
           <a href='./signup' className='decoration-transparent text-blue hover:cursor-pointer'>
