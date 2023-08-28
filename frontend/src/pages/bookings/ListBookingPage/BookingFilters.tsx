@@ -2,10 +2,9 @@ import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
+import { Form } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
-import { Dropdown, DropdownOption } from 'src/components/ui/common/Dropdown/Dropdown';
-import { useFetchFacilitiesQuery } from 'src/store/reducers/facility/facilityApi';
+import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
 
 const formSchema = yup.object({
   facility: yup.string(),
@@ -65,7 +64,7 @@ export const BookingFilters = ({
           </div>
           <div className='flex flex-col  w-full'>
             <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
-              End date
+              Start date
             </label>
             <TextInput
               className='gap-y-0'

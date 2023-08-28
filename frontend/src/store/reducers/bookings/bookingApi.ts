@@ -1,9 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BookingFiltersDto } from '../../../../types/dto/BookingFiltersDto';
 import { GetAllBookingsDto } from '../../../../types/dto/GetAllBookingsDto';
-export const bookingApi = createApi({
-  reducerPath: 'bookingApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/v1/' }),
+import { apiSlice } from '../apiSlice';
+export const bookingApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getAllBookings: builder.query<GetAllBookingsDto, BookingFiltersDto>({
       query(filters) {

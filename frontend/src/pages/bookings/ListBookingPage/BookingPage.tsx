@@ -85,7 +85,7 @@ const BookingPage = () => {
                     return prevParams;
                   });
                 }}
-                siblingsCount={1}
+                siblingsCount={2}
               ></Pagination>
             </div>
           </div>
