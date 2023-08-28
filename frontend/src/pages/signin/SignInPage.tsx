@@ -44,7 +44,7 @@ const SignInPage = () => {
   };
 
   const handleClick = () => {
-    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`);
+    window.location.assign(`${process.env.REACT_APP_API_URL}/auth/google`);
   };
 
   useEffect(() => {
