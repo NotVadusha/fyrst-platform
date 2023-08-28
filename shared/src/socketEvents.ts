@@ -16,7 +16,7 @@ export interface ServerToClientEvents {
 }
 
 export interface SendMessagePayload {
-  message: Message['messageContent']
+  message: Message['messageContent'];
 }
 
 export interface ClientToServerEvents {

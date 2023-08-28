@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { socket } from 'src/lib/socket';
-import { useSendNewMessageMutation } from 'src/store/reducers/chat.service';
+import { useSendNewMessageMutation } from 'src/store/reducers/chat/chatApi';
 import { format } from 'date-fns';
 
 export function NewMessageInput({ chatId }: { chatId: string }) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ReactComponent as SearchLoupe } from 'src/icons/search-loupe.svg';
-import { useGetAllMessagesQuery } from 'src/store/reducers/chat.service';
+import { useGetAllMessagesQuery } from 'src/store/reducers/chat/chatApi';
 import { NewMessageInput } from './NewMessageInput';
 
 const mockMessages = [

@@ -11,8 +11,6 @@ const MessangerPage = () => {
   const { data: users } = useGetAllUsersQuery();
   const [open, setIsOpen] = useState(false);
 
-  
-
   return (
     <>
       <div>
