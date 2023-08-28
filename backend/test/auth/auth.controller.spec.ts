@@ -9,6 +9,7 @@ import {
   loginDtoMock,
   refreshDtoMock,
   tokenResponseMock,
+  signInResponseMock,
 } from './auth.mocks';
 import { MessageResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { Response } from 'express';
@@ -63,7 +64,7 @@ describe('AuthController', () => {
       });
 
       test('it should return access an refresh tokens', () => {
-        expect(result).toEqual(tokenResponseMock);
+        expect(result).toEqual(signInResponseMock);
       });
     });
   });
@@ -128,7 +129,7 @@ describe('AuthController', () => {
       test('it should pass the access token to the cookie', () => {
         expect(responseMock.cookie).toHaveBeenCalledWith(
           'accessToken',
-          tokenResponseMock.accessToken,
+          signInResponseMock.accessToken,
           {
             maxAge: 1000 * 60 * 10,
             sameSite: true,
@@ -140,7 +141,19 @@ describe('AuthController', () => {
       test('it should pass the refresh token to the cookie', () => {
         expect(responseMock.cookie).toHaveBeenCalledWith(
           'refreshToken',
-          tokenResponseMock.refreshToken,
+          signInResponseMock.refreshToken,
+          {
+            maxAge: 1000 * 60 * 10,
+            sameSite: true,
+            secure: false,
+          },
+        );
+      });
+
+      test('it should pass the user info to the cookie', () => {
+        expect(responseMock.cookie).toHaveBeenCalledWith(
+          'user',
+          JSON.stringify(signInResponseMock.userInfo),
           {
             maxAge: 1000 * 60 * 10,
             sameSite: true,

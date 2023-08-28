@@ -71,9 +71,17 @@ export class AuthService {
       if (!passwordsCompairing)
         throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
 
-      const tokens = await this.getTokens({ id: user.id });
-      this.updateRefreshToken(user.id, tokens.refreshToken);
-      return tokens;
+      const userInfo = { ...user };
+      delete userInfo.password;
+      delete userInfo.is_confirmed;
+
+      const tokens = await this.getTokens({ id: userInfo.id });
+      this.updateRefreshToken(userInfo.id, tokens.refreshToken);
+      return {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        userInfo,
+      };
     } catch (error) {
       this.logger.error('Error:', error.response || error);
       if (error instanceof HttpException) throw error;
@@ -131,9 +139,16 @@ export class AuthService {
         });
       }
 
-      const tokens = await this.getTokens({ id: user.id });
-      this.updateRefreshToken(user.id, tokens.refreshToken);
-      return tokens;
+      const userInfo = { ...user };
+      delete userInfo.password;
+      delete userInfo.is_confirmed;
+
+      const tokens = await this.getTokens({ id: userInfo.id });
+      this.updateRefreshToken(userInfo.id, tokens.refreshToken);
+      return {
+        tokens,
+        user: userInfo,
+      };
     } catch (error) {
       this.logger.error('Error:', error.response || error);
       if (error instanceof HttpException) throw error;

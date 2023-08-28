@@ -6,7 +6,7 @@ import { AccessTokenGuard } from './guards/access-token.guard';
 import { GoogleOauthGuard } from './guards/google.guard';
 import { Response } from 'express';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { MessageResponse, TokenResponse } from 'src/helpers/responceClasses';
+import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { RegistrationDto } from './dto/registration.dto';
 
 @ApiTags('Authorization and authentication endpoints')
@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'User login' })
-  @ApiResponse({ status: 200, type: TokenResponse })
+  @ApiResponse({ status: 200, type: SignInResponse })
   @Post('login')
   @HttpCode(200)
   async login(@Body() loginDto: LoginDto) {
@@ -59,13 +59,18 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   async googleCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.googleAuthentication(req.user);
-    if (!!result.accessToken) {
-      res.cookie('accessToken', result.accessToken, {
+    if (!!result.tokens.accessToken) {
+      res.cookie('accessToken', result.tokens.accessToken, {
         maxAge: 1000 * 60 * 10,
         sameSite: true,
         secure: false,
       });
-      res.cookie('refreshToken', result.refreshToken, {
+      res.cookie('refreshToken', result.tokens.refreshToken, {
+        maxAge: 1000 * 60 * 10,
+        sameSite: true,
+        secure: false,
+      });
+      res.cookie('user', JSON.stringify(result.user), {
         maxAge: 1000 * 60 * 10,
         sameSite: true,
         secure: false,
