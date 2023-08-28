@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,48 +8,39 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
 import { AvatarUploader } from './AvatarUploader';
 import CustomPhoneInput from './CustomPhoneInput';
-import { userApi } from 'src/store/reducers/user/userApi';
+import {
+  useGetUserQuery,
+  useUpdateUserMutation,
+  useUpdateUserProfileMutation,
+} from 'src/store/reducers/user/userApi';
 import CityInput from './CityInput';
-import { useLoaderData } from 'react-router-dom';
 import DateInput from './DateInput';
-import { UserProfile } from 'types/models/UserProfile';
-import { EditUserPage } from 'types/dto/UserDto';
 import { Controller } from 'react-hook-form';
+import { User } from 'types';
+import { useStore } from 'react-redux';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
-  const [getUser] = userApi.useGetUserMutation();
-  const [updateUser] = userApi.useUpdateUserMutation();
-  const [updateUserProfile] = userApi.useUpdateUserProfileMutation();
-
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [avatarImage, setAvatarImage] = useState('');
   const [city, setCity] = useState('');
+  const [updateUser] = useUpdateUserMutation();
+  const store = useStore();
 
-  const { user, userProfile } = useLoaderData() as {
-    user: EditUserPage;
-    userProfile: UserProfile;
-  };
+  const user: User = store.getState().user;
 
   const form = useForm<Inputs>({
     // @ts-ignore
     resolver: yupResolver(profileSchema),
-    defaultValues: {
-      firstName: user.first_name,
-      secondName: user.last_name,
-      email: user.email,
-      phoneNumber: user.phone_number,
-      city: user.city,
-      dateOfBirth: user.birthdate,
-    },
+    defaultValues: useMemo(() => {
+      return user;
+    }, [user]),
   });
 
-  function onSubmit(valuesFromForm: Inputs) {
-    const valuesToSend = { ...valuesFromForm, avatar: avatarImage };
-    console.log(valuesToSend);
-  }
+  const onSubmit = async (valuesFromForm: Inputs) => {
+    const response = await updateUser({ id: user.id, user: { ...valuesFromForm } });
+  };
 
   const openAvatarEditor = () => {
     setAvatarEditorShown(true);
@@ -85,13 +76,13 @@ export function ProfileEditForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
               <FormField
                 control={form.control}
-                name='firstName'
+                name='first_name'
                 render={({ field }) => (
                   <FormItem className=''>
                     <TextInput
                       control={form.control}
                       type='text'
-                      id='firstName'
+                      id='first_name'
                       label='First name'
                       {...field}
                     />
@@ -100,13 +91,13 @@ export function ProfileEditForm() {
               />
               <FormField
                 control={form.control}
-                name='secondName'
+                name='last_name'
                 render={({ field }) => (
                   <FormItem>
                     <TextInput
                       control={form.control}
                       type='text'
-                      id='secondName'
+                      id='last_name'
                       label='Second name'
                       {...field}
                     />
@@ -130,13 +121,13 @@ export function ProfileEditForm() {
               />
               <FormField
                 control={form.control}
-                name='phoneNumber'
+                name='phone_number'
                 render={({ field }) => (
                   <FormItem>
                     <CustomPhoneInput
                       control={form.control}
                       type='phone'
-                      id='phoneNumber'
+                      id='phone_number'
                       label='Phone'
                       {...field}
                     />
@@ -154,7 +145,7 @@ export function ProfileEditForm() {
               />
               <div>
                 <Controller
-                  name='dateOfBirth'
+                  name='birthdate'
                   control={form.control}
                   render={({ field }) => (
                     <DateInput control={form.control} label='Date of birth' {...field} />

@@ -13,3 +13,9 @@ export interface User {
   role_id: number;
   role: Role;
 }
+
+export interface DecodedUser {
+  id: number;
+  iat: number;
+  exp: number;
+}
