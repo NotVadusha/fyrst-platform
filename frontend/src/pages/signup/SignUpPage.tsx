@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from 'src/lib/validation-schemas/authentication/registration';
 import { Button } from 'src/ui/common/Button';
 import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
-import { authApi } from 'src/store/services';
+import { authApi } from 'src/store/reducers/user/authApi';
 import { useNavigate } from 'react-router-dom';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
@@ -47,7 +47,7 @@ const SignUpPage = () => {
   };
 
   const handleClick = () => {
-    window.location.assign(`${process.env.REACT_APP_BACKEND_URL}/auth/google`);
+    window.location.assign(`${process.env.REACT_APP_API_URL}/auth/google`);
   };
 
   return (

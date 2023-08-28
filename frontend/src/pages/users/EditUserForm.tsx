@@ -14,7 +14,7 @@ import * as y from 'yup';
 import { userSchema } from 'src/lib/validations/user';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation, useUpdateUserMutation } from 'src/store/services/user.service';
+import { useAddUserMutation, useUpdateUserMutation } from 'src/store/reducers/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'types';
 
@@ -138,11 +138,7 @@ export function EditUserForm({ user }: { user: User }) {
             </FormItem>
           )}
         />
-        <Button
-          type='submit'
-          variant='primary'
-          className='w-full'
-        >
+        <Button type='submit' variant='primary' className='w-full'>
           Submit
         </Button>
       </form>

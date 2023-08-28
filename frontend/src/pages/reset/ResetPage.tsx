@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
-import { resetPasswordApi } from 'src/store/services/reset-password.service';
+import { resetPasswordApi } from 'src/store/reducers/user/resetPasswordApi';
 import { resetSchema } from 'src/lib/validation-schemas/authentication/reset';
 import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
 import { useAppDispatch } from 'src/hooks/redux';

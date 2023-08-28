@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import { TokenResponse } from 'src/helpers/responceClasses';
+import { SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { GoogleDto } from 'src/packages/auth/dto/google.dto';
 import { LoginDto } from 'src/packages/auth/dto/login.dto';
 import { RefreshDto } from 'src/packages/auth/dto/refresh.dto';
@@ -63,6 +63,18 @@ export const tokenResponseMock: TokenResponse = {
   refreshToken: 'refresh',
 };
 
+export const signInResponseMock: SignInResponse = {
+  accessToken: 'access',
+  refreshToken: 'refresh',
+  userInfo: {
+    id: 1,
+    first_name: 'Ivan',
+    last_name: 'Ivanov',
+    email: 'qwerty@gmail.com',
+    role_id: 1,
+  },
+};
+
 export const payloadMock: JWTPayload = {
   id: 1,
 };
@@ -75,22 +87,28 @@ export const authServiceMock = {
     .mockImplementation((createUserDto: RegistrationDto) =>
       Promise.resolve({ message: 'Email was sended' }),
     ),
-  login: jest
-    .fn()
-    .mockImplementation((loginDto: LoginDto) =>
-      Promise.resolve({ accessToken: 'access', refreshToken: 'refresh' }),
-    ),
+  login: jest.fn().mockImplementation((loginDto: LoginDto) => Promise.resolve(signInResponseMock)),
   logout: jest.fn().mockImplementation((id: number) => Promise.resolve(null)),
   refresh: jest
     .fn()
     .mockImplementation((refreshDto: RefreshDto) =>
       Promise.resolve({ accessToken: 'access', refreshToken: 'refresh' }),
     ),
-  googleAuthentication: jest
-    .fn()
-    .mockImplementation((googleDto: GoogleDto) =>
-      Promise.resolve({ accessToken: 'access', refreshToken: 'refresh' }),
-    ),
+  googleAuthentication: jest.fn().mockImplementation((googleDto: GoogleDto) =>
+    Promise.resolve({
+      tokens: {
+        accessToken: 'access',
+        refreshToken: 'refresh',
+      },
+      user: {
+        id: 1,
+        first_name: 'Ivan',
+        last_name: 'Ivanov',
+        email: 'qwerty@gmail.com',
+        role_id: 1,
+      },
+    }),
+  ),
 };
 
 export const jwtServiceMock = {
@@ -112,9 +130,10 @@ export const userServiceMock = {
     });
     return usersMock[1];
   }),
-  findOneByEmail: jest
-    .fn()
-    .mockImplementation(async (email: string) => usersMock.find(user => user.email === email)),
+  findOneByEmail: jest.fn().mockImplementation(async (email: string) => ({
+    ...usersMock.find(user => user.email === email),
+    dataValues: usersMock.find(user => user.email === email),
+  })),
   findOne: jest
     .fn()
     .mockImplementation(async (id: number) => usersMock.find(user => user.id === id)),

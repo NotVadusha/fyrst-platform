@@ -1,9 +1,14 @@
 import React from 'react';
+import { Header } from '../../components/ui/layout/Header/Header';
+import PaymentsList from '../../components/PaymentsList/PaymentsList';
 
 const PaymentsPage = () => {
   return (
-    <div className='h-128 bg-gray'>
-      <h1>Payments</h1>
+    <div>
+      <Header title='Payments' />
+      <div>
+        <PaymentsList />
+      </div>
     </div>
   );
 };

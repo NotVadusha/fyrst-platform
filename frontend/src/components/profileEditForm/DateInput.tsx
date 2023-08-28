@@ -17,12 +17,16 @@ export interface DateInputProps extends React.InputHTMLAttributes<HTMLInputEleme
 }
 
 const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props }) => {
+  const maxBirthdate = new Date();
+  maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
+
+  const maxDateFormatted = maxBirthdate.toISOString().split('T')[0];
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <>
+        <div>
           <FormItem className={styles.wrapper}>
             <FormLabel className={`${styles.label} ${field.value ? styles.active : ''}`}>
               {label}
@@ -31,13 +35,12 @@ const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props })
               className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
               type='date'
               placeholder=''
+              max={maxDateFormatted}
               {...field}
-              min={'1900-01-01'}
-              max={formatISO(new Date())}
             />
             <FormMessage className={styles.error} />
           </FormItem>
-        </>
+        </div>
       )}
     />
   );
