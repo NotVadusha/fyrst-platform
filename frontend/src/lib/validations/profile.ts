@@ -7,7 +7,7 @@ export const profileSchema = y
     firstName: y.string().required('First name is required field'),
     secondName: y.string().required('Second name is required field'),
     email: y.string().email('Invalid email input').required('Email is required field'),
-    phoneNumber: y.string().required('Phone number is a required field'),
+    phoneNumber: y.string().min(3).required('Phone number is a required field'),
     city: y.string().min(2).max(58).required('City is required field'),
     dateOfBirth: y
       .string()
@@ -17,7 +17,7 @@ export const profileSchema = y
           start: new Date(value),
           end: new Date(),
         });
-        if (years) return years >= 18;
+        if (years) return years >= 16;
         return false;
       }),
   })
