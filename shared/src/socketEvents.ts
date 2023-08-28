@@ -15,6 +15,10 @@ export interface ServerToClientEvents {
   onDelete: (payload: Message) => void;
 }
 
+export interface SendMessagePayload {
+  message: Message['messageContent']
+}
+
 export interface ClientToServerEvents {
-  'send-message': (payload: { message: Message['messageContent'] }) => void;
+  'send-message': (payload: SendMessagePayload) => void;
 }

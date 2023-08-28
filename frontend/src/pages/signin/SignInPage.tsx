@@ -9,8 +9,12 @@ import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordIn
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/ui/common/Button';
 import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
-import { authApi } from 'src/store/services';
+import { authApi } from 'src/store/reducers/user/authApi';
 import { loginSchema } from 'src/lib/validation-schemas/authentication/login';
+import jwtDecode from 'jwt-decode';
+import { JwtPayload } from 'types';
+import { useAppDispatch } from 'src/hooks/redux';
+import { setUser } from 'src/store/reducers/user.store';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
@@ -18,6 +22,8 @@ const SignInPage = () => {
   const [login, { isLoading, error, data }] = authApi.useLoginMutation();
 
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
 
   const form = useForm<LoginInputs>({
     resolver: yupResolver(loginSchema),
@@ -51,6 +57,9 @@ const SignInPage = () => {
     if (data) {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
+
+      dispatch(setUser(data.userInfo));
+
       navigate('/');
     }
   }, [data]);

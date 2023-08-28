@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Messanger } from './common/messanger/Messanger';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
-import { useGetAllUsersQuery } from 'src/store/services';
+import { useGetAllUsersQuery } from 'src/store/reducers/user/userApi';
 import { Modal } from 'src/components/ui/common/Modal';
 import { UserDefaultResponse } from 'types/dto/UserDto';
 import { CreateChatForm } from './CreateChatForm';
@@ -10,6 +10,8 @@ import { CreateChatForm } from './CreateChatForm';
 const MessangerPage = () => {
   const { data: users } = useGetAllUsersQuery();
   const [open, setIsOpen] = useState(false);
+
+  
 
   return (
     <>

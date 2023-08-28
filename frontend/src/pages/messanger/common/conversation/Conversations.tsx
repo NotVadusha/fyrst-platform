@@ -36,7 +36,7 @@ const mockMessages = [
 
 export const Conversations: React.FC = () => {
   return (
-    <>
+    <div className=''>
       <input
         type='text'
         placeholder='Search'
@@ -62,6 +62,6 @@ export const Conversations: React.FC = () => {
           </Link>
         ))}
       </div>
-    </>
+    </div>
   );
 };

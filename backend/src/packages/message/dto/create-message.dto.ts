@@ -15,16 +15,6 @@ class CreateMessageDto {
   @IsArray()
   @IsString({ each: true })
   readonly attachments?: string[]; //TODO: refactor it in 'sharing files functionality' task
-
-  @IsInt()
-  @IsNotEmpty()
-  @Min(1)
-  readonly chatId: number;
-
-  @IsNotEmpty()
-  @IsInt()
-  @Min(1)
-  readonly userId: number;
 }
 
 export { CreateMessageDto };

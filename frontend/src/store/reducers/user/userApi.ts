@@ -1,8 +1,7 @@
 import { UpdateUserBody, UserDefaultResponse } from 'types/dto/UserDto';
 import { UserProfile } from 'types/models/UserProfile';
-import { createApi } from '@reduxjs/toolkit/dist/query/react';
-import { baseQuery } from './helpers/baseQuery';
 import { UserFilters } from 'types/UserFilters';
+import { apiSlice } from '../apiSlice';
 
 export interface getUsersQueryParams {
   currentPage: number;
@@ -14,10 +13,7 @@ interface getUsersPayload {
   totalCount: number;
 }
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: baseQuery,
-  tagTypes: [],
+export const userApi = apiSlice.injectEndpoints({
   endpoints: build => ({
     getUsersByParams: build.query<getUsersPayload, getUsersQueryParams>({
       query: args => {

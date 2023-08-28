@@ -16,17 +16,15 @@ export class MessageService {
     private readonly gateway: AppGateway,
   ) {}
 
-  async create(chatId: number, createdData: CreateMessageDto) {
+  async create(chatId: number, data: CreateMessageDto & { chatId: number; userId: number }) {
     await this.validateChatExistence(chatId);
-    await this.validateChatExistence(createdData.chatId);
-    await this.validateUserExists(createdData.userId);
+    await this.validateChatExistence(data.chatId);
+    await this.validateUserExists(data.userId);
 
     const createdMessage = await this.messageRepository.create({
-      ...createdData,
-      chatId,
+      ...data,
     });
 
-    
     this.gateway.wss.emit('onCreate', createdMessage);
 
     this.logger.log(`Created message with ID ${createdMessage.id}`, {
@@ -70,7 +68,11 @@ export class MessageService {
     return message;
   }
 
-  async update(chatId: number, id: number, updatedData: UpdateMessageDto) {
+  async update(
+    chatId: number,
+    id: number,
+    updatedData: UpdateMessageDto & { chatId: number; userId: number },
+  ) {
     const message = await this.find(chatId, id);
 
     if (updatedData && updatedData.userId) {

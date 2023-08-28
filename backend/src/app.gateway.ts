@@ -4,9 +4,14 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  SubscribeMessage,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
+import {
+  ClientToServerEvents,
+  SendMessagePayload,
+  ServerToClientEvents,
+} from 'shared/socketEvents';
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
