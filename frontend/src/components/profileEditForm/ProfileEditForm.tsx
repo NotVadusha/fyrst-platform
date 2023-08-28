@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,9 +18,34 @@ import DateInput from './DateInput';
 import { Controller } from 'react-hook-form';
 import { User } from 'types';
 import { useStore } from 'react-redux';
+import { DecodedUser } from 'types/models/User';
+import jwtDecode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const navigator = useNavigate();
+  const [user, setUser] = useState();
+
+  const token = localStorage.getItem('accessToken');
+  if (!token) navigator('/auth/signin');
+  // @ts-ignore
+  const decode: DecodedUser = jwtDecode(token);
+  const userId = decode.id;
+
+  useEffect(() => {
+    const userFetch = async (id: number) => {
+      const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
+
+      setUser(data);
+    };
+
+    userFetch(userId);
+  }, []);
+
+  console.log(user);
+
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
   const [avatarImage, setAvatarImage] = useState('');
@@ -28,8 +53,14 @@ export function ProfileEditForm() {
   const [updateUser] = useUpdateUserMutation();
   const store = useStore();
 
-  const user: User = store.getState().user;
+  const onSubmit = async (valuesFromForm: Inputs) => {
+    // @ts-ignore
+    const response = await updateUser({ id: user.id, user: { ...valuesFromForm } });
+  };
 
+  const openAvatarEditor = () => {
+    setAvatarEditorShown(true);
+  };
   const form = useForm<Inputs>({
     // @ts-ignore
     resolver: yupResolver(profileSchema),
@@ -38,13 +69,9 @@ export function ProfileEditForm() {
     }, [user]),
   });
 
-  const onSubmit = async (valuesFromForm: Inputs) => {
-    const response = await updateUser({ id: user.id, user: { ...valuesFromForm } });
-  };
-
-  const openAvatarEditor = () => {
-    setAvatarEditorShown(true);
-  };
+  useEffect(() => {
+    form.reset(user);
+  }, [user]);
 
   return (
     <>
