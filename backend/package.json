@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@elasticemail/elasticemail-client-ts-axios": "^4.0.22",
+    "@faker-js/faker": "^8.0.2",
     "@nestjs/class-validator": "^0.13.4",
     "@nestjs/cli": "^10.1.12",
     "@nestjs/jwt": "^10.1.0",
