@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NotificationConfig } from './entities/notifications-config.entity';
 import { UserService } from '../user/user.service';
@@ -10,7 +10,6 @@ export class NotificationsConfigService {
     @InjectModel(NotificationConfig)
     @Inject(UserService)
     private readonly notificationConfigRepository: typeof NotificationConfig,
-    private readonly logger: Logger,
   ) {}
 
   getByUserId(userId: number) {
@@ -34,7 +33,6 @@ export class NotificationsConfigService {
   async delete(userId: number) {
     const config = await this.getByUserId(userId);
     await config.destroy();
-    this.logger.log(`Removing notifications config for user ${userId}`);
     return config;
   }
 }
