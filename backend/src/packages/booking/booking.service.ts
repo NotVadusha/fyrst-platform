@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import { FacilityService } from '../facility/facility.service';
 import { FilterBookingDto } from './dto/filter-booking.dto';
 import { User } from '../user/entities/user.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class BookingService {
@@ -45,9 +46,18 @@ export class BookingService {
     return booking;
   }
 
-  async getAllFiltered(filters?: FilterBookingDto, limit?: number, offset?: number) {
+  async getAllFiltered(filters?: FilterBookingDto) {
+    const { limit = Number.MAX_SAFE_INTEGER, offset = 0, startDate, endDate, status } = filters;
+    console.log(startDate, endDate);
+
+    const where: any = {
+      ...(startDate && { startDate: { [Op.gt]: startDate } }),
+      ...(endDate && { endDate: { [Op.lt]: endDate } }),
+      ...(status && { status: status }),
+    };
+
     const bookings = await this.bookingRepository.findAll({
-      where: { ...filters },
+      where: where,
       limit: limit,
       offset: offset,
     });

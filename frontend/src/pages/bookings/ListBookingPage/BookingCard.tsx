@@ -1,7 +1,7 @@
 import React from 'react';
-import { ReactComponent as ClockIcon } from '../../icons/clock.svg';
-import { ReactComponent as CalendrIcon } from '../../icons/calendar.svg';
-import { ReactComponent as ProfileIcon } from '../../icons/Profile.svg';
+import { ReactComponent as ClockIcon } from '../../../icons/clock.svg';
+import { ReactComponent as CalendrIcon } from '../../../icons/calendar.svg';
+import { ReactComponent as ProfileIcon } from '../../../icons/Profile.svg';
 
 import { Card } from 'src/components/ui/common/Card';
 import { Booking } from 'types/models/Booking';
@@ -33,11 +33,11 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
     day: '2-digit',
     year: 'numeric',
   }).format(new Date(booking.createdAt));
-  // const startDate = new Intl.DateTimeFormat('fr-CA').format();
-  // const endDate = new Intl.DateTimeFormat('fr-CA').format();
+  const startDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.startDate));
+  const endDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.endDate));
 
   return (
-    <Card>
+    <Card className='h-72'>
       <div className='flex justify-between mb-4 items-center'>
         <div className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}>
           {booking.status}
@@ -66,14 +66,14 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
           <CalendrIcon className='mr-1'></CalendrIcon>
           Start date
         </p>
-        <p className='text-sm text-dark-grey'></p>
+        <p className='text-sm text-dark-grey'>{startDate}</p>
       </div>
       <div className='flex justify-between'>
         <p className='flex items-center text-sm text-dark-grey'>
           <CalendrIcon className='mr-1'></CalendrIcon>
           End date
         </p>
-        <p className='text-sm text-dark-grey'>{}</p>
+        <p className='text-sm text-dark-grey'>{endDate}</p>
       </div>
     </Card>
   );
