@@ -4,6 +4,7 @@ import { authApi } from './services';
 import { resetPasswordApi } from './services/reset-password.service';
 import resetPasswordSlice from './reducers/reset-password.store';
 import { apiSlice } from './reducers/apiSlice';
+import { chatApi } from './services/chat.service';
 
 const rootReducer = combineReducers({
   resetPassword: resetPasswordSlice,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [resetPasswordApi.reducerPath]: resetPasswordApi.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
+  [chatApi.reducerPath]: chatApi.reducer,
 });
 
 const store = configureStore({
@@ -20,7 +22,8 @@ const store = configureStore({
       .concat(authApi.middleware)
       .concat(resetPasswordApi.middleware)
       .concat(apiSlice.middleware)
-      .concat(userApi.middleware),
+      .concat(userApi.middleware)
+      .concat(chatApi.middleware),
 });
 
 export default store;

@@ -3,11 +3,11 @@ import { customBaseQuery } from './helpers/customBaseQuery';
 import { Message } from 'shared/socketEvents';
 
 export const chatApi = createApi({
-  reducerPath: 'authApi',
+  reducerPath: 'chatApi',
   baseQuery: customBaseQuery,
   tagTypes: [],
   endpoints: build => ({
-    getAllMessages: build.query<Message, { chatId: string }>({
+    getAllMessages: build.query<{ messages: Message[] }, { chatId: string }>({
       query: ({ chatId }) => `/chat/${chatId}`,
     }),
   }),
