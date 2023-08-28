@@ -24,180 +24,192 @@ import ResetPage from 'src/pages/reset/ResetPage';
 import Notifications from '../components/Notifications/Notifications';
 import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
+import { App } from 'src/pages/App';
 import { ChatPage } from 'src/pages/messanger/common/chat/Chat';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Layout />,
+    element: <App />,
+    children: [
+      {
+        path: '/',
+        element: <Layout />,
 
-    children: [
-      {
-        path: 'booking',
-        errorElement: <ErrorPage />,
         children: [
           {
-            index: true,
-            element: <BookingPage />,
+            path: 'booking',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <BookingPage />,
+              },
+              {
+                path: ':id',
+                element: <BookingOverview />,
+              },
+              {
+                path: 'create',
+                element: <CreateBookingPage />,
+              },
+            ],
           },
           {
-            path: ':id',
-            element: <BookingOverview />,
+            path: 'timecard',
+            children: [
+              {
+                index: true,
+                element: <TimeCardPage />,
+              },
+              {
+                path: ':id',
+                element: <ViewTimeCardPage />,
+              },
+              {
+                path: 'create/:bookingId',
+                element: <CreateTimeCardPage />,
+              },
+            ],
           },
           {
-            path: 'create',
-            element: <CreateBookingPage />,
-          },
-        ],
-      },
-      {
-        path: 'timecard',
-        children: [
-          {
-            index: true,
-            element: <TimeCardPage />,
+            path: '/chat',
+            errorElement: <ErrorPage />,
+            element: <MessangerPage />,
+            children: [
+              {
+                path: ':chatId',
+                element: <ChatPage />,
+              },
+            ],
           },
           {
-            path: ':id',
-            element: <ViewTimeCardPage />,
-          },
-          {
-            path: 'create/:bookingId',
-            element: <CreateTimeCardPage />,
-          },
-        ],
-      },
-      {
-        path: 'profile',
-        errorElement: <ErrorPage />,
-        children: [
-          {
-            index: true,
-            element: <ProfilePage />,
-          },
-          {
-            path: 'edit',
-            element: <ProfileEditPage />,
-            loader: async ({ params }) => {
-              return {
-                user: {
-                  first_name: 'Joe',
-                  last_name: 'Doe',
-                  email: 'jd@gmail.com',
-                  phone_number: '+3',
-                  city: 'New York',
-                  birthdate: '2004-12-12',
-                  role_id: 1,
+            path: 'profile',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <ProfilePage />,
+              },
+              {
+                path: 'edit',
+                element: <ProfileEditPage />,
+                loader: async ({ params }) => {
+                  return {
+                    user: {
+                      first_name: 'Joe',
+                      last_name: 'Doe',
+                      email: 'jd@gmail.com',
+                      phone_number: '+3',
+                      city: 'New York',
+                      birthdate: '2004-12-12',
+                      role_id: 1,
+                    },
+                  };
+                  // try {
+                  // const navigate = useNavigate();
+                  // const location = useLocation();
+                  //   const userToken = jwt.decide(localStorage.getItem('accessToken'));
+                  //   const userId = user.payload.id
+                  // if (!userTokenID) {
+                  //   navigate('/auth/login', { state: { from: location }, replace: true });
+                  // }
+                  //   const user = await fetch(`${baseUrl}/user/${userId}`);
+                  //   const userProfile = await fetch(`${baseUrl}/profile/${userId}`)
+                  //   return {user: {...user}, profile: {...profile}}
+                  // } catch (err) {
+                  //   throw err;
+                  // }
                 },
-              };
-              // try {
-              // const navigate = useNavigate();
-              // const location = useLocation();
-              //   const userToken = jwt.decide(localStorage.getItem('accessToken'));
-              //   const userId = user.payload.id
-              // if (!userTokenID) {
-              //   navigate('/auth/login', { state: { from: location }, replace: true });
-              // }
-              //   const user = await fetch(`${baseUrl}/user/${userId}`);
-              //   const userProfile = await fetch(`${baseUrl}/profile/${userId}`)
-              //   return {user: {...user}, profile: {...profile}}
-              // } catch (err) {
-              //   throw err;
-              // }
-            },
+              },
+              {
+                path: 'notifications',
+                element: <Notifications />,
+              },
+              {
+                path: 'security',
+                element: <ProfileSecurity />,
+              },
+            ],
           },
           {
-            path: 'notifications',
-            element: <Notifications />,
+            path: 'messanger',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <MessangerPage />,
+              },
+            ],
           },
           {
-            path: 'security',
-            element: <ProfileSecurity />,
+            path: 'payments',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <PaymentsPage />,
+              },
+              {
+                path: ':id',
+                element: <TestPage />,
+              },
+            ],
+          },
+          {
+            path: 'employee',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <EmployesPage />,
+              },
+            ],
+          },
+          {
+            path: 'users',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <UserListPage />,
+              },
+            ],
           },
         ],
       },
       {
-        path: '/chat',
-        errorElement: <ErrorPage />,
-        element: <MessangerPage />,
-        children: [
-          {
-            path: ':chatId',
-            element: <ChatPage />,
-          },
-        ],
-      },
-      {
-        path: 'payments',
-        errorElement: <ErrorPage />,
-        children: [
-          {
-            index: true,
-            element: <PaymentsPage />,
-          },
-          {
-            path: ':id',
-            element: <TestPage />,
-          },
-        ],
-      },
-      {
-        path: 'employee',
-        errorElement: <ErrorPage />,
-        children: [
-          {
-            index: true,
-            element: <EmployesPage />,
-          },
-        ],
-      },
-      {
-        path: 'users',
+        path: '/auth',
         errorElement: <ErrorPage />,
         children: [
           {
             index: true,
-            element: <UserListPage />,
+            path: 'signin',
+            element: <SignInPage />,
+          },
+          {
+            path: 'forgot/email-sended',
+            element: <EmailSentPage />,
+          },
+          {
+            path: 'forgot',
+            element: <ForgotPage />,
+          },
+          {
+            path: 'reset',
+            element: <ResetPage />,
+          },
+          {
+            path: 'signup',
+            element: <SignUpPage />,
+          },
+          {
+            path: 'google-success',
+            element: <SuccessGoogleAuthPage />,
           },
         ],
       },
     ],
-  },
-  {
-    path: '/auth',
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        index: true,
-        path: 'signin',
-        element: <SignInPage />,
-      },
-      {
-        path: 'forgot/email-sended',
-        element: <EmailSentPage />,
-      },
-      {
-        path: 'forgot',
-        element: <ForgotPage />,
-      },
-      {
-        path: 'reset',
-        element: <ResetPage />,
-      },
-      {
-        path: 'signup',
-        element: <SignUpPage />,
-      },
-      {
-        path: 'google-success',
-        element: <SuccessGoogleAuthPage />,
-      },
-    ],
-  },
-  {
-    path: '*',
-    element: <NotFoundPage />,
   },
 ]);

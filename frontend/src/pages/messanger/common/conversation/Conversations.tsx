@@ -10,7 +10,7 @@ export const Conversations: React.FC = () => {
   const { data } = useGetAllMessagesQuery({ chatId });
 
   return (
-    <>
+    <div className=''>
       <input
         type='text'
         placeholder='Search'
@@ -37,6 +37,6 @@ export const Conversations: React.FC = () => {
           <p>No messages found.</p>
         )}
       </div>
-    </>
+    </div>
   );
 };

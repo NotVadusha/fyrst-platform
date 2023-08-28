@@ -4,6 +4,7 @@ import { siteConfig } from 'src/config/site';
 import { ReactComponent as ArrowDown } from '../../icons/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '../../icons/arrow-up.svg';
 import { NavItem as INavItem } from 'types';
+import { Toaster } from 'src/components/ui/common/Toast/Toaster';
 
 const Layout = () => {
   return (
