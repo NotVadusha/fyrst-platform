@@ -18,7 +18,7 @@ import { redisServiceMock } from 'test/redis/redis.mocks';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
-import { MessageResponse, TokenResponse } from 'src/helpers/responceClasses';
+import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -102,7 +102,7 @@ describe('AuthService', () => {
           ...registrationMock,
           password: 'password',
           is_confirmed: false,
-          role_id: 1
+          role_id: 1,
         });
       });
 
@@ -116,21 +116,31 @@ describe('AuthService', () => {
 
   describe('login', () => {
     describe('when login is called', () => {
-      let tokens: TokenResponse;
-      const expectedTokens = {
+      let result: SignInResponse;
+      const expectedResult = {
         accessToken: 'accessToken',
         refreshToken: 'r-e-f-r-e-s-h',
+        userInfo: {
+          id: 1,
+          first_name: 'string',
+          last_name: 'string',
+          email: 'string@gmail.com',
+          phone_number: 'string',
+          city: 'string',
+          birthdate: new Date('2002-12-12T00:00:00.000Z'),
+          role_id: 1,
+        },
       };
 
       jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
       jest.spyOn(crypto, 'randomUUID').mockReturnValue('r-e-f-r-e-s-h');
 
       beforeEach(async () => {
-        tokens = await authService.login(loginDtoMock);
+        result = await authService.login(loginDtoMock);
       });
 
       test('it should return access and refresh tokens', () => {
-        expect(tokens).toEqual(expectedTokens);
+        expect(result).toEqual(expectedResult);
       });
 
       test('it should call User service', () => {
@@ -229,20 +239,32 @@ describe('AuthService', () => {
 
   describe('googleAuthentication', () => {
     describe('when googleAuthentication is called', () => {
-      let tokens: TokenResponse;
+      let result;
       const expectedTokens = {
-        accessToken: 'accessToken',
-        refreshToken: 'r-e-f-r-e-s-h',
+        tokens: {
+          accessToken: 'accessToken',
+          refreshToken: 'r-e-f-r-e-s-h',
+        },
+        user: {
+          id: 1,
+          first_name: 'string',
+          last_name: 'string',
+          email: 'string@gmail.com',
+          phone_number: 'string',
+          city: 'string',
+          birthdate: new Date('2002-12-12T00:00:00.000Z'),
+          role_id: 1,
+        },
       };
 
       jest.spyOn(crypto, 'randomUUID').mockReturnValue('r-e-f-r-e-s-h');
 
       beforeEach(async () => {
-        tokens = await authService.googleAuthentication(googleDtoMock);
+        result = await authService.googleAuthentication(googleDtoMock);
       });
 
-      test('it should return access and refresh tokens', () => {
-        expect(tokens).toEqual(expectedTokens);
+      test('it should return acces token, refresh token and user info', () => {
+        expect(result).toEqual(expectedTokens);
       });
 
       test('it should call User service', () => {
