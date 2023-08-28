@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { Form } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
 import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
+import { useFetchFacilitiesQuery } from 'src/store/reducers/facility/facilityApi';
 
 const formSchema = yup.object({
   facility: yup.string(),
@@ -23,6 +24,15 @@ export const BookingFilters = ({
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(formSchema),
   });
+
+  const { data: facilities } = useFetchFacilitiesQuery({});
+
+  const options = facilities
+    ? facilities.map(facility => ({
+        label: facility.name,
+        value: facility.id,
+      }))
+    : [];
 
   return (
     <Form {...form}>
@@ -55,7 +65,7 @@ export const BookingFilters = ({
             <Dropdown
               name='facility'
               control={form.control}
-              options={[{ label: 'option', value: 'value' }]}
+              options={options}
               ddType='default'
               label=''
               placeholder='Select an option'
@@ -86,7 +96,7 @@ export const BookingFilters = ({
               control={form.control}
               type='date'
               id='endDate'
-              label='End date'
+              label=''
               onChange={handleInputChange}
             />
           </div>

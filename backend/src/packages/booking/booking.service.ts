@@ -47,19 +47,26 @@ export class BookingService {
   }
 
   async getAllFiltered(filters?: FilterBookingDto) {
-    const { limit = Number.MAX_SAFE_INTEGER, offset = 0, startDate, endDate, status } = filters;
-    console.log(startDate, endDate);
-
+    const {
+      limit = Number.MAX_SAFE_INTEGER,
+      offset = 0,
+      startDate,
+      endDate,
+      status,
+      facilityId,
+    } = filters;
     const where: any = {
       ...(startDate && { startDate: { [Op.gt]: startDate } }),
       ...(endDate && { endDate: { [Op.lt]: endDate } }),
       ...(status && { status: status }),
+      ...(facilityId && { facilityId: facilityId }),
     };
 
     const bookings = await this.bookingRepository.findAll({
       where: where,
       limit: limit,
       offset: offset,
+      include: User,
     });
     const total = await this.bookingRepository.count();
     return { bookings, total };

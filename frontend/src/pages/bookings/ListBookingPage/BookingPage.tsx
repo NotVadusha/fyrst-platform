@@ -16,6 +16,7 @@ const BookingPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const filters: BookingFiltersDto = {
+    facilityId: searchParams.get('facility'),
     endDate: searchParams.get('endDate'),
     startDate: searchParams.get('startDate'),
     status: searchParams.get('status'),
@@ -34,7 +35,7 @@ const BookingPage = () => {
   if (data) totalPages = Math.ceil(data.total / LIMIT);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.value);
+    console.log(e.target.name);
     setSearchParams(prevParams => {
       if (e.target.value === '') {
         prevParams.delete(e.target.name);

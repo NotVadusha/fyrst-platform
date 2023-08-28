@@ -37,7 +37,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   const endDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.endDate));
 
   return (
-    <Card className='h-72'>
+    <Card className='px-4 py-4'>
       <div className='flex justify-between mb-4 items-center'>
         <div className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}>
           {booking.status}
@@ -48,7 +48,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
       </div>
       <div className='mb-4'>
         <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>Healthcare worker</h5>
-        <p className='text-sm mb-2 text-black'>Accepted by Wade Warren, Donna Miriam</p>
+        <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by by Wade Warren</p>
         <p className='text-sm text-dark-grey'>{booking.numberOfPositions} positions</p>
       </div>
       <div className='flex justify-between mb-4'>

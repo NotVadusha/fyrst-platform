@@ -2,7 +2,7 @@ export interface BookingFiltersDto {
   endDate?: string | null;
   startDate?: string | null;
   status?: string | null;
-  facility?: number | null;
+  facilityId?: string | null;
   limit?: number | null;
   offset?: number | null;
 }
