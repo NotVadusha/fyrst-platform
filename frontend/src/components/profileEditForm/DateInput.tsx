@@ -17,6 +17,10 @@ export interface DateInputProps extends React.InputHTMLAttributes<HTMLInputEleme
 }
 
 const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props }) => {
+  const maxBirthdate = new Date();
+  maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
+
+  const maxDateFormatted = maxBirthdate.toISOString().split('T')[0];
   return (
     <FormField
       control={control}
@@ -33,7 +37,7 @@ const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props })
               placeholder=''
               {...field}
               min={'1900-01-01'}
-              max={formatISO(new Date())}
+              max={maxDateFormatted}
             />
             <FormMessage className={styles.error} />
           </FormItem>
