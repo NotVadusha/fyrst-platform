@@ -7,7 +7,6 @@ import {
   FormField,
   FormLabel,
 } from 'src/components/ui/common/Form';
-import { formatISO } from 'date-fns';
 
 export interface DateInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;

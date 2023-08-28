@@ -48,12 +48,10 @@ export const userApi = apiSlice.injectEndpoints({
         };
       },
     }),
-    getUser: build.mutation<UserDefaultResponse, { id: number }>({
-      query: body => ({
-        url: `/user/${body.id}`,
-        method: 'GET',
-        body,
-      }),
+    getUser: build.query<UserDefaultResponse, number>({
+      query(id) {
+        return `/user/${id}`;
+      },
     }),
     updateUser: build.mutation<
       UserDefaultResponse,
@@ -84,7 +82,7 @@ export const userApi = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
-  useGetUserMutation,
+  useGetUserQuery,
   useAddUsersMutation,
   useAddUserMutation,
   useGetUserProfileMutation,

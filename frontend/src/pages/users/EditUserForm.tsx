@@ -41,7 +41,7 @@ export function EditUserForm({ user }: { user: User }) {
   async function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    editUser({ id: user.id, user: values });
+    // editUser({ id: user.id, user: values });
     // navigate(0);
   }
 
