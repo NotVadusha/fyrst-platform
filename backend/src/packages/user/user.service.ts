@@ -19,12 +19,16 @@ export class UserService {
     if (sameEmailUser) throw new BadRequestException('This email is already in use');
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
-    console.log("creating");
+    console.log('creating');
     return await this.userRepository.create({
       phone_number: null,
       is_confirmed: false,
       ...userInfo,
     });
+  }
+
+  async findAll() {
+    return await this.userRepository.findAll();
   }
 
   async createMany(userInfo: CreateUserDto[]) {
@@ -65,7 +69,7 @@ export class UserService {
         },
         city: {
           [Op.substring]: filters.city ?? '',
-        },       
+        },
       },
       limit,
       offset,

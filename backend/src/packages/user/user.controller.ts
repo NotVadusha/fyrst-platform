@@ -23,17 +23,20 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-
   async create(@Body() userInfo: CreateUserDto) {
     return await this.userService.create(userInfo);
   }
 
+  @Get('/many')
+  async getAll() {
+    return this.userService.findAll();
+  }
+
   @Post('/many')
   async createMany(@Body() userInfo: CreateUserDto[]) {
-    return await this.userService.createMany(userInfo)
+    return await this.userService.createMany(userInfo);
   }
-  
-  
+
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) userId: number) {
     const user = await this.userService.findOne(userId);
