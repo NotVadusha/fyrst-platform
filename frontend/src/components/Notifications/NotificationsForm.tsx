@@ -18,7 +18,7 @@ interface NotificationConfig {
 }
 
 const NotificationsForm = () => {
-  const initialConfig:NotificationConfig = {
+  const initialConfig: NotificationConfig = {
     id: 1,
     user_id: 12345,
     timecards: true,
@@ -39,7 +39,6 @@ const NotificationsForm = () => {
   const { watch } = form;
 
   const [isChanged, setIsChanged] = useState(false);
-  const [attemptedPublish, setAttemptedPublish] = useState(false);
 
   const values = watch();
 
@@ -48,24 +47,12 @@ const NotificationsForm = () => {
   }, [values, config]);
 
   const onSubmit = (values: NotificationConfig) => {
-    setAttemptedPublish(true);
-
-    if (isChanged) {
-      setConfig(values);
-      toast({
-        variant: 'default',
-        title: 'Success',
-        description: 'Your notification settings have been successfully updated.',
-      });
-
-      setAttemptedPublish(false);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'No Changes',
-        description: 'No changes have been made to your notification settings.',
-      });
-    }
+  setConfig(values);
+  toast({
+    variant: 'default',
+    title: 'Success',
+    description: 'Your notification settings have been successfully updated.',
+  });
   }
 
 
@@ -86,7 +73,7 @@ const NotificationsForm = () => {
               <Checkbox control={form.control} name='money_sent' label='Sent money success' />
             </div>
           </div>
-          <Button type='submit' className='w-full' disabled={!isChanged && attemptedPublish}>
+          <Button type='submit' className='w-full' disabled={!isChanged}>
             Publish
           </Button>
         </form>
