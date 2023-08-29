@@ -66,6 +66,7 @@ function NavItem({ item }: { item: INavItem }) {
   const isCurrentPath = location.pathname.includes(item.path);
 
   React.useEffect(() => {
+    if (isCurrentPath && isOpen) return;
     setIsOpen(false);
   }, [isCurrentPath]);
 
@@ -81,10 +82,13 @@ function NavItem({ item }: { item: INavItem }) {
           {Icon && <Icon className={`${isCurrentPath && 'text-white'}`} title='asd' />}
           <span className={`${isCurrentPath && 'text-white'}`}>{item.title}</span>
         </div>
-        {isCurrentPath && item.items?.length ? (
+        {item.items?.length ? (
           <button
             className='flex items-center p-0 h-auto'
-            onClick={() => {
+            onClick={(e) => {
+              if (!isCurrentPath) {
+                return setIsOpen(true)
+              }
               setIsOpen(prev => !prev);
             }}
           >
