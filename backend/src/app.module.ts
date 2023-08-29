@@ -14,6 +14,7 @@ import {
   UserProfileModule,
   FacilityModule,
   NotificationConfigModule,
+  BucketModule,
 } from './packages';
 
 @Module({
@@ -30,6 +31,7 @@ import {
     UserProfileModule,
     FacilityModule,
     NotificationConfigModule,
+    BucketModule,
   ],
   controllers: [],
   providers: [],
