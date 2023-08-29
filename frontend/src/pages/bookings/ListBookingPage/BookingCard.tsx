@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as ClockIcon } from '../../../icons/clock.svg';
 import { ReactComponent as CalendrIcon } from '../../../icons/calendar.svg';
-import { ReactComponent as ProfileIcon } from '../../../icons/Profile.svg';
+import { ReactComponent as ProfileIcon } from '../../../icons/profile.svg';
 
 import { Card } from 'src/components/ui/common/Card';
 import { Booking } from 'types/models/Booking';
@@ -47,9 +47,11 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         </p>
       </div>
       <div className='mb-4'>
-        <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>Healthcare worker</h5>
+        <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>
+          {booking.facility.name}
+        </h5>
         <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by by Wade Warren</p>
-        <p className='text-sm text-dark-grey'>{booking.numberOfPositions} positions</p>
+        <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
       </div>
       <div className='flex justify-between mb-4'>
         <p className='flex items-center text-sm text-dark-grey'>
@@ -58,7 +60,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         </p>
         <p className='flex items-center text-sm text-dark-grey'>
           <ProfileIcon></ProfileIcon>
-          {booking.creator && `${booking.creator.first_name} ${booking.creator.last_name}`}
+          {booking.employersName}
         </p>
       </div>
       <div className='flex justify-between mb-4'>
