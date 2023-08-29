@@ -18,9 +18,6 @@ const MessangerPage = () => {
             <Button variant='message' size='message' onClick={() => setIsOpen(true)}>
               New Conversation
             </Button>
-            <Button variant='message' size='message'>
-              New Group Chat
-            </Button>
           </div>
           <Messanger />
         </div>
