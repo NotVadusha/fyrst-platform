@@ -2,15 +2,16 @@ import React from 'react';
 import { Form } from '../ui/common/Form';
 import { PasswordInput } from '../ui/common/PasswordInput/PasswordInput';
 import { Button } from '../../ui/common/Button';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './ProfileSecurity.module.css';
 import { updatePasswordSchema } from '../../lib/validations/updatePassword';
+import { useToast } from '../ui/common/Toast/useToast';
 
 const ProfileSecurityForm = () => {
   const form = useForm({
     resolver: yupResolver(updatePasswordSchema),
+    mode: 'onTouched',
     defaultValues: {
       currentPassword: '',
       newPassword: '',
@@ -18,9 +19,25 @@ const ProfileSecurityForm = () => {
     },
   });
 
+   const { toast } = useToast();
+
   const onSubmit = (data: any) => {
+     try {
+
     form.reset();
-  };
+    toast({
+      variant: 'default',
+      title: 'Success',
+      description: 'Your password has been successfully updated.',
+    });
+  } catch (error) {
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: 'Something went wrong while updating your password.',
+    });
+  }
+  }
 
   return (
     <Form {...form}>
