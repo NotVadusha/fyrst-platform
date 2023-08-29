@@ -54,7 +54,11 @@ export class TimecardService {
       ],
     });
 
-    const total = await this.timecardModel.count();
+    const total = await this.timecardModel.count({
+      where: {
+        [Op.and]: whereFilters,
+      },
+    });
 
     return { items: timecards, total };
   }
