@@ -3,10 +3,12 @@ import resetPasswordSlice from './reducers/reset-password.store';
 import userSlice from './reducers/user.store';
 import { apiSlice } from './reducers/apiSlice';
 import { chatApi } from './reducers/chat/chatApi';
+import chatSlice from './reducers/chat.store';
 
 const rootReducer = combineReducers({
   resetPassword: resetPasswordSlice,
   user: userSlice,
+  chat: chatSlice,
   [apiSlice.reducerPath]: apiSlice.reducer,
   [chatApi.reducerPath]: chatApi.reducer,
 });

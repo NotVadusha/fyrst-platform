@@ -5,12 +5,10 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
+  MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import {
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from 'shared/socketEvents';
+import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -20,8 +18,15 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private logger = new Logger('AppGateway');
 
   handleConnection(client: { emit: (arg0: string, arg1: string) => void }) {
-    this.logger.log('New client connected');
+    this.logger.log(`${client} New client connected`);
     client.emit('connection', 'Successfully connected to server');
+  }
+
+  @SubscribeMessage('user-join-chat')
+  handleJoinChat(client: Socket, @MessageBody() data: { chatId: string }) {
+    console.log(client, data);  
+  
+    // client.join(data.chatId);
   }
 
   handleDisconnect(client: Socket) {

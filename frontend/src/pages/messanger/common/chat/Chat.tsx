@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReactComponent as SearchLoupe } from 'src/icons/search-loupe.svg';
-import { useGetAllMessagesQuery } from 'src/store/reducers/chat/chatApi';
+import { useGetChatByIdQuery } from 'src/store/reducers/chat/chatApi';
 import { NewMessageInput } from './NewMessageInput';
 import { useAppSelector } from 'src/hooks/redux';
 import { socket } from 'src/lib/socket';
+import { Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
+import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 
 const mockMessages = [
   {
@@ -47,20 +49,29 @@ export const ChatPage: React.FC = () => {
 
   if (!chatId) return <>No Chat with this Id was found</>;
 
-  const { data } = useGetAllMessagesQuery({ chatId });
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const user = useAppSelector(state => state.user);
+
+  const { data } = useGetChatByIdQuery(chatId);
 
   const otherMembers = data?.members.filter(({ id }) => id !== user?.id);
 
   useEffect(() => {
+    setMessages(data?.messages ?? []);
+  }, [data?.messages]);
+
+  useEffect(() => {
+    socket.emit('user-join-chat', { chatId });
+
     socket.on('onCreate', message => {
       console.log(message);
+      setMessages(prev => [...prev, message]);
     });
   }, []);
 
   return (
-    <div className='w-full'>
+    <div className='relative h-[400px] w-full'>
       <div className='flex items-center justify-between mb-8 W-full'>
         <div className='grid gap-2'>
           <p className='text-2xl/[24px] font-semibold text-black'>
@@ -72,38 +83,40 @@ export const ChatPage: React.FC = () => {
         </div>
         <SearchLoupe />
       </div>
-      <div className='text-center text-dark-grey text-sm font-medium'>Today</div>
-      <div className='mt-4 flex flex-col w-full'>
-        {data?.messages.map((message: any) => {
-          if (message.userId === userId) {
+      <ScrollArea className='h-[260px] py-2'>
+        <div className='text-center text-dark-grey text-sm font-medium'>Today</div>
+        <div className='mt-4 flex flex-col w-full'>
+          {messages?.map((message: any) => {
+            if (message.userId === userId) {
+              return (
+                <div className='flex gap-2 self-end' key={message?.id}>
+                  <div className='inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl bg-inactive'>
+                    <p className='text-black text-sm font-medium'>{message.messageContent}</p>
+                    <span className='text-dark-grey text-body-small font-medium text-end text-sm'>
+                      {format(new Date(message?.createdAt), 'HH:mm')}
+                    </span>
+                  </div>
+                  <div className='bg-grey w-8 h-8 rounded-full self-end' />
+                </div>
+              );
+            }
+
             return (
-              <div className='flex gap-2 self-end' key={message?.id}>
-                <div className='inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl bg-inactive'>
+              <div className='flex gap-2 self-start' key={message?.id}>
+                <div className='bg-grey w-8 h-8 rounded-full self-end' />
+
+                <div className='inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl rounded-br-2xl bg-inactive'>
                   <p className='text-black text-sm font-medium'>{message.messageContent}</p>
                   <span className='text-dark-grey text-body-small font-medium text-end text-sm'>
                     {format(new Date(message?.createdAt), 'HH:mm')}
                   </span>
                 </div>
-                <div className='bg-grey w-8 h-8 rounded-full self-end' />
               </div>
             );
-          }
-
-          return (
-            <div className='flex gap-2 self-start' key={message?.id}>
-              <div className='bg-grey w-8 h-8 rounded-full self-end' />
-
-              <div className='inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl rounded-br-2xl bg-inactive'>
-                <p className='text-black text-sm font-medium'>{message.messageContent}</p>
-                <span className='text-dark-grey text-body-small font-medium text-end text-sm'>
-                  {format(new Date(message?.createdAt), 'HH:mm')}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className='mt-36'>
+          })}
+        </div>
+      </ScrollArea>
+      <div className='mt-auto'>
         <NewMessageInput chatId={chatId} />
       </div>
     </div>

@@ -1,4 +1,12 @@
-import { AllowNull, AutoIncrement, Column, PrimaryKey, Table, Model } from 'sequelize-typescript';
+import {
+  AllowNull,
+  AutoIncrement,
+  Column,
+  PrimaryKey,
+  Table,
+  Model,
+  DataType,
+} from 'sequelize-typescript';
 
 @Table({ tableName: 'Facility', updatedAt: false, deletedAt: false })
 export class Facility extends Model {
@@ -8,22 +16,22 @@ export class Facility extends Model {
   id: number;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   logo: string;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   name: string;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   city: string;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   address: string;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   description: string;
 }

@@ -27,7 +27,7 @@ export const Conversations: React.FC = () => {
             const isAuthor = lastMessage?.userId === user.id;
             return (
               <Link to={`/chat/${chat.id}`} key={chat.id}>
-                <div className='w-full h-20 bg-white drop-shadow rounded-2xl p-4 grid grid-flow-col gap-6'>
+                <div className='w-full bg-white drop-shadow rounded-2xl p-4 flex gap-6'>
                   <span className='bg-[#DBDBDB] w-12 h-12 rounded-full'></span>
                   {lastMessage ? (
                     <>

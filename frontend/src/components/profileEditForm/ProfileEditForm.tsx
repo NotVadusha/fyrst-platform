@@ -17,7 +17,6 @@ import CityInput from './CityInput';
 import DateInput from './DateInput';
 import { Controller } from 'react-hook-form';
 import { User } from 'types';
-import { useStore } from 'react-redux';
 import { DecodedUser } from 'types/models/User';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
@@ -25,11 +24,10 @@ type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState<User>();
 
   const token = localStorage.getItem('accessToken');
-  if (!token) navigator('/auth/signin');
   // @ts-ignore
   const decode: DecodedUser = jwtDecode(token);
   const userId = decode.id;
@@ -38,6 +36,7 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
+      if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
     };
 
@@ -63,7 +62,6 @@ export function ProfileEditForm() {
         birthdate: valuesFromForm?.birthdate,
       },
     });
-    console.log(response);
   };
 
   const openAvatarEditor = () => {
@@ -78,12 +76,13 @@ export function ProfileEditForm() {
       phone_number: user?.phone_number,
       email: user?.email,
       city: user?.city,
-      birthdate: user?.birthdate,
+      birthdate: user?.birthdate ?? undefined,
     },
+    shouldFocusError: false,
   });
 
   useEffect(() => {
-    form.reset(user);
+    form.reset({...user, birthdate: user?.birthdate ?? undefined});
   }, [user]);
 
   return (

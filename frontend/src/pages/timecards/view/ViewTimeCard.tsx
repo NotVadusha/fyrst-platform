@@ -70,12 +70,12 @@ export default function ViewTimeCardPage() {
                 </div>
               </div>
 
-              <div className='flex justify-between gap-4'>
-                <Card className='w-full max-w-[460px] !p-4  flex-initial'>
+              <div className='flex justify-between gap-12'>
+                <Card className='w-full flex-1 p-4'>
                   <CardTitle>Job description</CardTitle>
                   <CardContent>{timecard.booking.notes}</CardContent>
                 </Card>
-                <Card className='w-full max-w-[400px] !p-4 flex-initial'>
+                <Card className='w-full flex-1 p-4'>
                   <CardTitle>Additional details</CardTitle>
                   <CardContent className='flex flex-col space-y-4 items-start'>
                     <div className='flex justify-between gap-2 w-full'>

@@ -7,6 +7,7 @@ import { FacilityService } from '../facility/facility.service';
 import { FilterBookingDto } from './dto/filter-booking.dto';
 import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
+import { Facility } from '../facility/entities/facility.entity';
 
 @Injectable()
 export class BookingService {
@@ -61,12 +62,13 @@ export class BookingService {
       ...(status && { status: status }),
       ...(facilityId && { facilityId: facilityId }),
     };
-
+    console.log('Here', offset);
     const bookings = await this.bookingRepository.findAll({
+      order: [['id', 'ASC']],
       where: where,
       limit: limit,
       offset: offset,
-      include: User,
+      include: [{ model: User }, { model: Facility }],
     });
     const total = await this.bookingRepository.count();
     return { bookings, total };

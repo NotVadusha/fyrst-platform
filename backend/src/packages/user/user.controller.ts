@@ -56,7 +56,7 @@ export class UserController {
         city: query.city,
         email: query.email,
         first_name: query.first_name,
-        is_confirmed: query.is_confirmed,
+        is_confirmed: query.is_confirmed ? JSON.parse(query.is_confirmed) : query.is_confirmed,
         last_name: query.last_name,
       },
     });
