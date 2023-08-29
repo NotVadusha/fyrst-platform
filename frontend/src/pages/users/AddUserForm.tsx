@@ -38,8 +38,6 @@ export function AddUserForm() {
   async function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    addUser(values);
-    navigate(0);
     // addUser(values);
     navigate(0);
   }
