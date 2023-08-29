@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './BookingOverview.module.css';
 import { Button } from '../../ui/common/Button';
 import { useAddUserToBookingMutation } from '../../store/reducers/bookings/bookingApi';
@@ -13,18 +13,12 @@ interface BookingHeaderProps {
 }
 
 const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, users }) => {
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const userId = useAppSelector(state => state.user.id);
   const { toast } = useToast();
 
   const [addUserToBooking, { isLoading }] = useAddUserToBookingMutation();
 
-  useEffect(() => {
-    const userExists = users.some((user: { id: number }) => user.id === userId);
-    if (userExists) {
-      setButtonDisabled(true);
-    }
-  }, [users, userId]);
+  const userExists = users.some((user: { id: number }) => user.id === userId);
 
   const handleApplyClick = async () => {
     try {
@@ -35,8 +29,6 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, user
         title: 'Success',
         description: 'User has been successfully added to the booking.',
       });
-
-      setButtonDisabled(true);
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -49,7 +41,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, user
   return (
     <div className={styles.bookingHeader}>
       <div className={styles.jobTitle}>{facility}</div>
-      <Button onClick={handleApplyClick} disabled={isLoading || isButtonDisabled}>
+      <Button onClick={handleApplyClick} disabled={userExists}>
         {isLoading ? 'Applying...' : 'Apply'}
       </Button>
     </div>

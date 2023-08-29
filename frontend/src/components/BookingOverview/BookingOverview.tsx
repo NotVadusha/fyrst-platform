@@ -21,8 +21,6 @@ const BookingOverview = () => {
 
   const { avatar, avatars } = getBookingData(id!);
 
-  console.log(data);
-
   const numOfPeopleReceived = data?.users ? data.users.length : 0;
 
   const createdAt = useFormattedDate({ dateString: data?.createdAt, format: 'dash' });
