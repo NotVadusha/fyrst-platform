@@ -12,7 +12,9 @@ import {
   ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User profile endpoints')
 @Controller('profile')
 export class UserProfileController {
   constructor(private readonly profileService: UserProfileService) {}
