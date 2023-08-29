@@ -8,6 +8,7 @@ import {
   IsNumber,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { AllowNull } from 'sequelize-typescript';
 
 export class CreateUserDto {
   @IsString()
@@ -30,10 +31,13 @@ export class CreateUserDto {
   @IsOptional()
   city?: string;
 
-  @Transform(({ value }) => new Date(value))
-  @IsDate()
   @IsOptional()
-  birthdate?: Date;
+  @Transform(({ value }) => {
+    if (!value) return null;
+    return new Date(value);
+  })
+  @IsDate()
+  birthdate?: Date | null;
 
   @IsString()
   @IsOptional()

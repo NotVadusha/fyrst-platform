@@ -43,7 +43,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                 type={type}
                 className={`${inputVariants({ invalid: !!useFormField().error })} ${className}`}
                 disabled={disabled}
-                value={field.value || ''}
+                value={field.value ?? ''}
                 ref={ref}
                 {...props}
               />
