@@ -57,18 +57,9 @@ const Layout = () => {
           {siteConfig.mainNav.map((item, index) => (
             <NavItem key={index} item={item} />
           ))}
-          {!!user?.id ? (
-            <Button
-              variant='secondary'
-              className='w-full'
-              type='button'
-              onClick={handleButtonClick}
-            >
-              Logout
-            </Button>
-          ) : (
-            <Button onClick={() => navigate('/auth/signin')}>Sign in</Button>
-          )}
+          <Button variant='secondary' className='w-full' type='button' onClick={handleButtonClick}>
+            Logout
+          </Button>
         </div>
       </nav>
       <main className='w-full bg-background'>
