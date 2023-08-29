@@ -7,6 +7,16 @@ import { Form, FormControl, FormLabel, FormField, FormItem } from '../../compone
 import TextInput from '../../components/ui/common/TextInput/TextInput';
 import { userFiltersSchema } from 'src/lib/validations/user-filters';
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from 'src/components/ui/common/Select/Select';
+
 type FormValues = yup.InferType<typeof userFiltersSchema>;
 
 export function UserFiltersForm({
@@ -108,18 +118,18 @@ export function UserFiltersForm({
                   {/*@ts-ignore*/}
                   <FormLabel>Email Confirmed</FormLabel>
                   <FormControl>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
-                    <Dropdown
-                      placeholder='Email'
-                      ddType='in-form'
-                      control={form.control}
-                      options={[
-                        { label: 'true', value: 'true' },
-                        { label: 'false', value: 'true' },
-                      ]}
-                      {...field}
-                    />
+                     {/*@ts-ignore*/}
+                    <Select onValueChange={handleInputChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Email confirmed' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={'true'}>true</SelectItem>
+                        <SelectItem value={'false'}>false</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                 </FormItem>
               )}
@@ -140,7 +150,6 @@ export function UserFiltersForm({
                     <TextInput
                       control={form.control}
                       type='date'
-                      label='Birthdate'
                       required
                       {...field}
                       onChange={handleInputChange}

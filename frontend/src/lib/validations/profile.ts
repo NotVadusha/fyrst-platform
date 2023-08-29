@@ -25,6 +25,6 @@ export const profileSchema = y
           return false;
         },
       )
-      .required('Birthdate is required field'),
+      .optional(),
   })
   .required();
