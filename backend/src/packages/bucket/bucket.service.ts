@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { DownloadResponse, Storage } from '@google-cloud/storage';
-import { StorageFile } from './types';
 
 @Injectable()
 export class BucketService {
@@ -19,15 +18,9 @@ export class BucketService {
     this.bucket = process.env.BUCKET_NAME;
   }
 
-  async save(path: string, media: Buffer, metadata?: { [key: string]: string }[]) {
-    const object = metadata?.reduce((obj, item) => Object.assign(obj, item), {});
+  async save(path: string, media: Buffer) {
     const file = this.storage.bucket(this.bucket).file(path);
     const stream = file.createWriteStream();
-    stream.on('finish', async () => {
-      return await file.setMetadata({
-        metadata: object || {},
-      });
-    });
     stream.end(media);
     return await this.getFileLink(path, 'read', Date.now() + 1000 * 60 * 60);
   }
@@ -36,16 +29,13 @@ export class BucketService {
     await this.storage.bucket(this.bucket).file(path).delete({ ignoreNotFound: true });
   }
 
-  async get(path: string): Promise<StorageFile> {
+  async get(path: string): Promise<Buffer> {
     const fileResponse: DownloadResponse = await this.storage
       .bucket(this.bucket)
       .file(path)
       .download();
     const [buffer] = fileResponse;
-    const storageFile = new StorageFile();
-    storageFile.buffer = buffer;
-    storageFile.metadata = new Map<string, string>();
-    return storageFile;
+    return buffer;
   }
 
   async getFileLink(
