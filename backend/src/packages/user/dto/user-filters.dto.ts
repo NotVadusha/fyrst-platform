@@ -21,8 +21,8 @@ export class UserFiltersDto {
   city?: string;
 
   @IsOptional()
-  @IsBoolean()
-  is_confirmed?: boolean;
+  @IsString()
+  is_confirmed?: string;
 
   @IsOptional()
   @IsString()
