@@ -21,13 +21,13 @@ export function Pagination({ value, totalCount, siblingsCount, onChange }: Pagin
   if (value <= siblingsCount) {
     start = 1;
   } else if (totalCount - value <= siblingsCount) {
-    start = totalCount - siblingsCount * 2;
+    start = Math.max(totalCount - siblingsCount * 2, 1);
   } else {
     start = value - siblingsCount;
   }
 
   const visiblePages: number[] = [];
-  for (let i = start; i < Math.min(start + visibleCount, totalCount + 1); i++) {
+  for (let i = Math.max(start, 1); i < Math.min(start + visibleCount, totalCount + 1); i++) {
     visiblePages.push(i);
   }
 

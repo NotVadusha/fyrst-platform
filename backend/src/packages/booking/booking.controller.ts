@@ -15,7 +15,7 @@ import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FilterBookingDto } from './dto/filter-booking.dto';
 
-@ApiTags('booking')
+@ApiTags('Booking endpoints')
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
@@ -28,6 +28,14 @@ export class BookingController {
   @Get()
   async getAllBookings() {
     return this.bookingService.findAll();
+  }
+
+  @Post(':id/addUser/:userId')
+  async addUserToBooking(
+    @Param('id', ParseIntPipe) bookingId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.bookingService.addUserToBooking(bookingId, userId);
   }
 
   @Get('get-by')

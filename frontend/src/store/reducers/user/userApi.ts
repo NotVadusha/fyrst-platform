@@ -84,6 +84,7 @@ export const {
   useAddUserMutation,
   useGetUserProfileMutation,
   useLazyGetUsersQuery,
+  useLazyGetUserQuery,
   useUpdateUserMutation,
   useUpdateUserProfileMutation,
 } = userApi;

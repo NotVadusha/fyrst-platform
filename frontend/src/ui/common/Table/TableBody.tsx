@@ -31,6 +31,10 @@ export function TableBody<T>({
     });
   }
 
+  if (!items.length) {
+    return <tr>No results.</tr>;
+  }
+
   const bodyRows = items.map(item => (
     <tr className='' key={getRowId(item)}>
       {getRowCells(item)}

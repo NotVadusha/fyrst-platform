@@ -35,6 +35,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   }).format(new Date(booking.createdAt));
   const startDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.startDate));
   const endDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.endDate));
+  const fullNames = booking.users.map(user => `${user.first_name} ${user.last_name}`).join(', ');
 
   return (
     <Card className='px-4 py-4'>
@@ -50,7 +51,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>
           {booking.facility.name}
         </h5>
-        <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by by Wade Warren</p>
+        <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by {fullNames}</p>
         <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
       </div>
       <div className='flex justify-between mb-4'>

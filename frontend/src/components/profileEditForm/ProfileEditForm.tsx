@@ -1,25 +1,21 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
+import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as y from 'yup';
-import { Button } from 'src/ui/common/Button';
+import jwtDecode from 'jwt-decode';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
-import { AvatarUploader } from './AvatarUploader';
-import CustomPhoneInput from './CustomPhoneInput';
-import {
-  useGetUserQuery,
-  useUpdateUserMutation,
-  useUpdateUserProfileMutation,
-} from 'src/store/reducers/user/userApi';
-import CityInput from './CityInput';
-import DateInput from './DateInput';
-import { Controller } from 'react-hook-form';
+import { useUpdateUserMutation } from 'src/store/reducers/user/userApi';
+import { Button } from 'src/ui/common/Button';
 import { User } from 'types';
 import { DecodedUser } from 'types/models/User';
-import jwtDecode from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import * as y from 'yup';
+import { AvatarUploader } from './AvatarUploader';
+import CityInput from './CityInput';
+import CustomPhoneInput from './CustomPhoneInput';
+import DateInput from './DateInput';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
@@ -28,6 +24,7 @@ export function ProfileEditForm() {
   const [user, setUser] = useState<User>();
 
   const token = localStorage.getItem('accessToken');
+  // eslint-disable-next-line
   // @ts-ignore
   const decode: DecodedUser = jwtDecode(token);
   const userId = decode.id;
@@ -51,6 +48,7 @@ export function ProfileEditForm() {
 
   const onSubmit = async (valuesFromForm: Inputs) => {
     const response = await updateUser({
+      // eslint-disable-next-line
       // @ts-ignore
       id: user.id,
       user: {
@@ -68,6 +66,7 @@ export function ProfileEditForm() {
     setAvatarEditorShown(true);
   };
   const form = useForm<Inputs>({
+    // eslint-disable-next-line
     // @ts-ignore
     resolver: yupResolver(profileSchema),
     defaultValues: {

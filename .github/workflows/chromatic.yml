@@ -1,0 +1,19 @@
+name: 'Chromatic - Public'
+
+on: pull_request
+
+jobs:
+  chromatic-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: npm install
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          workingDir: frontend
+          projectToken: chpt_364654258a5148b
