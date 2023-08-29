@@ -12,10 +12,10 @@ module.exports = {
         last_name: faker.person.lastName(),
         email: faker.internet.email(),
         city: faker.location.city(),
-        birthdate: new Date(),
+        birthdate: faker.date.birthdate(),
         password: faker.internet.password(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: faker.date.past(),
+        updatedAt: faker.date.past(),
         role_id: 1,
       });
     }
