@@ -14,7 +14,7 @@ const LIMIT = 6;
 const BookingPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-
+  console.log(currentPage);
   const filters: BookingFiltersDto = {
     facilityId: searchParams.get('facility'),
     endDate: searchParams.get('endDate'),
@@ -30,6 +30,8 @@ const BookingPage = () => {
   });
 
   const { data, isFetching } = useGetAllBookingsQuery(filters);
+
+  console.log(data);
 
   let totalPages = 0;
   if (data) totalPages = Math.ceil(data.total / LIMIT);
@@ -86,7 +88,7 @@ const BookingPage = () => {
                     return prevParams;
                   });
                 }}
-                siblingsCount={2}
+                siblingsCount={1}
               ></Pagination>
             </div>
           </div>

@@ -75,6 +75,9 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
 
   @BelongsTo(() => Facility, 'facilityId')
   facility: Facility;
+
+  @Column
+  employersName: string;
 }
 
 export { Booking };
