@@ -23,10 +23,8 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('user-join-chat')
-  handleJoinChat(client: Socket, @MessageBody() data: { chatId: string }) {
-    console.log(client, data);  
-  
-    // client.join(data.chatId);
+  handleJoinChat(client: Socket, data: { chatId: string }) {
+    client.join(data.chatId);
   }
 
   handleDisconnect(client: Socket) {

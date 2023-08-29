@@ -6,12 +6,11 @@ import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 const Messanger: React.FC = () => {
   return (
     <>
-      <div className='flex justify-center mt-8 max-w-[1100px] ml-8'>
+      <div className='flex justify-center mt-8 max-w-[1100px] ml-8 mx-8'>
         <div className='w-full h-full bg-white shadow-md rounded-2xl'>
-          <div className='flex gap-4 p-6'>
-            <ScrollArea className='h-[400px] w-full max-w-[400px]'>
-              <Conversations />
-            </ScrollArea>
+          <div className='flex flex-col xl:flex-row gap-2 xl:gap-4 p-6'>
+            <Conversations />
+            <hr className='border-b border-grey' />
             <Outlet />
           </div>
         </div>

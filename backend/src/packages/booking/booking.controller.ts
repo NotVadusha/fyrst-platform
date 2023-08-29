@@ -30,6 +30,14 @@ export class BookingController {
     return this.bookingService.findAll();
   }
 
+  @Post(':id/addUser/:userId')
+  async addUserToBooking(
+    @Param('id', ParseIntPipe) bookingId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.bookingService.addUserToBooking(bookingId, userId);
+  }
+
   @Get('get-by')
   async getAllFiltered(@Query() filters?: FilterBookingDto) {
     try {
