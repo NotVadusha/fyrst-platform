@@ -87,7 +87,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       description: data?.message ?? 'Please, try again later.',
     });
 
-    throw new Error("Something went wrong");
+    throw new Error('Something went wrong');
   }
 
   return result;

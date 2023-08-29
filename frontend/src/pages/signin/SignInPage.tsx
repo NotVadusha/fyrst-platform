@@ -15,6 +15,7 @@ import jwtDecode from 'jwt-decode';
 import { JwtPayload } from 'types';
 import { useAppDispatch } from 'src/hooks/redux';
 import { setUser } from 'src/store/reducers/user.store';
+import { toast } from 'src/components/ui/common/Toast/useToast';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;
 
@@ -59,6 +60,8 @@ const SignInPage = () => {
       localStorage.setItem('refreshToken', data.refreshToken);
 
       dispatch(setUser(data.userInfo));
+
+      toast({ title: 'Successfully signed in' });
 
       navigate('/');
     }

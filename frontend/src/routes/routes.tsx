@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import BookingPage from '../pages/bookings/ListBookingPage/BookingPage';
 import TimeCardPage from '../pages/timecards/main/TimeCard';
 import ProfilePage from '../pages/profiles/ProfilePage';
@@ -26,7 +26,7 @@ import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
 import { ChatPage } from 'src/pages/messanger/common/chat/Chat';
-import { useStore } from 'react-redux';
+import { LoginPrivateRoute } from './loginPrivateRoute';
 import { useGetChatByIdQuery } from 'src/store/reducers/chat/chatApi';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
@@ -36,9 +36,11 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',
-        element: <Layout />,
-
+        element: (
+          <LoginPrivateRoute>
+            <Layout />
+          </LoginPrivateRoute>
+        ),
         children: [
           {
             path: 'booking',
@@ -152,6 +154,11 @@ export const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: '*',
+            index: true,
+            element: <Navigate to='/booking' replace />,
+          },
         ],
       },
       {
@@ -159,7 +166,6 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
           {
-            index: true,
             path: 'signin',
             element: <SignInPage />,
           },
@@ -182,6 +188,11 @@ export const router = createBrowserRouter([
           {
             path: 'google-success',
             element: <SuccessGoogleAuthPage />,
+          },
+          {
+            path: '*',
+            index: true,
+            element: <Navigate to='/auth/signup' replace />,
           },
         ],
       },

@@ -18,7 +18,6 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUser(state, action: PayloadAction<Partial<User> | undefined>) {
-      console.log(action.payload);
       state.id = action.payload?.id;
       state.first_name = action.payload?.first_name;
       state.last_name = action.payload?.last_name;
@@ -28,8 +27,18 @@ const userSlice = createSlice({
       state.email = action.payload?.email;
       state.role_id = action.payload?.role_id;
     },
+    clearUser(state) {
+      state.id = undefined;
+      state.first_name = undefined;
+      state.last_name = undefined;
+      state.city = undefined;
+      state.phone_number = undefined;
+      state.birthdate = undefined;
+      state.email = undefined;
+      state.role_id = undefined;
+    },
   },
 });
 
 export default userSlice.reducer;
-export const { setUser } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;

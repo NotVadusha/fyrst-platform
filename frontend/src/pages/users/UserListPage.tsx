@@ -96,6 +96,8 @@ export function UserListPage() {
 
       return prevParams;
     });
+
+    setCurrentPage(1)
   }
 
   function handleExport() {
@@ -127,8 +129,10 @@ export function UserListPage() {
       header: true,
       complete: result => {
         console.log(result.data);
-        // addUsers(result.data as User[]);
-        navigate(0);
+        addUsers(result.data as User[])
+          .unwrap()
+          .then(() => navigate(0))
+          .catch(err => console.log(err));
       },
     });
   }
