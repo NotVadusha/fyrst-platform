@@ -34,7 +34,6 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',
         element: (
           <LoginPrivateRoute>
             <Layout />
@@ -143,7 +142,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: '/*',
+            path: '*',
             index: true,
             element: <Navigate to='/booking' replace />,
           },
