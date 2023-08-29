@@ -31,6 +31,7 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ control, name, label, type, disabled, className, ...props }, ref) => {
+    const { onChange: onChangeProp } = props;
     return (
       <FormField
         control={control}
@@ -39,11 +40,14 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
           <FormItem className={styles.wrapper}>
             <FormControl>
               <input
-                {...field}
                 type={type}
                 className={`${inputVariants({ invalid: !!useFormField().error })} ${className}`}
                 disabled={disabled}
-                value={field.value ?? ''}
+                {...field}
+                onChange={e => {
+                  onChangeProp?.(e);
+                  field.onChange(e.target.value);
+                }}
                 ref={ref}
                 {...props}
               />
