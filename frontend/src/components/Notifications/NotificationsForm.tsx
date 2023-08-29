@@ -47,14 +47,13 @@ const NotificationsForm = () => {
   }, [values, config]);
 
   const onSubmit = (values: NotificationConfig) => {
-  setConfig(values);
-  toast({
-    variant: 'default',
-    title: 'Success',
-    description: 'Your notification settings have been successfully updated.',
-  });
-  }
-
+    setConfig(values);
+    toast({
+      variant: 'default',
+      title: 'Success',
+      description: 'Your notification settings have been successfully updated.',
+    });
+  };
 
   return (
     <div>
