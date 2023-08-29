@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../../ui/common/Button';
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem } from '../ui/common/Form';
+import { Form } from '../ui/common/Form';
 import styles from './Notifications.module.css';
 import Checkbox from '../ui/common/Checkbox/Checkbox';
 import { useToast } from '../ui/common/Toast/useToast';
