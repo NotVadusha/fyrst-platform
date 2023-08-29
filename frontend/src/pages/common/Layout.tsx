@@ -57,12 +57,7 @@ const Layout = () => {
           {siteConfig.mainNav.map((item, index) => (
             <NavItem key={index} item={item} />
           ))}
-          <Button
-            variant='secondary'
-            className='w-full'
-            type='button'
-            onClick={handleButtonClick}
-          >
+          <Button variant='secondary' className='w-full' type='button' onClick={handleButtonClick}>
             Logout
           </Button>
         </div>
