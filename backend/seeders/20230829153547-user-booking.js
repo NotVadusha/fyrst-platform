@@ -9,8 +9,8 @@ module.exports = {
 
     // Arrow function to generate a unique booking object
     const generateUniqueBooking = () => {
-      const user_id = faker.number.int({ max: 20, min: 1 });
-      const booking_id = faker.number.int({ max: 20, min: 1 });
+      const user_id = faker.number.int({ max: 19, min: 1 });
+      const booking_id = faker.number.int({ max: 19, min: 1 });
 
       // Check if the combination of user_id and booking_id already exists
       const isDuplicate = userBooking.some(
