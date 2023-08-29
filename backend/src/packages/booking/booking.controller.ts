@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Query,
   InternalServerErrorException,
+  HttpCode,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
@@ -32,10 +33,10 @@ export class BookingController {
 
   @Post(':id/addUser/:userId')
   async addUserToBooking(
-    @Param('id', ParseIntPipe) bookingId: number,
-    @Param('userId', ParseIntPipe) userId: number,
+  @Param('id', ParseIntPipe) bookingId: number,
+  @Param('userId', ParseIntPipe) userId: number
   ) {
-    return this.bookingService.addUserToBooking(bookingId, userId);
+  return this.bookingService.addUserToBooking(bookingId, userId);
   }
 
   @Get('get-by')

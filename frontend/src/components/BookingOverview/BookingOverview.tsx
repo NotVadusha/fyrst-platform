@@ -20,12 +20,14 @@ const BookingOverview = () => {
   const { data, isLoading, isError } = useGetBookingByIdQuery(id);
 
   const {
-    numOfPeopleReceived,
     avatar,
     avatars,
   } = getBookingData(id!);
 
     console.log(data);
+
+  const numOfPeopleReceived = data?.users ? data.users.length : 0;
+
   const createdAt = useFormattedDate({ dateString: data?.createdAt, format: 'dash' });
   const startDate = useFormattedDate({ dateString: data?.startDate, format: 'dot' });
   const endDate = useFormattedDate({ dateString: data?.endDate, format: 'dot' });
@@ -49,7 +51,7 @@ const BookingOverview = () => {
         <GoBackButton path='/booking' className='text-dark-grey'>
           All bookings
         </GoBackButton>
-            <BookingHeader facility={data.facility.name} />
+            <BookingHeader facility={data.facility.name} bookingId={data.id} users={data.users}/>
             <div className={styles.bookingBody}>
               <BookingDescription description={data.notes} />
               <div className={styles.detailsAndStatusContainer}>
