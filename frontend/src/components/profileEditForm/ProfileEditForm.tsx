@@ -82,7 +82,7 @@ export function ProfileEditForm() {
   });
 
   useEffect(() => {
-    form.reset({...user, birthdate: user?.birthdate ?? undefined});
+    form.reset({ ...user, birthdate: user?.birthdate ?? undefined });
   }, [user]);
 
   return (
