@@ -17,16 +17,7 @@ export interface PhoneInputProps extends React.InputHTMLAttributes<HTMLInputElem
   isFocused?: boolean;
 }
 
-const CustomPhoneInput: React.FC<PhoneInputProps> = ({
-  control,
-  name,
-  label,
-  type,
-  disabled,
-  onFocus,
-  onBlur,
-  className,
-}) => {
+const CustomPhoneInput: React.FC<PhoneInputProps> = ({ control, name, label, disabled }) => {
   const formField = useFormField().invalid ? styles.invalid : '';
   return (
     <FormField

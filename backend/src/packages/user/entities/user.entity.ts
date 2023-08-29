@@ -1,4 +1,13 @@
-import { Column, Model, Table, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  BelongsToMany,
+} from 'sequelize-typescript';
+import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 
 @Table({ tableName: 'Users' })
@@ -66,4 +75,7 @@ export class User extends Model {
     allowNull: false,
   })
   role_id: number;
+
+  @BelongsToMany(() => Booking, 'user_bookings', 'user_id', 'booking_id')
+  bookings: Booking[];
 }

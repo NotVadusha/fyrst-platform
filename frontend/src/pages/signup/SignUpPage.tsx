@@ -11,6 +11,7 @@ import { Button } from 'src/ui/common/Button';
 import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
 import { authApi } from 'src/store/reducers/user/authApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'src/components/ui/common/Toast/useToast';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
 
@@ -42,7 +43,13 @@ const SignUpPage = () => {
 
     registration(body)
       .unwrap()
-      .then(() => navigate('/auth/signin'))
+      .then(() => {
+        toast({
+          title: 'Successfully signed up',
+          description: 'Check your email for further instructions.',
+        });
+        navigate('/auth/signin');
+      })
       .catch(() => console.log(error));
   };
 

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "prepare": "husky install",
     "init:backend": "cd backend && npm install",
     "link-shared:backend": "cd backend && npm link shared",
     "init:frontend": "cd frontend && npm install",
@@ -16,7 +17,8 @@
     "start": "docker compose --env-file=.env.dev up -d",
     "start:build": "docker compose --env-file=.env.dev up --build -d",
     "stop": "docker compose --env-file=.env.dev down",
-    "test": "npm run test --prefix backend && npm run test:all --prefix frontend"
+    "test": "npm run test --prefix backend && npm run test:all --prefix frontend",
+    "lint:format": "npm run lint:format --prefix backend && npm run lint:format --prefix frontend"
   },
   "husky": {
     "hooks": {
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
+    "chromatic": "^6.24.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",

@@ -7,6 +7,7 @@ import { FacilityService } from '../facility/facility.service';
 import { FilterBookingDto } from './dto/filter-booking.dto';
 import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
+import { Facility } from '../facility/entities/facility.entity';
 
 @Injectable()
 export class BookingService {
@@ -61,12 +62,13 @@ export class BookingService {
       ...(status && { status: status }),
       ...(facilityId && { facilityId: facilityId }),
     };
-
+    console.log('Here', offset);
     const bookings = await this.bookingRepository.findAll({
+      order: [['id', 'ASC']],
       where: where,
       limit: limit,
       offset: offset,
-      include: User,
+      include: [{ model: User, as: 'users' }, { model: Facility }],
     });
     const total = await this.bookingRepository.count();
     return { bookings, total };
@@ -89,6 +91,15 @@ export class BookingService {
   async delete(id: number) {
     const booking = await this.find(id);
     await booking.destroy();
+  }
+
+  async addUserToBooking(bookingId: number, userId: number): Promise<void> {
+    const booking = await this.find(bookingId);
+    await this.validateUserExists(userId);
+
+    await booking.$add('users', userId);
+
+    this.logger.log(`Added user with ID ${userId} to booking with ID ${bookingId}`);
   }
 
   private async validateUserExists(userId: number) {

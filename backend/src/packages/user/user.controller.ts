@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { UserFiltersDto } from './dto/user-filters.dto';
 
-@ApiTags('user')
+@ApiTags('User endpoints')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -51,7 +51,7 @@ export class UserController {
         city: query.city,
         email: query.email,
         first_name: query.first_name,
-        is_confirmed: query.is_confirmed,
+        is_confirmed: query.is_confirmed ? JSON.parse(query.is_confirmed) : query.is_confirmed,
         last_name: query.last_name,
       },
     });

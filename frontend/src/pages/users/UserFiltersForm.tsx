@@ -1,11 +1,18 @@
-import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
-import * as yup from 'yup';
-import { Form, FormControl, FormLabel, FormField, FormItem } from '../../components/ui/common/Form';
-import TextInput from '../../components/ui/common/TextInput/TextInput';
 import { userFiltersSchema } from 'src/lib/validations/user-filters';
+import * as yup from 'yup';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '../../components/ui/common/Form';
+import TextInput from '../../components/ui/common/TextInput/TextInput';
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from 'src/components/ui/common/Select/Select';
 
 type FormValues = yup.InferType<typeof userFiltersSchema>;
 
@@ -110,16 +117,17 @@ export function UserFiltersForm({
                   <FormControl>
                     {/*eslint-disable-next-line */}
                     {/*@ts-ignore*/}
-                    <Dropdown
-                      placeholder='Email'
-                      ddType='in-form'
-                      control={form.control}
-                      options={[
-                        { label: 'true', value: 'true' },
-                        { label: 'false', value: 'true' },
-                      ]}
-                      {...field}
-                    />
+                    <Select onValueChange={handleInputChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Email confirmed' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={'true'}>true</SelectItem>
+                        <SelectItem value={'false'}>false</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                 </FormItem>
               )}
@@ -140,7 +148,6 @@ export function UserFiltersForm({
                     <TextInput
                       control={form.control}
                       type='date'
-                      label='Birthdate'
                       required
                       {...field}
                       onChange={handleInputChange}

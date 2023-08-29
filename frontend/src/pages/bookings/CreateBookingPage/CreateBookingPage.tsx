@@ -3,9 +3,17 @@ import React from 'react';
 import { Card } from 'src/components/ui/common/Card';
 import { GoBackButton } from 'src/components/ui/common/GoBackButton';
 import { Header } from 'src/components/ui/layout/Header/Header';
-import { CreateBookingForm } from './CreateBookingForm';
+import { CreateBookingForm, Inputs } from './CreateBookingForm';
+import { useCreateBookingMutation } from 'src/store/reducers/bookings/bookingApi';
+import { useNavigate } from 'react-router-dom';
 
 export const CreateBookingPage = () => {
+  const [createBooking] = useCreateBookingMutation();
+  const navigate = useNavigate();
+  function handleSubmit(values: Inputs) {
+    createBooking(values);
+    navigate('/booking');
+  }
   return (
     <>
       <Header title='Create booking' />
@@ -15,8 +23,8 @@ export const CreateBookingPage = () => {
             All bookings
           </GoBackButton>
           <h2 className='text-4xl font-bold'>Create booking</h2>
-          <Card className='max-w-[640px]'>
-            <CreateBookingForm />
+          <Card className='lg:w-[640px] md:max-w-full mx-auto'>
+            <CreateBookingForm handleSubmit={handleSubmit} />
           </Card>
         </div>
       </div>

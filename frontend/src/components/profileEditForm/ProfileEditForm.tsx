@@ -1,35 +1,30 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
+import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as y from 'yup';
-import { Button } from 'src/ui/common/Button';
+import jwtDecode from 'jwt-decode';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { profileSchema } from 'src/lib/validations/profile';
-import { AvatarUploader } from './AvatarUploader';
-import CustomPhoneInput from './CustomPhoneInput';
-import {
-  useGetUserQuery,
-  useUpdateUserMutation,
-  useUpdateUserProfileMutation,
-} from 'src/store/reducers/user/userApi';
-import CityInput from './CityInput';
-import DateInput from './DateInput';
-import { Controller } from 'react-hook-form';
+import { useUpdateUserMutation } from 'src/store/reducers/user/userApi';
+import { Button } from 'src/ui/common/Button';
 import { User } from 'types';
-import { useStore } from 'react-redux';
 import { DecodedUser } from 'types/models/User';
-import jwtDecode from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import * as y from 'yup';
+import { AvatarUploader } from './AvatarUploader';
+import CityInput from './CityInput';
+import CustomPhoneInput from './CustomPhoneInput';
+import DateInput from './DateInput';
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const navigator = useNavigate();
-  const [user, setUser] = useState();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User>();
 
   const token = localStorage.getItem('accessToken');
-  if (!token) navigator('/auth/signin');
+  // eslint-disable-next-line
   // @ts-ignore
   const decode: DecodedUser = jwtDecode(token);
   const userId = decode.id;
@@ -38,39 +33,55 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
+      if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
     };
 
     userFetch(userId);
   }, []);
 
-  console.log(user);
-
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
   const [avatarImage, setAvatarImage] = useState('');
   const [city, setCity] = useState('');
   const [updateUser] = useUpdateUserMutation();
-  const store = useStore();
 
   const onSubmit = async (valuesFromForm: Inputs) => {
-    // @ts-ignore
-    const response = await updateUser({ id: user.id, user: { ...valuesFromForm } });
+    const response = await updateUser({
+      // eslint-disable-next-line
+      // @ts-ignore
+      id: user.id,
+      user: {
+        first_name: valuesFromForm?.first_name,
+        last_name: valuesFromForm?.last_name,
+        phone_number: valuesFromForm?.phone_number,
+        email: valuesFromForm?.email,
+        city: valuesFromForm?.city,
+        birthdate: valuesFromForm?.birthdate,
+      },
+    });
   };
 
   const openAvatarEditor = () => {
     setAvatarEditorShown(true);
   };
   const form = useForm<Inputs>({
+    // eslint-disable-next-line
     // @ts-ignore
     resolver: yupResolver(profileSchema),
-    defaultValues: useMemo(() => {
-      return user;
-    }, [user]),
+    defaultValues: {
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      phone_number: user?.phone_number,
+      email: user?.email,
+      city: user?.city,
+      birthdate: user?.birthdate ?? undefined,
+    },
+    shouldFocusError: false,
   });
 
   useEffect(() => {
-    form.reset(user);
+    form.reset({ ...user, birthdate: user?.birthdate ?? undefined });
   }, [user]);
 
   return (

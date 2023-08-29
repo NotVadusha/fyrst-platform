@@ -55,7 +55,7 @@ export const AvatarUploader = ({
   if (!isShown) return <></>;
   return (
     <div
-      className='absolute w-full h-max py-8
+      className='absolute w-full h-max py-8 2xl:h-full
        bg-grey/50 left-0 top-0'
       onClick={() => setShown(false)}
     >

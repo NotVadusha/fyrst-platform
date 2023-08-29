@@ -20,4 +20,6 @@ export interface Booking {
   facility: Facility;
   startDate: Date;
   endDate: Date;
+  employersName: string;
+  users: User[];
 }

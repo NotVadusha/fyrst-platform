@@ -6,14 +6,14 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const facilities = [];
 
-    for (let i = 1; i < 4; i++) {
+    for (let i = 1; i < 20; i++) {
       facilities.push({
         logo: 'logo.png',
         name: faker.company.name(),
         city: faker.location.city(),
         address: faker.location.streetAddress(),
-        description: faker.lorem.words(10),
-        createdAt: new Date(),
+        description: faker.lorem.paragraphs(3),
+        createdAt: faker.date.past(),
       });
     }
 

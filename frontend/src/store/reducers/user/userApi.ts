@@ -53,10 +53,7 @@ export const userApi = apiSlice.injectEndpoints({
         return `/user/${id}`;
       },
     }),
-    updateUser: build.mutation<
-      UserDefaultResponse,
-      { id: UserDefaultResponse['id']; user: UpdateUserBody }
-    >({
+    updateUser: build.mutation<UserDefaultResponse, { id: number; user: UpdateUserBody }>({
       query: args => ({
         url: `/user/${args.id}`,
         method: 'PATCH',
@@ -87,6 +84,7 @@ export const {
   useAddUserMutation,
   useGetUserProfileMutation,
   useLazyGetUsersQuery,
+  useLazyGetUserQuery,
   useUpdateUserMutation,
   useUpdateUserProfileMutation,
 } = userApi;

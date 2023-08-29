@@ -9,6 +9,7 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
 import { Facility } from 'src/packages/facility/entities/facility.entity';
@@ -47,7 +48,7 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   @Column
   age: number;
 
-  @Column
+  @Column(DataType.TEXT)
   education: string;
 
   @Column
@@ -60,7 +61,7 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   pricePerHour: number;
 
   @AllowNull
-  @Column
+  @Column(DataType.TEXT)
   notes: string;
 
   @Column
@@ -75,6 +76,12 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
 
   @BelongsTo(() => Facility, 'facilityId')
   facility: Facility;
+
+  @Column
+  employersName: string;
+
+  @BelongsToMany(() => User, 'user_bookings', 'booking_id', 'user_id')
+  users: User[];
 }
 
 export { Booking };

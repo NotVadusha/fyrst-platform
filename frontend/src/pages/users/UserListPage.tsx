@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
@@ -21,13 +21,17 @@ export function UserListPage() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setSearchParams('');
+  }, []);
+
   const filters: UserFilters = {
     first_name: searchParams.get('name')?.split(' ')[0] ?? null,
     last_name: searchParams.get('name')?.split(' ')[1] ?? null,
     email: searchParams.get('email'),
     phone: searchParams.get('phone'),
     city: searchParams.get('city'),
-    emailConfirmed: searchParams.get('emailConfirmed'),
+    is_confirmed: searchParams.get('emailConfirmed'),
     birthdate: searchParams.get('birthDate'),
   };
 
@@ -70,16 +74,27 @@ export function UserListPage() {
 
   const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
+    console.log(e);
     setSearchParams(prevParams => {
-      if (e.target.value === '') {
-        prevParams.delete(e.target.name);
+      if (typeof e === 'string') {
+        if (e === '') {
+          prevParams.delete(e);
+        } else {
+          prevParams.set('emailConfirmed', e);
+        }
       } else {
-        prevParams.set(e.target.name, e.target.value);
+        if (e.target.value === '') {
+          prevParams.delete(e.target.name);
+        } else {
+          prevParams.set(e.target.name, e.target.value);
+        }
       }
 
       return prevParams;
     });
+
+    setCurrentPage(1);
   }
 
   function handleExport() {
@@ -111,8 +126,10 @@ export function UserListPage() {
       header: true,
       complete: result => {
         console.log(result.data);
-        // addUsers(result.data as User[]);
-        navigate(0);
+        addUsers(result.data as User[])
+          .unwrap()
+          .then(() => navigate(0))
+          .catch(err => console.log(err));
       },
     });
   }

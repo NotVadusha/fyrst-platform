@@ -17,11 +17,7 @@ export function UserActions({ user }: { user: User }) {
       >
         <Settings className='w-8 h-8 text-dark-grey' />
       </Button>
-      <Modal
-        open={open}
-        onOpenChange={setIsOpen}
-        title={`${user.first_name} ${user.last_name}`}
-      >
+      <Modal open={open} onOpenChange={setIsOpen} title={`${user.first_name} ${user.last_name}`}>
         <EditUserForm user={user} />
       </Modal>
     </div>
