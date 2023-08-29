@@ -14,17 +14,31 @@ const StatusCard: FC<StatusCardProps> = ({ applicantsCount = 0, avatars = [] }) 
         {applicantsCount > 0 ? (
           <>
             <div className={styles.statusRepives}>
-              This job has already received {applicantsCount} applicants
+              This job has already received {applicantsCount} applicant
+              {applicantsCount > 1 ? 's' : ''}
             </div>
             <div className={styles.icons}>
-              {avatars.slice(0, 5).map((avatar, index) => (
-                <img
-                  key={index}
-                  className={styles.logo}
-                  src={avatar}
-                  alt={`Applicant Logo ${index + 1}`}
-                />
-              ))}
+              {applicantsCount <= 5
+                ? avatars
+                    .slice(0, applicantsCount)
+                    .map((avatar, index) => (
+                      <img
+                        key={index}
+                        className={styles.logo}
+                        src={avatar}
+                        alt={`Applicant Logo ${index + 1}`}
+                      />
+                    ))
+                : avatars
+                    .slice(0, 5)
+                    .map((avatar, index) => (
+                      <img
+                        key={index}
+                        className={styles.logo}
+                        src={avatar}
+                        alt={`Applicant Logo ${index + 1}`}
+                      />
+                    ))}
               {applicantsCount > 5 && (
                 <div className={styles.moreApplicants}>+{applicantsCount - 5}</div>
               )}

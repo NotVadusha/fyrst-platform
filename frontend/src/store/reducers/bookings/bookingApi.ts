@@ -33,6 +33,15 @@ export const bookingApi = apiSlice.injectEndpoints({
         body: fields,
       }),
     }),
+    addUserToBooking: builder.mutation({
+      query({ bookingId, userId }) {
+        return {
+          url: `booking/${bookingId}/addUser/${userId}`,
+          method: 'POST',
+        };
+      },
+      invalidatesTags: ['Bookings'],
+    }),
     deleteBooking: builder.mutation({
       query: id => ({
         url: `booking/${id}`,
@@ -47,5 +56,6 @@ export const {
   useGetBookingByIdQuery,
   useCreateBookingMutation,
   useUpdateBookingMutation,
+  useAddUserToBookingMutation,
   useDeleteBookingMutation,
 } = bookingApi;

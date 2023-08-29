@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Booking } from './entities/booking.entity';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
@@ -38,7 +38,15 @@ export class BookingService {
   }
 
   async find(id: number) {
-    const booking = await this.bookingRepository.findByPk(id);
+    const booking = await this.bookingRepository.findByPk(id, {
+      include: [
+        Facility,
+        {
+          model: User,
+          as: 'users',
+        },
+      ],
+    });
 
     if (!booking) {
       throw new NotFoundException('Booking not found');
@@ -93,13 +101,19 @@ export class BookingService {
     await booking.destroy();
   }
 
-  async addUserToBooking(bookingId: number, userId: number): Promise<void> {
+  async addUserToBooking(bookingId: number, userId: number): Promise<any> {
     const booking = await this.find(bookingId);
     await this.validateUserExists(userId);
 
-    await booking.$add('users', userId);
+    if (booking.users && booking.users.some(user => user.id === userId)) {
+      throw new BadRequestException('User already added to this booking');
+    }
 
+    await booking.$add('users', userId);
+    const updatedBooking = await this.find(bookingId);
     this.logger.log(`Added user with ID ${userId} to booking with ID ${bookingId}`);
+
+    return { message: 'User successfully added to booking!', booking: updatedBooking };
   }
 
   private async validateUserExists(userId: number) {
