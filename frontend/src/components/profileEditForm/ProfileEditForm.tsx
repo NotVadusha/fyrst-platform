@@ -17,7 +17,6 @@ import CityInput from './CityInput';
 import DateInput from './DateInput';
 import { Controller } from 'react-hook-form';
 import { User } from 'types';
-import { useStore } from 'react-redux';
 import { DecodedUser } from 'types/models/User';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
