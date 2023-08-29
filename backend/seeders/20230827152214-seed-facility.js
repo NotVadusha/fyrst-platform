@@ -13,7 +13,7 @@ module.exports = {
         city: faker.location.city(),
         address: faker.location.streetAddress(),
         description: faker.lorem.paragraphs(3),
-        createdAt: new Date(),
+        createdAt: faker.date.past(),
       });
     }
 

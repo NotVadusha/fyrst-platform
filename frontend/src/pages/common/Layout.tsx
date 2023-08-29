@@ -1,12 +1,34 @@
 import * as React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { siteConfig } from 'src/config/site';
 import { ReactComponent as ArrowDown } from '../../icons/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '../../icons/arrow-up.svg';
 import { NavItem as INavItem } from 'types';
 import { Toaster } from 'src/components/ui/common/Toast/Toaster';
+import { Button } from 'src/ui/common/Button';
+import { authApi } from 'src/store/reducers/user/authApi';
+import { clearUser } from 'src/store/reducers/user.store';
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 
 const Layout = () => {
+  const [logout] = authApi.useLogoutMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleButtonClick = async () => {
+    try {
+      await logout().unwrap();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      dispatch(clearUser());
+      navigate('/auth/signin');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const user = useAppSelector(store => store.user);
+
   return (
     <div className='flex'>
       <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[280px]'>
@@ -15,6 +37,18 @@ const Layout = () => {
           {siteConfig.mainNav.map((item, index) => (
             <NavItem key={index} item={item} />
           ))}
+          {!!user?.id ? (
+            <Button
+              variant='secondary'
+              className='w-full'
+              type='button'
+              onClick={handleButtonClick}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button onClick={() => navigate('/auth/signin')}>Sign in</Button>
+          )}
         </div>
       </nav>
       <main className='w-full bg-background'>
@@ -32,6 +66,7 @@ function NavItem({ item }: { item: INavItem }) {
   const isCurrentPath = location.pathname.includes(item.path);
 
   React.useEffect(() => {
+    if (isCurrentPath && isOpen) return;
     setIsOpen(false);
   }, [isCurrentPath]);
 
@@ -47,10 +82,13 @@ function NavItem({ item }: { item: INavItem }) {
           {Icon && <Icon className={`${isCurrentPath && 'text-white'}`} title='asd' />}
           <span className={`${isCurrentPath && 'text-white'}`}>{item.title}</span>
         </div>
-        {isCurrentPath && item.items?.length ? (
+        {item.items?.length ? (
           <button
             className='flex items-center p-0 h-auto'
-            onClick={() => {
+            onClick={(e) => {
+              if (!isCurrentPath) {
+                return setIsOpen(true)
+              }
               setIsOpen(prev => !prev);
             }}
           >
