@@ -4,11 +4,14 @@ import { siteConfig } from 'src/config/site';
 import { ReactComponent as ArrowDown } from '../../icons/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '../../icons/arrow-up.svg';
 import { NavItem as INavItem } from 'types';
-import { Toaster } from 'src/components/ui/common/Toast/Toaster';
 import { Button } from 'src/ui/common/Button';
 import { authApi } from 'src/store/reducers/user/authApi';
-import { clearUser } from 'src/store/reducers/user.store';
+import { clearUser, setUser } from 'src/store/reducers/user.store';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
+import { DecodedUser } from 'types/models/User';
+import jwtDecode from 'jwt-decode';
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Layout = () => {
   const [logout] = authApi.useLogoutMutation();
@@ -28,6 +31,23 @@ const Layout = () => {
   };
 
   const user = useAppSelector(store => store.user);
+
+  React.useEffect(() => {
+    if (user?.id) return;
+
+    const getUser = async () => {
+      const token = localStorage.getItem('accessToken');
+
+      if (!token) return;
+      const decode: DecodedUser = jwtDecode(token);
+
+      const data = await (await fetch(`${apiUrl}/user/${decode.id}`)).json();
+
+      dispatch(setUser(data));
+    };
+
+    getUser();
+  }, []);
 
   return (
     <div className='flex'>
@@ -85,9 +105,9 @@ function NavItem({ item }: { item: INavItem }) {
         {item.items?.length ? (
           <button
             className='flex items-center p-0 h-auto'
-            onClick={(e) => {
+            onClick={e => {
               if (!isCurrentPath) {
-                return setIsOpen(true)
+                return setIsOpen(true);
               }
               setIsOpen(prev => !prev);
             }}
