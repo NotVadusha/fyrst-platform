@@ -4,6 +4,6 @@ export interface UserFilters {
   email?: string | null;
   phone?: string | null;
   city?: string | null;
-  emailConfirmed?: string | null;
+  is_confirmed?: string | null;
   birthdate?: string | null;
 }

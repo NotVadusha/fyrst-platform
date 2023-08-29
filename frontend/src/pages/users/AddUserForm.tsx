@@ -16,30 +16,40 @@ import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { useAddUserMutation } from 'src/store/reducers/user/userApi';
 import { useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 type Inputs = y.InferType<typeof userSchema>;
 
 export function AddUserForm() {
-  const [addUser, result] = useAddUserMutation();
+  const [addUser, { error }] = useAddUserMutation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const form = useForm<Inputs>({
     resolver: yupResolver<Inputs>(userSchema),
     defaultValues: {
       city: '',
-      email: 'dan@gmail.com',
-      first_name: 'Dan',
-      last_name: 'Abramov',
+      email: '',
+      first_name: '',
+      last_name: '',
       password: '',
-      phone_number: '1234567899',
+      phone_number: '',
+      birthdate: undefined,
     },
   });
 
   async function onSubmit(values: Inputs) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    // addUser(values);
-    navigate(0);
+    setIsLoading(true);
+    addUser({
+      ...values,
+      birthdate: values.birthdate ?? undefined,
+      phone_number: values.phone_number ?? undefined,
+    })
+      .unwrap()
+      .then(payload => navigate(0))
+      .catch(err => setIsLoading(false));
   }
 
   return (
@@ -108,7 +118,13 @@ export function AddUserForm() {
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <FormControl>
-                <TextInput control={form.control} type='text' label='Phone number' {...field} />
+                <TextInput
+                  control={form.control}
+                  type='text'
+                  label='Phone number'
+                  {...field}
+                  value={field.value ?? undefined}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -142,6 +158,7 @@ export function AddUserForm() {
           variant='primary'
           className='w-full'
         >
+          {isLoading && <Loader2 className='w-8 h-8 animate-spin mr-2' />}
           Submit
         </Button>
       </form>

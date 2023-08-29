@@ -77,12 +77,12 @@ export function ProfileEditForm() {
       phone_number: user?.phone_number,
       email: user?.email,
       city: user?.city,
-      birthdate: user?.birthdate,
+      birthdate: user?.birthdate ?? undefined,
     },
   });
 
   useEffect(() => {
-    form.reset(user);
+    form.reset({...user, birthdate: user?.birthdate ?? undefined});
   }, [user]);
 
   return (
