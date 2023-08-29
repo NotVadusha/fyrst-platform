@@ -5,6 +5,7 @@ import { ReactComponent as ProfileIcon } from '../../../icons/profile.svg';
 
 import { Card } from 'src/components/ui/common/Card';
 import { Booking } from 'types/models/Booking';
+import { Link } from 'react-router-dom';
 
 interface BookingCardProps {
   booking: Booking;
@@ -38,6 +39,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   const fullNames = booking.users.map(user => `${user.first_name} ${user.last_name}`).join(', ');
 
   return (
+    <Link to={`/booking/${booking.id}`}>
     <Card className='px-4 py-4'>
       <div className='flex justify-between mb-4 items-center'>
         <div className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}>
@@ -79,5 +81,6 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         <p className='text-sm text-dark-grey'>{endDate}</p>
       </div>
     </Card>
+    </Link>
   );
 };

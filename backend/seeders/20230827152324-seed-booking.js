@@ -41,6 +41,7 @@ module.exports = {
         endDate,
         updatedAt: new Date(),
         employersName: faker.person.fullName(),
+        createdAt: new Date(),
       });
     }
 

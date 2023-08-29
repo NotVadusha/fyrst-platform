@@ -38,7 +38,7 @@ export class BookingService {
   }
 
   async find(id: number) {
-    const booking = await this.bookingRepository.findByPk(id);
+     const booking = await this.bookingRepository.findByPk(id, { include: [ Facility] });
 
     if (!booking) {
       throw new NotFoundException('Booking not found');
