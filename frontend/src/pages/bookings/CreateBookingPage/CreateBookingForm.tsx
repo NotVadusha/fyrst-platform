@@ -22,7 +22,6 @@ export function CreateBookingForm({ handleSubmit }: { handleSubmit: (values: Inp
       sex: 'Female',
       age: 18,
       education: 'colleage',
-      positionsAvailable: 1,
       workingHours: 1,
     },
   });
@@ -40,14 +39,31 @@ export function CreateBookingForm({ handleSubmit }: { handleSubmit: (values: Inp
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        <FormField
+          control={form.control}
+          name='employersName'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <TextInput
+                control={form.control}
+                type='text'
+                id='employersName'
+                label='Employers name'
+                {...field}
+              />
+            </FormItem>
+          )}
+        />
+
         <Dropdown
-          className='z-[99999]'
-          name='facilityId'
+          className='z-[9999]'
+          label=''
           control={form.control}
           options={options}
           ddType='in-form'
-          label='Facility'
-          placeholder='Facility'
+          placeholder='Select an option'
+          id='facilityId'
+          name='facilityId'
         />
 
         <FormField

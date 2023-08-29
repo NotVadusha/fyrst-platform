@@ -60,7 +60,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         </p>
         <p className='flex items-center text-sm text-dark-grey'>
           <ProfileIcon></ProfileIcon>
-          {booking.creator && `${booking.creator.first_name} ${booking.creator.last_name}`}
+          {booking.employersName}
         </p>
       </div>
       <div className='flex justify-between mb-4'>

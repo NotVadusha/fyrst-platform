@@ -1,5 +1,5 @@
 'use strict';
-const { faker } = require('@faker-js/faker');
+const { faker, fa } = require('@faker-js/faker');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -23,6 +23,7 @@ module.exports = {
         startDate: faker.date.recent(),
         endDate: faker.date.recent(),
         updatedAt: new Date(),
+        employersName: faker.person.fullName(),
       });
 
       await queryInterface.bulkInsert('Bookings', bookings);

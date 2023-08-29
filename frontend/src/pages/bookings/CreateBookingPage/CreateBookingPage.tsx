@@ -23,7 +23,7 @@ export const CreateBookingPage = () => {
             All bookings
           </GoBackButton>
           <h2 className='text-4xl font-bold'>Create booking</h2>
-          <Card className='max-w-[640px]'>
+          <Card className='lg:w-[640px] md:max-w-full mx-auto'>
             <CreateBookingForm handleSubmit={handleSubmit} />
           </Card>
         </div>
