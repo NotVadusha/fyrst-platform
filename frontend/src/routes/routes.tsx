@@ -25,6 +25,7 @@ import Notifications from '../components/Notifications/Notifications';
 import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
+import { LoginPrivateRoute } from './loginPrivateRoute';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -33,7 +34,12 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        element: <Layout />,
+        path: '/',
+        element: (
+          <LoginPrivateRoute>
+            <Layout />
+          </LoginPrivateRoute>
+        ),
         children: [
           {
             path: 'booking',
@@ -137,7 +143,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: '*',
+            path: '/*',
             index: true,
             element: <Navigate to='/booking' replace />,
           },
