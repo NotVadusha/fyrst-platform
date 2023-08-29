@@ -1,7 +1,6 @@
 import React from 'react';
 import { Conversations } from '../conversation/Conversations';
 import { Outlet } from 'react-router-dom';
-import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 
 const Messanger: React.FC = () => {
   return (

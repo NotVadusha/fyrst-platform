@@ -9,46 +9,14 @@ import { Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
 import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 import { cn } from 'src/lib/utils';
-
-const mockMessages = [
-  {
-    id: 1,
-    text: 'Nice to meet you. I’d like to apply to this job.',
-    time: '09:40',
-    user: {
-      id: 1,
-      name: 'Gamil Goal',
-      imageUrl: '',
-    },
-  },
-  {
-    id: 2,
-    text: 'Great! Can you tell me more about yourself?',
-    time: '10:01',
-    user: {
-      id: 2,
-      name: 'Gamil Goal',
-      imageUrl: '',
-    },
-  },
-  {
-    id: 4,
-    text: 'I am a driver with 5 years of experience. Now I am available for at least three weeks.',
-    time: '12:12',
-    user: {
-      id: 1,
-      name: 'Gamil Goal',
-      imageUrl: '',
-    },
-  },
-];
+import { UserDefaultResponse } from 'types/dto/UserDto';
 
 export const ChatPage: React.FC = () => {
   const { chatId } = useParams();
 
   const userId = 1;
 
-  if (!chatId) return <>No Chat with this Id was found</>;
+  if (!chatId) return <>Chat not found</>;
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -91,7 +59,9 @@ export const ChatPage: React.FC = () => {
         <div className='grid gap-2'>
           <p className='text-2xl/[24px] font-semibold text-black'>
             {otherMembers
-              ?.map(({ first_name, last_name }: any) => `${first_name} ${last_name}`)
+              ?.map(
+                ({ first_name, last_name }: UserDefaultResponse) => `${first_name} ${last_name}`,
+              )
               .join(', ')}
           </p>
           <span className='text-dark-grey text-sm/[14px] font-medium'>online</span>
@@ -101,8 +71,8 @@ export const ChatPage: React.FC = () => {
       <ScrollArea className='h-[320px] mb-16 py-2' ref={scrollAreaRef}>
         <div className='text-center text-dark-grey text-sm font-medium'>Today</div>
         <div className='mt-4 flex flex-col w-full'>
-          {messages?.map((message: any, indx) => {
-            if (messages.length - 1 === indx) {
+          {messages?.map((message: any, index) => {
+            if (messages.length - 1 === index) {
               return (
                 <div ref={lastMessageRef} key={message.id}>
                   <MessageElement
@@ -132,7 +102,7 @@ export const ChatPage: React.FC = () => {
   );
 };
 
-function MessageElement({
+const MessageElement = ({
   isAuthor,
   messageContent,
   createdAt,
@@ -140,7 +110,7 @@ function MessageElement({
   isAuthor: boolean;
   messageContent: string;
   createdAt: Date;
-}) {
+}) => {
   return (
     <div className={cn('flex gap-2 self-start', { 'self-end': isAuthor })}>
       {!isAuthor && <div className='bg-grey w-8 h-8 rounded-full self-end' />}
@@ -158,4 +128,4 @@ function MessageElement({
       {!!isAuthor && <div className='bg-grey w-8 h-8 rounded-full self-end' />}
     </div>
   );
-}
+};

@@ -21,13 +21,12 @@ export function CreateChatForm() {
   const form = useForm<Inputs>({
     resolver: yupResolver(chatSchema),
     defaultValues: {
-      name: 'asda',
-      member: 'asd@gmail.com',
+      name: '',
+      member: '',
     },
   });
 
   async function onSubmit(values: Inputs) {
-    // handleSubmit(values);
     setIsLoading(true);
     createChat({ name: values.name, members: [values.member] })
       .unwrap()
@@ -35,7 +34,7 @@ export function CreateChatForm() {
         setIsLoading(false);
         navigate(0);
       })
-      .catch(err =>   setIsLoading(false));
+      .catch(err => setIsLoading(false));
   }
 
   return (
@@ -60,7 +59,7 @@ export function CreateChatForm() {
           )}
         />
         <Button type='submit' variant='primary' className='w-full'>
-          {isLoading && <Loader2 className='mr-2 w-8 h-8'/>}
+          {isLoading && <Loader2 className='mr-2 w-8 h-8' />}
           Create
         </Button>
       </form>

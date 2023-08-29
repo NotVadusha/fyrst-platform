@@ -14,6 +14,9 @@ export const chatApi = apiSlice.injectEndpoints({
     getAllUserChats: build.query({
       query: () => `/chat`,
     }),
+    searchChats: build.query({
+      query: (name: string) => `/chat/search?name=${name}`,
+    }),
     createChat: build.mutation({
       query: (payload: NewChatPayload) => {
         return {
@@ -26,10 +29,7 @@ export const chatApi = apiSlice.injectEndpoints({
     getChatById: build.query<Chat, string>({
       query: (id: string) => `/chat/${id}`,
     }),
-    getAllMessages: build.query<
-      Chat,
-      { chatId: string }
-    >({
+    getAllMessages: build.query<Chat, { chatId: string }>({
       query: ({ chatId }) => `/chat/${chatId}`,
     }),
     sendNewMessage: build.mutation<
@@ -48,6 +48,7 @@ export const chatApi = apiSlice.injectEndpoints({
 });
 
 export const {
+  useSearchChatsQuery,
   useGetChatByIdQuery,
   useGetAllUserChatsQuery,
   useCreateChatMutation,

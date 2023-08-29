@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { socket } from 'src/lib/socket';
 import { useSendNewMessageMutation } from 'src/store/reducers/chat/chatApi';
-import { format } from 'date-fns';
 
 export function NewMessageInput({ chatId }: { chatId: string }) {
   const [value, setValue] = useState<string>('');
@@ -23,9 +21,9 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
       placeholder='Message'
       className='w-full p-4 rounded-2xl bg-[#DBDBDB]'
       value={value}
-      onChange={e => setValue(e.target.value)}
-      onKeyDown={e => {
-        if (e.key !== 'Enter' || !value) return;
+      onChange={event => setValue(event.target.value)}
+      onKeyDown={event => {
+        if (event.key !== 'Enter' || !value) return;
         handleNewMessage();
       }}
     />

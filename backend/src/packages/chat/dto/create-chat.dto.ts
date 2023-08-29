@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsInt, Min, IsArray, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsArray, IsOptional } from 'class-validator';
 
 class CreateChatDto {
   @IsNotEmpty()

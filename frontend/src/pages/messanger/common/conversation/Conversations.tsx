@@ -9,8 +9,6 @@ import { useGetAllUserChatsQuery } from 'src/store/reducers/chat/chatApi';
 export const Conversations: React.FC = () => {
   const { data } = useGetAllUserChatsQuery('');
 
-  const members = data?.members || [];
-
   const user = useAppSelector(state => state.user);
 
   return (
@@ -39,7 +37,7 @@ export const Conversations: React.FC = () => {
                               'text-blue': isAuthor,
                             })}
                           >
-                            {isAuthor && 'You'}
+                            {isAuthor && 'You, '}
                             {lastMessage &&
                               `${lastMessage.user.first_name} ${lastMessage.user.last_name}`}
                           </span>
@@ -48,7 +46,6 @@ export const Conversations: React.FC = () => {
                           </p>
                         </div>
                         <span className='text-body-small text-dark-grey opacity-80 font-normal leading-5 flex items-center text-center self-end'>
-                          {/* {message.time} */}
                           {format(new Date(lastMessage?.createdAt), 'HH:mm')}
                         </span>
                       </>
