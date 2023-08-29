@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../ui/common/Button';
 import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem } from '../ui/common/Form';
 import styles from './Notifications.module.css';
 import Checkbox from '../ui/common/Checkbox/Checkbox';
+import { useToast } from '../ui/common/Toast/useToast';
+
+interface NotificationConfig {
+  id: number;
+  user_id: number;
+  timecards: boolean;
+  bookings: boolean;
+  payment_success: boolean;
+  password_change: boolean;
+  weekly_report: boolean;
+  money_sent: boolean;
+}
 
 const NotificationsForm = () => {
-  const config = {
+  const initialConfig:NotificationConfig = {
     id: 1,
     user_id: 12345,
     timecards: true,
@@ -17,13 +29,45 @@ const NotificationsForm = () => {
     money_sent: false,
   };
 
+  const [config, setConfig] = useState(initialConfig);
+  const { toast } = useToast();
+
   const form = useForm({
     defaultValues: config,
   });
 
-  async function onSubmit(values: any) {
-    console.log(values);
+  const { watch } = form;
+
+  const [isChanged, setIsChanged] = useState(false);
+  const [attemptedPublish, setAttemptedPublish] = useState(false);
+
+  const values = watch();
+
+  useEffect(() => {
+    setIsChanged(JSON.stringify(values) !== JSON.stringify(config));
+  }, [values, config]);
+
+  const onSubmit = (values: NotificationConfig) => {
+    setAttemptedPublish(true);
+
+    if (isChanged) {
+      setConfig(values);
+      toast({
+        variant: 'default',
+        title: 'Success',
+        description: 'Your notification settings have been successfully updated.',
+      });
+
+      setAttemptedPublish(false);
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'No Changes',
+        description: 'No changes have been made to your notification settings.',
+      });
+    }
   }
+
 
   return (
     <div>
@@ -42,7 +86,7 @@ const NotificationsForm = () => {
               <Checkbox control={form.control} name='money_sent' label='Sent money success' />
             </div>
           </div>
-          <Button type='submit' className='w-full'>
+          <Button type='submit' className='w-full' disabled={!isChanged && attemptedPublish}>
             Publish
           </Button>
         </form>

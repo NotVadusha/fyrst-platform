@@ -23,6 +23,7 @@ const Checkbox = ({ control, name, label, className, checked, ...props }: Checkb
               type='checkbox'
               className={`${styles.check} ${className}`}
               placeholder=''
+              checked={field.value}
               {...props}
             />
           </FormControl>
