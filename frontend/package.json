@@ -51,7 +51,9 @@
     "test:all": "react-scripts test --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006 public",
-    "build-storybook": "storybook build public"
+    "build-storybook": "storybook build public",
+    "lint:format": "prettier --check \"**/*.{ts,tsx}\"",
+    "format": "prettier --write \"**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [

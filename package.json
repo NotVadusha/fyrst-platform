@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "prepare": "husky install",
     "init:backend": "cd backend && npm install",
     "link-shared:backend": "cd backend && npm link shared",
     "init:frontend": "cd frontend && npm install",

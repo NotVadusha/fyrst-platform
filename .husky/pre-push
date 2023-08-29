@@ -5,6 +5,11 @@ echo "Preparing to push changes..."
 echo "As part of the pre-push process, all tests will be executed."
 
 npm run test
+cd frontend
+npm run lint:format
+cd ..
+cd backend
+npm run lint:format
 
 if [ $? -ne 0 ]; then
   echo "One or more tests failed! Push aborted."
