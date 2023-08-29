@@ -19,25 +19,24 @@ const ProfileSecurityForm = () => {
     },
   });
 
-   const { toast } = useToast();
+  const { toast } = useToast();
 
   const onSubmit = (data: any) => {
-     try {
-
-    form.reset();
-    toast({
-      variant: 'default',
-      title: 'Success',
-      description: 'Your password has been successfully updated.',
-    });
-  } catch (error) {
-    toast({
-      variant: 'destructive',
-      title: 'Error',
-      description: 'Something went wrong while updating your password.',
-    });
-  }
-  }
+    try {
+      form.reset();
+      toast({
+        variant: 'default',
+        title: 'Success',
+        description: 'Your password has been successfully updated.',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong while updating your password.',
+      });
+    }
+  };
 
   return (
     <Form {...form}>

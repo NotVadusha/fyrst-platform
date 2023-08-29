@@ -94,7 +94,7 @@ export function UserListPage() {
       return prevParams;
     });
 
-    setCurrentPage(1)
+    setCurrentPage(1);
   }
 
   function handleExport() {

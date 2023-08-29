@@ -85,9 +85,9 @@ function NavItem({ item }: { item: INavItem }) {
         {item.items?.length ? (
           <button
             className='flex items-center p-0 h-auto'
-            onClick={(e) => {
+            onClick={e => {
               if (!isCurrentPath) {
-                return setIsOpen(true)
+                return setIsOpen(true);
               }
               setIsOpen(prev => !prev);
             }}
