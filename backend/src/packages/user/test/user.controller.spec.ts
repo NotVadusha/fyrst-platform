@@ -31,7 +31,9 @@ describe('UsersController', () => {
               .mockResolvedValue((id: number, updateUserInfo: UpdateUserDto) =>
                 Promise.resolve(updateUserInfo),
               ),
-              getAllByParams: jest.fn().mockResolvedValue(({ currentPage }: { currentPage: string }) => {
+            getAllByParams: jest
+              .fn()
+              .mockResolvedValue(({ currentPage }: { currentPage: string }) => {
                 const mockData = {
                   users: [
                     { id: '1', first_name: 'John', last_name: 'Doe' },

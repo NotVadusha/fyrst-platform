@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as ClockIcon } from '../../../icons/clock.svg';
 import { ReactComponent as CalendrIcon } from '../../../icons/calendar.svg';
-import { ReactComponent as ProfileIcon } from '../../../icons/Profile.svg';
+import { ReactComponent as ProfileIcon } from '../../../icons/profile.svg';
 
 import { Card } from 'src/components/ui/common/Card';
 import { Booking } from 'types/models/Booking';
