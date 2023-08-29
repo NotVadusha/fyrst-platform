@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { UserFiltersDto } from './dto/user-filters.dto';
 
-@ApiTags('user')
+@ApiTags('User endpoints')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

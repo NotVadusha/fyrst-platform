@@ -80,11 +80,16 @@ MAIL_DOMAIN=
 MAIL_API_KEY=
 JWT_VERIFICATION_TOKEN_SECRET=qwerty
 JWT_VERIFICATION_TOKEN_EXPIRATION_TIME=2h
-RESET_PASSWORD_URL=http://localhost:${FRONTEND_PORT}/reset-password
+RESET_PASSWORD_URL=http://localhost:${FRONTEND_PORT}/auth/reset-password
 EMAIL_CONFIRMATION_URL=http://localhost:${BACKEND_PORT}/api/v1/email-confirmation/confirm
 LOGIN_URL=http://localhost:${FRONTEND_PORT}/auth/signin
 
 REACT_APP_API_URL=http://localhost:8000/api/v1
+
+BUCKET_PROJECT_ID=
+BUCKET_PRIVATE_KEY=
+BUCKET_CLIENT_EMAIL=
+BUCKET_NAME=
 ```
 
 ---
