@@ -18,7 +18,7 @@ module.exports = {
       }
 
       timecards.push({
-        createdAt: faker.date.past(),
+        createdAt,
         createdBy: faker.number.int({ min: 1, max: 19 }),
         bookingId: faker.number.int({ min: 1, max: 19 }),
         approvedBy,
