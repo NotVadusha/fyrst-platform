@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, Min, IsInt } from 'class-validator';
+import { IsBoolean, IsNotEmpty, Min, IsInt, IsOptional } from 'class-validator';
 
 class UpdateNotificationsConfigDto {
   @IsNotEmpty()
@@ -6,25 +6,25 @@ class UpdateNotificationsConfigDto {
   @Min(1)
   readonly userId: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  timecard: boolean;
+  readonly timecard?: boolean;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  readonly bookings: false;
+  readonly bookings?: false;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  readonly paymentSuccess: false;
+  readonly paymentSuccess?: false;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  readonly weeklyReport: false;
+  readonly weeklyReport?: false;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  readonly moneySent: false;
+  readonly moneySent?: false;
 }
 
 export { UpdateNotificationsConfigDto };

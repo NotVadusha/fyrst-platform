@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { NotificationConfig } from './entities/notifications-config.entity';
 import { UserService } from '../user/user.service';
 import { UpdateNotificationsConfigDto } from './dto/update-config.dto';
+import { CreateNotificationsConfigDto } from './dto/create-config-dto';
 
 @Injectable()
 export class NotificationsConfigService {
@@ -12,22 +13,28 @@ export class NotificationsConfigService {
     private readonly notificationConfigRepository: typeof NotificationConfig,
   ) {}
 
-  getByUserId(userId: number) {
+  async getByUserId(userId: number): Promise<NotificationConfig> {
     return this.notificationConfigRepository.findOne({
       where: { userId },
     });
   }
 
-  create(userId: number) {
-    return this.notificationConfigRepository.create({
-      userId,
-    });
+  async create(
+    createNotificationsConfigDto: CreateNotificationsConfigDto,
+  ): Promise<NotificationConfig> {
+    const config = await this.notificationConfigRepository.build(
+      createNotificationsConfigDto as Partial<NotificationConfig>,
+    );
+    const created = await config.save();
+
+    return this.getByUserId(created.userId);
   }
 
-  async update(userId: number, updatedConfigDto: UpdateNotificationsConfigDto) {
-    const config = await this.getByUserId(userId);
-    await config.update(updatedConfigDto);
-    return this.getByUserId(userId);
+  async update(updatedConfigDto: UpdateNotificationsConfigDto): Promise<NotificationConfig> {
+    const config = await this.getByUserId(updatedConfigDto.userId);
+    Object.assign(config, updatedConfigDto);
+    await config.save();
+    return this.getByUserId(updatedConfigDto.userId);
   }
 
   async delete(userId: number) {
