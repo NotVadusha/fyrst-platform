@@ -47,9 +47,11 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
         </p>
       </div>
       <div className='mb-4'>
-        <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>Healthcare worker</h5>
+        <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>
+          {booking.facility.name}
+        </h5>
         <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by by Wade Warren</p>
-        <p className='text-sm text-dark-grey'>{booking.numberOfPositions} positions</p>
+        <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
       </div>
       <div className='flex justify-between mb-4'>
         <p className='flex items-center text-sm text-dark-grey'>
