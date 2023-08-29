@@ -14,16 +14,17 @@ export const bookingApi = apiSlice.injectEndpoints({
 
         return '/booking/get-by?' + params;
       },
+      providesTags: ['Bookings'],
     }),
     getBookingById: builder.query({
       query: id => `booking/${id}`,
+      providesTags: ['Bookings'],
     }),
     createBooking: builder.mutation({
-      query: newBooking => ({
-        url: 'booking',
-        method: 'POST',
-        body: newBooking,
-      }),
+      query(newBooking) {
+        return { url: 'booking', method: 'POST', body: newBooking };
+      },
+      invalidatesTags: ['Bookings'],
     }),
     updateBooking: builder.mutation({
       query: ({ id, ...fields }) => ({

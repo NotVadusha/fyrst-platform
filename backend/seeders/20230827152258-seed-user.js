@@ -1,5 +1,4 @@
 'use strict';
-const bcrypt = require('bcrypt');
 const { faker } = require('@faker-js/faker');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -7,18 +6,19 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const users = [];
 
-    users.push({
-      id: 1123,
-      first_name: 'Admin',
-      last_name: 'Admin',
-      email: 'fakeemail@gmail.com',
-      city: 'Kyiv',
-      birthdate: new Date(),
-      password: 'somepassword',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      role_id: 3,
-    });
+    for (let i = 1; i < 20; i++) {
+      users.push({
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
+        city: faker.location.city(),
+        birthdate: new Date(),
+        password: faker.internet.password(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        role_id: 1,
+      });
+    }
 
     await queryInterface.bulkInsert('Users', users);
   },

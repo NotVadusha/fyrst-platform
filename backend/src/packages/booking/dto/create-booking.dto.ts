@@ -71,6 +71,9 @@ class CreateBookingDto {
   @IsNotEmpty()
   @IsDateString()
   readonly endDate: Date;
+  @IsNotEmpty()
+  @IsString()
+  employersName: string;
 }
 
 export { CreateBookingDto };

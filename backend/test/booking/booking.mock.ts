@@ -14,6 +14,7 @@ const mockedBookings = [
     facilityId: 10,
     startDate: new Date('2023-08-08'),
     endDate: new Date('2023-08-08'),
+    employersName: 'John Doe',
   },
   {
     status: 'pending',
@@ -30,6 +31,7 @@ const mockedBookings = [
     facilityId: 5,
     startDate: new Date('2023-08-08'),
     endDate: new Date('2023-08-08'),
+    employersName: 'John Doe',
   },
 ];
 
