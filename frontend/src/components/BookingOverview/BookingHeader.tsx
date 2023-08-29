@@ -6,23 +6,21 @@ import { useToast } from '../ui/common/Toast/useToast';
 import { useAppSelector } from '../../hooks/redux';
 import { User } from '../../../types';
 
-
 interface BookingHeaderProps {
   facility: string;
-  bookingId: number
-  users: User[]
+  bookingId: number;
+  users: User[];
 }
 
 const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, users }) => {
-
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const userId = useAppSelector(state => state.user.id)
+  const userId = useAppSelector(state => state.user.id);
   const { toast } = useToast();
 
   const [addUserToBooking, { isLoading }] = useAddUserToBookingMutation();
 
-    useEffect(() => {
-    const userExists = users.some((user: { id: number }) => user.id === userId); 
+  useEffect(() => {
+    const userExists = users.some((user: { id: number }) => user.id === userId);
     if (userExists) {
       setButtonDisabled(true);
     }
@@ -37,7 +35,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, user
         title: 'Success',
         description: 'User has been successfully added to the booking.',
       });
-      
+
       setButtonDisabled(true);
     } catch (error) {
       toast({
@@ -52,7 +50,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, user
     <div className={styles.bookingHeader}>
       <div className={styles.jobTitle}>{facility}</div>
       <Button onClick={handleApplyClick} disabled={isLoading || isButtonDisabled}>
-       {isLoading ? 'Applying...' : 'Apply'}
+        {isLoading ? 'Applying...' : 'Apply'}
       </Button>
     </div>
   );

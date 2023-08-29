@@ -19,12 +19,9 @@ const BookingOverview = () => {
   const { toast } = useToast();
   const { data, isLoading, isError } = useGetBookingByIdQuery(id);
 
-  const {
-    avatar,
-    avatars,
-  } = getBookingData(id!);
+  const { avatar, avatars } = getBookingData(id!);
 
-    console.log(data);
+  console.log(data);
 
   const numOfPeopleReceived = data?.users ? data.users.length : 0;
 
@@ -39,11 +36,11 @@ const BookingOverview = () => {
       title: 'Error',
       description: 'An error occurred while fetching booking data.',
     });
-    
+
     navigate('/booking');
     return null;
   }
-  
+
   return (
     <>
       <Header title='Bookings overview' />
@@ -51,23 +48,23 @@ const BookingOverview = () => {
         <GoBackButton path='/booking' className='text-dark-grey'>
           All bookings
         </GoBackButton>
-            <BookingHeader facility={data.facility.name} bookingId={data.id} users={data.users}/>
-            <div className={styles.bookingBody}>
-              <BookingDescription description={data.notes} />
-              <div className={styles.detailsAndStatusContainer}>
-                <AdditionalDetails
-                  data={{
-                    employer: data.employersName,
-                    createdAt,
-                    startDate,
-                    endDate,
-                    payment: data.pricePerHour,
-                    avatar: avatar,
-                  }}
-                />
-                <StatusCard avatars={avatars} applicantsCount={numOfPeopleReceived} />
-              </div>
-            </div>
+        <BookingHeader facility={data.facility.name} bookingId={data.id} users={data.users} />
+        <div className={styles.bookingBody}>
+          <BookingDescription description={data.notes} />
+          <div className={styles.detailsAndStatusContainer}>
+            <AdditionalDetails
+              data={{
+                employer: data.employersName,
+                createdAt,
+                startDate,
+                endDate,
+                payment: data.pricePerHour,
+                avatar: avatar,
+              }}
+            />
+            <StatusCard avatars={avatars} applicantsCount={numOfPeopleReceived} />
+          </div>
+        </div>
       </div>
     </>
   );

@@ -8,7 +8,7 @@ export interface UseFormattedDateProps {
 export const useFormattedDate = ({ dateString, format = 'dot' }: UseFormattedDateProps): string => {
   return useMemo(() => {
     if (!dateString) return '';
-    
+
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid date';
 
