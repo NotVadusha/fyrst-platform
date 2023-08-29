@@ -47,7 +47,7 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   @Column
   age: number;
 
-  @Column
+  @Column(DataType.TEXT)
   education: string;
 
   @Column
@@ -60,7 +60,7 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   pricePerHour: number;
 
   @AllowNull
-  @Column
+  @Column(DataType.TEXT)
   notes: string;
 
   @Column

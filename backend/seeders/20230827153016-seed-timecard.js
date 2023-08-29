@@ -6,14 +6,24 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const timecards = [];
 
-    for (let i = 1; i < 4; i++) {
+    for (let i = 1; i < 20; i++) {
+      const status = faker.helpers.arrayElement(['pending', 'approved', 'rejected']);
+      const createdAt = faker.date.past();
+      let approvedAt = null;
+      let approvedBy = null;
+
+      if (status === 'approved') {
+        approvedAt = faker.date.between({ from: createdAt, to: new Date() });
+        approvedBy = faker.number.int({ min: 1, max: 19 });
+      }
+
       timecards.push({
-        createdAt: faker.date.recent(),
-        createdBy: 1123,
-        bookingId: faker.number.int({ min: 1, max: 3 }),
-        approvedBy: null,
-        approvedAt: null,
-        status: faker.helpers.arrayElement(['pending', 'approved', 'rejected', 'paid']),
+        createdAt: faker.date.past(),
+        createdBy: faker.number.int({ min: 1, max: 19 }),
+        bookingId: faker.number.int({ min: 1, max: 19 }),
+        approvedBy,
+        approvedAt,
+        status,
       });
     }
 
