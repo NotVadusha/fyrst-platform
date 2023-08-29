@@ -26,7 +26,7 @@ type Inputs = y.InferType<typeof profileSchema>;
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigator = useNavigate();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User>();
 
   const token = localStorage.getItem('accessToken');
   if (!token) navigator('/auth/signin');
@@ -44,18 +44,26 @@ export function ProfileEditForm() {
     userFetch(userId);
   }, []);
 
-  console.log(user);
-
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
   const [avatarImage, setAvatarImage] = useState('');
   const [city, setCity] = useState('');
   const [updateUser] = useUpdateUserMutation();
-  const store = useStore();
 
   const onSubmit = async (valuesFromForm: Inputs) => {
-    // @ts-ignore
-    const response = await updateUser({ id: user.id, user: { ...valuesFromForm } });
+    const response = await updateUser({
+      // @ts-ignore
+      id: user.id,
+      user: {
+        first_name: valuesFromForm?.first_name,
+        last_name: valuesFromForm?.last_name,
+        phone_number: valuesFromForm?.phone_number,
+        email: valuesFromForm?.email,
+        city: valuesFromForm?.city,
+        birthdate: valuesFromForm?.birthdate,
+      },
+    });
+    console.log(response);
   };
 
   const openAvatarEditor = () => {
@@ -64,9 +72,14 @@ export function ProfileEditForm() {
   const form = useForm<Inputs>({
     // @ts-ignore
     resolver: yupResolver(profileSchema),
-    defaultValues: useMemo(() => {
-      return user;
-    }, [user]),
+    defaultValues: {
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      phone_number: user?.phone_number,
+      email: user?.email,
+      city: user?.city,
+      birthdate: user?.birthdate,
+    },
   });
 
   useEffect(() => {

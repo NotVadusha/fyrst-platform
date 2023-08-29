@@ -5,6 +5,7 @@ import { useGetAllMessagesQuery } from 'src/store/reducers/chat/chatApi';
 import { NewMessageInput } from './NewMessageInput';
 import { useAppSelector } from 'src/hooks/redux';
 import { socket } from 'src/lib/socket';
+import { format } from 'date-fns';
 
 const mockMessages = [
   {
@@ -52,12 +53,10 @@ export const ChatPage: React.FC = () => {
 
   const otherMembers = data?.members.filter(({ id }) => id !== user?.id);
 
-  console.log(data);
-
   useEffect(() => {
-    socket.on("onCreate", (message) => {
+    socket.on('onCreate', message => {
       console.log(message);
-    })
+    });
   }, []);
 
   return (
@@ -82,7 +81,7 @@ export const ChatPage: React.FC = () => {
                 <div className='inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl bg-inactive'>
                   <p className='text-black text-sm font-medium'>{message.messageContent}</p>
                   <span className='text-dark-grey text-body-small font-medium text-end text-sm'>
-                    {message.time}
+                    {format(new Date(message?.createdAt), 'HH:mm')}
                   </span>
                 </div>
                 <div className='bg-grey w-8 h-8 rounded-full self-end' />
@@ -97,7 +96,7 @@ export const ChatPage: React.FC = () => {
               <div className='inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl rounded-br-2xl bg-inactive'>
                 <p className='text-black text-sm font-medium'>{message.messageContent}</p>
                 <span className='text-dark-grey text-body-small font-medium text-end text-sm'>
-                  {message.time}
+                  {format(new Date(message?.createdAt), 'HH:mm')}
                 </span>
               </div>
             </div>

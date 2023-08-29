@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React from 'react';
 import { Link, useParams, useRouteError } from 'react-router-dom';
 import { useAppSelector } from 'src/hooks/redux';
@@ -37,16 +38,15 @@ export const Conversations: React.FC = () => {
                           })}
                         >
                           {isAuthor && 'You'}
-                          {/* {`${lastMessage.user.first_name} ${lastMessage.user.last_name}` : 'Unknown Member'} */}
+                          {lastMessage && `${lastMessage.user.first_name} ${lastMessage.user.last_name}`}
                         </span>
                         <p className='text-dark-grey text-body-small font-normal leading-5 whitespace-nowrap overflow-hidden overflow-ellipsis'>
-                          {/* {lastMessage.messageContent} */}
-                          Something cool
+                          {lastMessage && lastMessage.messageContent}
                         </p>
                       </div>
                       <span className='text-body-small text-dark-grey opacity-80 font-normal leading-5 flex items-center text-center'>
                         {/* {message.time} */}
-                        12:31
+                        {format(new Date(lastMessage?.createdAt), 'HH:mm')}
                       </span>
                     </>
                   ) : (
@@ -62,7 +62,7 @@ export const Conversations: React.FC = () => {
             );
           })
         ) : (
-          <p>No messages found.</p>
+          <p>No conversations found.</p>
         )}
       </div>
     </div>
