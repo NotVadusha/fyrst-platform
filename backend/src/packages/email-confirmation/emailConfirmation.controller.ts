@@ -1,18 +1,9 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Logger,
-  Param,
-  Query,
-  Redirect,
-  Res,
-} from '@nestjs/common';
+import { BadRequestException, Controller, Get, Logger, Param, Query, Res } from '@nestjs/common';
 import { EmailConfirmationService } from './emailConfirmation.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
-@ApiTags('email')
+@ApiTags('Email confirmation endpoints')
 @Controller('email-confirmation')
 export class EmailConfirmationController {
   private readonly logger = new Logger(EmailConfirmationController.name);
