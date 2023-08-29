@@ -70,7 +70,7 @@ export class BookingService {
       offset: offset,
       include: [{ model: User, as: 'users' }, { model: Facility }],
     });
-    const total = await this.bookingRepository.count();
+    const total = await this.bookingRepository.count({ where: where });
     return { bookings, total };
   }
 
