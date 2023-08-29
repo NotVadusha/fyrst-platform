@@ -25,3 +25,5 @@ yarn-error.log*
 
 # shared
 src/shared
+
+/storybook-static

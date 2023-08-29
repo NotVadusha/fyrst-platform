@@ -1,4 +1,12 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Chat } from './entities/chat.entity';
 import { CreateChatDto, UpdateChatDto } from './dto/dto';
@@ -21,6 +29,10 @@ export class ChatService {
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
     const members = await this.userRepository.findAll({ where: { email: createdData.members } });
+
+    if (members.find(({ id }) => id === createdData.ownerId)) {
+      throw new HttpException('You cannot add yourself to a conversation', HttpStatus.BAD_REQUEST);
+    }
 
     if (!members.length) {
       const plural = createdData.members.length > 1;
@@ -93,7 +105,7 @@ export class ChatService {
       throw new NotFoundException('Chat not found');
     }
 
-    this.logger.log(`Finding chat with ID ${id}`, { chat });
+    // this.logger.log(`Finding chat with ID ${id}`, { chat });
     return chat;
   }
 

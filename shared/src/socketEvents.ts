@@ -20,4 +20,5 @@ export interface SendMessagePayload {
 
 export interface ClientToServerEvents {
   'send-message': (payload: SendMessagePayload) => void;
+  'user-join-chat': (payload: { chatId: string }) => void;
 }

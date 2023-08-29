@@ -26,8 +26,8 @@ import ProfileSecurity from '../components/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
 import { ChatPage } from 'src/pages/messanger/common/chat/Chat';
-import { useStore } from 'react-redux';
 import { LoginPrivateRoute } from './loginPrivateRoute';
+import { useGetChatByIdQuery } from 'src/store/reducers/chat/chatApi';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 

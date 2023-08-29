@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { apiSlice } from '../apiSlice';
 import { Message } from 'shared/socketEvents';
 import { UserDefaultResponse } from 'types/dto/UserDto';
+import { Chat } from 'types/dto/Chat';
 
 interface NewChatPayload {
   name: string;
@@ -22,18 +23,18 @@ export const chatApi = apiSlice.injectEndpoints({
         };
       },
     }),
-    getChatById: build.query({
+    getChatById: build.query<Chat, string>({
       query: (id: string) => `/chat/${id}`,
     }),
     getAllMessages: build.query<
-      { messages: Message[]; members: UserDefaultResponse[] },
+      Chat,
       { chatId: string }
     >({
       query: ({ chatId }) => `/chat/${chatId}`,
     }),
     sendNewMessage: build.mutation<
       any,
-      { chatId: string; message: Omit<Message, 'id' | 'chatId' | 'userId'> }
+      { chatId: string; message: Omit<Message, 'id' | 'chatId' | 'userId' | 'time'> }
     >({
       query: ({ chatId, message }) => {
         return {

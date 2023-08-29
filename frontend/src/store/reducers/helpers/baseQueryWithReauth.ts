@@ -62,6 +62,8 @@ export const baseQueryWithReauth: BaseQueryFn<
             result = await baseQuery(args, api, extraOptions);
           }
         }
+
+        return refreshResult;
       } catch (err) {
         toast({
           variant: 'destructive',

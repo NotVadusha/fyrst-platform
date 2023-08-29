@@ -1,12 +1,5 @@
-import {
-  Column,
-  Model,
-  Table,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-  BelongsToMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, DataType, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript';
+import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { Chat } from 'src/packages/chat/entities/chat.entity';
 
@@ -82,6 +75,9 @@ export class User extends Model {
 
   @BelongsToMany(() => Chat, () => UserChat)
   chats: Chat[];
+
+  @BelongsToMany(() => Booking, 'user_bookings', 'user_id', 'booking_id')
+  bookings: Booking[];
 }
 
 @Table

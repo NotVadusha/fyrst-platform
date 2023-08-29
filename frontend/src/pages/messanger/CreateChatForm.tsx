@@ -8,11 +8,15 @@ import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { chatSchema } from 'src/lib/validations/chat';
 import { useCreateChatMutation } from 'src/store/reducers/chat/chatApi';
+import { useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 export type Inputs = y.InferType<typeof chatSchema>;
 
 export function CreateChatForm() {
   const [createChat, result] = useCreateChatMutation();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<Inputs>({
     resolver: yupResolver(chatSchema),
@@ -24,8 +28,14 @@ export function CreateChatForm() {
 
   async function onSubmit(values: Inputs) {
     // handleSubmit(values);
-    console.log(values);
-    createChat({ name: values.name, members: [values.member] });
+    setIsLoading(true);
+    createChat({ name: values.name, members: [values.member] })
+      .unwrap()
+      .then(res => {
+        setIsLoading(false);
+        navigate(0);
+      })
+      .catch(err =>   setIsLoading(false));
   }
 
   return (
@@ -50,6 +60,7 @@ export function CreateChatForm() {
           )}
         />
         <Button type='submit' variant='primary' className='w-full'>
+          {isLoading && <Loader2 className='mr-2 w-8 h-8'/>}
           Create
         </Button>
       </form>

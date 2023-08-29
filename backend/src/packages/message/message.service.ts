@@ -25,7 +25,7 @@ export class MessageService {
       ...data,
     });
 
-    this.gateway.wss.emit('onCreate', createdMessage);
+    this.gateway.wss.to(String(chatId)).emit('onCreate', createdMessage);
 
     this.logger.log(`Created message with ID ${createdMessage.id}`, {
       createdMessage,
