@@ -78,6 +78,7 @@ export function ProfileEditForm() {
       city: user?.city,
       birthdate: user?.birthdate,
     },
+    shouldFocusError: false,
   });
 
   useEffect(() => {
