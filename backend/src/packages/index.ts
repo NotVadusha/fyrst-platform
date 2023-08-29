@@ -9,3 +9,4 @@ export { ResetPasswordModule } from './reset-password/reset-password.module';
 export { UserProfileModule } from './user-profile/user-profile.module';
 export { FacilityModule } from './facility/facility.module';
 export { NotificationConfigModule } from './notifications-config/notifications-config.module';
+export { BucketModule } from './bucket/bucket.module';
