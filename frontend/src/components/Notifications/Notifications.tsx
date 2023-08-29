@@ -3,10 +3,10 @@ import { Header } from '../ui/layout/Header/Header';
 import { Button } from '../../ui/common/Button';
 import styles from './Notifications.module.css';
 import NotificationsForm from './NotificationsForm';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 const Notifications = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const handleCreateBookingClick = () => {
     navigate('/booking/create');
   };
@@ -15,7 +15,9 @@ const Notifications = () => {
       <Header title='Profile'>
         <div className='flex justify-end space-x-6 w-full'>
           <Button variant='secondary'>Export CVS</Button>
-          <Button variant='primary' onClick={handleCreateBookingClick}>Create booking</Button>
+          <Button variant='primary' onClick={handleCreateBookingClick}>
+            Create booking
+          </Button>
         </div>
       </Header>
 

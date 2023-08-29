@@ -1,18 +1,15 @@
-import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
-import * as yup from 'yup';
-import { Form, FormControl, FormLabel, FormField, FormItem } from '../../components/ui/common/Form';
-import TextInput from '../../components/ui/common/TextInput/TextInput';
 import { userFiltersSchema } from 'src/lib/validations/user-filters';
+import * as yup from 'yup';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '../../components/ui/common/Form';
+import TextInput from '../../components/ui/common/TextInput/TextInput';
 
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from 'src/components/ui/common/Select/Select';
@@ -118,7 +115,8 @@ export function UserFiltersForm({
                   {/*@ts-ignore*/}
                   <FormLabel>Email Confirmed</FormLabel>
                   <FormControl>
-                     {/*@ts-ignore*/}
+                    {/*eslint-disable-next-line */}
+                    {/*@ts-ignore*/}
                     <Select onValueChange={handleInputChange}>
                       <FormControl>
                         <SelectTrigger>
