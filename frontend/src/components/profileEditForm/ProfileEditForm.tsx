@@ -25,11 +25,10 @@ type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState<User>();
 
   const token = localStorage.getItem('accessToken');
-  if (!token) navigator('/auth/signin');
   // @ts-ignore
   const decode: DecodedUser = jwtDecode(token);
   const userId = decode.id;
@@ -38,6 +37,7 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
+      if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
     };
 
@@ -63,7 +63,6 @@ export function ProfileEditForm() {
         birthdate: valuesFromForm?.birthdate,
       },
     });
-    console.log(response);
   };
 
   const openAvatarEditor = () => {
