@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
@@ -30,6 +31,12 @@ export class ChatController {
   @Get()
   async getAllUserChats(@Request() req) {
     return this.chatService.findAllByUserId(req.user['id']);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('search')
+  async searchChats(@Query('name') query: string) {
+    return this.chatService.searchChats(query);
   }
 
   @Get('all')

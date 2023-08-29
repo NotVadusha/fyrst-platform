@@ -51,7 +51,6 @@ export class ChatService {
       ownerId: createdData.ownerId,
     });
 
-    // members should include the owner
     chat.$set('members', [...members, owner]);
 
     this.logger.log(`Created chat with ID ${chat.id}`, {
@@ -73,7 +72,6 @@ export class ChatService {
   }
 
   async findAllByUserId(id: number) {
-    // for each chat we get the members and the last message
     const chats = await this.chatRepository.findAll({
       include: [
         { model: User, as: 'members', required: true, where: { id } },
@@ -107,6 +105,23 @@ export class ChatService {
 
     // this.logger.log(`Finding chat with ID ${id}`, { chat });
     return chat;
+  }
+
+  async searchChats(query: string) {
+    const chats = await this.chatRepository.findAll({
+      include: [
+        { model: User, as: 'members' },
+        { model: User, as: 'user' },
+      ],
+      where: {
+        name: {
+          [Op.iLike]: `%${query}%`,
+        },
+      },
+    });
+
+    this.logger.log(`Searched ${chats.length} chats with query: ${query}`, { chats });
+    return chats;
   }
 
   async update(id: number, updatedData: UpdateChatDto & { ownerId: number }) {
