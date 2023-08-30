@@ -77,7 +77,9 @@ const PaymentsList = () => {
                 />
               </div>
               <div className='flex flex-col w-full'>
-                <label className='text-blue' htmlFor='selectDate'>Start date</label>
+                <label className='text-blue' htmlFor='selectDate'>
+                  Start date
+                </label>
                 <TextInput
                   name='selectDate'
                   control={methods.control}
@@ -87,7 +89,9 @@ const PaymentsList = () => {
                 />
               </div>
               <div className='flex flex-col w-full'>
-                <label className='text-blue' htmlFor='endDate'>End date</label>
+                <label className='text-blue' htmlFor='endDate'>
+                  End date
+                </label>
                 <TextInput
                   name='endDate'
                   control={methods.control}

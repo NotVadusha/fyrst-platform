@@ -14,7 +14,7 @@ const Notifications = () => {
     <div>
       <Header title='Profile'>
         <div className='flex justify-end space-x-6 w-full'>
-          <Button variant='secondary'>Export CVS</Button>
+          {/* <Button variant='secondary'>Export CVS</Button> */}
           <Button variant='primary' onClick={handleCreateBookingClick}>
             Create booking
           </Button>
