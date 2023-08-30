@@ -2,7 +2,7 @@ import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types/model';
 import { User } from 'src/packages/user/entities/user.entity';
 
-@Table({ tableName: 'notification_config', timestamps: true })
+@Table({ tableName: 'notification_config', timestamps: false })
 class NotificationConfig extends Model<
   InferAttributes<NotificationConfig>,
   InferCreationAttributes<NotificationConfig>
@@ -18,7 +18,7 @@ class NotificationConfig extends Model<
   @Column
   userId: number;
 
-  @BelongsTo(() => User, 'user_id')
+  @BelongsTo(() => User, 'userId')
   user: User;
 
   @Column({

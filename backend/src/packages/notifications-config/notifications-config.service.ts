@@ -14,9 +14,13 @@ export class NotificationsConfigService {
   ) {}
 
   async getByUserId(userId: number): Promise<NotificationConfig> {
-    return this.notificationConfigRepository.findOne({
+    const config = await this.notificationConfigRepository.findOne({
       where: { userId },
     });
+    if (!config) {
+      return await this.create({ userId });
+    }
+    return config;
   }
 
   async create(

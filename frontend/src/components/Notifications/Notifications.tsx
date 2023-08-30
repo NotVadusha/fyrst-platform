@@ -4,12 +4,19 @@ import { Button } from '../../ui/common/Button';
 import styles from './Notifications.module.css';
 import NotificationsForm from './NotificationsForm';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from 'src/hooks/redux';
+import { useGetNotificationsConfigQuery } from 'src/store/reducers/notification-configs/notificationConfigApi';
 
 const Notifications = () => {
   const navigate = useNavigate();
   const handleCreateBookingClick = () => {
     navigate('/booking/create');
   };
+
+  const user = useAppSelector(state => state.user);
+  const { data, isFetching } = useGetNotificationsConfigQuery(1);
+  console.log(data);
+
   return (
     <div>
       <Header title='Profile'>
@@ -24,7 +31,7 @@ const Notifications = () => {
       <div className={styles.notificationsContainer}>
         <h6 className={styles.notificationsTitle}>Notifications</h6>
         <p className={styles.notificationsText}>
-          Choose type of notifications you want to recieve.
+          Choose type of notifications you want to receive.
         </p>
         <div className={styles.notificationsCard}>
           <NotificationsForm />
