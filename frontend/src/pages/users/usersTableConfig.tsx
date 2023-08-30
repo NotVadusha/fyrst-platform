@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ColumnInfo } from 'src/ui/common/Table/Table';
-import { User } from 'types';
+import { ColumnInfo } from 'src/common/components/ui/common/Table/Table';
+import { User } from 'src/common/types';
 import { UserActions } from './actions/UserActions';
 
 export const columns: ColumnInfo<User>[] = [

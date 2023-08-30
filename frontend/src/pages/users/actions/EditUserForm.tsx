@@ -18,7 +18,7 @@ import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userAp
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { User } from 'src/common/types';
 import { Loader2 } from 'lucide-react';
-import CityInput from 'src/components/profileEditForm/CityInput';
+import CityInput from 'src/pages/profiles/profileEditForm/CityInput';
 
 type Inputs = y.InferType<typeof userSchema>;
 
