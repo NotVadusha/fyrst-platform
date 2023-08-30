@@ -8,23 +8,27 @@ class UpdateNotificationsConfigDto {
 
   @IsOptional()
   @IsBoolean()
-  readonly timecard?: boolean;
+  readonly timecards?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly bookings?: false;
+  readonly bookings?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly paymentSuccess?: false;
+  readonly paymentSuccess?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly weeklyReport?: false;
+  readonly weeklyReport?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly moneySent?: false;
+  readonly moneySent?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  readonly passwordChange?: boolean;
 }
 
 export { UpdateNotificationsConfigDto };

@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, Min, IsInt, IsOptional } from 'class-validator';
+import { IsNotEmpty, Min, IsInt } from 'class-validator';
 
 class CreateNotificationsConfigDto {
   @IsNotEmpty()
