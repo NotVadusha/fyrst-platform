@@ -30,3 +30,9 @@ export interface EditUserPage {
   birthdate: string;
   role_id: number;
 }
+
+export interface ChangePasswordResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
