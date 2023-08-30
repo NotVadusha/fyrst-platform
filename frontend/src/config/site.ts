@@ -4,6 +4,7 @@ import { ReactComponent as Profile } from '../icons/profile.svg';
 import { ReactComponent as Message } from '../icons/message.svg';
 import { ReactComponent as Payment } from '../icons/payment.svg';
 import { NavItem } from 'types';
+import { UserCog } from 'lucide-react';
 
 export const siteConfig = {
   name: 'Fyrst',
@@ -13,6 +14,7 @@ export const siteConfig = {
     {
       title: 'Bookings',
       icon: Booking,
+      mainPath: '/booking',
       path: '/booking',
       items: [
         {
@@ -25,11 +27,13 @@ export const siteConfig = {
       title: 'Timecards',
       icon: Timecard,
       path: '/timecard',
+      mainPath: '/timecard',
     },
     {
       title: 'Profile',
       icon: Profile,
-      path: '/profile',
+      mainPath: '/profile',
+      path: '/profile/edit',
       items: [
         {
           title: 'Edit profile',
@@ -48,13 +52,22 @@ export const siteConfig = {
     {
       title: 'Messages',
       icon: Message,
+      mainPath: '/messanger',
       path: '/messanger',
       items: [],
     },
     {
       title: 'Payments',
       icon: Payment,
+      mainPath: '/payments',
       path: '/payments',
+      items: [],
+    },
+    {
+      title: 'Users',
+      icon: UserCog,
+      mainPath: '/users',
+      path: '/users',
       items: [],
     },
   ] as NavItem[],

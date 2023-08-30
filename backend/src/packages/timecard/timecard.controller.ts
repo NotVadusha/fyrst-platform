@@ -18,7 +18,7 @@ import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardService } from './timecard.service';
 
-@ApiTags('timecard')
+@ApiTags('Timecard endpoints')
 @Controller('timecard')
 export class TimecardController {
   private readonly logger = new Logger(TimecardController.name);

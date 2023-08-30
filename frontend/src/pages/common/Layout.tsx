@@ -10,6 +10,7 @@ import { clearUser, setUser } from 'src/store/reducers/user.store';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { DecodedUser } from 'types/models/User';
 import jwtDecode from 'jwt-decode';
+import { cn } from 'src/lib/utils';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -74,7 +75,7 @@ function NavItem({ item }: { item: INavItem }) {
 
   const location = useLocation();
 
-  const isCurrentPath = location.pathname.includes(item.path);
+  const isCurrentPath = location.pathname.startsWith(item.mainPath);
 
   React.useEffect(() => {
     if (isCurrentPath && isOpen) return;
@@ -90,7 +91,9 @@ function NavItem({ item }: { item: INavItem }) {
         className={'p-2 rounded-md flex  w-full justify-between ' + `${isCurrentPath && 'bg-blue'}`}
       >
         <div className='flex gap-2 items-center'>
-          {Icon && <Icon className={`${isCurrentPath && 'text-white'}`} title='asd' />}
+          {Icon && (
+            <Icon className={cn('text-dark-grey', { 'text-white': isCurrentPath })} title='asd' />
+          )}
           <span className={`${isCurrentPath && 'text-white'}`}>{item.title}</span>
         </div>
         {item.items?.length ? (

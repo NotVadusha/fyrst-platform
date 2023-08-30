@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,8 @@ export class UserService {
 
   async create(userInfo: CreateUserDto) {
     const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });
-    if (sameEmailUser) throw new BadRequestException('This email is already in use');
+    if (sameEmailUser)
+      throw new BadRequestException(`email ${sameEmailUser.email} is already in use`);
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
     console.log('creating');
@@ -113,6 +115,16 @@ export class UserService {
     const [updatedUser] = await this.userRepository.update(updateInfo, { where: { id: userId } });
     if (!updatedUser) throw new NotFoundException('User do not exist');
     return updatedUser;
+  }
+  async changePassword(userId: number, currentPassword: string, newPassword: string) {
+    const user = await this.findOne(userId);
+    if (!user) throw new NotFoundException('User not found');
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) throw new BadRequestException('Current password is incorrect');
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    return this.update({ password: hashedNewPassword }, userId);
   }
 
   async delete(userId: number) {

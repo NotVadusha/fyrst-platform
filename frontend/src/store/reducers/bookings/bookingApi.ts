@@ -1,3 +1,4 @@
+import { Booking } from 'types/models/Booking';
 import { BookingFiltersDto } from '../../../../types/dto/BookingFiltersDto';
 import { GetAllBookingsDto } from '../../../../types/dto/GetAllBookingsDto';
 import { apiSlice } from '../apiSlice';
@@ -16,7 +17,7 @@ export const bookingApi = apiSlice.injectEndpoints({
       },
       providesTags: ['Bookings'],
     }),
-    getBookingById: builder.query({
+    getBookingById: builder.query<Booking, number>({
       query: id => `booking/${id}`,
       providesTags: ['Bookings'],
     }),
@@ -33,6 +34,15 @@ export const bookingApi = apiSlice.injectEndpoints({
         body: fields,
       }),
     }),
+    addUserToBooking: builder.mutation({
+      query({ bookingId, userId }) {
+        return {
+          url: `booking/${bookingId}/addUser/${userId}`,
+          method: 'POST',
+        };
+      },
+      invalidatesTags: ['Bookings'],
+    }),
     deleteBooking: builder.mutation({
       query: id => ({
         url: `booking/${id}`,
@@ -47,5 +57,6 @@ export const {
   useGetBookingByIdQuery,
   useCreateBookingMutation,
   useUpdateBookingMutation,
+  useAddUserToBookingMutation,
   useDeleteBookingMutation,
 } = bookingApi;

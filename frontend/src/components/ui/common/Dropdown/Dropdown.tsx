@@ -71,11 +71,22 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   ddType: 'default' | 'in-form';
   label: string;
   placeholder: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
   (
-    { control, name, options, ddType = 'default', label, placeholder, className, ...props },
+    {
+      control,
+      name,
+      options,
+      ddType = 'default',
+      label,
+      placeholder,
+      onChange,
+      className,
+      ...props
+    },
     ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -120,7 +131,8 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                         {...field}
                         type='radio'
                         value={opt.value}
-                        onChange={() => {
+                        onChange={e => {
+                          if (onChange) onChange(e);
                           field.onChange(opt.value);
                           setIsOpen(false);
                         }}

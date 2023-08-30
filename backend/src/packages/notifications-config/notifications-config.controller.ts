@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { NotificationsConfigService } from './notifications-config.service';
 import { UpdateNotificationsConfigDto } from './dto/update-config.dto';
 
-@ApiTags('notification-config')
+@ApiTags('Notification config endpoints')
 @Controller('notification-config')
 export class NotificationsConfigController {
   private readonly logger = new Logger(NotificationsConfigController.name);

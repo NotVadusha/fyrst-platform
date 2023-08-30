@@ -72,6 +72,18 @@ export const userApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    changePassword: build.mutation<
+      any,
+      { id: number; currentPassword: string; newPassword: string }>({
+      query: args => ({
+        url: `/user/change-password/${args.id}`,
+        method: 'PATCH',
+        body: {
+          currentPassword: args.currentPassword,
+          newPassword: args.newPassword,
+        },
+      }),
+    }),
   }),
 });
 
@@ -85,4 +97,5 @@ export const {
   useLazyGetUserQuery,
   useUpdateUserMutation,
   useUpdateUserProfileMutation,
+  useChangePasswordMutation,
 } = userApi;
