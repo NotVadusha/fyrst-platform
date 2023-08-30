@@ -1,3 +1,4 @@
+import { Booking } from 'types/models/Booking';
 import { BookingFiltersDto } from '../../../../types/dto/BookingFiltersDto';
 import { GetAllBookingsDto } from '../../../../types/dto/GetAllBookingsDto';
 import { apiSlice } from '../apiSlice';
@@ -16,7 +17,7 @@ export const bookingApi = apiSlice.injectEndpoints({
       },
       providesTags: ['Bookings'],
     }),
-    getBookingById: builder.query({
+    getBookingById: builder.query<Booking, number>({
       query: id => `booking/${id}`,
       providesTags: ['Bookings'],
     }),
