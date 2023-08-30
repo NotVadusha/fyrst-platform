@@ -9,12 +9,7 @@ import {
   ToastViewport,
   toastVariants,
 } from './Toast';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as y from 'yup';
-import { Form } from '../Form';
 import { VariantProps } from 'class-variance-authority';
-import { ToasterToast } from './useToast';
 
 const meta: Meta<typeof Toast> = {
   component: Toast,
