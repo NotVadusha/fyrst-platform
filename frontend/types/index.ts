@@ -6,6 +6,7 @@ interface SVGIconProps extends React.SVGProps<SVGSVGElement> {
 export interface NavItem {
   title: string;
   path: string;
+  mainPath: string;
   icon?: React.FunctionComponent<SVGIconProps>;
   items?: NavItem[];
 }
