@@ -10,7 +10,6 @@ interface InputProps {
   setShown: (state: boolean) => void;
   savedImage: string;
   setImage: (imageUrl: string) => void;
-  setFile: (imageFile: Blob) => void;
 }
 
 export const AvatarUploader = ({
@@ -20,7 +19,6 @@ export const AvatarUploader = ({
   isShown,
   setShown,
   setImage,
-  setFile,
 }: InputProps) => {
   const [tempImage, setTempImage] = useState('');
   const imageInput = useRef(null);
@@ -50,7 +48,6 @@ export const AvatarUploader = ({
       const result = await fetch(dataUrl);
       const blob = await result.blob();
       setImage(URL.createObjectURL(blob));
-      setFile(blob);
     }
     setShown(false);
   };

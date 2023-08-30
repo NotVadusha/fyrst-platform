@@ -26,7 +26,6 @@ export function ProfileEditForm() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [avatarImage, setAvatarImage] = useState('');
-  const [avatarFile, setAvatarFile] = useState<Blob>();
 
   const token = localStorage.getItem('accessToken');
   // eslint-disable-next-line
@@ -58,9 +57,20 @@ export function ProfileEditForm() {
   const onSubmit = async (valuesFromForm: Inputs) => {
     let base64;
 
-    if (!!avatarFile) {
-      const arrayBuffer = await avatarFile.arrayBuffer();
-      base64 = Buffer.from(arrayBuffer).toString('base64');
+    if (!!avatarImage) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', avatarImage, true);
+      xhr.responseType = 'blob';
+
+      xhr.onload = async function () {
+        if (xhr.status === 200) {
+          var blob = xhr.response;
+          const arrayBuffer = await blob.arrayBuffer();
+          base64 = Buffer.from(arrayBuffer).toString('base64');
+        }
+      };
+
+      xhr.send();
     }
 
     await updateUser({
@@ -118,7 +128,6 @@ export function ProfileEditForm() {
           isShown={isAvatarEditorShown}
           setShown={setAvatarEditorShown}
           setImage={setAvatarImage}
-          setFile={setAvatarFile}
         />
       ) : (
         <div className='w-128 p-8 bg-white mx-20 shadow-xl'>
