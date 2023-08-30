@@ -33,14 +33,10 @@ export function UserFiltersForm({
     resolver: yupResolver<FormValues>(userFiltersSchema),
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
-  }
-
   return (
-    <div className='flex gap-2'>
+    <div className='flex items-center justify-center gap-2'>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form>
           <div className='flex gap-x-4 items-center'>
             <div className='flex flex-col gap-y-2'>
               <FormField
@@ -129,7 +125,7 @@ export function UserFiltersForm({
                       <Select onValueChange={handleInputChange}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder='Email confirmed' />
+                            <SelectValue placeholder='Email confirmed' className='font-semibold' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>

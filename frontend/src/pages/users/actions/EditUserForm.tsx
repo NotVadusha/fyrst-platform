@@ -14,28 +14,33 @@ import * as y from 'yup';
 import { userSchema } from 'src/lib/validations/user';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation } from 'src/store/reducers/user/userApi';
-import { useNavigate } from 'react-router-dom';
+import { useAddUserMutation, useUpdateUserMutation } from 'src/store/reducers/user/userApi';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { User } from 'types';
 import { Loader2 } from 'lucide-react';
-import { toast } from 'src/components/ui/common/Toast/useToast';
+import CityInput from 'src/components/profileEditForm/CityInput';
 
 type Inputs = y.InferType<typeof userSchema>;
 
-export function AddUserForm() {
-  const [addUser, { error }] = useAddUserMutation();
-  const navigate = useNavigate();
+export function EditUserForm({ user }: { user: User }) {
+  const [editUser, { error }] = useUpdateUserMutation();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [city, setCity] = React.useState('');
+
+  const navigate = useNavigate();
+  const searchParams = useSearchParams();
 
   const form = useForm<Inputs>({
     resolver: yupResolver<Inputs>(userSchema),
     defaultValues: {
-      city: '',
-      email: '',
-      first_name: '',
-      last_name: '',
-      password: '',
-      phone_number: '',
-      birthdate: undefined,
+      birthdate: user.birthdate ?? undefined,
+      city: user.city,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      password: user.password,
+      phone_number: user.phone_number,
+      role_id: user.role_id,
     },
   });
 
@@ -43,16 +48,12 @@ export function AddUserForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
-    addUser({
-      ...values,
-      birthdate: values.birthdate ?? undefined,
-      phone_number: values.phone_number ?? undefined,
+    editUser({
+      id: user.id,
+      user: { ...values, phone_number: values.phone_number ?? undefined },
     })
       .unwrap()
-      .then(payload => {
-        navigate(0);
-        toast({ title: 'Success', description: 'User successfully added' });
-      })
+      .then(payload => navigate(0))
       .catch(err => setIsLoading(false));
   }
 
@@ -97,13 +98,15 @@ export function AddUserForm() {
         <FormField
           control={form.control}
           name='city'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormControl>
-                <TextInput control={form.control} type='text' label='City' {...field} />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({ field }) => {
+            return (
+              <FormItem className='flex flex-col'>
+                <FormControl>
+                  <CityInput control={form.control} {...field} setCity={setCity} />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
@@ -155,13 +158,7 @@ export function AddUserForm() {
             </FormItem>
           )}
         />
-        {/* <button type='submit'>Submit</button> */}
-        <Button
-          onClick={form.handleSubmit(onSubmit)}
-          type='submit'
-          variant='primary'
-          className='w-full'
-        >
+        <Button type='submit' variant='primary' className='w-full'>
           {isLoading && <Loader2 className='w-8 h-8 animate-spin mr-2' />}
           Submit
         </Button>
