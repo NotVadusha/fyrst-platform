@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import { Card } from 'src/components/ui/common/Card';
+import { Card } from 'src/common/components/ui/common/Card';
 import { CreateTimeCardForm } from 'src/pages/timecards/create/CreateTimeCardForm';
-import { GoBackButton } from 'src/components/ui/common/GoBackButton';
-import { Header } from 'src/components/ui/layout/Header/Header';
+import { GoBackButton } from 'src/common/components/ui/common/GoBackButton';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCreateTimecardMutation } from '../../../store/reducers/timecards/timecardsApi';
+import { useCreateTimecardMutation } from 'src/common/store/reducers/timecards/timecardsApi';
 import { CreateTimecardFormValues } from './CreateTimeCardForm';
-import { useAppSelector } from 'src/hooks/redux';
-import { User } from 'types/models/User';
+import { useAppSelector } from 'src/common/hooks/redux';
+import { User } from 'src/common/types';
 
 export default function CreateTimeCardPage() {
   const { bookingId } = useParams();

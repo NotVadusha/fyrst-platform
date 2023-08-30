@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { siteConfig } from 'src/config/site';
-import { ReactComponent as ArrowDown } from '../../icons/arrow-down.svg';
-import { ReactComponent as ArrowUp } from '../../icons/arrow-up.svg';
-import { NavItem as INavItem } from 'types';
-import { Button } from 'src/ui/common/Button';
-import { authApi } from 'src/store/reducers/user/authApi';
-import { clearUser, setUser } from 'src/store/reducers/user.store';
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
-import { DecodedUser } from 'types/models/User';
+import { siteConfig } from 'src/common/routes/config/site';
+import { ReactComponent as ArrowDown } from 'src/assets/icons/arrow-down.svg';
+import { ReactComponent as ArrowUp } from 'src/assets/icons/arrow-up.svg';
+import { NavItem as INavItem } from 'src/common/types';
+import { Button } from 'src/common/components/ui/common/Button';
+import { authApi } from 'src/common/store/reducers/user/authApi';
+import { clearUser, setUser } from 'src/common/store/reducers/user.store';
+import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
+import { DecodedUser } from 'src/common/types/models/User';
 import jwtDecode from 'jwt-decode';
-import { cn } from 'src/lib/utils';
+import { cn } from 'src/common/lib/utils';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { ReactComponent as ClockIcon } from '../../../icons/clock.svg';
-import { ReactComponent as CalendrIcon } from '../../../icons/calendar.svg';
-import { ReactComponent as ProfileIcon } from '../../../icons/profile.svg';
+import { ReactComponent as ClockIcon } from 'src/assets/icons/clock.svg';
+import { ReactComponent as CalendrIcon } from 'src/assets/icons/calendar.svg';
+import { ReactComponent as ProfileIcon } from 'src/assets/icons/profile.svg';
 
-import { Card } from 'src/components/ui/common/Card';
-import { Booking } from 'types/models/Booking';
+import { Card } from 'src/common/components/ui/common/Card';
+import { Booking } from 'src/common/types/models/Booking';
 import { Link } from 'react-router-dom';
 
 interface BookingCardProps {

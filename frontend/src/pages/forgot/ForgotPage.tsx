@@ -1,16 +1,16 @@
 import React from 'react';
-import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
+import AuthWrapper from 'src/common/components/AuthWrapper/AuthWrapper';
 import resetImage from '../../assets/resetimage.png';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import TextInput from 'src/components/ui/common/TextInput/TextInput';
+import TextInput from 'src/common/components/ui/common/TextInput/TextInput';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from 'src/ui/common/Button';
-import { resetPasswordApi } from 'src/store/reducers/user/resetPasswordApi';
-import { forgotSchema } from 'src/lib/validation-schemas/authentication/forgot';
-import { useAppDispatch } from 'src/hooks/redux';
-import { setEmail } from 'src/store/reducers/reset-password.store';
+import { Button } from 'src/common/components/ui/common/Button';
+import { resetPasswordApi } from 'src/common/store/reducers/user/resetPasswordApi';
+import { forgotSchema } from 'src/common/lib/validation-schemas/authentication/forgot';
+import { useAppDispatch } from 'src/common/hooks/redux';
+import { setEmail } from 'src/common/store/reducers/reset-password.store';
 
 type ForgotInputs = yup.InferType<typeof forgotSchema>;
 

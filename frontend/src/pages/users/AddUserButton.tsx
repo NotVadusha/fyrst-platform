@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Modal } from 'src/components/ui/common/Modal';
-import { Button } from 'src/ui/common/Button';
+import { Modal } from 'src/common/components/ui/common/Modal';
+import { Button } from 'src/common/components/ui/common/Button';
 import { AddUserForm } from './AddUserForm';
 
 export function AddUserButton() {

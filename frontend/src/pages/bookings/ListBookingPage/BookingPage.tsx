@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import BookingGrid from './BookingsGrid';
 import { BookingFilters } from './BookingFilters';
-import { useGetAllBookingsQuery } from 'src/store/reducers/bookings/bookingApi';
-import { Pagination } from 'src/ui/common/Pagination/Pagination';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
+import { useGetAllBookingsQuery } from 'src/common/store/reducers/bookings/bookingApi';
+import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Link, useSearchParams } from 'react-router-dom';
-import { BookingFiltersDto } from 'types/dto/BookingFiltersDto';
-import { Header } from 'src/components/ui/layout/Header/Header';
-import { Button } from 'src/ui/common/Button';
-import { RefreshButton } from 'src/components/ui/common/RefreshButton';
+import { BookingFiltersDto } from 'src/common/types/dto/BookingFiltersDto';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { Button } from 'src/common/components/ui/common/Button';
+import { RefreshButton } from 'src/common/components/ui/common/RefreshButton';
 
 const LIMIT = 6;
 

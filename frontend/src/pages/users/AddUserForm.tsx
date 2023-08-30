@@ -8,16 +8,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from 'src/components/ui/common/Form';
+} from 'src/common/components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { userSchema } from 'src/lib/validations/user';
-import { Button } from 'src/ui/common/Button';
-import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation } from 'src/store/reducers/user/userApi';
+import { userSchema } from 'src/common/lib/validations/user';
+import { Button } from 'src/common/components/ui/common/Button';
+import TextInput from 'src/common/components/ui/common/TextInput/TextInput';
+import { useAddUserMutation } from 'src/common/store/reducers/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import { toast } from 'src/components/ui/common/Toast/useToast';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type Inputs = y.InferType<typeof userSchema>;
 

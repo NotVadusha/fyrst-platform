@@ -1,17 +1,17 @@
 import * as React from 'react';
 
-import { Card, CardContent, CardTitle } from 'src/components/ui/common/Card';
-import { GoBackButton } from 'src/components/ui/common/GoBackButton';
+import { Card, CardContent, CardTitle } from 'src/common/components/ui/common/Card';
+import { GoBackButton } from 'src/common/components/ui/common/GoBackButton';
 import { useParams } from 'react-router-dom';
-import { Button } from 'src/ui/common/Button';
-import { Header } from 'src/components/ui/layout/Header/Header';
+import { Button } from 'src/common/components/ui/common/Button';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
 import {
   useFetchTimecardQuery,
   useUpdateTimecardMutation,
-} from '../../../store/reducers/timecards/timecardsApi';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
+} from 'src/common/store/reducers/timecards/timecardsApi';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { TimecardStatus } from 'shared/timecard-status';
-import { useAppSelector } from 'src/hooks/redux';
+import { useAppSelector } from 'src/common/hooks/redux';
 
 export default function ViewTimeCardPage() {
   const { id } = useParams();

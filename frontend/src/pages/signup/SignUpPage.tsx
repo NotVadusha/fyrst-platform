@@ -1,17 +1,17 @@
 import React from 'react';
-import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
+import AuthWrapper from 'src/common/components/AuthWrapper/AuthWrapper';
 import authImage from '../../assets/authimage.png';
 import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
+import TextInput from 'src/common/components/ui/common/TextInput/TextInput';
+import { PasswordInput } from 'src/common/components/ui/common/PasswordInput/PasswordInput';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { registrationSchema } from 'src/lib/validation-schemas/authentication/registration';
-import { Button } from 'src/ui/common/Button';
-import { ReactComponent as GoogleLogo } from '../../icons/google.svg';
-import { authApi } from 'src/store/reducers/user/authApi';
+import { registrationSchema } from 'src/common/lib/validation-schemas/authentication/registration';
+import { Button } from 'src/common/components/ui/common/Button';
+import { ReactComponent as GoogleLogo } from 'src/assets/icons/google.svg';
+import { authApi } from 'src/common/store/reducers/user/authApi';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'src/components/ui/common/Toast/useToast';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
 

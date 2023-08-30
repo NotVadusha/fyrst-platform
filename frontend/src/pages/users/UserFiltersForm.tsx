@@ -1,10 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { userFiltersSchema } from 'src/lib/validations/user-filters';
+import { userFiltersSchema } from 'src/common/lib/validations/user-filters';
 import * as yup from 'yup';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../../components/ui/common/Form';
-import TextInput from '../../components/ui/common/TextInput/TextInput';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '../../common/components/ui/common/Form';
+import TextInput from '../../common/components/ui/common/TextInput/TextInput';
 
 import {
   Select,
@@ -12,11 +18,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from 'src/components/ui/common/Select/Select';
-import { Button } from 'src/ui/common/Button';
+} from 'src/common/components/ui/common/Select/Select';
+import { Button } from 'src/common/components/ui/common/Button';
 import { RefreshCcw } from 'lucide-react';
 import { Navigate, SetURLSearchParams, useNavigate } from 'react-router-dom';
-import { RefreshButton } from 'src/components/ui/common/RefreshButton';
+import { RefreshButton } from 'src/common/components/ui/common/RefreshButton';
 
 type FormValues = yup.InferType<typeof userFiltersSchema>;
 

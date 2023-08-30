@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
+import { Form, FormField, FormItem } from '../../../common/components/ui/common/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { timecardSchema } from '../../../lib/validation-schemas/timecard';
-import { Button } from 'src/ui/common/Button';
-import TextInput from '../../../components/ui/common/TextInput/TextInput';
-import { User } from 'types/models/User';
+import { timecardSchema } from 'src/common/lib/validation-schemas/timecard';
+import { Button } from 'src/common/components/ui/common/Button';
+import TextInput from '../../../common/components/ui/common/TextInput/TextInput';
+import { User } from 'src/common/types';
 
 export type CreateTimecardFormValues = y.InferType<typeof timecardSchema>;
 

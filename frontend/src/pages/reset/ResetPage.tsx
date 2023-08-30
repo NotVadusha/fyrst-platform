@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import AuthWrapper from 'src/components/AuthWrapper/AuthWrapper';
+import AuthWrapper from 'src/common/components/AuthWrapper/AuthWrapper';
 import resetImage from '../../assets/resetimage.png';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from 'src/ui/common/Button';
-import { resetPasswordApi } from 'src/store/reducers/user/resetPasswordApi';
-import { resetSchema } from 'src/lib/validation-schemas/authentication/reset';
-import { PasswordInput } from 'src/components/ui/common/PasswordInput/PasswordInput';
-import { useAppDispatch } from 'src/hooks/redux';
-import { setEmail } from 'src/store/reducers/reset-password.store';
+import { Button } from 'src/common/components/ui/common/Button';
+import { resetPasswordApi } from 'src/common/store/reducers/user/resetPasswordApi';
+import { resetSchema } from 'src/common/lib/validation-schemas/authentication/reset';
+import { PasswordInput } from 'src/common/components/ui/common/PasswordInput/PasswordInput';
+import { useAppDispatch } from 'src/common/hooks/redux';
+import { setEmail } from 'src/common/store/reducers/reset-password.store';
 
 type ResetInputs = yup.InferType<typeof resetSchema>;
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Header } from '../../components/ui/layout/Header/Header';
-import PaymentsList from '../../components/PaymentsList/PaymentsList';
+import { Header } from '../../common/components/ui/layout/Header/Header';
+import PaymentsList from '../../common/components/PaymentsList/PaymentsList';
 
 const PaymentsPage = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ProfileEditForm } from 'src/components/profileEditForm/ProfileEditForm';
-import { Header } from 'src/components/ui/layout/Header/Header';
+import { ProfileEditForm } from 'src/common/components/profileEditForm/ProfileEditForm';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
 
 const ProfileEditPage = () => {
   return (
