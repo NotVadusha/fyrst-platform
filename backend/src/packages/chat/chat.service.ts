@@ -14,6 +14,7 @@ import { UserService } from '../user/user.service';
 import { Message } from '../message/entities/message.entity';
 import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
+import { AppGateway } from 'src/app.gateway';
 
 @Injectable()
 export class ChatService {

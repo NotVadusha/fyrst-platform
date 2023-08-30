@@ -5,6 +5,7 @@ import { CreateMessageDto, UpdateMessageDto } from './dto/dto';
 import { ChatService } from '../chat/chat.service';
 import { UserService } from '../user/user.service';
 import { AppGateway } from 'src/app.gateway';
+import { User } from '../user/entities/user.entity';
 @Injectable()
 export class MessageService {
   constructor(
@@ -25,13 +26,17 @@ export class MessageService {
       ...data,
     });
 
-    this.gateway.wss.to(String(chatId)).emit('onCreate', createdMessage);
-
-    this.logger.log(`Created message with ID ${createdMessage.id}`, {
-      createdMessage,
+    const messageWithUser = await createdMessage.reload({
+      include: [User],
     });
 
-    return createdMessage;
+    this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
+
+    this.logger.log(`Created message with ID ${messageWithUser.id}`, {
+      messageWithUser,
+    });
+
+    return messageWithUser;
   }
 
   async findAll(chatId: number) {

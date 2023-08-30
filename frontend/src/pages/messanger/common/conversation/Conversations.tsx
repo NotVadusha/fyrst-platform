@@ -1,18 +1,47 @@
 import { format } from 'date-fns';
-import React from 'react';
-import { Link, useParams, useRouteError } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 import { useAppSelector } from 'src/hooks/redux';
+import { socket } from 'src/lib/socket';
 import { cn } from 'src/lib/utils';
 import { useGetAllUserChatsQuery } from 'src/store/reducers/chat/chatApi';
 
 export const Conversations: React.FC = () => {
+  const location = useLocation();
+
   const { data } = useGetAllUserChatsQuery('');
+
+  const [chats, setChats] = useState<any[]>([]);
 
   const user = useAppSelector(state => state.user);
 
+  // useEffect(() => {
+  //   setChats(data);
+
+  //   const updateChatOnNewMessage = (message: any) => {
+  //     console.log('conversations', message);
+  //     console.log(chats);
+  //     if (!chats) return;
+  //     const newChat = [
+  //       ...chats?.map(chat =>
+  //         chat.id === message.chatId ? { ...chat, messages: [message] } : chat,
+  //       ),
+  //     ]
+  //     console.log(newChat)
+  //     setChats(newChat);
+  //   };
+
+  //   socket.on('new-message', updateChatOnNewMessage);
+
+  //   return () => {
+  //     socket.off('new-message', updateChatOnNewMessage);
+  //     // socket.disconnect();
+  //   };
+  // }, [data]);
+
   return (
-    <div className='relative min-w-[260px]'>
+    <div className='relative lg:min-w-[260px]'>
       <input
         type='text'
         placeholder='Search'
@@ -25,9 +54,17 @@ export const Conversations: React.FC = () => {
               const lastMessage = chat.messages[0];
 
               const isAuthor = lastMessage?.userId === user.id;
+
+              const isOnPage = location.pathname.endsWith(chat.id);
+
               return (
                 <Link to={`/chat/${chat.id}`} key={chat.id}>
-                  <div className='w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex gap-6'>
+                  <div
+                    className={cn(
+                      'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex gap-6',
+                      { 'bg-grey': isOnPage },
+                    )}
+                  >
                     <span className='bg-[#DBDBDB] w-12 h-12 rounded-full'></span>
                     {lastMessage ? (
                       <>
@@ -37,8 +74,9 @@ export const Conversations: React.FC = () => {
                               'text-blue': isAuthor,
                             })}
                           >
-                            {isAuthor && 'You, '}
-                            {lastMessage &&
+                            {lastMessage && isAuthor && 'You, '}
+                            {!isAuthor &&
+                              lastMessage &&
                               `${lastMessage.user.first_name} ${lastMessage.user.last_name}`}
                           </span>
                           <p className='text-dark-grey text-body-small font-normal leading-5 whitespace-nowrap overflow-hidden overflow-ellipsis'>

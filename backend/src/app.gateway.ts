@@ -9,12 +9,17 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
+import { ChatService } from './packages/chat/chat.service';
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(private readonly chatService: ChatService) {}
+
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
 
+  // userId - socketId
+  private users = new Map<string, string>;
   private logger = new Logger('AppGateway');
 
   handleConnection(client: { emit: (arg0: string, arg1: string) => void }) {
@@ -23,8 +28,17 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('user-join-chat')
-  handleJoinChat(client: Socket, data: { chatId: string }) {
+  async handleJoinChat(client: Socket, data: { chatId: string }) {
+    this.logger.log(`${client.id} joined chat ${data.chatId}`);
     client.join(data.chatId);
+    const chat = await this.chatService.find(Number(data.chatId));
+    this.wss.to(client.id).emit('chat-joined', chat);
+  }
+
+  @SubscribeMessage('user-leave-chat')
+  handleLeaveChat(client: Socket, data: { chatId: string }) {
+    this.logger.log(`${client.id} left chat ${data.chatId}`);
+    client.leave(data.chatId);
   }
 
   handleDisconnect(client: Socket) {

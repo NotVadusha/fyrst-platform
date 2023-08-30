@@ -25,6 +25,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
       onKeyDown={event => {
         if (event.key !== 'Enter' || !value) return;
         handleNewMessage();
+        setValue('');
       }}
     />
   );

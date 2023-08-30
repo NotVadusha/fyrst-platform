@@ -6,6 +6,7 @@ import { ChatService } from './chat.service';
 import { UserModule } from '../user/user.module';
 import { User } from '../user/entities/user.entity';
 import { UserController } from '../user/user.controller';
+import { AppGateway } from 'src/app.gateway';
 
 @Module({
   imports: [SequelizeModule.forFeature([User, Chat]), UserModule],

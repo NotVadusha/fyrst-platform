@@ -12,7 +12,7 @@ const MessangerPage = () => {
     <>
       <div>
         <Header title='Messages' />
-        <div className='mx-20 grid gap-4'>
+        <div className='lg:mx-20 mx-10 grid gap-4'>
           <p className='text-[h6] font-semibold text-dark-grey mt-5'>Messages</p>
           <div className='flex space-x-4'>
             <Button variant='message' size='message' onClick={() => setIsOpen(true)}>

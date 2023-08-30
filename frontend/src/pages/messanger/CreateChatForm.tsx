@@ -10,6 +10,7 @@ import { chatSchema } from 'src/lib/validations/chat';
 import { useCreateChatMutation } from 'src/store/reducers/chat/chatApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'src/components/ui/common/Toast/useToast';
 
 export type Inputs = y.InferType<typeof chatSchema>;
 
@@ -33,6 +34,7 @@ export function CreateChatForm() {
       .then(res => {
         setIsLoading(false);
         navigate(0);
+        toast({title: "Success", description: "New chat successfully created"})
       })
       .catch(err => setIsLoading(false));
   }
