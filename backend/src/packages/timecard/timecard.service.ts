@@ -46,6 +46,10 @@ export class TimecardService {
       whereFilters.push({ createdBy: filters.createdBy });
     }
 
+    if (filters.bookingId !== undefined) {
+      whereFilters.push({ bookingId: filters.bookingId });
+    }
+
     const timecards = await this.timecardModel.findAll({
       where: whereFilters,
       limit: filters.limit,

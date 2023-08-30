@@ -24,15 +24,18 @@ const BookingOverview = () => {
 
   const { data: booking, isLoading, isError } = useGetBookingByIdQuery(Number(id));
 
-  const { data: timecards } = useFetchTimecardsQuery({ createdBy: String(user.id ?? 0) });
-
   const numOfPeopleReceived = booking?.users ? booking.users.length : 0;
 
   const createdAt = useFormattedDate({ dateString: String(booking?.createdAt), format: 'dash' });
   const startDate = useFormattedDate({ dateString: String(booking?.startDate), format: 'dot' });
   const endDate = useFormattedDate({ dateString: String(booking?.endDate), format: 'dot' });
 
-  if (isLoading || !booking || !timecards) return <Spinner />;
+  const { data: timecards, isLoading: isTimecardLoading } = useFetchTimecardsQuery({
+    createdBy: String(user.id),
+    bookingId: id,
+  });
+
+  if (isLoading || !booking || !user || isTimecardLoading || !timecards) return <Spinner />;
 
   if (isError || !booking) {
     toast({

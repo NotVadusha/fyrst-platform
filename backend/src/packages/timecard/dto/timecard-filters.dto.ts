@@ -31,4 +31,9 @@ export class TimecardFiltersDto {
   @IsOptional()
   @IsNumber()
   createdBy?: number;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  bookingId?: number;
 }
