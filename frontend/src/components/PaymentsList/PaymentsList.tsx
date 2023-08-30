@@ -63,28 +63,41 @@ const PaymentsList = () => {
       <div className={styles.paymentsHeader}>Payments</div>
       <div className={styles.paymentsFilters}>
         <FormProvider {...methods}>
-          <Dropdown
-            defaultValue=''
-            options={workerOptions}
-            label='Worker'
-            placeholder='Select worker'
-            control={undefined}
-            name={''}
-            ddType={'default'}
-          />
-          <div>
-            <label className='text-blue'>Start date</label>
-            <TextInput
-              control={methods.control}
-              name='selectDate'
-              label='Select Date'
-              type='date'
-            />
-          </div>
-          <div>
-            <label className='text-blue'>End date</label>
-            <TextInput control={methods.control} name='endDate' label='End Date' type='date' />
-          </div>
+          <form>
+            <div className='flex gap-x-4'>
+              <div className='flex flex-col w-full'>
+                <Dropdown
+                  className='w-[171px]'
+                  label='Worker'
+                  name='worker'
+                  control={methods.control}
+                  options={workerOptions}
+                  ddType='default'
+                  placeholder='Select worker'
+                />
+              </div>
+              <div className='flex flex-col w-full'>
+                <label className='text-blue' htmlFor='selectDate'>Start date</label>
+                <TextInput
+                  name='selectDate'
+                  control={methods.control}
+                  type='date'
+                  id='selectDate'
+                  label=''
+                />
+              </div>
+              <div className='flex flex-col w-full'>
+                <label className='text-blue' htmlFor='endDate'>End date</label>
+                <TextInput
+                  name='endDate'
+                  control={methods.control}
+                  type='date'
+                  id='endDate'
+                  label=''
+                />
+              </div>
+            </div>
+          </form>
         </FormProvider>
       </div>
       <div>
