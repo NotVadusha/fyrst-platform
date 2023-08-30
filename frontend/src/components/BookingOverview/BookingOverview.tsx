@@ -23,7 +23,6 @@ const BookingOverview = () => {
   const user = useAppSelector(state => state.user);
 
   const { data: booking, isLoading, isError } = useGetBookingByIdQuery(Number(id));
-  const { avatar, avatars } = getBookingData(id!);
 
   const { data: timecards } = useFetchTimecardsQuery({ createdBy: String(user.id ?? 0) });
 
@@ -69,10 +68,9 @@ const BookingOverview = () => {
                 startDate,
                 endDate,
                 payment: booking.pricePerHour,
-                avatar: avatar,
               }}
             />
-            <StatusCard avatars={avatars} applicantsCount={numOfPeopleReceived} />
+            <StatusCard applicantsCount={numOfPeopleReceived} />
           </div>
         </div>
       </div>
