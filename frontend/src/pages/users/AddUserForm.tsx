@@ -17,6 +17,7 @@ import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { useAddUserMutation } from 'src/store/reducers/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'src/components/ui/common/Toast/useToast';
 
 type Inputs = y.InferType<typeof userSchema>;
 
@@ -48,7 +49,10 @@ export function AddUserForm() {
       phone_number: values.phone_number ?? undefined,
     })
       .unwrap()
-      .then(payload => navigate(0))
+      .then(payload => {
+        navigate(0);
+        toast({ title: 'Success', description: 'User successfully added' });
+      })
       .catch(err => setIsLoading(false));
   }
 

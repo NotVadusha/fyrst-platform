@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from 'src/components/ui/common/Select/Select';
+import { RefreshButton } from 'src/components/ui/common/RefreshButton';
 
 const formSchema = yup.object({
   createdAt: yup.date(),
@@ -43,97 +44,100 @@ export function TimecardFiltersForm({
   console.log(statusOptions);
 
   return (
-    <Form {...form}>
-      <form>
-        <div className='flex gap-x-4'>
-          <div className='flex flex-col gap-y-2'>
-            <label className='text-body-default text-blue font-medium' htmlFor='createdAt'>
-              Created at
-            </label>
-            <FormField
-              control={form.control}
-              name='createdAt'
-              render={({ field }) => (
-                <FormItem>
-                  {/*eslint-disable-next-line */}
-                  {/*@ts-ignore*/}
-                  <TextInput
-                    control={form.control}
-                    type='date'
-                    id='createdAt'
-                    label=''
-                    {...field}
-                    onChange={handleInputChange}
-                  />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='flex flex-col gap-y-2'>
-            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
-              Approved at
-            </label>
-            <FormField
-              control={form.control}
-              name='approvedAt'
-              render={({ field }) => (
-                <FormItem>
-                  {/*eslint-disable-next-line */}
-                  {/*@ts-ignore*/}
-                  <TextInput
-                    control={form.control}
-                    type='date'
-                    id='approvedAt'
-                    label=''
-                    {...field}
-                    onChange={handleInputChange}
-                  />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='flex flex-col gap-y-2'>
-            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
-              Status
-            </label>
-            <FormField
-              control={form.control}
-              name='status'
-              render={({ field }) => (
-                <FormItem>
-                  {/*eslint-disable-next-line */}
-                  {/*@ts-ignore*/}
-                  <FormControl>
+    <div className='flex gap-2'>
+      <Form {...form}>
+        <form>
+          <div className='flex gap-x-4'>
+            <div className='flex flex-col gap-y-2'>
+              <label className='text-body-default text-blue font-medium' htmlFor='createdAt'>
+                Created at
+              </label>
+              <FormField
+                control={form.control}
+                name='createdAt'
+                render={({ field }) => (
+                  <FormItem>
                     {/*eslint-disable-next-line */}
                     {/*@ts-ignore*/}
-                    <Select onValueChange={value => handleSelectChange(value, 'status')}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <span className='font-semibold'>
-                            <SelectValue placeholder='no option selected' />
+                    <TextInput
+                      control={form.control}
+                      type='date'
+                      id='createdAt'
+                      label=''
+                      {...field}
+                      onChange={handleInputChange}
+                    />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className='flex flex-col gap-y-2'>
+              <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
+                Approved at
+              </label>
+              <FormField
+                control={form.control}
+                name='approvedAt'
+                render={({ field }) => (
+                  <FormItem>
+                    {/*eslint-disable-next-line */}
+                    {/*@ts-ignore*/}
+                    <TextInput
+                      control={form.control}
+                      type='date'
+                      id='approvedAt'
+                      label=''
+                      {...field}
+                      onChange={handleInputChange}
+                    />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className='flex flex-col gap-y-2'>
+              <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
+                Status
+              </label>
+              <FormField
+                control={form.control}
+                name='status'
+                render={({ field }) => (
+                  <FormItem>
+                    {/*eslint-disable-next-line */}
+                    {/*@ts-ignore*/}
+                    <FormControl>
+                      {/*eslint-disable-next-line */}
+                      {/*@ts-ignore*/}
+                      <Select onValueChange={value => handleSelectChange(value, 'status')}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <span className='font-semibold'>
+                              <SelectValue placeholder='no option selected' />
+                            </span>
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <span className='font-semibold text-dark-blue'>
+                            <SelectItem value=''>no option selected</SelectItem>
                           </span>
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <span className='font-semibold text-dark-blue'>
-                          <SelectItem value=''>no option selected</SelectItem>
-                        </span>
-                        {Object.values(TimecardStatus).map(status => (
-                          <span className='font-semibold text-dark-blue' key={status}>
-                            <SelectItem value={status}>{status}</SelectItem>
-                          </span>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                          {Object.values(TimecardStatus).map(status => (
+                            <span className='font-semibold text-dark-blue' key={status}>
+                              <SelectItem value={status}>{status}</SelectItem>
+                            </span>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+      <RefreshButton />
+    </div>
   );
 }
