@@ -1,6 +1,8 @@
 import React from 'react';
 import { ReactComponent as ChevronLeft } from '../../../icons/chevron-left.svg';
 import { ReactComponent as ChevronRight } from '../../../icons/chevron-right.svg';
+import { ReactComponent as DoubleChevronLeft } from '../../../icons/double-chevron-left.svg';
+import { ReactComponent as DoubleChevronRight } from '../../../icons/double-chevron-right.svg';
 import { PaginationButton } from './PaginationButton';
 
 export interface PaginationProps {
@@ -33,6 +35,9 @@ export function Pagination({ value, totalCount, siblingsCount, onChange }: Pagin
 
   return (
     <div className='flex items-center justify-center'>
+      <PaginationButton onClick={() => onChange(1)}>
+        <DoubleChevronLeft className='w-6 h-6 font-semibold inline-block' />
+      </PaginationButton>
       <PaginationButton onClick={() => onChange(value - 1)} disabled={value === 1}>
         <ChevronLeft className='w-6 h-6 inline-block' />
       </PaginationButton>
@@ -50,6 +55,9 @@ export function Pagination({ value, totalCount, siblingsCount, onChange }: Pagin
       </ul>
       <PaginationButton onClick={() => onChange(value + 1)} disabled={value === totalCount}>
         <ChevronRight className='w-6 h-6 inline-block' />
+      </PaginationButton>
+      <PaginationButton onClick={() => onChange(totalCount)}>
+        <DoubleChevronRight className='w-6 h-6 font-semibold inline-block' />
       </PaginationButton>
     </div>
   );
