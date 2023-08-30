@@ -1,28 +1,36 @@
 import { format } from 'date-fns';
-import React from 'react';
-import { Link, useParams, useRouteError } from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 import { useAppSelector } from 'src/hooks/redux';
 import { cn } from 'src/lib/utils';
-import { useGetAllUserChatsQuery } from 'src/store/reducers/chat/chatApi';
+import { useGetAllUserChatsQuery, useSearchChatsQuery } from 'src/store/reducers/chat/chatApi';
+import { SearchInput } from './common/SearchInput';
+import { useDebounce } from 'src/hooks/useDebounce';
 
 export const Conversations: React.FC = () => {
-  const { data } = useGetAllUserChatsQuery('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  const { data: allChats } = useGetAllUserChatsQuery('');
+  const { data: searchedChats } = useSearchChatsQuery(searchQuery);
+
+  const chatsToShow = debouncedSearchQuery ? searchedChats : allChats;
 
   const user = useAppSelector(state => state.user);
 
+  const handleChange = useCallback((value: string) => {
+    setSearchQuery(value);
+  }, []);
+
   return (
     <div className='relative min-w-[260px]'>
-      <input
-        type='text'
-        placeholder='Search'
-        className='absolute top-0 left-0 z-10 p-4 rounded-2xl bg-field text-body-default w-full opacity-50'
-      />
+      <SearchInput value={searchQuery} onChange={handleChange} />
       <ScrollArea className='mt-16 h-[120px] xl:h-[400px] w-full p-2'>
         <div className='grid gap-4'>
-          {data?.length > 0 ? (
-            data?.map((chat: any) => {
-              const lastMessage = chat.messages[0];
+          {chatsToShow?.length > 0 ? (
+            chatsToShow?.map((chat: any) => {
+              const lastMessage = chat.messages ? chat.messages[0] : null;
 
               const isAuthor = lastMessage?.userId === user.id;
               return (
