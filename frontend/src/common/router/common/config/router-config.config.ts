@@ -3,7 +3,7 @@ import { ReactComponent as Timecard } from 'src/assets/icons/timecard.svg';
 import { ReactComponent as Profile } from 'src/assets/icons/profile.svg';
 import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
-import { NavItem } from 'src/common/types';
+import { NavItem } from '../types/NavItem';
 import { UserCog } from 'lucide-react';
 
 export const routerConfig = {

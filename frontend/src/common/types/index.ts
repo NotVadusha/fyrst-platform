@@ -1,19 +1,10 @@
-interface SVGIconProps extends React.SVGProps<SVGSVGElement> {
+export interface SVGIconProps extends React.SVGProps<SVGSVGElement> {
   title?: string;
   className?: string;
 }
-
-export interface NavItem {
-  title: string;
-  path: string;
-  mainPath: string;
-  icon?: React.FunctionComponent<SVGIconProps>;
-  items?: NavItem[];
-}
-
 export type JwtPayload = {
   id: number;
-};
+}; // TODO: add this to shared
 
 export interface User {
   id: number;

@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'src/common/router/common/config/router-config.config';
 import { ReactComponent as ArrowDown } from 'src/assets/icons/arrow-down.svg';
 import { ReactComponent as ArrowUp } from 'src/assets/icons/arrow-up.svg';
-import { NavItem as INavItem } from 'src/common/types';
+import { NavItem as INavItem } from 'src/common/router/common/types/NavItem';
 import { Button } from 'src/common/components/ui/common/Button';
 import { authApi } from 'src/common/store/api/packages/authentication/authApi';
 import { clearUser, setUser } from 'src/common/store/slices/packages/user/userSlice';
