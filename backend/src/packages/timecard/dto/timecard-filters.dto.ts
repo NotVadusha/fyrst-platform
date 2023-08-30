@@ -26,4 +26,9 @@ export class TimecardFiltersDto {
   @IsOptional()
   @IsNumber()
   offset? = 0;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  createdBy?: number;
 }
