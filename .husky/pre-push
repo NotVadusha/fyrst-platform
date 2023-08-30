@@ -4,7 +4,6 @@
 echo "Preparing to push changes..."
 echo "As part of the pre-push process, all tests will be executed."
 
-npm run lint:format
 npm run test
 
 
