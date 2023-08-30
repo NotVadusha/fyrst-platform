@@ -2,9 +2,17 @@ import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
+import { Form, FormField, FormItem, FormControl } from '../../../components/ui/common/Form';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
 import { TimecardStatus } from 'shared/timecard-status';
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from 'src/components/ui/common/Select/Select';
 
 const formSchema = yup.object({
   createdAt: yup.date(),
@@ -18,12 +26,21 @@ type FormValues = yup.InferType<typeof formSchema>;
 
 export function TimecardFiltersForm({
   handleInputChange,
+  handleSelectChange,
 }: {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSelectChange: (value: string, param: string) => void;
 }) {
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(formSchema),
   });
+
+  const statusOptions = Object.values(TimecardStatus).map(status => ({
+    label: status,
+    value: status,
+  }));
+
+  console.log(statusOptions);
 
   return (
     <Form {...form}>
@@ -72,6 +89,45 @@ export function TimecardFiltersForm({
                     {...field}
                     onChange={handleInputChange}
                   />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className='flex flex-col gap-y-2'>
+            <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
+              Status
+            </label>
+            <FormField
+              control={form.control}
+              name='status'
+              render={({ field }) => (
+                <FormItem>
+                  {/*eslint-disable-next-line */}
+                  {/*@ts-ignore*/}
+                  <FormControl>
+                    {/*eslint-disable-next-line */}
+                    {/*@ts-ignore*/}
+                    <Select onValueChange={value => handleSelectChange(value, 'status')}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <span className='font-semibold'>
+                            <SelectValue placeholder='no option selected' />
+                          </span>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <span className='font-semibold text-dark-blue'>
+                          <SelectItem value=''>no option selected</SelectItem>
+                        </span>
+                        {Object.values(TimecardStatus).map(status => (
+                          <span className='font-semibold text-dark-blue' key={status}>
+                            <SelectItem value={status}>{status}</SelectItem>
+                          </span>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                 </FormItem>
               )}
             />
