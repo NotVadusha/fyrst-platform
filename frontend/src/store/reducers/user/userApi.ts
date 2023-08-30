@@ -74,16 +74,19 @@ export const userApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    changePassword: build.mutation<ChangePasswordResponse, { id: number; currentPassword: string; newPassword: string }>({
-        query: args => ({
-          url: `/user/change-password/${args.id}`,
-          method: 'PATCH',
-          body: {
-            currentPassword: args.currentPassword,
-            newPassword: args.newPassword,
-          },
-        }),
+    changePassword: build.mutation<
+      ChangePasswordResponse,
+      { id: number; currentPassword: string; newPassword: string }
+    >({
+      query: args => ({
+        url: `/user/change-password/${args.id}`,
+        method: 'PATCH',
+        body: {
+          currentPassword: args.currentPassword,
+          newPassword: args.newPassword,
+        },
       }),
+    }),
   }),
 });
 

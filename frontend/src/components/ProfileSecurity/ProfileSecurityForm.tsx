@@ -104,8 +104,7 @@ const ProfileSecurityForm = () => {
           </Button>
           {showForgotPassword && (
             <p className='text-sm mt-5'>
-              <Link to='/auth/forgot'>Forgot your password?
-              Reset it here.</Link>
+              <Link to='/auth/forgot'>Forgot your password? Reset it here.</Link>
             </p>
           )}
         </div>
