@@ -7,7 +7,7 @@ import {
 import { Mutex } from 'async-mutex';
 import { baseQuery } from './baseQuery.config';
 import jwtDecode from 'jwt-decode';
-import { JwtPayload } from 'src/common/types';
+import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
 import { TokenResponseDto } from 'src/common/packages/authentication/login/types/dto/TokenResponseDto';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
@@ -27,7 +27,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       const release = await mutex.acquire();
 
       try {
-        const payload = jwtDecode<JwtPayload>(localStorage.getItem('accessToken') || '');
+        const payload = jwtDecode<JWTPayload>(localStorage.getItem('accessToken') || '');
 
         const refreshResult = await baseQuery(
           {

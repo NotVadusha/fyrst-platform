@@ -2,9 +2,6 @@ export interface SVGIconProps extends React.SVGProps<SVGSVGElement> {
   title?: string;
   className?: string;
 }
-export type JwtPayload = {
-  id: number;
-}; // TODO: add this to shared
 
 export interface User {
   id: number;
