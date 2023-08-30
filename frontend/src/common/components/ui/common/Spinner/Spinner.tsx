@@ -4,7 +4,6 @@ import { NonNullableMapped } from 'shared/NonNullableMapped';
 
 export const spinnerVariants = cva('bg-black rounded-full absolute inset-0 m-auto', {
   variants: {
-    /**Changes the distance of the dots from the center and the size of each dot*/
     size: {
       lg: 'animate-[spinAroundLg_4s_linear_infinite]',
       sm: 'animate-[spinAroundSm_4s_linear_infinite]',

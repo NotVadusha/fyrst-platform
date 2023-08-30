@@ -1,4 +1,4 @@
-import { Facility } from 'src/common/types/models/Facility';
+import { Facility } from 'src/common/packages/facility/types/models/Facility.model';
 import { apiSlice } from '../apiSlice';
 
 const facilityApi = apiSlice.injectEndpoints({

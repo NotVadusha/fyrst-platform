@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
-import { Button } from 'src/common/components/ui/common/Button';
+import { Button } from 'src/common/components/ui/common/Button/index';
 import Table, { ColumnInfo } from 'src/common/components/ui/common/Table/Table';
 import { useAddUsersMutation, useGetUsersQuery } from 'src/common/store/reducers/user/userApi';
 import { User } from 'src/common/types';
@@ -8,7 +8,7 @@ import { Pagination } from 'src/common/components/ui/common/Pagination/Paginatio
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UserFilters } from 'src/common/types/UserFilters';
+import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
 import { UserActions } from './UserActions';
 import Papa from 'papaparse';
 import { AddUserButton } from './AddUserButton';

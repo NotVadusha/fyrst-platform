@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Card } from 'src/common/components/ui/common/Card';
+import { Card } from 'src/common/components/ui/common/Card/Card';
 import { CreateTimeCardForm } from 'src/pages/timecards/create/CreateTimeCardForm';
-import { GoBackButton } from 'src/common/components/ui/common/GoBackButton';
+import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateTimecardMutation } from 'src/common/store/reducers/timecards/timecardsApi';

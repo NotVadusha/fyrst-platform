@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Card, CardContent, CardTitle } from 'src/common/components/ui/common/Card';
-import { GoBackButton } from 'src/common/components/ui/common/GoBackButton';
+import { Card, CardContent, CardTitle } from 'src/common/components/ui/common/Card/Card';
+import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { useParams } from 'react-router-dom';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Header } from 'src/common/components/ui/layout/Header/Header';

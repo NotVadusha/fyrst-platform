@@ -1,8 +1,8 @@
 import { apiSlice } from '../apiSlice';
-import { MessageResponseDto } from 'src/common/types/dto/MessageResponseDto';
-import { SignInDto } from 'src/common/types/dto/authentication/SignInDto';
-import { SignInResponseDto } from 'src/common/types/dto/authentication/SignInResponseDto';
-import { SignUpDto } from 'src/common/types/dto/authentication/SignUpDto';
+import { MessageResponseDto } from 'src/common/packages/authentication/message/types/dto/MessageResponseDto';
+import { SignInDto } from 'src/common/packages/authentication/login/types/dto/SignInDto';
+import { SignInResponseDto } from 'src/common/packages/authentication/login/types/dto/SignInResponseDto';
+import { SignUpDto } from 'src/common/packages/authentication/login/types/dto/SignUpDto';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: build => ({

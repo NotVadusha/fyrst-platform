@@ -15,18 +15,8 @@ export interface ColumnInfo<T> {
 }
 
 interface TableProps<T> extends React.HTMLAttributes<HTMLTableElement> {
-  /**
-   * Items to render
-   */
   items: T[];
-  /**
-   * An array of objects describing the layout of each column.
-   * Mapping function or custom components can be passed as needed.
-   */
   columns: ColumnInfo<T>[];
-  /**
-   * Callback to get a unique identifier for each row of the table
-   */
   getRowId: (item: T) => Key;
 }
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { Form } from '../../../common/components/ui/common/Form';
-import TextInput from '../../../common/components/ui/common/TextInput/TextInput';
+import { Form } from '../../../common/components/ui/common/Form/Form';
+import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
 import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
 import { useFetchFacilitiesQuery } from 'src/common/store/reducers/facility/facilityApi';
 

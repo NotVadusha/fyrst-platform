@@ -8,7 +8,7 @@ import { Mutex } from 'async-mutex';
 import { baseQuery } from './baseQuery';
 import jwtDecode from 'jwt-decode';
 import { JwtPayload } from 'src/common/types';
-import { TokenResponseDto } from 'src/common/types/dto/authentication/TokenResponseDto';
+import { TokenResponseDto } from 'src/common/packages/authentication/login/types/dto/TokenResponseDto';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 const mutex = new Mutex();

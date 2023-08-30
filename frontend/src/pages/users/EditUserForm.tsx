@@ -8,12 +8,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from 'src/common/components/ui/common/Form';
+} from 'src/common/components/ui/common/Form/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { userSchema } from 'src/common/lib/validations/user';
+import { userSchema } from 'src/common/packages/user/types/validation-schemas/user.validation-schema';
 import { Button } from 'src/common/components/ui/common/Button';
-import TextInput from 'src/common/components/ui/common/TextInput/TextInput';
+import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import { useAddUserMutation, useUpdateUserMutation } from 'src/common/store/reducers/user/userApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { User } from 'src/common/types';

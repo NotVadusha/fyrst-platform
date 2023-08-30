@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Dropdown, DropdownOption, DropdownProps } from './Dropdown';
+import { Dropdown, DropdownProps } from './Dropdown';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { Form } from '../Form';
+import { Form } from '../Form/Form';
 
 const meta: Meta<typeof Dropdown> = {
   component: Dropdown,

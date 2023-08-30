@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Card } from 'src/common/components/ui/common/Card';
-import { GoBackButton } from 'src/common/components/ui/common/GoBackButton';
+import { Card } from 'src/common/components/ui/common/Card/Card';
+import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { CreateBookingForm, Inputs } from './CreateBookingForm';
 import { useCreateBookingMutation } from 'src/common/store/reducers/bookings/bookingApi';

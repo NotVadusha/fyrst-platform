@@ -1,6 +1,6 @@
-import { UpdateUserBody, UserDefaultResponse } from 'src/common/types/dto/UserDto';
-import { UserProfile } from 'src/common/types/models/UserProfile';
-import { UserFilters } from 'src/common/types/UserFilters';
+import { UpdateUserBody, UserDefaultResponse } from 'src/common/packages/user/types/dto/UserDto';
+import { UserProfile } from 'src/common/packages/user/common/user-profile/types/models/UserProfile.model';
+import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
 import { apiSlice } from '../apiSlice';
 
 export interface getUsersQueryParams {

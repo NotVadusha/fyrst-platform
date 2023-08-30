@@ -1,11 +1,11 @@
-import { MessageResponseDto } from 'src/common/types/dto/MessageResponseDto';
+import { MessageResponseDto } from 'src/common/packages/authentication/message/types/dto/MessageResponseDto';
 import { apiSlice } from '../apiSlice';
-import { ForgotDto } from 'src/common/types/dto/reset-password/ForgotDto';
-import { ResetDto } from 'src/common/types/dto/reset-password/ResetDto';
+import { ForgotPasswordDto } from 'src/common/packages/authentication/password/types/dto/ForgotPasswordDto';
+import { ResetDto } from 'src/common/packages/authentication/password/types/dto/ResetPasswordDto';
 
 export const resetPasswordApi = apiSlice.injectEndpoints({
   endpoints: build => ({
-    forgot: build.query<MessageResponseDto, ForgotDto>({
+    forgot: build.query<MessageResponseDto, ForgotPasswordDto>({
       query: body => ({
         url: '/reset-password',
         method: 'POST',

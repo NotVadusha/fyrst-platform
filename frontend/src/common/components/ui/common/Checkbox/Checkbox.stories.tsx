@@ -4,7 +4,7 @@ import Checkbox, { CheckboxProps } from './Checkbox';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { Form } from '../Form';
+import { Form } from '../Form/Form';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'UI/Common/Checkbox',

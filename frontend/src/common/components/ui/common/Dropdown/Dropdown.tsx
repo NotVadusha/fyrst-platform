@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import styles from './Dropdownd.module.css';
+import styles from './Dropdown.module.css';
 import { ReactComponent as ArrowIcon } from 'src/assets/icons/arrow-down.svg';
-import { FormControl, FormField, FormItem, FormLabel, useFormField } from '../Form';
+import { FormControl, FormField, FormItem, FormLabel } from '../Form/Form';
 import { cva } from 'class-variance-authority';
 import { useDetectClickOutside } from 'react-detect-click-outside';
-import { useCombinedRefs } from 'src/common/hooks/useCombinedRef';
+import { useCombinedRefs } from 'src/common/hooks/use-combined-ref/useCombinedRef.hook';
 
 const arrow = cva(styles.arrow, {
   variants: {

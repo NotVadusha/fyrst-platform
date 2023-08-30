@@ -26,4 +26,4 @@ export interface User {
   password?: string;
   is_confirmed: boolean;
   role_id: number;
-}
+} // TODO: remove User from index

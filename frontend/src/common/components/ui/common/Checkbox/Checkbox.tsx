@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './Checkbox.module.css';
-import { FormControl, FormField, FormItem, FormLabel, useFormField } from '../Form';
+import { FormControl, FormField, FormItem, FormLabel } from '../Form/Form';
 
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
@@ -10,7 +10,7 @@ export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElemen
   checked?: boolean;
 }
 
-const Checkbox = ({ control, name, label, className, checked, ...props }: CheckboxProps) => {
+const Checkbox = ({ control, name, label, className, ...props }: CheckboxProps) => {
   return (
     <FormField
       control={control}

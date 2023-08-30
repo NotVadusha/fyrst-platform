@@ -1,6 +1,6 @@
 import React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
-import { cn } from 'src/common/lib/utils';
+import { cn } from 'src/common/helpers/helpers';
 
 export const buttonVariants = cva(
   'inline-flex items-center justify-center text-base relative rounded-lg cursor-pointer !leading-none disabled:cursor-not-allowed',

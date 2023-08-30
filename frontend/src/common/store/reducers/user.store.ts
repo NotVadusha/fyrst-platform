@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { User } from 'src/common/types/models/User';
+import { User } from 'src/common/packages/user/types/models/User.model';
 
 const initialState: Partial<User> = {
   id: undefined,

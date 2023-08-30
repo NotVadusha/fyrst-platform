@@ -5,10 +5,10 @@ import { useGetAllBookingsQuery } from 'src/common/store/reducers/bookings/booki
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Link, useSearchParams } from 'react-router-dom';
-import { BookingFiltersDto } from 'src/common/types/dto/BookingFiltersDto';
+import { BookingFiltersDto } from 'src/common/packages/booking/types/dto/BookingFiltersDto';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button';
-import { RefreshButton } from 'src/common/components/ui/common/RefreshButton';
+import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 const LIMIT = 6;
 

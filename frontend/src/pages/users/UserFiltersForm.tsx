@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { userFiltersSchema } from 'src/common/lib/validations/user-filters';
+import { userFiltersSchema } from 'src/common/packages/user/common/user-filters/types/validation-schemas/user-filters.validation-schema';
 import * as yup from 'yup';
 import {
   Form,
@@ -9,8 +9,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from '../../common/components/ui/common/Form';
-import TextInput from '../../common/components/ui/common/TextInput/TextInput';
+} from '../../common/components/ui/common/Form/Form';
+import TextInput from '../../common/components/ui/common/Input/common/TextInput/TextInput';
 
 import {
   Select,
@@ -22,7 +22,7 @@ import {
 import { Button } from 'src/common/components/ui/common/Button';
 import { RefreshCcw } from 'lucide-react';
 import { Navigate, SetURLSearchParams, useNavigate } from 'react-router-dom';
-import { RefreshButton } from 'src/common/components/ui/common/RefreshButton';
+import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 type FormValues = yup.InferType<typeof userFiltersSchema>;
 
