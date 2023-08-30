@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './BookingOverview.module.css';
 import { Button } from '../../../common/components/ui/common/Button';
-import { useAddUserToBookingMutation } from 'src/common/store/reducers/bookings/bookingApi';
+import { useAddUserToBookingMutation } from 'src/common/store/api/packages/bookings/bookingApi';
 import { useToast } from '../../../common/components/ui/common/Toast/useToast';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { Booking } from 'src/common/packages/booking/types/models/Booking.model';

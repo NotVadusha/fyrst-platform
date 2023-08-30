@@ -5,14 +5,14 @@ import BookingDescription from './BookingDescription';
 import AdditionalDetails from './AdditionalDetails';
 import StatusCard from './StatusCard';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetBookingByIdQuery } from 'src/common/store/reducers/bookings/bookingApi';
+import { useGetBookingByIdQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import { Header } from '../../../common/components/ui/layout/Header/Header';
 import { GoBackButton } from '../../../common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { useToast } from '../../../common/components/ui/common/Toast/useToast';
 import { Spinner } from '../../../common/components/ui/common/Spinner/Spinner';
 import { useFormattedDate } from 'src/common/hooks/use-formatted-date/useFormattedDate.hook';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { useFetchTimecardsQuery } from 'src/common/store/reducers/timecards/timecardsApi';
+import { useFetchTimecardsQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 
 const BookingOverview = () => {
   const { id } = useParams<{ id: string }>();

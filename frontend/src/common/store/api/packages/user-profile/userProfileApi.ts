@@ -1,5 +1,5 @@
 import { ProfileDto } from 'src/common/packages/user/common/user-profile/types/dto/ProfileDto';
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../../api';
 import { UpdateProfileDto } from 'src/common/packages/user/common/user-profile/types/dto/UpdateProfileDto';
 
 export const profileApi = apiSlice.injectEndpoints({

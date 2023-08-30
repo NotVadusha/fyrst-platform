@@ -1,7 +1,7 @@
 import { Booking } from 'src/common/packages/booking/types/models/Booking.model';
-import { BookingFiltersDto } from '../../../packages/booking/types/dto/BookingFiltersDto';
-import { GetAllBookingsDto } from '../../../packages/booking/types/dto/GetAllBookingsDto';
-import { apiSlice } from '../apiSlice';
+import { BookingFiltersDto } from '../../../../packages/booking/types/dto/BookingFiltersDto';
+import { GetAllBookingsDto } from '../../../../packages/booking/types/dto/GetAllBookingsDto';
+import { apiSlice } from '../../api';
 export const bookingApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getAllBookings: builder.query<GetAllBookingsDto, BookingFiltersDto>({

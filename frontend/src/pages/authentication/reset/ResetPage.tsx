@@ -6,11 +6,11 @@ import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/common/components/ui/common/Button';
-import { resetPasswordApi } from 'src/common/store/reducers/user/resetPasswordApi';
+import { resetPasswordApi } from 'src/common/store/api/packages/reset-password/resetPasswordApi';
 import { resetPasswordSchema } from 'src/common/packages/authentication/password/types/validation-schemas/reset-password.validation-schema';
 import { PasswordInput } from 'src/common/components/ui/common/Input/common/PasswordInput/PasswordInput';
 import { useAppDispatch } from 'src/common/hooks/redux';
-import { setEmail } from 'src/common/store/reducers/reset-password.store';
+import { setEmail } from 'src/common/store/slices/packages/reset-password/resetPasswordSlice';
 
 type ResetInputs = yup.InferType<typeof resetPasswordSchema>;
 

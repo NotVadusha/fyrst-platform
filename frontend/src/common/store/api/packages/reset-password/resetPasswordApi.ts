@@ -1,5 +1,5 @@
 import { MessageResponseDto } from 'src/common/packages/authentication/message/types/dto/MessageResponseDto';
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../../api';
 import { ForgotPasswordDto } from 'src/common/packages/authentication/password/types/dto/ForgotPasswordDto';
 import { ResetDto } from 'src/common/packages/authentication/password/types/dto/ResetPasswordDto';
 

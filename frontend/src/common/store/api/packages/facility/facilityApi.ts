@@ -1,5 +1,5 @@
 import { Facility } from 'src/common/packages/facility/types/models/Facility.model';
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../../api';
 
 const facilityApi = apiSlice.injectEndpoints({
   endpoints(builder) {

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import AuthWrapper from 'src/pages/authentication/AuthWrapper/AuthWrapper';
 import imageSent from 'src/assets/imageSent.png';
 import { Button } from 'src/common/components/ui/common/Button';
-import { resetPasswordApi } from 'src/common/store/reducers/user/resetPasswordApi';
+import { resetPasswordApi } from 'src/common/store/api/packages/reset-password/resetPasswordApi';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { useNavigate } from 'react-router-dom';
-import { setEmail } from 'src/common/store/reducers/reset-password.store';
+import { setEmail } from 'src/common/store/slices/packages/reset-password/resetPasswordSlice';
 
 const EmailSentPage = () => {
   const [forgot, { error }] = resetPasswordApi.useLazyForgotQuery();

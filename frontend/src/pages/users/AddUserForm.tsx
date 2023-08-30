@@ -14,7 +14,7 @@ import * as y from 'yup';
 import { userSchema } from 'src/common/packages/user/types/validation-schemas/user.validation-schema';
 import { Button } from 'src/common/components/ui/common/Button';
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
-import { useAddUserMutation } from 'src/common/store/reducers/user/userApi';
+import { useAddUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';

@@ -1,8 +1,8 @@
-import { apiSlice } from '../apiSlice';
-import { Timecard } from '../../../packages/timecard/types/models/Timecard.model';
-import { TimecardFiltersDto } from '../../../packages/timecard/types/dto/TimecardFiltersDto';
-import { GetAllTimecardsDto } from '../../../packages/timecard/types/dto/GetAllTimecardsDto';
-import { CreateTimecardDto } from '../../../packages/timecard/types/dto/CreateTimecardDto';
+import { apiSlice } from '../../api';
+import { Timecard } from '../../../../packages/timecard/types/models/Timecard.model';
+import { TimecardFiltersDto } from '../../../../packages/timecard/types/dto/TimecardFiltersDto';
+import { GetAllTimecardsDto } from '../../../../packages/timecard/types/dto/GetAllTimecardsDto';
+import { CreateTimecardDto } from '../../../../packages/timecard/types/dto/CreateTimecardDto';
 
 const timecardsApi = apiSlice.injectEndpoints({
   endpoints(builder) {

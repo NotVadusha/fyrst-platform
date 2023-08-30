@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import { Navigate } from 'react-router-dom';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
-import { useLazyGetUserQuery } from 'src/common/store/reducers/user/userApi';
+import { useLazyGetUserQuery } from 'src/common/store/api/packages/user/userApi';
 import { useAppDispatch } from 'src/common/hooks/redux';
-import { setUser } from 'src/common/store/reducers/user.store';
+import { setUser } from 'src/common/store/slices/packages/user/userSlice';
 
 export type ProtectedRouteProps = {
   children: JSX.Element;

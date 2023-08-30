@@ -9,10 +9,10 @@ import { PasswordInput } from 'src/common/components/ui/common/Input/common/Pass
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/common/components/ui/common/Button';
 import { ReactComponent as GoogleLogo } from 'src/assets/icons/google.svg';
-import { authApi } from 'src/common/store/reducers/user/authApi';
+import { authApi } from 'src/common/store/api/packages/authentication/authApi';
 import { loginSchema } from 'src/common/packages/authentication/login/types/validation-schemas/login.validation-schema';
 import { useAppDispatch } from 'src/common/hooks/redux';
-import { setUser } from 'src/common/store/reducers/user.store';
+import { setUser } from 'src/common/store/slices/packages/user/userSlice';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type LoginInputs = yup.InferType<typeof loginSchema>;

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useAppDispatch } from 'src/common/hooks/redux';
-import { setUser } from 'src/common/store/reducers/user.store';
+import { setUser } from 'src/common/store/slices/packages/user/userSlice';
 
 const SuccessGoogleAuthPage = () => {
   const dispatch = useAppDispatch();

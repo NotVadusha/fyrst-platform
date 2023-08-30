@@ -6,7 +6,7 @@ import { Pagination } from 'src/common/components/ui/common/Pagination/Paginatio
 import Table from 'src/common/components/ui/common/Table/Table';
 import { TimecardFiltersForm } from './TimecardFiltersForm';
 import { timecardsTableColumns } from './timecardsTableConfig';
-import { useFetchTimecardsQuery } from 'src/common/store/reducers/timecards/timecardsApi';
+import { useFetchTimecardsQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFiltersDto } from 'src/common/packages/timecard/types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';

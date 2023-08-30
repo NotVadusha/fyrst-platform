@@ -7,10 +7,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'src/common/components/ui/common/Button';
-import { resetPasswordApi } from 'src/common/store/reducers/user/resetPasswordApi';
+import { resetPasswordApi } from 'src/common/store/api/packages/reset-password/resetPasswordApi';
 import { forgotPasswordSchema } from 'src/common/packages/authentication/password/types/validation-schemas/forgot-password.validation-schema';
 import { useAppDispatch } from 'src/common/hooks/redux';
-import { setEmail } from 'src/common/store/reducers/reset-password.store';
+import { setEmail } from 'src/common/store/slices/packages/reset-password/resetPasswordSlice';
 
 type ForgotInputs = yup.InferType<typeof forgotPasswordSchema>;
 

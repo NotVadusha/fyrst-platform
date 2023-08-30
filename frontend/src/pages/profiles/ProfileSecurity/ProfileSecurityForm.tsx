@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './ProfileSecurity.module.css';
 import { updatePasswordSchema } from 'src/common/packages/authentication/password/types/validation-schemas/update-password.validation-schema';
 import { useToast } from '../../../common/components/ui/common/Toast/useToast';
-import { useChangePasswordMutation } from 'src/common/store/reducers/user/userApi';
+import { useChangePasswordMutation } from 'src/common/store/api/packages/user/userApi';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { Link } from 'react-router-dom';
 

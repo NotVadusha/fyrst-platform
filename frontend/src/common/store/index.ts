@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import resetPasswordSlice from './reducers/reset-password.store';
-import userSlice from './reducers/user.store';
-import { apiSlice } from './reducers/apiSlice';
+import resetPasswordSlice from './slices/packages/reset-password/resetPasswordSlice';
+import userSlice from './slices/packages/user/userSlice';
+import { apiSlice } from './api/api';
 
 const rootReducer = combineReducers({
   resetPassword: resetPasswordSlice,

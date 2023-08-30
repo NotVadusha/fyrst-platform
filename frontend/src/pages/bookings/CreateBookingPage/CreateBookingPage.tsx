@@ -4,7 +4,7 @@ import { Card } from 'src/common/components/ui/common/Card/Card';
 import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { CreateBookingForm, Inputs } from './CreateBookingForm';
-import { useCreateBookingMutation } from 'src/common/store/reducers/bookings/bookingApi';
+import { useCreateBookingMutation } from 'src/common/store/api/packages/bookings/bookingApi';
 import { useNavigate } from 'react-router-dom';
 
 export const CreateBookingPage = () => {

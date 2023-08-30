@@ -5,7 +5,7 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/dist/query';
 import { Mutex } from 'async-mutex';
-import { baseQuery } from './baseQuery';
+import { baseQuery } from './baseQuery.config';
 import jwtDecode from 'jwt-decode';
 import { JwtPayload } from 'src/common/types';
 import { TokenResponseDto } from 'src/common/packages/authentication/login/types/dto/TokenResponseDto';

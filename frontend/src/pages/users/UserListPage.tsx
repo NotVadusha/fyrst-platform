@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button/index';
 import Table, { ColumnInfo } from 'src/common/components/ui/common/Table/Table';
-import { useAddUsersMutation, useGetUsersQuery } from 'src/common/store/reducers/user/userApi';
+import { useAddUsersMutation, useGetUsersQuery } from 'src/common/store/api/packages/user/userApi';
 import { User } from 'src/common/types';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';

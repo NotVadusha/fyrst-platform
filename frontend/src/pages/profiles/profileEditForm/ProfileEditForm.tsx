@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormField, FormItem } from 'src/common/components/ui/common/Form/Form';
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import { profileSchema } from 'src/common/packages/user/common/user-profile/types/validation-schemas/user-profile.validation-schema';
-import { useUpdateUserMutation } from 'src/common/store/reducers/user/userApi';
+import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { Button } from 'src/common/components/ui/common/Button';
 import { User } from 'src/common/types';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
@@ -16,7 +16,7 @@ import { AvatarUploader } from './AvatarUploader';
 import CityInput from './CityInput';
 import CustomPhoneInput from './CustomPhoneInput';
 import DateInput from './DateInput';
-import { profileApi } from 'src/common/store/reducers/user/profileApi';
+import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { Buffer } from 'buffer';
 
 type Inputs = y.InferType<typeof profileSchema>;

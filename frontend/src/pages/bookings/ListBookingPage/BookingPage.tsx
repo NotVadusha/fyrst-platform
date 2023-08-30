@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BookingGrid from './BookingsGrid';
 import { BookingFilters } from './BookingFilters';
-import { useGetAllBookingsQuery } from 'src/common/store/reducers/bookings/bookingApi';
+import { useGetAllBookingsQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Link, useSearchParams } from 'react-router-dom';

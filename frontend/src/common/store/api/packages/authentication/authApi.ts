@@ -1,4 +1,4 @@
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../../api';
 import { MessageResponseDto } from 'src/common/packages/authentication/message/types/dto/MessageResponseDto';
 import { SignInDto } from 'src/common/packages/authentication/login/types/dto/SignInDto';
 import { SignInResponseDto } from 'src/common/packages/authentication/login/types/dto/SignInResponseDto';

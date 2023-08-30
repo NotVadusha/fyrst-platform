@@ -1,7 +1,7 @@
 import { UpdateUserBody, UserDefaultResponse } from 'src/common/packages/user/types/dto/UserDto';
 import { UserProfile } from 'src/common/packages/user/common/user-profile/types/models/UserProfile.model';
 import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../../api';
 
 export interface getUsersQueryParams {
   currentPage: number;

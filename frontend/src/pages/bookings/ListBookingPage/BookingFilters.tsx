@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Form } from '../../../common/components/ui/common/Form/Form';
 import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
 import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
-import { useFetchFacilitiesQuery } from 'src/common/store/reducers/facility/facilityApi';
+import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
 
 const formSchema = yup.object({
   facility: yup.string(),

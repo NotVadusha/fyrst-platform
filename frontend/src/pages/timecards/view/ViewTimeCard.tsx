@@ -8,7 +8,7 @@ import { Header } from 'src/common/components/ui/layout/Header/Header';
 import {
   useFetchTimecardQuery,
   useUpdateTimecardMutation,
-} from 'src/common/store/reducers/timecards/timecardsApi';
+} from 'src/common/store/api/packages/timecards/timecardsApi';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { TimecardStatus } from 'shared/timecard-status';
 import { useAppSelector } from 'src/common/hooks/redux';

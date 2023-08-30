@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from 'src/common/packages/authentication/registration/types/validation-schemas/registration.validation-schema';
 import { Button } from 'src/common/components/ui/common/Button';
 import { ReactComponent as GoogleLogo } from 'src/assets/icons/google.svg';
-import { authApi } from 'src/common/store/reducers/user/authApi';
+import { authApi } from 'src/common/store/api/packages/authentication/authApi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
