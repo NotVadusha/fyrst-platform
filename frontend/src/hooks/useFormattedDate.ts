@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 export interface UseFormattedDateProps {
-  dateString: string | null;
+  dateString?: string | null;
   format?: 'dash' | 'dot';
 }
 

@@ -12,23 +12,30 @@ import { GoBackButton } from '../ui/common/GoBackButton';
 import { useToast } from '../ui/common/Toast/useToast';
 import { Spinner } from '../../ui/common/Spinner/Spinner';
 import { useFormattedDate } from '../../hooks/useFormattedDate';
+import { useAppSelector } from 'src/hooks/redux';
+import { useFetchTimecardsQuery } from 'src/store/reducers/timecards/timecardsApi';
 
 const BookingOverview = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data, isLoading, isError } = useGetBookingByIdQuery(id);
 
+  const user = useAppSelector(state => state.user);
+
+  const { data: booking, isLoading, isError } = useGetBookingByIdQuery(Number(id));
   const { avatar, avatars } = getBookingData(id!);
 
-  const numOfPeopleReceived = data?.users ? data.users.length : 0;
+  const { data: timecards } = useFetchTimecardsQuery({ createdBy: String(user.id ?? 0) });
 
-  const createdAt = useFormattedDate({ dateString: data?.createdAt, format: 'dash' });
-  const startDate = useFormattedDate({ dateString: data?.startDate, format: 'dot' });
-  const endDate = useFormattedDate({ dateString: data?.endDate, format: 'dot' });
+  const numOfPeopleReceived = booking?.users ? booking.users.length : 0;
 
-  if (isLoading) return <Spinner />;
-  if (isError || !data) {
+  const createdAt = useFormattedDate({ dateString: String(booking?.createdAt), format: 'dash' });
+  const startDate = useFormattedDate({ dateString: String(booking?.startDate), format: 'dot' });
+  const endDate = useFormattedDate({ dateString: String(booking?.endDate), format: 'dot' });
+
+  if (isLoading || !booking || !timecards) return <Spinner />;
+
+  if (isError || !booking) {
     toast({
       variant: 'destructive',
       title: 'Error',
@@ -46,17 +53,22 @@ const BookingOverview = () => {
         <GoBackButton path='/booking' className='text-dark-grey'>
           All bookings
         </GoBackButton>
-        <BookingHeader facility={data.facility.name} bookingId={data.id} users={data.users} />
+        <BookingHeader
+          facility={booking.facility.name}
+          booking={booking}
+          users={booking.users}
+          timecard={timecards?.items[0]}
+        />
         <div className={styles.bookingBody}>
-          <BookingDescription description={data.notes} />
+          <BookingDescription description={booking.notes} />
           <div className={styles.detailsAndStatusContainer}>
             <AdditionalDetails
               data={{
-                employer: data.employersName,
+                employer: booking.employersName,
                 createdAt,
                 startDate,
                 endDate,
-                payment: data.pricePerHour,
+                payment: booking.pricePerHour,
                 avatar: avatar,
               }}
             />

@@ -47,6 +47,7 @@ const TimeCardPage = () => {
         prevParams.set(e.target.name, e.target.value);
       }
 
+      setPage(1);
       return prevParams;
     });
   }
