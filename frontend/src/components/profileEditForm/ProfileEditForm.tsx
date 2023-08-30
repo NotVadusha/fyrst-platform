@@ -58,19 +58,9 @@ export function ProfileEditForm() {
     let base64;
 
     if (!!avatarImage) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', avatarImage, true);
-      xhr.responseType = 'blob';
-
-      xhr.onload = async function () {
-        if (xhr.status === 200) {
-          var blob = xhr.response;
-          const arrayBuffer = await blob.arrayBuffer();
-          base64 = Buffer.from(arrayBuffer).toString('base64');
-        }
-      };
-
-      xhr.send();
+      const blob = await (await fetch(avatarImage)).blob();
+      const arrayBuffer = await blob.arrayBuffer();
+      base64 = Buffer.from(arrayBuffer).toString('base64');
     }
 
     await updateUser({
