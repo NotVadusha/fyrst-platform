@@ -1,4 +1,4 @@
-import { ChangePasswordResponse, UpdateUserBody, UserDefaultResponse } from 'types/dto/UserDto';
+import { UpdateUserBody, UserDefaultResponse } from 'types/dto/UserDto';
 import { UserProfile } from 'types/models/UserProfile';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { baseQuery } from '../helpers/baseQuery';
@@ -75,7 +75,7 @@ export const userApi = apiSlice.injectEndpoints({
       }),
     }),
     changePassword: build.mutation<
-      ChangePasswordResponse,
+      any,
       { id: number; currentPassword: string; newPassword: string }
     >({
       query: args => ({
