@@ -17,7 +17,7 @@ export class UserService {
 
   async create(userInfo: CreateUserDto) {
     const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });
-    if (sameEmailUser) throw new BadRequestException('This email is already in use');
+    if (sameEmailUser) throw new BadRequestException(`email ${sameEmailUser.email} is already in use`);
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
     console.log('creating');

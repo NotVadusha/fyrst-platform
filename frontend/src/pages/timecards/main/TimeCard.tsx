@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
@@ -64,6 +64,10 @@ const TimeCardPage = () => {
       return prevParams;
     });
   }
+
+  useEffect(() => {
+    setSearchParams('');
+  }, [])
 
   return (
     <section className='min-h-full'>

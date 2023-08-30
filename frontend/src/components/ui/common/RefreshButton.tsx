@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { RefreshCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'src/ui/common/Button';
