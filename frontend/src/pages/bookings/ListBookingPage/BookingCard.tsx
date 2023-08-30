@@ -5,6 +5,7 @@ import { ReactComponent as ProfileIcon } from '../../../icons/profile.svg';
 
 import { Card } from 'src/components/ui/common/Card';
 import { Booking } from 'types/models/Booking';
+import { Link } from 'react-router-dom';
 
 interface BookingCardProps {
   booking: Booking;
@@ -38,46 +39,50 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   const fullNames = booking.users.map(user => `${user.first_name} ${user.last_name}`).join(', ');
 
   return (
-    <Card className='px-4 py-4'>
-      <div className='flex justify-between mb-4 items-center'>
-        <div className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}>
-          {booking.status}
+    <Link to={`/booking/${booking.id}`}>
+      <Card className='px-4 py-4'>
+        <div className='flex justify-between mb-4 items-center'>
+          <div
+            className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}
+          >
+            {booking.status}
+          </div>
+          <p className='h-5 leading-5 font-semibold text-sm text-dark-grey'>
+            ${booking.pricePerHour}/hr
+          </p>
         </div>
-        <p className='h-5 leading-5 font-semibold text-sm text-dark-grey'>
-          ${booking.pricePerHour}/hr
-        </p>
-      </div>
-      <div className='mb-4'>
-        <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>
-          {booking.facility.name}
-        </h5>
-        <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by {fullNames}</p>
-        <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
-      </div>
-      <div className='flex justify-between mb-4'>
-        <p className='flex items-center text-sm text-dark-grey'>
-          <ClockIcon className='mr-1' />
-          {createdAt}
-        </p>
-        <p className='flex items-center text-sm text-dark-grey'>
-          <ProfileIcon></ProfileIcon>
-          {booking.employersName}
-        </p>
-      </div>
-      <div className='flex justify-between mb-4'>
-        <p className='flex items-center text-sm text-dark-grey'>
-          <CalendrIcon className='mr-1'></CalendrIcon>
-          Start date
-        </p>
-        <p className='text-sm text-dark-grey'>{startDate}</p>
-      </div>
-      <div className='flex justify-between'>
-        <p className='flex items-center text-sm text-dark-grey'>
-          <CalendrIcon className='mr-1'></CalendrIcon>
-          End date
-        </p>
-        <p className='text-sm text-dark-grey'>{endDate}</p>
-      </div>
-    </Card>
+        <div className='mb-4'>
+          <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>
+            {booking.facility.name}
+          </h5>
+          <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by {fullNames}</p>
+          <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
+        </div>
+        <div className='flex justify-between mb-4'>
+          <p className='flex items-center text-sm text-dark-grey'>
+            <ClockIcon className='mr-1' />
+            {createdAt}
+          </p>
+          <p className='flex items-center text-sm text-dark-grey'>
+            <ProfileIcon></ProfileIcon>
+            {booking.employersName}
+          </p>
+        </div>
+        <div className='flex justify-between mb-4'>
+          <p className='flex items-center text-sm text-dark-grey'>
+            <CalendrIcon className='mr-1'></CalendrIcon>
+            Start date
+          </p>
+          <p className='text-sm text-dark-grey'>{startDate}</p>
+        </div>
+        <div className='flex justify-between'>
+          <p className='flex items-center text-sm text-dark-grey'>
+            <CalendrIcon className='mr-1'></CalendrIcon>
+            End date
+          </p>
+          <p className='text-sm text-dark-grey'>{endDate}</p>
+        </div>
+      </Card>
+    </Link>
   );
 };
