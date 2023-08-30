@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateTimecardMutation } from 'src/common/store/api/packages/timecards/timecardsApi';
 import { CreateTimecardFormValues } from './CreateTimeCardForm';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { User } from 'src/common/types';
+import { User } from 'src/common/packages/user/types/interfaces/User.interface';
 
 export default function CreateTimeCardPage() {
   const { bookingId } = useParams();

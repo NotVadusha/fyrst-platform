@@ -1,4 +1,4 @@
-import { SVGIconProps } from 'src/common/types';
+import { SVGIconProps } from 'src/common/types/interfaces/svg-icon.interface';
 
 export interface NavItem {
   title: string;

@@ -1,8 +1,3 @@
-export interface SVGIconProps extends React.SVGProps<SVGSVGElement> {
-  title?: string;
-  className?: string;
-}
-
 export interface User {
   id: number;
   first_name: string;
@@ -14,4 +9,4 @@ export interface User {
   password?: string;
   is_confirmed: boolean;
   role_id: number;
-} // TODO: remove User from index
+}
