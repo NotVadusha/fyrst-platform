@@ -7,21 +7,21 @@ export class CreateProfileDto {
 
   @IsArray()
   @IsString({ each: true })
-  languages: string[];
+  languages?: string[];
 
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @IsString()
   @IsNotEmpty()
-  education: string;
+  education?: string;
 
   @IsString()
   @IsNotEmpty()
-  sex: string;
+  sex?: string;
 
   @IsString()
   @IsOptional()
-  avatar: string;
+  avatar?: string;
 }
