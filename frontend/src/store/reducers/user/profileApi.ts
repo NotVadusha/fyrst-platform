@@ -12,7 +12,7 @@ export const profileApi = apiSlice.injectEndpoints({
     updateProfile: build.mutation<ProfileDto, { id: number; body: UpdateProfileDto }>({
       query: args => ({
         url: `/profile/${args.id}`,
-        method: 'POST',
+        method: 'PATCH',
         body: args.body,
       }),
     }),

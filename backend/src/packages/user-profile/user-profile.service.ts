@@ -30,7 +30,7 @@ export class UserProfileService {
 
   async findOne(userId: number) {
     let profile = await this.profileRepository.findOne({ where: { user_id: userId } });
-    if (!!profile.avatar)
+    if (!!profile?.avatar)
       profile.avatar = await this.bucketService.getFileLink(
         profile.avatar,
         'read',
@@ -40,14 +40,13 @@ export class UserProfileService {
   }
 
   async update(updateInfo: UpdateProfileDto, userId: number) {
-    let avatarUrl = null;
     if (!!updateInfo.avatar) {
-      const imgBuffer = Buffer.from(`BASE64_${updateInfo.avatar}`, 'base64');
-      avatarUrl = await this.bucketService.save(`avatars/${userId}.png`, imgBuffer);
+      const imgBuffer = Buffer.from(updateInfo.avatar, 'base64');
+      await this.bucketService.save(`avatars/${userId}.png`, imgBuffer);
     }
 
     const [updatedProfile] = await this.profileRepository.update(
-      { ...updateInfo, avatar: avatarUrl },
+      { ...updateInfo, avatar: `avatars/${userId}.png` },
       {
         where: { user_id: userId },
       },

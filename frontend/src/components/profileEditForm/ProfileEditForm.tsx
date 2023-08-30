@@ -17,6 +17,8 @@ import CityInput from './CityInput';
 import CustomPhoneInput from './CustomPhoneInput';
 import DateInput from './DateInput';
 import { profileApi } from 'src/store/reducers/user/profileApi';
+import { Buffer } from 'buffer';
+
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
@@ -24,6 +26,7 @@ export function ProfileEditForm() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [avatarImage, setAvatarImage] = useState('');
+  const [avatarFile, setAvatarFile] = useState<Blob>();
 
   const token = localStorage.getItem('accessToken');
   // eslint-disable-next-line
@@ -53,11 +56,14 @@ export function ProfileEditForm() {
   const [updateUser] = useUpdateUserMutation();
 
   const onSubmit = async (valuesFromForm: Inputs) => {
-    const imageResponse = await fetch(avatarImage);
-    const arrayBuffer = await imageResponse.arrayBuffer();
-    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    let base64;
 
-    const response = await updateUser({
+    if (!!avatarFile) {
+      const arrayBuffer = await avatarFile.arrayBuffer();
+      base64 = Buffer.from(arrayBuffer).toString('base64');
+    }
+
+    await updateUser({
       // eslint-disable-next-line
       // @ts-ignore
       id: user.id,
@@ -112,6 +118,7 @@ export function ProfileEditForm() {
           isShown={isAvatarEditorShown}
           setShown={setAvatarEditorShown}
           setImage={setAvatarImage}
+          setFile={setAvatarFile}
         />
       ) : (
         <div className='w-128 p-8 bg-white mx-20 shadow-xl'>

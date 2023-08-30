@@ -11,5 +11,6 @@ import { BucketModule } from '../bucket/bucket.module';
   providers: [UserProfileService],
   controllers: [UserProfileController],
   imports: [SequelizeModule.forFeature([UserProfile, User]), UserModule, BucketModule],
+  exports: [UserProfileService],
 })
 export class UserProfileModule {}
