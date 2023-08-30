@@ -67,7 +67,7 @@ const BookingPage = () => {
           </div>
         </div>
       </Header>
-      <div className='container lg:w-[955px]  flex justify-center flex-col mx-auto mt-10 '>
+      <div className='container lg:w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 '>
         <h5 className='text-2xl leading-6 font-semibold text-dark-grey mb-6'>Bookings</h5>
         <div className='flex justify-between gap-2'>
           <BookingFilters handleInputChange={handleInputChange}></BookingFilters>
