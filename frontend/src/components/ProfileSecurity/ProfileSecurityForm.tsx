@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form } from '../ui/common/Form';
 import { PasswordInput } from '../ui/common/PasswordInput/PasswordInput';
 import { Button } from '../../ui/common/Button';
@@ -7,8 +7,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './ProfileSecurity.module.css';
 import { updatePasswordSchema } from '../../lib/validations/updatePassword';
 import { useToast } from '../ui/common/Toast/useToast';
+import { useChangePasswordMutation } from '../../store/reducers/user/userApi';
+import { useAppSelector } from '../../hooks/redux';
+import { Link } from 'react-router-dom';
 
 const ProfileSecurityForm = () => {
+  const [changePassword] = useChangePasswordMutation();
+  const id = useAppSelector(state => state.user.id);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
   const form = useForm({
     resolver: yupResolver(updatePasswordSchema),
     mode: 'onTouched',
@@ -21,23 +28,48 @@ const ProfileSecurityForm = () => {
 
   const { toast } = useToast();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
+    setShowForgotPassword(false);
+
+    if (id === undefined) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'User ID is undefined.',
+      });
+      return;
+    }
+
     try {
-      form.reset();
+      const payload = {
+        id,
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      };
+
+      const result = await changePassword(payload);
+
+      if ('error' in result) {
+        throw new Error('You entered the wrong password.');
+      }
+
       toast({
         variant: 'default',
         title: 'Success',
         description: 'Your password has been successfully updated.',
       });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Something went wrong while updating your password.',
-      });
+      form.reset();
+    } catch (error: unknown) {
+      setShowForgotPassword(true);
+      if (error instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: error.message || 'Something went wrong while updating your password.',
+        });
+      }
     }
   };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -70,6 +102,12 @@ const ProfileSecurityForm = () => {
           >
             Submit
           </Button>
+          {showForgotPassword && (
+            <p className='text-sm mt-5'>
+              <Link to='/auth/forgot'>Forgot your password?
+              Reset it here.</Link>
+            </p>
+          )}
         </div>
       </form>
     </Form>
