@@ -12,7 +12,7 @@ export function UserActions({ user }: { user: User }) {
     <div className='w-full flex items-center'>
       <Button
         variant={'secondary'}
-        className='text-grey p-0 border-none'
+        className='text-grey p-0 border-none bg-background'
         onClick={() => setIsOpen(true)}
       >
         <Settings className='w-8 h-8 text-dark-grey' />

@@ -29,14 +29,27 @@ const BookingOverview = () => {
   const startDate = useFormattedDate({ dateString: String(booking?.startDate), format: 'dot' });
   const endDate = useFormattedDate({ dateString: String(booking?.endDate), format: 'dot' });
 
-  const { data: timecards, isLoading: isTimecardLoading } = useFetchTimecardsQuery({
-    createdBy: String(user.id),
-    bookingId: id,
-  });
+  const {
+    data: timecards,
+    isLoading: isTimecardLoading,
+    isError: isTimecardError,
+  } = useFetchTimecardsQuery(
+    {
+      createdBy: String(user.id),
+      bookingId: id,
+    },
+    { skip: !user.id },
+  );
 
-  if (isLoading || !booking || !user || isTimecardLoading || !timecards) return <Spinner />;
+  if (isLoading || !booking || isTimecardLoading || !timecards || !user) {
+    return (
+      <div className='min-h-full flex items-center justify-center'>
+        <Spinner />
+      </div>
+    );
+  }
 
-  if (isError || !booking) {
+  if (isError || isTimecardError) {
     toast({
       variant: 'destructive',
       title: 'Error',

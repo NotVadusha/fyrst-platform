@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -18,6 +18,8 @@ import { useAddUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import DateInput from 'src/pages/profiles/profileEditForm/DateInput';
+import CityInput from 'src/pages/profiles/profileEditForm/CityInput';
 
 type Inputs = y.InferType<typeof userSchema>;
 
@@ -25,6 +27,8 @@ export function AddUserForm() {
   const [addUser, { error }] = useAddUserMutation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const [city, setCity] = React.useState('');
 
   const form = useForm<Inputs>({
     resolver: yupResolver<Inputs>(userSchema),
@@ -81,29 +85,25 @@ export function AddUserForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
+        <Controller
           name='birthdate'
+          control={form.control}
           render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Birthdate</FormLabel>
-              <FormControl>
-                <input type='date' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <DateInput control={form.control} label='Date of birth' {...field} />
           )}
         />
         <FormField
           control={form.control}
           name='city'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormControl>
-                <TextInput control={form.control} type='text' label='City' {...field} />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({ field }) => {
+            return (
+              <FormItem className='flex flex-col'>
+                <FormControl>
+                  <CityInput control={form.control} {...field} setCity={setCity} />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}

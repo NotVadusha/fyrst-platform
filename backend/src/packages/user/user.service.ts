@@ -81,6 +81,7 @@ export class UserService {
     };
 
     const users = await this.userRepository.findAll({
+      order: [['id', 'DESC']],
       where: {
         ...filters,
         ...opSubstringFilters,

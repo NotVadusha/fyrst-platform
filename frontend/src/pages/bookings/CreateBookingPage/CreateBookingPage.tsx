@@ -3,17 +3,33 @@ import React from 'react';
 import { Card } from 'src/common/components/ui/common/Card/Card';
 import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
-import { CreateBookingForm, Inputs } from './CreateBookingForm';
 import { useCreateBookingMutation } from 'src/common/store/api/packages/bookings/bookingApi';
+import { CreateBookingForm, CreateBookingFormValues } from './CreateBookingForm';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 export const CreateBookingPage = () => {
   const [createBooking] = useCreateBookingMutation();
   const navigate = useNavigate();
-  function handleSubmit(values: Inputs) {
-    createBooking(values);
-    navigate('/booking');
-  }
+
+  const handleSubmit = async (values: CreateBookingFormValues) => {
+    try {
+      await createBooking(values);
+      toast({
+        variant: 'default',
+        title: 'Success',
+        description: 'Booking has been created successfully',
+      });
+      navigate('/booking');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong while creating booking',
+      });
+    }
+  };
+
   return (
     <>
       <Header title='Create booking' />

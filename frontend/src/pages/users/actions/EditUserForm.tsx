@@ -18,12 +18,15 @@ import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userAp
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { User } from 'src/common/types';
 import { Loader2 } from 'lucide-react';
+import CityInput from 'src/components/profileEditForm/CityInput';
 
 type Inputs = y.InferType<typeof userSchema>;
 
 export function EditUserForm({ user }: { user: User }) {
   const [editUser, { error }] = useUpdateUserMutation();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [city, setCity] = React.useState('');
+
   const navigate = useNavigate();
   const searchParams = useSearchParams();
 
@@ -95,13 +98,15 @@ export function EditUserForm({ user }: { user: User }) {
         <FormField
           control={form.control}
           name='city'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormControl>
-                <TextInput control={form.control} type='text' label='City' {...field} />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({ field }) => {
+            return (
+              <FormItem className='flex flex-col'>
+                <FormControl>
+                  <CityInput control={form.control} {...field} setCity={setCity} />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
