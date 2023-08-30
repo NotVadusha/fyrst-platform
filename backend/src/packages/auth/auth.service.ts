@@ -142,6 +142,9 @@ export class AuthService {
           is_confirmed: true,
           role_id: 1,
         });
+        this.userProfileService.create({
+          user_id: user.id,
+        });
       }
 
       const userInfo = { ...user.dataValues };
