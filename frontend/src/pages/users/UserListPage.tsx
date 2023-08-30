@@ -158,7 +158,10 @@ export function UserListPage() {
               <AddUserButton />
             </div>
           </div>
-          <UserFiltersForm handleInputChange={handleInputChange} setSearchParams={setSearchParams}/>
+          <UserFiltersForm
+            handleInputChange={handleInputChange}
+            setSearchParams={setSearchParams}
+          />
           <div className='flex flex-col items-center gap-4'>
             <Table
               className='w-full'

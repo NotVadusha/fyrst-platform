@@ -67,7 +67,7 @@ const TimeCardPage = () => {
 
   useEffect(() => {
     setSearchParams('');
-  }, [])
+  }, []);
 
   return (
     <section className='min-h-full'>
