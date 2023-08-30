@@ -72,6 +72,17 @@ export class UserController {
     if (!updatedUser) throw new NotFoundException();
     return this.userService.findOne(userId);
   }
+  @Patch('change-password/:id')
+  async changePassword(
+    @Param('id', ParseIntPipe) userId: number,
+    @Body() passwords: { currentPassword: string; newPassword: string },
+  ) {
+    return this.userService.changePassword(
+      userId,
+      passwords.currentPassword,
+      passwords.newPassword,
+    );
+  }
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {
     const deleteStatus = await this.userService.delete(userId);

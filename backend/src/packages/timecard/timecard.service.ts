@@ -17,6 +17,7 @@ export class TimecardService {
   constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
+    this.logger.log(createTimecardDto);
     const timecard = this.timecardModel.build(createTimecardDto as Partial<Timecard>);
 
     const created = await timecard.save();
@@ -41,10 +42,16 @@ export class TimecardService {
       whereFilters.push({ status: filters.status });
     }
 
+    if (filters.createdBy !== undefined) {
+      whereFilters.push({ createdBy: filters.createdBy });
+    }
+
+    if (filters.bookingId !== undefined) {
+      whereFilters.push({ bookingId: filters.bookingId });
+    }
+
     const timecards = await this.timecardModel.findAll({
-      where: {
-        [Op.and]: whereFilters,
-      },
+      where: whereFilters,
       limit: filters.limit,
       offset: filters.offset,
       include: [
@@ -54,7 +61,11 @@ export class TimecardService {
       ],
     });
 
-    const total = await this.timecardModel.count();
+    const total = await this.timecardModel.count({
+      where: {
+        [Op.and]: whereFilters,
+      },
+    });
 
     return { items: timecards, total };
   }

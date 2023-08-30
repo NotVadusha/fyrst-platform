@@ -6,4 +6,5 @@ export interface TimecardFiltersDto {
   createdBy?: string | null;
   limit?: string | null;
   offset?: string | null;
+  bookingId?: string | null;
 }

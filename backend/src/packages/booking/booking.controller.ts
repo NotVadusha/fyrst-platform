@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Query,
   InternalServerErrorException,
+  HttpCode,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';

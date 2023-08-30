@@ -138,3 +138,7 @@ export const userServiceMock = {
     .fn()
     .mockImplementation(async (id: number) => usersMock.find(user => user.id === id)),
 };
+
+export const userProfileServiceMock = {
+  create: jest.fn().mockImplementation((data: any) => Promise.resolve(null)),
+};

@@ -15,7 +15,7 @@ import { userSchema } from 'src/lib/validations/user';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { useAddUserMutation, useUpdateUserMutation } from 'src/store/reducers/user/userApi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { User } from 'types';
 import { Loader2 } from 'lucide-react';
 
@@ -25,6 +25,7 @@ export function EditUserForm({ user }: { user: User }) {
   const [editUser, { error }] = useUpdateUserMutation();
   const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
+  const searchParams = useSearchParams();
 
   const form = useForm<Inputs>({
     resolver: yupResolver<Inputs>(userSchema),

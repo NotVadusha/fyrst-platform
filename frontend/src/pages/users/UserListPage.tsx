@@ -78,11 +78,10 @@ export function UserListPage() {
   const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
-    console.log(e);
     setSearchParams(prevParams => {
       if (typeof e === 'string') {
-        if (e === '') {
-          prevParams.delete(e);
+        if (e === '' || e === 'any') {
+          prevParams.delete('emailConfirmed');
         } else {
           prevParams.set('emailConfirmed', e);
         }
@@ -162,7 +161,10 @@ export function UserListPage() {
               <AddUserButton />
             </div>
           </div>
-          <UserFiltersForm handleInputChange={handleInputChange} />
+          <UserFiltersForm
+            handleInputChange={handleInputChange}
+            setSearchParams={setSearchParams}
+          />
           <div className='flex flex-col items-center gap-4'>
             <Table
               className='w-full'

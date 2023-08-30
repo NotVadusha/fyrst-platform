@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
@@ -47,9 +47,27 @@ const TimeCardPage = () => {
         prevParams.set(e.target.name, e.target.value);
       }
 
+      setPage(1);
       return prevParams;
     });
   }
+
+  function handleSelectChange(value: string, param: string) {
+    setSearchParams(prevParams => {
+      if (value.length === 0) {
+        prevParams.delete(param);
+      } else {
+        prevParams.set(param, value);
+      }
+
+      setPage(1);
+      return prevParams;
+    });
+  }
+
+  useEffect(() => {
+    setSearchParams('');
+  }, []);
 
   return (
     <section className='min-h-full'>
@@ -57,7 +75,7 @@ const TimeCardPage = () => {
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
             <Button variant='secondary'>Export CSV</Button>
-            <Link to='.'>
+            <Link to='/booking/create'>
               <Button variant='primary'>Create new booking</Button>
             </Link>
           </div>
@@ -66,7 +84,10 @@ const TimeCardPage = () => {
 
       <div className='px-20 py-10 flex flex-col gap-y-6'>
         <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
-        <TimecardFiltersForm handleInputChange={handleInputChange} />
+        <TimecardFiltersForm
+          handleInputChange={handleInputChange}
+          handleSelectChange={handleSelectChange}
+        />
         {isFetching ? (
           <div className='flex justify-center min-h-[8rem]'>
             <Spinner size='lg' />
