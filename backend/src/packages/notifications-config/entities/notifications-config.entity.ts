@@ -3,9 +3,9 @@ import { InferAttributes, InferCreationAttributes } from 'sequelize/types/model'
 import { User } from 'src/packages/user/entities/user.entity';
 
 @Table({ tableName: 'notification_config', timestamps: false })
-class NotificationConfig extends Model<
-  InferAttributes<NotificationConfig>,
-  InferCreationAttributes<NotificationConfig>
+class NotificationsConfig extends Model<
+  InferAttributes<NotificationsConfig>,
+  InferCreationAttributes<NotificationsConfig>
 > {
   @Column({
     type: DataType.INTEGER,
@@ -58,4 +58,4 @@ class NotificationConfig extends Model<
   moneySent: boolean;
 }
 
-export { NotificationConfig };
+export { NotificationsConfig };

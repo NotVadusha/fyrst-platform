@@ -5,10 +5,16 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UserProfile } from './entities/user-profile.entity';
 import { User } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
+import { NotificationsConfig } from '../notifications-config/entities/notifications-config.entity';
+import { NotificationsConfigModule } from '../notifications-config/notifications-config.module';
 
 @Module({
   providers: [UserProfileService],
   controllers: [UserProfileController],
-  imports: [SequelizeModule.forFeature([UserProfile, User]), UserModule],
+  imports: [
+    SequelizeModule.forFeature([UserProfile, User, NotificationsConfig]),
+    UserModule,
+    NotificationsConfigModule,
+  ],
 })
 export class UserProfileModule {}

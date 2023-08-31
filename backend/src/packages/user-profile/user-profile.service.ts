@@ -4,12 +4,14 @@ import { UserProfile } from './entities/user-profile.entity';
 import { CreateProfileDto } from './dto/createProfile.dto';
 import { UserService } from '../user/user.service';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
+import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
 
 @Injectable()
 export class UserProfileService {
   constructor(
     @InjectModel(UserProfile) private profileRepository: typeof UserProfile,
     private userService: UserService,
+    private notificationsConfigService: NotificationsConfigService,
   ) {}
 
   async create(profileInfo: CreateProfileDto) {
@@ -19,6 +21,7 @@ export class UserProfileService {
       where: { user_id: profileInfo.user_id },
     });
     if (isProfileExist) throw new ConflictException('Profile for this user is already exist');
+    this.notificationsConfigService.create({ userId: profileInfo.user_id });
     return await this.profileRepository.create({ description: '', ...profileInfo });
   }
 

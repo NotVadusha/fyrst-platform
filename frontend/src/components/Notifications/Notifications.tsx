@@ -4,18 +4,12 @@ import { Button } from '../../ui/common/Button';
 import styles from './Notifications.module.css';
 import NotificationsForm from './NotificationsForm';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from 'src/hooks/redux';
-import { useGetNotificationsConfigQuery } from 'src/store/reducers/notification-configs/notificationConfigApi';
 
 const Notifications = () => {
   const navigate = useNavigate();
   const handleCreateBookingClick = () => {
     navigate('/booking/create');
   };
-
-  const user = useAppSelector(state => state.user);
-  const { data, isFetching } = useGetNotificationsConfigQuery(1);
-  console.log(data);
 
   return (
     <div>

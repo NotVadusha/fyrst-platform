@@ -13,7 +13,7 @@ import {
   ResetPasswordModule,
   UserProfileModule,
   FacilityModule,
-  NotificationConfigModule,
+  NotificationsConfigModule,
   BucketModule,
 } from './packages';
 
@@ -30,7 +30,7 @@ import {
     BookingModule,
     UserProfileModule,
     FacilityModule,
-    NotificationConfigModule,
+    NotificationsConfigModule,
     BucketModule,
   ],
   controllers: [],
