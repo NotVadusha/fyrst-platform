@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BookingGrid from './BookingsGrid';
 import { BookingFilters } from './BookingFilters';
 import { useGetAllBookingsQuery } from 'src/store/reducers/bookings/bookingApi';

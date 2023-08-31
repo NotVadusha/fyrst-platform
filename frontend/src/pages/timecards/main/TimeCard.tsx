@@ -10,7 +10,6 @@ import { useFetchTimecardsQuery } from '../../../store/reducers/timecards/timeca
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFiltersDto } from '../../../../types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
-import { useCSVExport } from '../../../hooks/useCSVDownload';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { exportCSV } from '../../../store/reducers/csv/csvSlice';
 
@@ -22,7 +21,7 @@ const TimeCardPage = () => {
 
   const dispatch = useAppDispatch();
   const isCSVLoading = useAppSelector(state => state.csv.isLoading);
-  
+
   const filters: TimecardFiltersDto = {
     createdAt: searchParams.get('createdAt'),
     approvedAt: searchParams.get('approvedAt'),
@@ -44,7 +43,7 @@ const TimeCardPage = () => {
   if (data) {
     totalPages = Math.ceil(data.total / LIMIT);
   }
-  console.log('Timecard data',data)
+  console.log('Timecard data', data);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchParams(prevParams => {

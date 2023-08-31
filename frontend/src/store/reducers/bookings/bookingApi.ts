@@ -2,6 +2,7 @@ import { Booking } from 'types/models/Booking';
 import { BookingFiltersDto } from '../../../../types/dto/BookingFiltersDto';
 import { GetAllBookingsDto } from '../../../../types/dto/GetAllBookingsDto';
 import { apiSlice } from '../apiSlice';
+
 export const bookingApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getAllBookings: builder.query<GetAllBookingsDto, BookingFiltersDto>({
@@ -49,7 +50,6 @@ export const bookingApi = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
     }),
-    
   }),
 });
 
