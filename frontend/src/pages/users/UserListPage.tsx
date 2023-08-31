@@ -9,9 +9,11 @@ import { buttonVariants } from 'src/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserFilters } from 'types/UserFilters';
-import { UserActions } from './UserActions';
+import { UserActions } from './actions/UserActions';
 import Papa from 'papaparse';
-import { AddUserButton } from './AddUserButton';
+import { AddUserButton } from './actions/AddUserButton';
+import { columns } from './usersTableConfig';
+import { Spinner } from 'src/ui/common/Spinner/Spinner';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,47 +41,18 @@ export function UserListPage() {
     filters[key as keyof UserFilters] === null && delete filters[key as keyof UserFilters];
   });
 
-  const { data, isLoading, isSuccess, isError, error } = useGetUsersQuery({ currentPage, filters });
-
-  const columns: ColumnInfo<User>[] = [
-    {
-      columnName: 'Name',
-      renderCell: cell => `${cell.first_name} ${cell.last_name}`,
-    },
-    {
-      columnName: 'Email',
-      renderCell: ({ email }) => email,
-    },
-    {
-      columnName: 'Phone',
-      renderCell: ({ phone_number }) => phone_number ?? '',
-    },
-    {
-      columnName: 'City',
-      renderCell: ({ city }) => city,
-    },
-    {
-      columnName: 'Email confirmed',
-      renderCell: ({ is_confirmed }) => String(is_confirmed),
-    },
-    {
-      columnName: 'Birthdate',
-      renderCell: ({ birthdate }) => birthdate,
-    },
-    {
-      columnName: 'Actions',
-      renderCell: cell => <UserActions user={cell} />,
-    },
-  ];
+  const { data, isFetching } = useGetUsersQuery({
+    currentPage,
+    filters,
+  });
 
   const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
-    console.log(e);
     setSearchParams(prevParams => {
       if (typeof e === 'string') {
-        if (e === '') {
-          prevParams.delete(e);
+        if (e === '' || e === 'any') {
+          prevParams.delete('emailConfirmed');
         } else {
           prevParams.set('emailConfirmed', e);
         }
@@ -159,16 +132,29 @@ export function UserListPage() {
               <AddUserButton />
             </div>
           </div>
-          <UserFiltersForm handleInputChange={handleInputChange} />
+          <UserFiltersForm
+            handleInputChange={handleInputChange}
+            setSearchParams={setSearchParams}
+          />
           <div className='flex flex-col items-center gap-4'>
-            <Table
-              className='w-full'
-              columns={columns}
-              items={data?.users ?? []}
-              getRowId={item => {
-                return item.id;
-              }}
-            />
+            {isFetching ? (
+              <div className='flex justify-center min-h-[8rem]'>
+                <Spinner size='lg' />
+              </div>
+            ) : data?.users?.length === 0 ? (
+              <p className='text-body-default font-semibold'>
+                No users to display here. Most probably, nothing matches your search query
+              </p>
+            ) : (
+              <Table
+                className='w-full'
+                columns={columns}
+                items={data?.users ?? []}
+                getRowId={item => {
+                  return item.id;
+                }}
+              />
+            )}
             {!!totalPages && (
               <Pagination
                 onChange={setCurrentPage}

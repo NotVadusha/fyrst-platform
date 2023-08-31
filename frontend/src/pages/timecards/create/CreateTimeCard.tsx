@@ -7,14 +7,18 @@ import { Header } from 'src/components/ui/layout/Header/Header';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateTimecardMutation } from '../../../store/reducers/timecards/timecardsApi';
 import { CreateTimecardFormValues } from './CreateTimeCardForm';
+import { useAppSelector } from 'src/hooks/redux';
+import { User } from 'types/models/User';
 
 export default function CreateTimeCardPage() {
   const { bookingId } = useParams();
   const [createTimecard] = useCreateTimecardMutation();
   const navigate = useNavigate();
 
+  const user = useAppSelector(state => state.user);
+
   function handleCreteTimecardFormSubmit(values: CreateTimecardFormValues) {
-    createTimecard({ bookingId: Number(bookingId), createdBy: 1123 });
+    createTimecard({ bookingId: Number(bookingId), createdBy: Number(user.id) });
     navigate(`/booking/${bookingId}`);
   }
 
@@ -28,7 +32,7 @@ export default function CreateTimeCardPage() {
           </GoBackButton>
           <h2 className='text-4xl font-bold'>Create timecard</h2>
           <Card className='max-w-[640px]'>
-            <CreateTimeCardForm handleSubmit={handleCreteTimecardFormSubmit} />
+            <CreateTimeCardForm handleSubmit={handleCreteTimecardFormSubmit} user={user as User} />
           </Card>
         </div>
       </div>

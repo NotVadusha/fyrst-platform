@@ -40,8 +40,8 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
 
   return (
     <Link to={`/booking/${booking.id}`}>
-      <Card className='px-4 py-4'>
-        <div className='flex justify-between mb-4 items-center'>
+      <Card className='px-4 py-4 h-full flex flex-col gap-4'>
+        <div className='flex justify-between items-center'>
           <div
             className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}
           >
@@ -51,14 +51,14 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
             ${booking.pricePerHour}/hr
           </p>
         </div>
-        <div className='mb-4'>
-          <h5 className='mb-2 text-2xl leading-6 font-semibold text-black'>
+        <div className='flex flex-col gap-2'>
+          <h5 className='text-2xl leading-6 font-semibold text-black truncate'>
             {booking.facility.name}
           </h5>
-          <p className='text-body-small mb-2 w-64 text-black truncate'>Accepted by {fullNames}</p>
+          <p className='text-body-small  w-64 text-black truncate'>Accepted by {fullNames}</p>
           <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
         </div>
-        <div className='flex justify-between mb-4'>
+        <div className='flex justify-between '>
           <p className='flex items-center text-sm text-dark-grey'>
             <ClockIcon className='mr-1' />
             {createdAt}
@@ -68,7 +68,7 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
             {booking.employersName}
           </p>
         </div>
-        <div className='flex justify-between mb-4'>
+        <div className='flex justify-between '>
           <p className='flex items-center text-sm text-dark-grey'>
             <CalendrIcon className='mr-1'></CalendrIcon>
             Start date

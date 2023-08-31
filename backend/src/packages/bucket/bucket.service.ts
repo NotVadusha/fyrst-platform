@@ -22,7 +22,7 @@ export class BucketService {
     const file = this.storage.bucket(this.bucket).file(path);
     const stream = file.createWriteStream();
     stream.end(media);
-    return await this.getFileLink(path, 'read', Date.now() + 1000 * 60 * 60);
+    return await this.getFileLink(path, 'read', Date.now() + 1000 * 60 * 60 * 24 * 7);
   }
 
   async delete(path: string) {

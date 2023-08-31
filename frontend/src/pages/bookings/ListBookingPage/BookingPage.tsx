@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BookingGrid from './BookingsGrid';
 import { BookingFilters } from './BookingFilters';
 import { useGetAllBookingsQuery } from 'src/store/reducers/bookings/bookingApi';
@@ -8,13 +8,13 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { BookingFiltersDto } from 'types/dto/BookingFiltersDto';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
+import { RefreshButton } from 'src/components/ui/common/RefreshButton';
 
 const LIMIT = 6;
 
 const BookingPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(currentPage);
   const filters: BookingFiltersDto = {
     facilityId: searchParams.get('facility'),
     endDate: searchParams.get('endDate'),
@@ -31,23 +31,27 @@ const BookingPage = () => {
 
   const { data, isFetching } = useGetAllBookingsQuery(filters);
 
-  console.log(data);
-
   let totalPages = 0;
   if (data) totalPages = Math.ceil(data.total / LIMIT);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.name);
     setSearchParams(prevParams => {
       if (e.target.value === '') {
+        console.log('Target', e.target.name);
         prevParams.delete(e.target.name);
       } else {
         prevParams.set(e.target.name, e.target.value);
       }
 
+      setCurrentPage(1);
       return prevParams;
     });
   }
+
+  useEffect(() => {
+    setSearchParams('');
+  }, []);
+
   return (
     <>
       <Header title='Bookings'>
@@ -60,9 +64,13 @@ const BookingPage = () => {
           </div>
         </div>
       </Header>
-      <div className='container lg:w-[955px]  flex justify-center flex-col mx-auto mt-10'>
+      <div className='container lg:w-[955px]  flex justify-center flex-col mx-auto mt-10 '>
         <h5 className='text-2xl leading-6 font-semibold text-dark-grey mb-6'>Bookings</h5>
-        <BookingFilters handleInputChange={handleInputChange}></BookingFilters>
+        <div className='flex justify-between gap-2'>
+          <BookingFilters handleInputChange={handleInputChange}></BookingFilters>
+          <RefreshButton></RefreshButton>
+        </div>
+
         {isFetching ? (
           <div className='flex justify-center min-h-[8rem]'>
             <Spinner size='lg' />

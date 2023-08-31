@@ -10,7 +10,18 @@ const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
 
-const SelectValue = SelectPrimitive.Value;
+// const SelectValue = SelectPrimitive.Value;
+
+const SelectValue = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Value>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
+>(({ className, children, ...props }, ref) => (
+  <span className='font-semibold'>
+    <SelectPrimitive.Value {...props}>{children}</SelectPrimitive.Value>
+  </span>
+));
+
+SelectValue.displayName = SelectPrimitive.Value.displayName;
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
@@ -26,7 +37,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className='h-4 w-4 opacity-50' />
+      <ChevronDown className='ml-2 h-4 w-4 opacity-50' />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -81,7 +92,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-grey focus:text-blue data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex w-full font-semibold text-dark-blue cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-grey focus:text-blue data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className,
     )}
     {...props}

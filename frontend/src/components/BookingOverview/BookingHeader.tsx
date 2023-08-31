@@ -4,15 +4,19 @@ import { Button } from '../../ui/common/Button';
 import { useAddUserToBookingMutation } from '../../store/reducers/bookings/bookingApi';
 import { useToast } from '../ui/common/Toast/useToast';
 import { useAppSelector } from '../../hooks/redux';
-import { User } from '../../../types';
+import { Booking } from 'types/models/Booking';
+import { Link } from 'react-router-dom';
+import { Timecard } from 'types/models/Timecard';
+import { User } from 'types/models/User';
 
 interface BookingHeaderProps {
   facility: string;
-  bookingId: number;
+  booking: Booking;
   users: User[];
+  timecard?: Timecard;
 }
 
-const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, users }) => {
+const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users, timecard }) => {
   const userId = useAppSelector(state => state.user.id);
   const { toast } = useToast();
 
@@ -22,7 +26,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, user
 
   const handleApplyClick = async () => {
     try {
-      await addUserToBooking({ bookingId, userId });
+      await addUserToBooking({ bookingId: booking.id, userId });
 
       toast({
         variant: 'default',
@@ -41,9 +45,23 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, bookingId, user
   return (
     <div className={styles.bookingHeader}>
       <div className={styles.jobTitle}>{facility}</div>
-      <Button onClick={handleApplyClick} disabled={userExists}>
-        {isLoading ? 'Applying...' : 'Apply'}
-      </Button>
+      {timecard ? (
+        <span className='font-semibold text-body-default shadow-lg text-center p-5'>
+          Your timecard status: {timecard.status}
+        </span>
+      ) : userExists ? (
+        <Link to={`/timecard/create/${booking.id}`}>
+          <Button>Add timecard</Button>
+        </Link>
+      ) : booking.status !== 'pending' || booking.numberOfPositions - users.length === 0 ? (
+        <span className='font-semibold text-body-default'>
+          You can&apos;t apply for this booking
+        </span>
+      ) : (
+        <Button onClick={handleApplyClick} disabled={userExists}>
+          {isLoading ? 'Applying...' : 'Apply'}
+        </Button>
+      )}
     </div>
   );
 };

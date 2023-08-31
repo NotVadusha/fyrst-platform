@@ -70,9 +70,8 @@ export class BookingService {
       ...(status && { status: status }),
       ...(facilityId && { facilityId: facilityId }),
     };
-    console.log('Here', offset);
     const bookings = await this.bookingRepository.findAll({
-      order: [['id', 'ASC']],
+      order: [['id', 'DESC']],
       where: where,
       limit: limit,
       offset: offset,

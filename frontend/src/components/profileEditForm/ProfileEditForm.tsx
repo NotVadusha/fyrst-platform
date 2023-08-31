@@ -16,12 +16,16 @@ import { AvatarUploader } from './AvatarUploader';
 import CityInput from './CityInput';
 import CustomPhoneInput from './CustomPhoneInput';
 import DateInput from './DateInput';
+import { profileApi } from 'src/store/reducers/user/profileApi';
+import { Buffer } from 'buffer';
+
 type Inputs = y.InferType<typeof profileSchema>;
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
+  const [avatarImage, setAvatarImage] = useState('');
 
   const token = localStorage.getItem('accessToken');
   // eslint-disable-next-line
@@ -29,12 +33,17 @@ export function ProfileEditForm() {
   const decode: DecodedUser = jwtDecode(token);
   const userId = decode.id;
 
+  const [updateProfile] = profileApi.useUpdateProfileMutation();
+  const [getProfile] = profileApi.useLazyGetProfileQuery();
+
   useEffect(() => {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
       if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
+      const profile = await getProfile(data.id).unwrap();
+      setAvatarImage(profile.avatar || '');
     };
 
     userFetch(userId);
@@ -42,12 +51,19 @@ export function ProfileEditForm() {
 
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
-  const [avatarImage, setAvatarImage] = useState('');
   const [city, setCity] = useState('');
   const [updateUser] = useUpdateUserMutation();
 
   const onSubmit = async (valuesFromForm: Inputs) => {
-    const response = await updateUser({
+    let base64;
+
+    if (!!avatarImage) {
+      const blob = await (await fetch(avatarImage)).blob();
+      const arrayBuffer = await blob.arrayBuffer();
+      base64 = Buffer.from(arrayBuffer).toString('base64');
+    }
+
+    await updateUser({
       // eslint-disable-next-line
       // @ts-ignore
       id: user.id,
@@ -59,6 +75,13 @@ export function ProfileEditForm() {
         city: valuesFromForm?.city,
         birthdate: valuesFromForm?.birthdate,
       },
+    });
+
+    updateProfile({
+      // eslint-disable-next-line
+      // @ts-ignore
+      id: user.id,
+      body: { avatar: base64 },
     });
   };
 

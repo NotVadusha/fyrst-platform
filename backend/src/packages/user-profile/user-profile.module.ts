@@ -7,6 +7,7 @@ import { User } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { NotificationsConfig } from '../notifications-config/entities/notifications-config.entity';
 import { NotificationsConfigModule } from '../notifications-config/notifications-config.module';
+import { BucketModule } from '../bucket/bucket.module';
 
 @Module({
   providers: [UserProfileService],
@@ -15,6 +16,8 @@ import { NotificationsConfigModule } from '../notifications-config/notifications
     SequelizeModule.forFeature([UserProfile, User, NotificationsConfig]),
     UserModule,
     NotificationsConfigModule,
+    BucketModule,
   ],
+  exports: [UserProfileService],
 })
 export class UserProfileModule {}

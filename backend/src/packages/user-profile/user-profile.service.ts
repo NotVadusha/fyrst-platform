@@ -5,6 +5,7 @@ import { CreateProfileDto } from './dto/createProfile.dto';
 import { UserService } from '../user/user.service';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
+import { BucketService } from '../bucket/bucket.service';
 
 @Injectable()
 export class UserProfileService {
@@ -12,6 +13,7 @@ export class UserProfileService {
     @InjectModel(UserProfile) private profileRepository: typeof UserProfile,
     private userService: UserService,
     private notificationsConfigService: NotificationsConfigService,
+    private bucketService: BucketService,
   ) {}
 
   async create(profileInfo: CreateProfileDto) {
@@ -30,13 +32,28 @@ export class UserProfileService {
   }
 
   async findOne(userId: number) {
-    return await this.profileRepository.findOne({ where: { user_id: userId } });
+    let profile = await this.profileRepository.findOne({ where: { user_id: userId } });
+    if (!!profile?.avatar)
+      profile.avatar = await this.bucketService.getFileLink(
+        profile.avatar,
+        'read',
+        Date.now() + 1000 * 60 * 60 * 24 * 7,
+      );
+    return profile;
   }
 
   async update(updateInfo: UpdateProfileDto, userId: number) {
-    const [updatedProfile] = await this.profileRepository.update(updateInfo, {
-      where: { user_id: userId },
-    });
+    if (!!updateInfo.avatar) {
+      const imgBuffer = Buffer.from(updateInfo.avatar, 'base64');
+      await this.bucketService.save(`avatars/${userId}.png`, imgBuffer);
+    }
+
+    const [updatedProfile] = await this.profileRepository.update(
+      { ...updateInfo, avatar: `avatars/${userId}.png` },
+      {
+        where: { user_id: userId },
+      },
+    );
     if (!updatedProfile) throw new NotFoundException('This profile doesnt exist');
     return await this.profileRepository.findOne({ where: { id: userId } });
   }
