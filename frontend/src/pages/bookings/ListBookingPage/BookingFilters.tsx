@@ -54,7 +54,7 @@ export const BookingFilters = ({
                 { label: 'Canceled', value: 'canceled' },
                 { label: 'Completed', value: 'completed' },
               ]}
-              ddType='default'
+              styleVariant='shadows'
               label=''
               placeholder='Select Status'
               onChange={handleInputChange}
@@ -68,7 +68,7 @@ export const BookingFilters = ({
               name='facility'
               control={form.control}
               options={options}
-              ddType='default'
+              styleVariant='shadows'
               label=''
               placeholder='Select an option'
               onChange={handleInputChange}

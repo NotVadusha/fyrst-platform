@@ -1,7 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import styles from './Dropdown.module.css';
 import { ReactComponent as ArrowIcon } from 'src/assets/icons/arrow-down.svg';
-import { FormControl, FormField, FormItem, FormLabel } from '../Form/Form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useFormField,
+} from '../Form/Form';
 import { cva } from 'class-variance-authority';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useCombinedRefs } from 'src/common/hooks/use-combined-ref/useCombinedRef.hook';
@@ -18,8 +25,8 @@ const arrow = cva(styles.arrow, {
 const heading = cva(styles.heading, {
   variants: {
     type: {
-      default: styles.default,
-      ['in-form']: styles['in-form'],
+      shadows: styles.shadows,
+      borders: styles.borders,
     },
     hidden: {
       true: styles.hidden,
@@ -31,11 +38,15 @@ const heading = cva(styles.heading, {
 const fieldVar = cva(styles.field, {
   variants: {
     type: {
-      default: styles.default,
-      ['in-form']: styles['in-form'],
+      shadows: styles.shadows,
+      borders: styles.borders,
     },
     active: {
       active: styles.active,
+      false: '',
+    },
+    invalid: {
+      true: styles.invalid,
       false: '',
     },
   },
@@ -44,8 +55,8 @@ const fieldVar = cva(styles.field, {
 const valueVar = cva(styles.value, {
   variants: {
     type: {
-      default: styles.default,
-      ['in-form']: styles['in-form'],
+      shadows: styles.shadows,
+      borders: styles.borders,
     },
   },
 });
@@ -68,7 +79,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   control: any;
   name: string;
   options: DropdownOption[];
-  ddType: 'default' | 'in-form';
+  styleVariant?: 'shadows' | 'borders';
   label: string;
   placeholder: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -80,7 +91,7 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       control,
       name,
       options,
-      ddType = 'default',
+      styleVariant = 'shadows',
       label,
       placeholder,
       onChange,
@@ -109,39 +120,48 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           );
 
           return (
-            <div className={`${className} relative`} ref={combinedRef}>
-              <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
-                <p className={heading({ type: ddType, hidden: !currentOption })}>{label}</p>
+            <div className={className} ref={combinedRef}>
+              <div className='relative'>
+                <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
+                  <p className={heading({ type: styleVariant, hidden: !currentOption })}>{label}</p>
 
-                <div className={fieldVar({ type: ddType, active: isOpen })}>
-                  {currentOption ? (
-                    <p className={valueVar({ type: ddType })}>{currentOption.label}</p>
-                  ) : (
-                    <p className={styles.placeholder}>{placeholder}</p>
-                  )}
-                  <ArrowIcon className={arrow({ active: isOpen })} />
+                  <div
+                    className={fieldVar({
+                      type: styleVariant,
+                      active: isOpen,
+                      invalid: !!useFormField().error,
+                    })}
+                  >
+                    {currentOption ? (
+                      <p className={valueVar({ type: styleVariant })}>{currentOption.label}</p>
+                    ) : (
+                      <p className={styles.placeholder}>{placeholder}</p>
+                    )}
+                    <ArrowIcon className={arrow({ active: isOpen })} />
+                  </div>
+                </div>
+                <div className={menuVar({ closed: !isOpen })}>
+                  {options.map(opt => (
+                    <FormItem className={styles.option} key={opt.value}>
+                      <FormLabel>{opt.label}</FormLabel>
+                      <FormControl>
+                        <input
+                          {...field}
+                          type='radio'
+                          value={opt.value}
+                          onChange={e => {
+                            if (onChange) onChange(e);
+                            field.onChange(opt.value);
+                            setIsOpen(false);
+                          }}
+                          {...props}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  ))}
                 </div>
               </div>
-              <div className={menuVar({ closed: !isOpen })}>
-                {options.map(opt => (
-                  <FormItem className={styles.option} key={opt.value}>
-                    <FormLabel>{opt.label}</FormLabel>
-                    <FormControl>
-                      <input
-                        {...field}
-                        type='radio'
-                        value={opt.value}
-                        onChange={e => {
-                          if (onChange) onChange(e);
-                          field.onChange(opt.value);
-                          setIsOpen(false);
-                        }}
-                        {...props}
-                      />
-                    </FormControl>
-                  </FormItem>
-                ))}
-              </div>
+              <FormMessage className='m-0 mt-1 pl-3 text-xs text-red'></FormMessage>
             </div>
           );
         }}

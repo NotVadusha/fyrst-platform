@@ -66,7 +66,7 @@ export function CreateBookingForm({
           control={form.control}
           label='Facility'
           options={options}
-          ddType='in-form'
+          styleVariant='borders'
           placeholder='Facility'
         />
         <TextInput
@@ -74,8 +74,15 @@ export function CreateBookingForm({
           control={form.control}
           label='Positions available'
           type='number'
+          min={1}
         />
-        <TextInput name='pricePerHour' control={form.control} label='Pay per hour' type='number' />
+        <TextInput
+          name='pricePerHour'
+          control={form.control}
+          label='Pay per hour'
+          type='number'
+          min={1}
+        />
         <TextInput name='startDate' control={form.control} label='' type='date' />
         <TextInput name='endDate' control={form.control} label='' type='date' />
         <TextInput name='notes' control={form.control} label='Job description' type='text' />

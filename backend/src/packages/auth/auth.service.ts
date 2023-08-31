@@ -43,6 +43,7 @@ export class AuthService {
       const hashedPassword = await bcrypt.hash(registrationDto.password, 5);
       const createdUser = await this.userService.create({
         ...registrationDto,
+        email: registrationDto.email.toLowerCase(),
         password: hashedPassword,
         role_id: 1,
         is_confirmed: false,
@@ -63,7 +64,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     try {
-      const user = await this.userService.findOneByEmail(loginDto.email);
+      const user = await this.userService.findOneByEmail(loginDto.email.toLowerCase());
 
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 
