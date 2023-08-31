@@ -34,7 +34,7 @@ export function CreateChatForm() {
       .then(res => {
         setIsLoading(false);
         // navigate(0);
-        toast({title: "Success", description: "New chat successfully created"})
+        toast({ title: 'Success', description: 'New chat successfully created' });
       })
       .catch(err => setIsLoading(false));
   }

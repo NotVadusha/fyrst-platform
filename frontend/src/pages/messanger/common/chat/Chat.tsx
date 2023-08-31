@@ -36,27 +36,26 @@ export const ChatPage: React.FC = () => {
     });
   }, [scrollAreaRef, lastMessageRef]);
 
-  
   useEffect(() => {
     socket.on('chat-joined', chat => {
       setChat(chat);
       setMessages(chat.messages);
     });
-    
+
     socket.emit('user-join-chat', { chatId });
-    
+
     socket.on('new-message', message => {
       setMessages(prev => [...prev, message]);
       scrollToLastMessage();
     });
-    
+
     return () => {
       socket.off('new-message');
       socket.off('chat-joined');
       socket.emit('user-leave-chat', { chatId });
     };
   }, [chatId]);
-  
+
   useEffect(() => {
     scrollToLastMessage();
   }, [chatId, lastMessageRef]);

@@ -60,7 +60,7 @@ export class ChatService {
       chat,
     });
 
-    this.gateway.wss.emit('conversation-upsert', {...chat, messages: []});
+    this.gateway.wss.emit('conversation-upsert', { ...chat, messages: [] });
 
     return chat;
   }

@@ -16,9 +16,8 @@ import { ChatService } from './packages/chat/chat.service';
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     @Inject(forwardRef(() => ChatService))
-    private readonly chatService: ChatService,
-  ) // private readonly authService: AuthService,
-  {}
+    private readonly chatService: ChatService, // private readonly authService: AuthService,
+  ) {}
 
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
