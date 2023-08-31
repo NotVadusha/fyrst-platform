@@ -9,11 +9,13 @@ export const timecardSchema = y
       .number()
       .typeError('Hours worked must be an integer')
       .integer('Hours worked must be an integer')
-      .required('Hours worked is a required field'),
+      .required('Hours worked is a required field')
+      .min(1, 'Should be more than 0'),
     lunchHours: y
       .number()
       .typeError('Lunch hours must be an integer')
       .integer('Lunch hours must be an integer')
-      .required('Lunch hours is a required field'),
+      .required('Lunch hours is a required field')
+      .min(1, 'Should be more than 0'),
   })
   .required();
