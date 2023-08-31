@@ -1,6 +1,7 @@
 import React, { ChangeEvent, MutableRefObject, useCallback, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import ReactSlider from 'react-slider';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 interface InputProps {
   width: number;
@@ -26,8 +27,17 @@ export const AvatarUploader = ({
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const newImage = URL.createObjectURL(e.target.files[0]);
-      setTempImage(newImage);
+      const newImage = e.target.files[0];
+      console.log(newImage);
+      if (newImage.size >= 5e6) {
+        toast({
+          title: 'Image size must be less than 5MB',
+          description: 'Please, choose another image less than 5mb size',
+          variant: 'destructive',
+        });
+        return;
+      }
+      setTempImage(URL.createObjectURL(newImage));
     }
   };
 
@@ -65,8 +75,8 @@ export const AvatarUploader = ({
         }}
         className='relative w-fit ml-80 mt-6 px-20 py-10 bg-black'
       >
-        <h5 className='text-white font-semibold text-2xl mb-8'>Replace profile picture</h5>
-
+        <h5 className='text-white font-semibold text-2xl mb-2'>Replace profile picture</h5>
+        <p className='font-semibold text-grey text-lg mb-4'>Image size must be less than 5MB</p>
         <input
           accept='image/*'
           hidden
