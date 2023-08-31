@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Chat } from 'shared/socketEvents';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { socket } from 'src/lib/socket';
@@ -12,7 +11,6 @@ import { SearchInput } from './common/SearchInput';
 import { useDebounce } from 'src/hooks/useDebounce';
 
 export const Conversations: React.FC = () => {
-  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -48,14 +46,15 @@ export const Conversations: React.FC = () => {
     };
   }, [user.id]);
 
+
   const handleChange = useCallback((value: string) => {
     setSearchQuery(value);
   }, []);
 
   return (
-    <div className='relative lg:min-w-[260px]'>
+    <div className='relative  lg:min-w-[260px]'>
       <SearchInput value={searchQuery} onChange={handleChange} />
-      <ScrollArea className='h-[120px] xl:h-[400px] w-full p-2'>
+      <ScrollArea className=' h-[120px] xl:h-[400px] w-full p-2'>
         <div className='grid gap-4'>
           {chatsToShow?.length > 0 ? (
             chatsToShow?.map((chat: any) => {
