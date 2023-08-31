@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Dropdown, DropdownProps } from './Dropdown';
+import { Button } from '../Button';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,11 +28,11 @@ const FormTemplate = ({
   name,
   label,
   placeholder,
-  ddType,
+  styleVariant = 'borders',
   options,
 }: Omit<DropdownProps, 'control'>) => {
   const formSchema = y.object({
-    city: y.string(),
+    city: y.string().required('city has to be selected'),
   });
 
   type FormData = y.InferType<typeof formSchema>;
@@ -42,6 +43,7 @@ const FormTemplate = ({
 
   function onSubmit(values: y.InferType<typeof formSchema>) {
     // do smth
+    console.log(values);
   }
 
   return (
@@ -52,9 +54,12 @@ const FormTemplate = ({
           name={name}
           label={label}
           options={options}
-          ddType={ddType}
+          styleVariant={styleVariant}
           placeholder={placeholder}
         />
+        <Button type='submit' variant='primary' className='mt-4'>
+          Submit
+        </Button>
       </form>
     </Form>
   );
@@ -65,7 +70,7 @@ export const Default: Story = {
     name: 'city',
     label: 'City',
     placeholder: 'Chose city',
-    ddType: 'default',
+    styleVariant: 'shadows',
     options: [
       { value: 'kyiv', label: 'Kyiv' },
       { value: 'lviv', label: 'Lviv' },

@@ -72,7 +72,7 @@ const PaymentsList = () => {
                   name='worker'
                   control={methods.control}
                   options={workerOptions}
-                  ddType='default'
+                  styleVariant='shadows'
                   placeholder='Select worker'
                 />
               </div>

@@ -5,39 +5,42 @@
 .heading {
   @apply font-medium text-blue;
 }
-.heading.in-form {
+.heading.borders {
   @apply absolute text-xs left-3 top-1 text-grey transition-transform transition-opacity;
 }
-.heading.in-form.hidden {
+.heading.borders.hidden {
   @apply opacity-0 translate-y-1;
 }
-.heading.default {
+.heading.shadows {
   @apply text-blue mb-1;
 }
 
 .field {
   @apply relative border border-solid outline-none px-2.5 py-3 rounded-lg;
 }
-.field.in-form {
+.field.borders {
   @apply border-grey;
 }
-.field.in-form.active {
+.field.borders.active {
   @apply border-blue;
 }
-.field.default {
+.field.borders.invalid {
+  @apply border-red;
+}
+.field.shadows {
   @apply border-transparent shadow-dropdown;
 }
 
 .value {
   @apply relative text-sm font-medium text-blue leading-none;
 }
-.value.in-form {
+.value.borders {
   @apply translate-y-1.5;
 }
 .placeholder {
   @apply text-sm text-grey font-medium leading-none;
 }
-.placeholder.in-form {
+.placeholder.borders {
   @apply translate-y-1;
 }
 
@@ -49,7 +52,7 @@
 }
 
 .menu {
-  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2 absolute overflow-hidden box-border transition-transform origin-top max-h-80 overflow-y-scroll;
+  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2 absolute overflow-hidden box-border transition-transform origin-top max-h-80 overflow-y-scroll z-10;
 }
 .menu.closed {
   @apply scale-y-0 invisible;
