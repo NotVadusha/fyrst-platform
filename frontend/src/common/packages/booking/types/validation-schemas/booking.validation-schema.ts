@@ -49,7 +49,7 @@ export const bookingSchema = y.object().shape({
       /^[A-Z][a-z ,.'-]*( [A-Z][a-z ,.'-]*)*$/,
       `Employer's name shouldn't contain numbers and uppercase letters, instead of first letter`,
     )
-    .min(2, `Employer's name shouldn't contain minimum 2 symbols`)
-    .max(50, `Employer's name shouldn't contain more than 50 symbols`)
+    .min(2, `Employer's name shouldn't contain less than 2 symbols`)
+    .max(50, `Employer's name should contain more than 50 symbols`)
     .required(`Employer's name is a required field`),
 });
