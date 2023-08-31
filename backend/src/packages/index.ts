@@ -12,3 +12,4 @@ export { ChatModule } from './chat/chat.module';
 export { MessageModule } from './message/message.module';
 export { NotificationsConfigModule } from './notifications-config/notifications-config.module';
 export { BucketModule } from './bucket/bucket.module';
+export { NotificationModule } from './notification/notification.module';
