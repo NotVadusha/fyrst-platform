@@ -1,7 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import styles from './Dropdown.module.css';
 import { ReactComponent as ArrowIcon } from 'src/assets/icons/arrow-down.svg';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../Form/Form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useFormField,
+} from '../Form/Form';
 import { cva } from 'class-variance-authority';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useCombinedRefs } from 'src/common/hooks/use-combined-ref/useCombinedRef.hook';
@@ -36,6 +43,10 @@ const fieldVar = cva(styles.field, {
     },
     active: {
       active: styles.active,
+      false: '',
+    },
+    invalid: {
+      true: styles.invalid,
       false: '',
     },
   },
@@ -114,7 +125,13 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                 <div className={styles.header} onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}>
                   <p className={heading({ type: styleVariant, hidden: !currentOption })}>{label}</p>
 
-                  <div className={fieldVar({ type: styleVariant, active: isOpen })}>
+                  <div
+                    className={fieldVar({
+                      type: styleVariant,
+                      active: isOpen,
+                      invalid: !!useFormField().error,
+                    })}
+                  >
                     {currentOption ? (
                       <p className={valueVar({ type: styleVariant })}>{currentOption.label}</p>
                     ) : (

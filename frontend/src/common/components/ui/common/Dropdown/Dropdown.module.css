@@ -24,6 +24,9 @@
 .field.borders.active {
   @apply border-blue;
 }
+.field.borders.invalid {
+  @apply border-red;
+}
 .field.shadows {
   @apply border-transparent shadow-dropdown;
 }
