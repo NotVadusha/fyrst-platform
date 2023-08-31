@@ -2,7 +2,7 @@ import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types/model';
 import { User } from 'src/packages/user/entities/user.entity';
 
-@Table({ tableName: 'notification_config', timestamps: false })
+@Table({ tableName: 'Notifications-Config', timestamps: false })
 class NotificationsConfig extends Model<
   InferAttributes<NotificationsConfig>,
   InferCreationAttributes<NotificationsConfig>

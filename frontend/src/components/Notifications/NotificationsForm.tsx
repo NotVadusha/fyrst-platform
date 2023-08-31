@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button } from '../../ui/common/Button';
 import { useForm } from 'react-hook-form';
 import { Form } from '../ui/common/Form';
@@ -12,28 +12,6 @@ import {
   useUpdateNotificationsConfigMutation,
 } from 'src/store/reducers/notification-configs/notificationConfigApi';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { NotificationsConfig } from 'types/models/NotificationsConfig';
-
-// interface NotificationConfig {
-//   id: number;
-//   user_id: number;
-//   timecards: boolean;
-//   bookings: boolean;
-//   payment_success: boolean;
-//   password_change: boolean;
-//   weekly_report: boolean;
-//   money_sent: boolean;
-// }
-// const initialConfig: NotificationConfig = {
-//   id: 1,
-//   user_id: 12345,
-//   timecards: true,
-//   bookings: false,
-//   payment_success: true,
-//   password_change: false,
-//   weekly_report: true,
-//   money_sent: false,
-// };
 
 const formSchema = yup.object({
   id: yup.number(),
@@ -96,7 +74,7 @@ const NotificationsForm = () => {
               <Checkbox control={form.control} name='moneySent' label='Sent money success' />
             </div>
           </div>
-          <Button type='submit' className='w-full' /* disabled={!isChanged} */>
+          <Button type='submit' className='w-full' disabled={isLoading}>
             Publish
           </Button>
         </form>

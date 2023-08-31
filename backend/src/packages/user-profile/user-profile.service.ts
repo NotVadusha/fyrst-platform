@@ -32,7 +32,7 @@ export class UserProfileService {
   }
 
   async findOne(userId: number) {
-    let profile = await this.profileRepository.findOne({ where: { user_id: userId } });
+    const profile = await this.profileRepository.findOne({ where: { user_id: userId } });
     if (!!profile?.avatar)
       profile.avatar = await this.bucketService.getFileLink(
         profile.avatar,
