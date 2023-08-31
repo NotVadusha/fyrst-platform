@@ -45,9 +45,11 @@ export const bookingSchema = y.object().shape({
     }),
   employersName: y
     .string()
-    .matches(/^[a-z ,.'-]+$/i, `Employer's name should contain only letters`)
+    .matches(
+      /^[A-Z][a-z ,.'-]*( [A-Z][a-z ,.'-]*)*$/,
+      `Employer's name shouldn't contain numbers and uppercase letters, instead of first letter`,
+    )
     .min(2, `Employer's name shouldn't contain minimum 2 symbols`)
     .max(50, `Employer's name shouldn't contain more than 50 symbols`)
     .required(`Employer's name is a required field`),
-  //TODO: uppercase case
 });
