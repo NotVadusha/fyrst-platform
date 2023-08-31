@@ -76,7 +76,7 @@ const TimeCardPage = () => {
           <div className='flex gap-x-4'>
             <Button variant='secondary'>Export CSV</Button>
             <Link to='/booking/create'>
-              <Button variant='primary'>Create new booking</Button>
+              <Button variant='primary'>Create new timecard</Button>
             </Link>
           </div>
         </div>
