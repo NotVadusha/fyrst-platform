@@ -33,6 +33,15 @@ export function CreateBookingForm({
       workingHours: 1,
     },
   });
+  const onSubmit = (values: CreateBookingFormValues) => {
+    const trimmedValues = {
+      ...values,
+      employersName: values.employersName.trim(),
+      notes: values.notes.trim(),
+    };
+
+    handleSubmit(trimmedValues);
+  };
 
   const { data: facilities } = useFetchFacilitiesQuery({});
   const options = facilities
@@ -44,7 +53,7 @@ export function CreateBookingForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='flex flex-col gap-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-6' noValidate>
         <TextInput
           name='employersName'
           control={form.control}
