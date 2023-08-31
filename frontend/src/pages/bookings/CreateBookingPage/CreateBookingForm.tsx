@@ -57,7 +57,7 @@ export function CreateBookingForm({
           control={form.control}
           label='Facility'
           options={options}
-          ddType='in-form'
+          styleVariant='borders'
           placeholder='Facility'
         />
         <TextInput
