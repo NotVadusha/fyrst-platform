@@ -8,18 +8,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from 'src/components/ui/common/Form';
+} from 'src/common/components/ui/common/Form/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { userSchema } from 'src/lib/validations/user';
-import { Button } from 'src/ui/common/Button';
-import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation } from 'src/store/reducers/user/userApi';
+import { userSchema } from 'src/common/packages/user/types/validation-schemas/user.validation-schema';
+import { Button } from 'src/common/components/ui/common/Button';
+import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
+import { useAddUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import { toast } from 'src/components/ui/common/Toast/useToast';
-import DateInput from 'src/components/profileEditForm/DateInput';
-import CityInput from 'src/components/profileEditForm/CityInput';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import DateInput from 'src/pages/profiles/profileEditForm/DateInput';
+import CityInput from 'src/pages/profiles/profileEditForm/CityInput';
 
 type Inputs = y.InferType<typeof userSchema>;
 

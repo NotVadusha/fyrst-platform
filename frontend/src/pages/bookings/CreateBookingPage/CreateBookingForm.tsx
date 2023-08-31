@@ -2,14 +2,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { Button } from 'src/ui/common/Button';
-import { bookingSchema } from 'src/lib/validations/booking';
-import { Form } from 'src/components/ui/common/Form';
-import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useFetchFacilitiesQuery } from 'src/store/reducers/facility/facilityApi';
-import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
+import { Button } from 'src/common/components/ui/common/Button';
+import { bookingSchema } from 'src/common/packages/booking/types/validation-schemas/booking.validation-schema';
+import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
+import { Form, FormField, FormItem } from 'src/common/components/ui/common/Form/Form';
+import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
+import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
 import { useSelector } from 'react-redux';
-import { RootState } from 'src/store';
+import { RootState } from 'src/common/store';
 
 export type CreateBookingFormValues = y.InferType<typeof bookingSchema>;
 
