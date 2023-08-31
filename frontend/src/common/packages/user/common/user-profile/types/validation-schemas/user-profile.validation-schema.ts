@@ -4,8 +4,14 @@ import { intervalToDuration } from 'date-fns';
 const phoneNumberRegex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
 
 export const profileSchema = y.object().shape({
-  first_name: y.string().required('First name is required field'),
-  last_name: y.string().required('Second name is required field'),
+  first_name: y
+    .string()
+    .required('First name is required field')
+    .matches(/^[A-Za-z ]*$/, 'Please enter valid first name'),
+  last_name: y
+    .string()
+    .required('Second name is required field')
+    .matches(/^[A-Za-z ]*$/, 'Please enter valid last name'),
   email: y.string().email('Invalid email input').required('Email is required field'),
   phone_number: y.lazy(value =>
     value
