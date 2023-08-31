@@ -12,6 +12,7 @@ import {
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { TimecardStatus } from 'shared/timecard-status';
 import { useAppSelector } from 'src/common/hooks/redux';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 export default function ViewTimeCardPage() {
   const { id } = useParams();
@@ -26,6 +27,8 @@ export default function ViewTimeCardPage() {
       approvedBy: facilityManagerId,
       approvedAt: new Date().toISOString(),
     });
+
+    toast({ title: 'Success', description: 'Successfully submitted timecard' });
   }
 
   function handleRejectTimecard() {
@@ -34,6 +37,16 @@ export default function ViewTimeCardPage() {
       status: TimecardStatus.Rejected,
       approvedBy: null,
       approvedAt: null,
+    });
+
+    toast({ title: 'Success', description: 'Successfully rejected timecard' });
+  }
+
+  if (!timecard && !isFetching) {
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: 'Timecard not found',
     });
   }
 
@@ -63,7 +76,7 @@ export default function ViewTimeCardPage() {
                   onClick={() => handleSubmitTimecard(user.id as number)}
                   disabled={timecard.status === TimecardStatus.Approved}
                 >
-                  Submit
+                  Approve
                 </Button>
                 <Button
                   variant='primary'

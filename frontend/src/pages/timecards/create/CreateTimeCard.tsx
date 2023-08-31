@@ -11,11 +11,12 @@ import { useAppSelector } from 'src/common/hooks/redux';
 import { User } from 'src/common/packages/user/types/interfaces/User.interface';
 import { useGetBookingByIdQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 export default function CreateTimeCardPage() {
   const { bookingId } = useParams();
 
-  const { data: booking, isLoading } = useGetBookingByIdQuery(Number(bookingId));
+  const { data: booking, isFetching } = useGetBookingByIdQuery(Number(bookingId));
 
   const [createTimecard] = useCreateTimecardMutation();
   const navigate = useNavigate();
@@ -29,12 +30,19 @@ export default function CreateTimeCardPage() {
       lunchHours: values.lunchHours,
       hoursWorked: values.hoursWorked,
     });
+
+    toast({ title: 'Success', description: 'Successfully created timecard' });
+
     navigate(`/booking/${bookingId}`);
   }
 
-  if (isLoading || !booking) {
+  if (!booking && !isFetching) {
+    toast({ variant: 'destructive', title: 'Error', description: 'Booking not found' });
+  }
+
+  if (isFetching || !booking) {
     return (
-      <div className='min-h-full flex items-center-justify-center'>
+      <div className='min-h-full flex items-center justify-center'>
         <Spinner />
       </div>
     );
