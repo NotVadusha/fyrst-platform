@@ -8,5 +8,7 @@ export { AuthModule } from './auth/auth.module';
 export { ResetPasswordModule } from './reset-password/reset-password.module';
 export { UserProfileModule } from './user-profile/user-profile.module';
 export { FacilityModule } from './facility/facility.module';
-export { NotificationConfigModule } from './notifications-config/notifications-config.module';
+export { ChatModule } from './chat/chat.module';
+export { MessageModule } from './message/message.module';
+export { NotificationsConfigModule } from './notifications-config/notifications-config.module';
 export { BucketModule } from './bucket/bucket.module';

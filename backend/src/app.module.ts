@@ -13,10 +13,12 @@ import {
   ResetPasswordModule,
   UserProfileModule,
   FacilityModule,
-  NotificationConfigModule,
+  ChatModule,
+  MessageModule,
+  NotificationsConfigModule,
   BucketModule,
 } from './packages';
-
+import { AppGateway } from './app.gateway';
 @Module({
   imports: [
     SequelizeModule.forRoot(development),
@@ -30,10 +32,12 @@ import {
     BookingModule,
     UserProfileModule,
     FacilityModule,
-    NotificationConfigModule,
+    ChatModule,
+    MessageModule,
+    NotificationsConfigModule,
     BucketModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AppGateway],
 })
 export class AppModule {}

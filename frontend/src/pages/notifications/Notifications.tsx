@@ -10,6 +10,7 @@ const Notifications = () => {
   const handleCreateBookingClick = () => {
     navigate('/booking/create');
   };
+
   return (
     <div>
       <Header title='Profile'>
@@ -24,7 +25,7 @@ const Notifications = () => {
       <div className={styles.notificationsContainer}>
         <h6 className={styles.notificationsTitle}>Notifications</h6>
         <p className={styles.notificationsText}>
-          Choose type of notifications you want to recieve.
+          Choose type of notifications you want to receive.
         </p>
         <div className={styles.notificationsCard}>
           <NotificationsForm />

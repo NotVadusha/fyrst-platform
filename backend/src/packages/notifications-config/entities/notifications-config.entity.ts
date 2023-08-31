@@ -2,10 +2,10 @@ import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types/model';
 import { User } from 'src/packages/user/entities/user.entity';
 
-@Table({ tableName: 'notification_config', timestamps: true })
-class NotificationConfig extends Model<
-  InferAttributes<NotificationConfig>,
-  InferCreationAttributes<NotificationConfig>
+@Table({ tableName: 'Notifications-Config', timestamps: false })
+class NotificationsConfig extends Model<
+  InferAttributes<NotificationsConfig>,
+  InferCreationAttributes<NotificationsConfig>
 > {
   @Column({
     type: DataType.INTEGER,
@@ -18,7 +18,7 @@ class NotificationConfig extends Model<
   @Column
   userId: number;
 
-  @BelongsTo(() => User, 'user_id')
+  @BelongsTo(() => User, 'userId')
   user: User;
 
   @Column({
@@ -58,4 +58,4 @@ class NotificationConfig extends Model<
   moneySent: boolean;
 }
 
-export { NotificationConfig };
+export { NotificationsConfig };

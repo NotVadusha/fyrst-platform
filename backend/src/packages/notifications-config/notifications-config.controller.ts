@@ -13,6 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { NotificationsConfigService } from './notifications-config.service';
 import { UpdateNotificationsConfigDto } from './dto/update-config.dto';
+import { CreateNotificationsConfigDto } from './dto/create-config-dto';
 
 @ApiTags('Notification config endpoints')
 @Controller('notification-config')
@@ -33,29 +34,30 @@ export class NotificationsConfigController {
     }
   }
 
-  @Post(':userId')
-  async create(@Param('userId', ParseIntPipe) userId: number) {
+  @Post()
+  async create(@Body() createNotificationsConfigDto: CreateNotificationsConfigDto) {
     try {
-      const config = await this.notificationsConfigService.create(userId);
-      this.logger.log(`Creating notifications config for user ${userId}`);
+      const config = await this.notificationsConfigService.create(createNotificationsConfigDto);
+      this.logger.log(
+        `Creating notifications config for user ${createNotificationsConfigDto.userId}`,
+      );
       return config;
     } catch (e) {
-      this.logger.error(`Error creating notifications config for user ${userId}`);
+      this.logger.error(
+        `Error creating notifications config for user ${createNotificationsConfigDto.userId}`,
+      );
       throw new NotFoundException(`Couldn't create notification configuration`);
     }
   }
 
-  @Patch(':userId')
-  async update(
-    @Param('userId', ParseIntPipe) userId: number,
-    @Body() updateConfigDto: UpdateNotificationsConfigDto,
-  ) {
+  @Patch()
+  async update(@Body() updateConfigDto: UpdateNotificationsConfigDto) {
     try {
-      const config = await this.notificationsConfigService.update(userId, updateConfigDto);
-      this.logger.log(`Updating notifications config for user ${userId}`);
+      const config = await this.notificationsConfigService.update(updateConfigDto);
+      this.logger.log(`Updating notifications config for user ${updateConfigDto.userId}`);
       return config;
     } catch (e) {
-      this.logger.error(`Error updating notifications config for user ${userId}`);
+      this.logger.error(`Error updating notifications config for user ${updateConfigDto.userId}`);
       throw new NotFoundException(`Couldn't update notification configuration`);
     }
   }

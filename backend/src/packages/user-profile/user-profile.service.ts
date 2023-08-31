@@ -4,6 +4,7 @@ import { UserProfile } from './entities/user-profile.entity';
 import { CreateProfileDto } from './dto/createProfile.dto';
 import { UserService } from '../user/user.service';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
+import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
 import { BucketService } from '../bucket/bucket.service';
 
 @Injectable()
@@ -11,6 +12,7 @@ export class UserProfileService {
   constructor(
     @InjectModel(UserProfile) private profileRepository: typeof UserProfile,
     private userService: UserService,
+    private notificationsConfigService: NotificationsConfigService,
     private bucketService: BucketService,
   ) {}
 
@@ -21,6 +23,7 @@ export class UserProfileService {
       where: { user_id: profileInfo.user_id },
     });
     if (isProfileExist) throw new ConflictException('Profile for this user is already exist');
+    this.notificationsConfigService.create({ userId: profileInfo.user_id });
     return await this.profileRepository.create({ description: '', ...profileInfo });
   }
 
@@ -29,7 +32,7 @@ export class UserProfileService {
   }
 
   async findOne(userId: number) {
-    let profile = await this.profileRepository.findOne({ where: { user_id: userId } });
+    const profile = await this.profileRepository.findOne({ where: { user_id: userId } });
     if (!!profile?.avatar)
       profile.avatar = await this.bucketService.getFileLink(
         profile.avatar,

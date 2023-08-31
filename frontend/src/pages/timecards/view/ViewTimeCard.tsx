@@ -55,7 +55,7 @@ export default function ViewTimeCardPage() {
           ) : (
             <>
               <div className='flex items-center justify-between'>
-                <h2 className='text-4xl font-bold'>Driver timecard</h2>
+                <h2 className='text-4xl font-bold'>{timecard.booking.facility.name} timecard</h2>
                 <div className='flex gap-x-4'>
                   <Button
                     variant='primary'
@@ -78,11 +78,11 @@ export default function ViewTimeCardPage() {
               <div className='flex justify-between gap-12'>
                 <Card className='w-full flex-1 p-4'>
                   <CardTitle>Job description</CardTitle>
-                  <CardContent>{timecard.booking.notes}</CardContent>
+                  <CardContent className='text-black'>{timecard.booking.notes}</CardContent>
                 </Card>
                 <Card className='w-full flex-1 p-4'>
                   <CardTitle>Additional details</CardTitle>
-                  <CardContent className='flex flex-col space-y-4 items-start'>
+                  <CardContent className='flex flex-col space-y-4 items-start text-dark-grey'>
                     <div className='flex justify-between gap-2 w-full'>
                       <span>Employee</span>
                       <span>{`${timecard.employee.first_name} ${timecard.employee.last_name}`}</span>

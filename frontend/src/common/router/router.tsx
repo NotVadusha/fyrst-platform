@@ -27,6 +27,7 @@ import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
 
 //TODO: Add one component for all pages
+import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -73,6 +74,17 @@ export const router = createBrowserRouter([
               {
                 path: 'create/:bookingId',
                 element: <CreateTimeCardPage />,
+              },
+            ],
+          },
+          {
+            path: '/chat',
+            errorElement: <ErrorPage />,
+            element: <MessengerPage />,
+            children: [
+              {
+                path: ':chatId',
+                element: <ChatPage />,
               },
             ],
           },

@@ -34,6 +34,7 @@ module.exports = {
         'body-large': '1.125rem',
         'body-default': '1rem',
         'body-small': '0.875rem',
+        'body-default-medium': '1rem',
         line: '0.875rem',
         field: '0.8125rem',
         placeholder: '0.625rem',

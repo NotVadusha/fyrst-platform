@@ -27,6 +27,11 @@ export class UserController {
     return await this.userService.create(userInfo);
   }
 
+  @Get('/many')
+  async getAll() {
+    return await this.userService.findAll();
+  }
+
   @Post('/many')
   async createMany(@Body() userInfo: CreateUserDto[]) {
     return await this.userService.createMany(userInfo);

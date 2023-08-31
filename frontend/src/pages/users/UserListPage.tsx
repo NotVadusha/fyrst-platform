@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button/index';
-import Table, { ColumnInfo } from 'src/common/components/ui/common/Table/Table';
-import { useAddUsersMutation, useGetUsersQuery } from 'src/common/store/api/packages/user/userApi';
+import Table from 'src/common/components/ui/common/Table/Table';
+import {
+  useAddUsersMutation,
+  useGetUsersByParamsQuery,
+} from 'src/common/store/api/packages/user/userApi';
 import { User } from 'src/common/packages/user/types/interfaces/User.interface';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
-import { UserActions } from './actions/UserActions';
 import Papa from 'papaparse';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
@@ -41,7 +43,7 @@ export function UserListPage() {
     filters[key as keyof UserFilters] === null && delete filters[key as keyof UserFilters];
   });
 
-  const { data, isFetching } = useGetUsersQuery({
+  const { data, isFetching } = useGetUsersByParamsQuery({
     currentPage,
     filters,
   });
