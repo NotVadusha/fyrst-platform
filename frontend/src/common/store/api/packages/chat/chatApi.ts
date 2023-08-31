@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../../api';
 import { Message } from 'shared/socketEvents';
-import { UserDefaultResponse } from 'types/dto/UserDto';
 import { Chat } from 'shared/socketEvents';
 
 interface NewChatPayload {

@@ -1,14 +1,14 @@
 import { format } from 'date-fns';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
+import { ScrollArea } from 'src/common/components/ui/common/ScrollArea/ScrollArea';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { socket } from 'src/lib/socket';
 import { cn } from 'src/common/helpers/helpers';
 import {
   setConversations,
   upsertConversation,
-} from 'src/common/store/api/packages/messanger.store';
+} from 'src/common/store/slices/packages/messenger/messangerSlice';
 import {
   useGetAllUserChatsQuery,
   useSearchChatsQuery,
