@@ -4,9 +4,9 @@ import styles from './BookingOverview.module.css';
 interface AdditionalDetailsProps {
   [key: string]: any;
   employer: string;
-  published: string;
-  startLocation: string;
-  endLocation: string;
+  createdAt: string;
+  startDate: string;
+  endDate: string;
   payment: number;
   avatar?: string;
 }
@@ -17,15 +17,15 @@ const LABELS: {
   };
 } = {
   employer: { display: 'Employer' },
-  published: { display: 'Published' },
-  startLocation: { display: 'Start Location' },
-  endLocation: { display: 'End Location' },
+  createdAt: { display: 'Published' },
+  startDate: { display: 'Start Date' },
+  endDate: { display: 'End Date' },
   payment: { display: 'Payment' },
 };
 
 const AdditionalDetails: FC<{ data: AdditionalDetailsProps }> = ({ data }) => (
   <div className={`${styles.bookingCard} ${styles.cardDetails}`}>
-    <h6 className={styles.bookingCardTitle}>AdditionalDetails</h6>
+    <h6 className={styles.bookingCardTitle}>Additional Details</h6>
     <ul className={styles.additionalDeailsContainer}>
       {Object.keys(LABELS).map(key => {
         const label = LABELS[key].display;

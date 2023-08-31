@@ -1,44 +1,45 @@
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Chat } from 'shared/socketEvents';
 import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
-import { useAppSelector } from 'src/hooks/redux';
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { socket } from 'src/lib/socket';
 import { cn } from 'src/lib/utils';
 import { useGetAllUserChatsQuery } from 'src/store/reducers/chat/chatApi';
+import { setConversations, upsertConversation } from 'src/store/reducers/messanger.store';
 
 export const Conversations: React.FC = () => {
   const location = useLocation();
 
   const { data } = useGetAllUserChatsQuery('');
 
-  const [chats, setChats] = useState<any[]>([]);
+  // const [conversations, setConversations] = useState<Omit<Chat, 'members'>[]>([]);
 
   const user = useAppSelector(state => state.user);
 
-  // useEffect(() => {
-  //   setChats(data);
+  const conversations = useAppSelector((state) => state.messanger.conversations);
+  const dispatch = useAppDispatch();
 
-  //   const updateChatOnNewMessage = (message: any) => {
-  //     console.log('conversations', message);
-  //     console.log(chats);
-  //     if (!chats) return;
-  //     const newChat = [
-  //       ...chats?.map(chat =>
-  //         chat.id === message.chatId ? { ...chat, messages: [message] } : chat,
-  //       ),
-  //     ]
-  //     console.log(newChat)
-  //     setChats(newChat);
-  //   };
+  useEffect(() => {
+    socket.on('send-conversations', conversations => {
+      console.log(conversations);
+      dispatch(setConversations(conversations));
+    });
 
-  //   socket.on('new-message', updateChatOnNewMessage);
+    socket.on('conversation-upsert', conversation => {
+      console.log(conversation);
+      dispatch(upsertConversation(conversation));
+    });
 
-  //   return () => {
-  //     socket.off('new-message', updateChatOnNewMessage);
-  //     // socket.disconnect();
-  //   };
-  // }, [data]);
+    if (!user?.id) return;
+    
+    socket.emit('get-conversations', { userId: user?.id });
+
+    return () => {
+      // socket.disconnect();
+    };
+  }, [user.id]);
 
   return (
     <div className='relative lg:min-w-[260px]'>
@@ -49,13 +50,13 @@ export const Conversations: React.FC = () => {
       />
       <ScrollArea className='mt-16 h-[120px] xl:h-[400px] w-full p-2'>
         <div className='grid gap-4'>
-          {data?.length > 0 ? (
-            data?.map((chat: any) => {
+          {conversations?.length > 0 ? (
+            conversations?.map((chat) => {
               const lastMessage = chat.messages[0];
 
               const isAuthor = lastMessage?.userId === user.id;
 
-              const isOnPage = location.pathname.endsWith(chat.id);
+              const isOnPage = location.pathname.endsWith(String(chat.id));
 
               return (
                 <Link to={`/chat/${chat.id}`} key={chat.id}>
@@ -84,7 +85,7 @@ export const Conversations: React.FC = () => {
                           </p>
                         </div>
                         <span className='text-body-small text-dark-grey opacity-80 font-normal leading-5 flex items-center text-center self-end'>
-                          {format(new Date(lastMessage?.createdAt), 'HH:mm')}
+                          {lastMessage?.createdAt && format(new Date(lastMessage?.createdAt), 'HH:mm')}
                         </span>
                       </>
                     ) : (

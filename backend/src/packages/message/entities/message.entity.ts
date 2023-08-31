@@ -13,7 +13,7 @@ import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
 import { Chat } from 'src/packages/chat/entities/chat.entity';
 import { User } from 'src/packages/user/entities/user.entity';
 
-@Table
+@Table({timestamps: true})
 class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Message>> {
   @PrimaryKey
   @AutoIncrement
@@ -22,11 +22,6 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
 
   @Column
   messageContent: string;
-
-  @Column({
-    type: DataType.TIME,
-  })
-  time: string;
 
   @AllowNull
   @Column({

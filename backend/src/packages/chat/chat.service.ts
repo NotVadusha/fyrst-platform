@@ -26,6 +26,8 @@ export class ChatService {
     private readonly logger: Logger,
     @Inject(UserService)
     private readonly userService: UserService,
+    @Inject(AppGateway)
+    private readonly gateway: AppGateway,
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
@@ -58,6 +60,8 @@ export class ChatService {
       chat,
     });
 
+    this.gateway.wss.emit('conversation-upsert', {...chat, messages: []});
+
     return chat;
   }
 
@@ -75,7 +79,7 @@ export class ChatService {
   async findAllByUserId(id: number) {
     const chats = await this.chatRepository.findAll({
       include: [
-        { model: User, as: 'members', required: true, where: { id } },
+        // { model: User, as: 'members', required: true, where: { id } },
         {
           model: Message,
           as: 'messages',

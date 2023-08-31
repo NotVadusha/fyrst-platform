@@ -52,7 +52,7 @@
 }
 
 .menu {
-  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2 absolute overflow-hidden box-border transition-transform origin-top;
+  @apply bg-white shadow-dropdown px-2.5 py-3 rounded-lg w-full top-full translate-y-2 absolute overflow-hidden box-border transition-transform origin-top max-h-80 overflow-y-scroll;
 }
 .menu.closed {
   @apply scale-y-0 invisible;
@@ -72,6 +72,26 @@
   @apply absolute right-4 top-2 appearance-none;
 }
 
-.select__container{
+.select__container {
   @apply text-blue;
+}
+
+/* width */
+::-webkit-scrollbar {
+  @apply w-2.5;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-transparent my-1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-grey rounded-md;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blue;
 }

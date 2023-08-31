@@ -14,7 +14,7 @@ import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('facility')
+@ApiTags('Facility endpoints')
 @Controller('facility')
 export class FacilityController {
   private readonly logger = new Logger(FacilityController.name);

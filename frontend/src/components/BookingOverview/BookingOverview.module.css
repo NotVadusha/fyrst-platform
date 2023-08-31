@@ -3,7 +3,7 @@
 }
 
 .bookingContainer{
-	@apply max-w-[955px] ml-[80px] mr-[77px] mb-[80px];
+	@apply max-w-[955px] ml-[80px] mr-[77px] mb-[80px] mt-[40px];
 }
 
 .route{

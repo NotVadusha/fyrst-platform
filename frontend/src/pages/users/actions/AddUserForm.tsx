@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -14,29 +14,32 @@ import * as y from 'yup';
 import { userSchema } from 'src/lib/validations/user';
 import { Button } from 'src/ui/common/Button';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
-import { useAddUserMutation, useUpdateUserMutation } from 'src/store/reducers/user/userApi';
+import { useAddUserMutation } from 'src/store/reducers/user/userApi';
 import { useNavigate } from 'react-router-dom';
-import { User } from 'types';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'src/components/ui/common/Toast/useToast';
+import DateInput from 'src/components/profileEditForm/DateInput';
+import CityInput from 'src/components/profileEditForm/CityInput';
 
 type Inputs = y.InferType<typeof userSchema>;
 
-export function EditUserForm({ user }: { user: User }) {
-  const [editUser, { error }] = useUpdateUserMutation();
-  const [isLoading, setIsLoading] = React.useState(false);
+export function AddUserForm() {
+  const [addUser, { error }] = useAddUserMutation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const [city, setCity] = React.useState('');
 
   const form = useForm<Inputs>({
     resolver: yupResolver<Inputs>(userSchema),
     defaultValues: {
-      birthdate: user.birthdate ?? undefined,
-      city: user.city,
-      email: user.email,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      password: user.password,
-      phone_number: user.phone_number,
-      role_id: user.role_id,
+      city: '',
+      email: '',
+      first_name: '',
+      last_name: '',
+      password: '',
+      phone_number: '',
+      birthdate: undefined,
     },
   });
 
@@ -44,12 +47,16 @@ export function EditUserForm({ user }: { user: User }) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
-    editUser({
-      id: user.id,
-      user: { ...values, phone_number: values.phone_number ?? undefined },
+    addUser({
+      ...values,
+      birthdate: values.birthdate ?? undefined,
+      phone_number: values.phone_number ?? undefined,
     })
       .unwrap()
-      .then(payload => navigate(0))
+      .then(payload => {
+        navigate(0);
+        toast({ title: 'Success', description: 'User successfully added' });
+      })
       .catch(err => setIsLoading(false));
   }
 
@@ -78,29 +85,25 @@ export function EditUserForm({ user }: { user: User }) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
+        <Controller
           name='birthdate'
+          control={form.control}
           render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Birthdate</FormLabel>
-              <FormControl>
-                <input type='date' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <DateInput control={form.control} label='Date of birth' {...field} />
           )}
         />
         <FormField
           control={form.control}
           name='city'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormControl>
-                <TextInput control={form.control} type='text' label='City' {...field} />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({ field }) => {
+            return (
+              <FormItem className='flex flex-col'>
+                <FormControl>
+                  <CityInput control={form.control} {...field} setCity={setCity} />
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={form.control}
@@ -152,7 +155,13 @@ export function EditUserForm({ user }: { user: User }) {
             </FormItem>
           )}
         />
-        <Button type='submit' variant='primary' className='w-full'>
+        {/* <button type='submit'>Submit</button> */}
+        <Button
+          onClick={form.handleSubmit(onSubmit)}
+          type='submit'
+          variant='primary'
+          className='w-full'
+        >
           {isLoading && <Loader2 className='w-8 h-8 animate-spin mr-2' />}
           Submit
         </Button>

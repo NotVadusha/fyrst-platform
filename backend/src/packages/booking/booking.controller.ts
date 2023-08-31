@@ -9,13 +9,14 @@ import {
   ParseIntPipe,
   Query,
   InternalServerErrorException,
+  HttpCode,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FilterBookingDto } from './dto/filter-booking.dto';
 
-@ApiTags('booking')
+@ApiTags('Booking endpoints')
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}

@@ -33,7 +33,7 @@ export function CreateChatForm() {
       .unwrap()
       .then(res => {
         setIsLoading(false);
-        navigate(0);
+        // navigate(0);
         toast({title: "Success", description: "New chat successfully created"})
       })
       .catch(err => setIsLoading(false));

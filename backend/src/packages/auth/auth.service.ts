@@ -10,6 +10,7 @@ import { GoogleDto } from './dto/google.dto';
 import { JWTPayload } from './types';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import { RegistrationDto } from './dto/registration.dto';
+import { UserProfileService } from '../user-profile/user-profile.service';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -19,6 +20,7 @@ export class AuthService {
     private userService: UserService,
     private redisService: RedisService,
     private emailConfirmationService: EmailConfirmationService,
+    private userProfileService: UserProfileService,
   ) {}
 
   async getTokens(payload: JWTPayload) {
@@ -44,6 +46,9 @@ export class AuthService {
         password: hashedPassword,
         role_id: 1,
         is_confirmed: false,
+      });
+      this.userProfileService.create({
+        user_id: createdUser.id,
       });
       await this.emailConfirmationService.sendVerificationLink(createdUser.email);
       return {
@@ -136,6 +141,9 @@ export class AuthService {
           email: googleDto.email,
           is_confirmed: true,
           role_id: 1,
+        });
+        this.userProfileService.create({
+          user_id: user.id,
         });
       }
 

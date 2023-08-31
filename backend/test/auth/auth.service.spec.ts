@@ -11,6 +11,7 @@ import {
   refreshDtoMock,
   userServiceMock,
   usersMock,
+  userProfileServiceMock,
 } from './auth.mocks';
 import { UserService } from 'src/packages/user/user.service';
 import { RedisService } from 'src/packages/redis/redis.service';
@@ -19,6 +20,7 @@ import { EmailConfirmationService } from 'src/packages/email-confirmation/emailC
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
+import { UserProfileService } from 'src/packages/user-profile/user-profile.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -26,6 +28,7 @@ describe('AuthService', () => {
   let redisService: RedisService;
   let emailConfirmationService: EmailConfirmationService;
   let userService: UserService;
+  let userProfileService: UserProfileService;
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -49,6 +52,10 @@ describe('AuthService', () => {
           provide: EmailConfirmationService,
           useValue: emailConfirmationServiceMock,
         },
+        {
+          provide: UserProfileService,
+          useValue: userProfileServiceMock,
+        },
       ],
     }).compile();
 
@@ -57,6 +64,7 @@ describe('AuthService', () => {
     emailConfirmationService = module.get<EmailConfirmationService>(EmailConfirmationService);
     redisService = module.get<RedisService>(RedisService);
     userService = module.get<UserService>(UserService);
+    userProfileService = module.get<UserProfileService>(UserProfileService);
   });
 
   describe('getTokens', () => {

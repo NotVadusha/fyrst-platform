@@ -11,14 +11,15 @@ import {
 } from '../../../store/reducers/timecards/timecardsApi';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
 import { TimecardStatus } from 'shared/timecard-status';
+import { useAppSelector } from 'src/hooks/redux';
 
 export default function ViewTimeCardPage() {
   const { id } = useParams();
   const { data: timecard, isFetching, error } = useFetchTimecardQuery(Number(id));
   const [updateTimecard] = useUpdateTimecardMutation();
+  const user = useAppSelector(state => state.user);
 
   function handleSubmitTimecard(facilityManagerId: number) {
-    console.log('here');
     updateTimecard({
       id: Number(id),
       status: TimecardStatus.Approved,
@@ -28,7 +29,6 @@ export default function ViewTimeCardPage() {
   }
 
   function handleRejectTimecard() {
-    console.log('here');
     updateTimecard({
       id: Number(id),
       status: TimecardStatus.Rejected,
@@ -57,13 +57,18 @@ export default function ViewTimeCardPage() {
               <div className='flex items-center justify-between'>
                 <h2 className='text-4xl font-bold'>Driver timecard</h2>
                 <div className='flex gap-x-4'>
-                  <Button variant='primary' onClick={() => handleSubmitTimecard(1123)}>
+                  <Button
+                    variant='primary'
+                    onClick={() => handleSubmitTimecard(user.id as number)}
+                    disabled={timecard.status === TimecardStatus.Approved}
+                  >
                     Submit
                   </Button>
                   <Button
                     variant='primary'
                     className='bg-red hover:bg-red-2'
                     onClick={() => handleRejectTimecard()}
+                    disabled={timecard.status === TimecardStatus.Rejected}
                   >
                     Reject
                   </Button>

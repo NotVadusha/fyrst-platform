@@ -9,16 +9,19 @@ import { Form, FormField, FormItem } from 'src/components/ui/common/Form';
 import TextInput from 'src/components/ui/common/TextInput/TextInput';
 import { useFetchFacilitiesQuery } from 'src/store/reducers/facility/facilityApi';
 import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/store';
 
 export type Inputs = y.InferType<typeof bookingSchema>;
 export function CreateBookingForm({ handleSubmit }: { handleSubmit: (values: Inputs) => void }) {
+  const user = useSelector((state: RootState) => state.user);
   const form = useForm<Inputs>({
     resolver: yupResolver(bookingSchema),
     defaultValues: {
       status: 'pending',
       numberOfPositions: 1,
       facilitiesRate: 1,
-      createdBy: 1123,
+      createdBy: user.id,
       sex: 'Female',
       age: 18,
       education: 'colleage',

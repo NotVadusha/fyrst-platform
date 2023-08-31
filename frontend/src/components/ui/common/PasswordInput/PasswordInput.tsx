@@ -31,6 +31,7 @@ interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   ({ control, name, label, className, ...props }, ref) => {
+    const { onChange: onChangeProp } = props;
     const [isHidden, setIsHidden] = useState(true);
 
     return (
@@ -44,7 +45,10 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
                 {...field}
                 type={isHidden ? 'password' : 'text'}
                 className={`${inputVariants({ invalid: !!useFormField().error })} ${className}`}
-                value={field.value || ''}
+                onChange={e => {
+                  onChangeProp?.(e);
+                  field.onChange(e.target.value);
+                }}
                 ref={ref}
                 {...props}
               />

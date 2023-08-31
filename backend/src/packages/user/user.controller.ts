@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { UserFiltersDto } from './dto/user-filters.dto';
 
-@ApiTags('user')
+@ApiTags('User endpoints')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -71,6 +71,17 @@ export class UserController {
     const updatedUser = await this.userService.update(updateUserInfo, userId);
     if (!updatedUser) throw new NotFoundException();
     return this.userService.findOne(userId);
+  }
+  @Patch('change-password/:id')
+  async changePassword(
+    @Param('id', ParseIntPipe) userId: number,
+    @Body() passwords: { currentPassword: string; newPassword: string },
+  ) {
+    return this.userService.changePassword(
+      userId,
+      passwords.currentPassword,
+      passwords.newPassword,
+    );
   }
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {

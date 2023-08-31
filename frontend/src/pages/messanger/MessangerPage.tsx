@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Messanger } from './common/messanger/Messanger';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import { Modal } from 'src/components/ui/common/Modal';
 import { CreateChatForm } from './CreateChatForm';
+import { socket } from 'src/lib/socket';
+import { useAppSelector } from 'src/hooks/redux';
 
 const MessangerPage = () => {
   const [open, setIsOpen] = useState(false);
+
+  const user = useAppSelector(state => state.user);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    socket.emit('user-online', { userId: user.id });
+  }, [user?.id]);
 
   return (
     <>

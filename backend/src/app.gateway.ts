@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Inject, Logger, forwardRef } from '@nestjs/common';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -10,16 +10,21 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
 import { ChatService } from './packages/chat/chat.service';
+// import { AuthService } from './packages/auth/auth.service';
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    @Inject(forwardRef(() => ChatService))
+    private readonly chatService: ChatService,
+  ) // private readonly authService: AuthService,
+  {}
 
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
 
   // userId - socketId
-  private users = new Map<string, string>;
+  private onlineUsers = new Map<number, string>();
   private logger = new Logger('AppGateway');
 
   handleConnection(client: { emit: (arg0: string, arg1: string) => void }) {
@@ -35,10 +40,27 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.wss.to(client.id).emit('chat-joined', chat);
   }
 
+  @SubscribeMessage('get-conversations')
+  async handleGetConversations(client: Socket, data: { userId: number }) {
+    // this.logger.log(client.handshake.headers.token);
+    // const payload = this.authService.getTokens
+    const conversations = await this.chatService.findAllByUserId(data.userId);
+    this.wss.to(client.id).emit('send-conversations', conversations);
+  }
+
   @SubscribeMessage('user-leave-chat')
   handleLeaveChat(client: Socket, data: { chatId: string }) {
     this.logger.log(`${client.id} left chat ${data.chatId}`);
     client.leave(data.chatId);
+  }
+
+  @SubscribeMessage('user-online')
+  handleUserOnline(client: Socket, data: { userId: number }) {
+    this.onlineUsers.set(data.userId, client.id);
+    this.logger.log(client.handshake.headers.authorization);
+    for (const [key, value] of this.onlineUsers.entries()) {
+      this.logger.log(`Key: ${key}, Value: ${value}`);
+    }
   }
 
   handleDisconnect(client: Socket) {

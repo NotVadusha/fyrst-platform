@@ -7,20 +7,23 @@ import * as y from 'yup';
 import { timecardSchema } from '../../../lib/validation-schemas/timecard';
 import { Button } from 'src/ui/common/Button';
 import TextInput from '../../../components/ui/common/TextInput/TextInput';
+import { User } from 'types/models/User';
 
 export type CreateTimecardFormValues = y.InferType<typeof timecardSchema>;
 
 export function CreateTimeCardForm({
   handleSubmit,
+  user,
 }: {
   handleSubmit: (values: CreateTimecardFormValues) => void;
+  user: User;
 }) {
   const form = useForm<CreateTimecardFormValues>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
       type: 'Weekly',
-      employeeName: 'Dan',
-      managerName: 'Nick',
+      employeeName: user.first_name + ' ' + user.last_name,
+      managerName: 'Your manager name',
       lunchTaken: '2 hours',
       hoursWorked: 12,
     },
