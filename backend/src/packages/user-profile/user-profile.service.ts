@@ -43,13 +43,16 @@ export class UserProfileService {
   }
 
   async update(updateInfo: UpdateProfileDto, userId: number) {
+    let avatar = null;
+
     if (!!updateInfo.avatar) {
       const imgBuffer = Buffer.from(updateInfo.avatar, 'base64');
       await this.bucketService.save(`avatars/${userId}.png`, imgBuffer);
+      avatar = `avatars/${userId}.png`;
     }
 
     const [updatedProfile] = await this.profileRepository.update(
-      { ...updateInfo, avatar: `avatars/${userId}.png` },
+      { ...updateInfo, avatar },
       {
         where: { user_id: userId },
       },
