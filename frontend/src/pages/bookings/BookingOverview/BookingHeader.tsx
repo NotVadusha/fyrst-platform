@@ -46,7 +46,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users,
     <div className={styles.bookingHeader}>
       <div className={styles.jobTitle}>{facility}</div>
       {timecard ? (
-        <span className='font-semibold text-body-default shadow-lg text-center p-5'>
+        <span className='font-semibold text-body-default rounded-lg shadow-lg text-center p-5'>
           Your timecard status: {timecard.status}
         </span>
       ) : userExists ? (

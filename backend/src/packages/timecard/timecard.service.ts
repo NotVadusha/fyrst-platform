@@ -10,6 +10,7 @@ import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { Op } from 'sequelize';
+import { getFilterParams } from 'shared/getFilterParams';
 
 @Injectable()
 export class TimecardService {
@@ -28,27 +29,13 @@ export class TimecardService {
   async getAllFiltered(filters: TimecardFiltersDto): Promise<GetAllTimecardsDto> {
     this.logger.log(filters.createdAt);
 
-    const whereFilters: Record<string, any>[] = [];
-
-    if (filters.createdAt !== undefined) {
-      whereFilters.push({ createdAt: filters.createdAt });
-    }
-
-    if (filters.approvedAt !== undefined) {
-      whereFilters.push({ approvedAt: filters.approvedAt });
-    }
-
-    if (filters.status !== undefined) {
-      whereFilters.push({ status: filters.status });
-    }
-
-    if (filters.createdBy !== undefined) {
-      whereFilters.push({ createdBy: filters.createdBy });
-    }
-
-    if (filters.bookingId !== undefined) {
-      whereFilters.push({ bookingId: filters.bookingId });
-    }
+    const whereFilters: Record<string, any>[] = getFilterParams(filters, [
+      'createdAt',
+      'approvedAt',
+      'status',
+      'createdBy',
+      'bookingId',
+    ]);
 
     const timecards = await this.timecardModel.findAll({
       where: whereFilters,

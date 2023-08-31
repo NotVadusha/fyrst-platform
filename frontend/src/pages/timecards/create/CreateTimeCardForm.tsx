@@ -8,22 +8,27 @@ import { timecardSchema } from 'src/common/packages/timecard/types/validation-sc
 import { Button } from 'src/common/components/ui/common/Button';
 import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
 import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { Booking } from 'src/common/packages/booking/types/models/Booking.model';
+
 export type CreateTimecardFormValues = y.InferType<typeof timecardSchema>;
 
 export function CreateTimeCardForm({
   handleSubmit,
   user,
+  booking,
 }: {
   handleSubmit: (values: CreateTimecardFormValues) => void;
   user: User;
+  booking: Booking;
 }) {
+  console.log(booking);
+
   const form = useForm<CreateTimecardFormValues>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
-      type: 'Weekly',
       employeeName: user.first_name + ' ' + user.last_name,
-      managerName: 'Your manager name',
-      lunchTaken: '2 hours',
+      managerName: booking.creator.first_name + ' ' + booking.creator.last_name,
+      lunchHours: 2,
       hoursWorked: 12,
     },
   });
@@ -37,22 +42,6 @@ export function CreateTimeCardForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name='type'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <TextInput
-                control={form.control}
-                type='text'
-                id='text'
-                label='Timecard type'
-                {...field}
-              />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name='employeeName'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
@@ -61,6 +50,7 @@ export function CreateTimeCardForm({
                 type='text'
                 id='employeeName'
                 label="Employee's name"
+                disabled
                 {...field}
               />
             </FormItem>
@@ -77,6 +67,7 @@ export function CreateTimeCardForm({
                 type='text'
                 id='managerName'
                 label='Facility Manager name'
+                disabled
                 {...field}
               />
             </FormItem>
@@ -101,14 +92,14 @@ export function CreateTimeCardForm({
 
         <FormField
           control={form.control}
-          name='lunchTaken'
+          name='lunchHours'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
+                type='number'
                 id='lunchTaken'
-                label='Lunch Taken'
+                label='Lunch hours'
                 {...field}
               />
             </FormItem>

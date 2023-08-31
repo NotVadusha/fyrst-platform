@@ -24,6 +24,8 @@ module.exports = {
         approvedBy,
         approvedAt,
         status,
+        hoursWorked: faker.number.int({ min: 20, max: 40 }),
+        lunchHours: faker.number.int({ min: 4, max: 8 }),
       });
     }
 
