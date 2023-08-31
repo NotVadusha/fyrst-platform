@@ -7,6 +7,7 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import * as Papa from 'papaparse';
 
 @Injectable()
 export class UserService {
@@ -41,20 +42,19 @@ export class UserService {
   async getAllByParams({
     currentPage,
     filters,
+    isCSVExport = false,
   }: {
     currentPage: number;
     filters: Omit<UserFiltersDto, 'currentPage'>;
+    isCSVExport?: boolean;
   }) {
     Object.keys(filters).forEach(
       key =>
         (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
         delete filters[key],
     );
+    const limit = isCSVExport ? Number.MAX_SAFE_INTEGER : 5;
 
-    // Number of users to show per page
-    const limit = 5;
-
-    // To skip per page
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
     const opSubstringFilters = {
@@ -102,6 +102,47 @@ export class UserService {
     });
 
     return { users, totalCount };
+  }
+
+  async generateCSVFromUsers(users: User[]): Promise<string> {
+    if (users.length === 0) {
+      throw new Error('No users available to generate CSV.');
+    }
+
+    const cleanData = users.map(user => ({
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      phone_number: user.phone_number,
+      city: user.city,
+      birthdate: user.birthdate,
+      password: user.password,
+      is_confirmed: user.is_confirmed,
+      role_id: user.role_id,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }));
+
+    const csv = Papa.unparse({
+      fields: [
+        'id',
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'city',
+        'birthdate',
+        'password',
+        'is_confirmed',
+        'role_id',
+        'createdAt',
+        'updatedAt',
+      ],
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async findOne(userId: number) {
