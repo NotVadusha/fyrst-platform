@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import resetPasswordSlice from './reducers/reset-password.store';
 import userSlice from './reducers/user.store';
 import { apiSlice } from './reducers/apiSlice';
+import csvSlice from './reducers/csv/csvSlice';
 
 const rootReducer = combineReducers({
   resetPassword: resetPasswordSlice,
   user: userSlice,
   [apiSlice.reducerPath]: apiSlice.reducer,
+  csv: csvSlice,
 });
 
 const store = configureStore({

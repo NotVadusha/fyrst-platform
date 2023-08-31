@@ -49,6 +49,7 @@ export const bookingApi = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    
   }),
 });
 
