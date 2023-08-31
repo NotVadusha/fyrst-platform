@@ -51,7 +51,7 @@ export function ProfileEditForm() {
 
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState<string>('');
   const [updateUser] = useUpdateUserMutation();
 
   const onSubmit = async (valuesFromForm: Inputs) => {
@@ -70,10 +70,10 @@ export function ProfileEditForm() {
       user: {
         first_name: valuesFromForm?.first_name,
         last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm?.phone_number,
+        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
         email: valuesFromForm?.email,
-        city: valuesFromForm?.city,
-        birthdate: valuesFromForm?.birthdate,
+        city: valuesFromForm.city ? valuesFromForm.city : null,
+        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
       },
     });
 
@@ -191,6 +191,7 @@ export function ProfileEditForm() {
                       id='phone_number'
                       label='Phone'
                       {...field}
+                      value={field.value ? field.value : ''}
                     />
                   </FormItem>
                 )}
@@ -200,7 +201,12 @@ export function ProfileEditForm() {
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    <CityInput control={form.control} {...field} setCity={setCity} />
+                    <CityInput
+                      control={form.control}
+                      {...field}
+                      value={field.value ? field.value : ''}
+                      setCity={setCity}
+                    />
                   </FormItem>
                 )}
               />

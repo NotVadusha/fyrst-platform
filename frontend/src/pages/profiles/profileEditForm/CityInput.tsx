@@ -13,7 +13,7 @@ export interface CityInputProps extends React.InputHTMLAttributes<HTMLInputEleme
   control: any;
 }
 
-const CityInput: React.FC<CityInputProps> = ({ control, setCity, ...field }) => {
+const CityInput: React.FC<CityInputProps> = ({ control, setCity }) => {
   const form = useFormField();
   return (
     <FormField

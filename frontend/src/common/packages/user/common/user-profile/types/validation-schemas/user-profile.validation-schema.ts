@@ -1,6 +1,8 @@
 import * as y from 'yup';
 import { intervalToDuration } from 'date-fns';
 
+const phoneNumberRegex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+
 export const profileSchema = y.object().shape({
   first_name: y.string().required('First name is required field'),
   last_name: y.string().required('Second name is required field'),
@@ -10,8 +12,12 @@ export const profileSchema = y.object().shape({
       ? y
           .string()
           .required()
-          .test('IsValidPhone', 'Phone number is too short', value => value.length > 6)
-      : y.string().optional(),
+          .test(
+            'IsValidPhone',
+            'Phone number is invalid',
+            value => value.length > 6 && phoneNumberRegex.test(value) && value[0] != '0',
+          )
+      : y.string().optional().nullable(),
   ),
   city: y.lazy(value =>
     value
@@ -19,7 +25,7 @@ export const profileSchema = y.object().shape({
           .string()
           .required()
           .test('IsValidCityName', 'City name is too short', value => value.length > 2)
-      : y.string().optional(),
+      : y.string().optional().nullable(),
   ),
   birthdate: y
     .string()
