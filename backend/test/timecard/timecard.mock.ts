@@ -13,6 +13,8 @@ export interface TestTimecard {
   approvedAt: Date | null;
   approvedBy: number | null;
   status: TimecardStatus;
+  hoursWorked: number;
+  lunchHours: number;
 }
 
 export const timecardsMock: TestTimecard[] = [
@@ -24,6 +26,8 @@ export const timecardsMock: TestTimecard[] = [
     approvedAt: null,
     approvedBy: null,
     status: TimecardStatus.Pending,
+    hoursWorked: 12,
+    lunchHours: 2,
   },
   {
     id: 1,
@@ -33,12 +37,16 @@ export const timecardsMock: TestTimecard[] = [
     approvedAt: null,
     approvedBy: null,
     status: TimecardStatus.Pending,
+    hoursWorked: 12,
+    lunchHours: 2,
   },
 ];
 
 export const createTimecardDtoMock: CreateTimecardDto = {
   createdBy: 1,
   bookingId: 2,
+  hoursWorked: 12,
+  lunchHours: 2,
 };
 
 export const updateTimecardDtoMock: UpdateTimecardDto = {
