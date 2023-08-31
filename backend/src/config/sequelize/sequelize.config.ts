@@ -5,6 +5,7 @@ import { Facility } from 'src/packages/facility/entities/facility.entity';
 import { Message } from 'src/packages/message/entities/message.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { User, UserChat } from 'src/packages/user/entities/user.entity';
+import { Permissions } from 'src/packages/permissions/permissions.entity';
 
 export const development: SequelizeModuleOptions = {
   username: process.env.POSTGRES_USER,
@@ -14,5 +15,5 @@ export const development: SequelizeModuleOptions = {
   host: 'db',
   dialect: 'postgres',
   autoLoadModels: true,
-  models: [User, Roles, Facility, Booking, UserChat, Chat, Message],
+  models: [User, Roles, Facility, Booking, UserChat, Chat, Message, Permissions],
 };

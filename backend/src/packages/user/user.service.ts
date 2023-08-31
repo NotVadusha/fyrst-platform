@@ -7,6 +7,8 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import { Permissions } from '../permissions/permissions.entity';
+import { Roles } from '../roles/entities/roles.entity';
 
 @Injectable()
 export class UserService {
@@ -22,11 +24,15 @@ export class UserService {
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
     console.log('creating');
-    return await this.userRepository.create({
-      phone_number: null,
-      is_confirmed: false,
-      ...userInfo,
-    });
+    return await this.userRepository.create(
+      {
+        phone_number: null,
+        is_confirmed: false,
+        permissions: {},
+        ...userInfo,
+      },
+      { include: Permissions },
+    );
   }
 
   async findAll() {

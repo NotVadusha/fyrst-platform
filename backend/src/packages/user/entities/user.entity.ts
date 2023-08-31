@@ -6,10 +6,12 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
+  HasOne,
 } from 'sequelize-typescript';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { Chat } from 'src/packages/chat/entities/chat.entity';
+import { Permissions } from 'src/packages/permissions/permissions.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
@@ -86,6 +88,9 @@ export class User extends Model {
 
   @BelongsToMany(() => Booking, 'user_bookings', 'user_id', 'booking_id')
   bookings: Booking[];
+
+  @HasOne(() => Permissions)
+  permissions: Permissions;
 }
 
 @Table
