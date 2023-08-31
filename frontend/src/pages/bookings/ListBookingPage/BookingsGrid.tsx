@@ -1,5 +1,5 @@
 import React from 'react';
-import { Booking } from 'types/models/Booking';
+import { Booking } from 'src/common/packages/booking/types/models/Booking.model';
 import { BookingCard } from './BookingCard';
 
 interface BookingGridProps {

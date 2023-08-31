@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileSecurity from '../../components/ProfileSecurity/ProfileSecurity';
+import ProfileSecurity from './ProfileSecurity/ProfileSecurity';
 
 const ProfilePage = () => {
   return <div className='h-128 bg-gray'></div>;

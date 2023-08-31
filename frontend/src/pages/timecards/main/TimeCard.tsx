@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from 'src/components/ui/layout/Header/Header';
-import { Button } from 'src/ui/common/Button';
-import { Pagination } from 'src/ui/common/Pagination/Pagination';
-import Table from 'src/ui/common/Table/Table';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { Button } from 'src/common/components/ui/common/Button';
+import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
+import Table from 'src/common/components/ui/common/Table/Table';
 import { TimecardFiltersForm } from './TimecardFiltersForm';
 import { timecardsTableColumns } from './timecardsTableConfig';
-import { useFetchTimecardsQuery } from '../../../store/reducers/timecards/timecardsApi';
+import { useFetchTimecardsQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 import { useSearchParams } from 'react-router-dom';
-import { TimecardFiltersDto } from '../../../../types/dto/TimecardFiltersDto';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
+import { TimecardFiltersDto } from 'src/common/packages/timecard/types/dto/TimecardFiltersDto';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 
 const LIMIT = 5;
 

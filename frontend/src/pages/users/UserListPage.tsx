@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from 'src/components/ui/layout/Header/Header';
-import { Button } from 'src/ui/common/Button';
-import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
-import { useAddUsersMutation, useGetUsersByParamsQuery } from 'src/store/reducers/user/userApi';
-import type { User } from 'types';
-import { Pagination } from 'src/ui/common/Pagination/Pagination';
-import { buttonVariants } from 'src/ui/common/Button/Button';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { Button } from 'src/common/components/ui/common/Button/index';
+import Table from 'src/common/components/ui/common/Table/Table';
+import {
+  useAddUsersMutation,
+  useGetUsersByParamsQuery,
+} from 'src/common/store/api/packages/user/userApi';
+import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
+import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UserFilters } from 'types/UserFilters';
-import { UserActions } from './actions/UserActions';
+import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
 import Papa from 'papaparse';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
-import { Spinner } from 'src/ui/common/Spinner/Spinner';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();

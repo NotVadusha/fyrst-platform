@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Card } from 'src/components/ui/common/Card';
-import { GoBackButton } from 'src/components/ui/common/GoBackButton';
-import { Header } from 'src/components/ui/layout/Header/Header';
+import { Card } from 'src/common/components/ui/common/Card/Card';
+import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { useCreateBookingMutation } from 'src/common/store/api/packages/bookings/bookingApi';
 import { CreateBookingForm, CreateBookingFormValues } from './CreateBookingForm';
-import { useCreateBookingMutation } from 'src/store/reducers/bookings/bookingApi';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'src/components/ui/common/Toast/useToast';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 export const CreateBookingPage = () => {
   const [createBooking] = useCreateBookingMutation();

@@ -7,7 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { RedisService } from 'src/packages/redis/redis.service';
 import { GoogleDto } from './dto/google.dto';
-import { JWTPayload } from './types';
+import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import { RegistrationDto } from './dto/registration.dto';
 import { UserProfileService } from '../user-profile/user-profile.service';

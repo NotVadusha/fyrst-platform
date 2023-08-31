@@ -8,6 +8,7 @@
     ],
     "sourceType": "module"
   },
+  "ignorePatterns":["commitlint.config.mjs", "lint-staged.config.mjs"],
   "plugins": ["@typescript-eslint/eslint-plugin"],
   "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "root": true,
