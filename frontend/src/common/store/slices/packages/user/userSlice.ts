@@ -1,7 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { User } from 'src/common/packages/user/types/models/User.model';
 
-const initialState: Partial<User> = {
+export interface UserState {
+  id?: number;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone_number?: string;
+  city?: string;
+  birthdate?: string;
+  role_id?: number;
+}
+
+const initialState: UserState = {
   id: undefined,
   first_name: undefined,
   last_name: undefined,
@@ -16,7 +27,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    setUser(state, action: PayloadAction<Partial<User> | undefined>) {
+    setUser(state, action: PayloadAction<UserState | undefined>) {
       state.id = action.payload?.id;
       state.first_name = action.payload?.first_name;
       state.last_name = action.payload?.last_name;
