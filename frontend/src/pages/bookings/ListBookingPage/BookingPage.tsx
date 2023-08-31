@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import BookingGrid from './BookingsGrid';
 import { BookingFilters } from './BookingFilters';
 import { useGetAllBookingsQuery } from 'src/store/reducers/bookings/bookingApi';
@@ -9,12 +9,18 @@ import { BookingFiltersDto } from 'types/dto/BookingFiltersDto';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import { RefreshButton } from 'src/components/ui/common/RefreshButton';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { exportCSV } from '../../../store/reducers/csv/csvSlice';
 
 const LIMIT = 6;
 
 const BookingPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.csv.isLoading);
+
   const filters: BookingFiltersDto = {
     facilityId: searchParams.get('facility'),
     endDate: searchParams.get('endDate'),
@@ -33,6 +39,7 @@ const BookingPage = () => {
 
   let totalPages = 0;
   if (data) totalPages = Math.ceil(data.total / LIMIT);
+  console.log(data);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchParams(prevParams => {
@@ -48,6 +55,10 @@ const BookingPage = () => {
     });
   }
 
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'booking', filters }));
+  };
+
   useEffect(() => {
     setSearchParams('');
   }, []);
@@ -57,7 +68,13 @@ const BookingPage = () => {
       <Header title='Bookings'>
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
-            <Button variant='secondary'>Export CSV</Button>
+            <Button
+              variant='secondary'
+              onClick={handleExportCSV}
+              disabled={data?.total === 0 || isCSVLoading}
+            >
+              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+            </Button>
             <Link to='create'>
               <Button variant='primary'>Create new booking</Button>
             </Link>

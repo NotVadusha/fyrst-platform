@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
-import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
+import Table from 'src/ui/common/Table/Table';
 import { useAddUsersMutation, useGetUsersQuery } from 'src/store/reducers/user/userApi';
 import type { User } from 'types';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
@@ -9,17 +9,20 @@ import { buttonVariants } from 'src/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserFilters } from 'types/UserFilters';
-import { UserActions } from './actions/UserActions';
 import Papa from 'papaparse';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { exportCSV } from '../../store/reducers/csv/csvSlice';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
 
   const [addUsers, result] = useAddUsersMutation();
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.csv.isLoading);
 
   const navigate = useNavigate();
 
@@ -41,10 +44,7 @@ export function UserListPage() {
     filters[key as keyof UserFilters] === null && delete filters[key as keyof UserFilters];
   });
 
-  const { data, isFetching } = useGetUsersQuery({
-    currentPage,
-    filters,
-  });
+  const { data, isFetching } = useGetUsersQuery({ currentPage, filters });
 
   const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
 
@@ -63,38 +63,17 @@ export function UserListPage() {
           prevParams.set(e.target.name, e.target.value);
         }
       }
-
       return prevParams;
     });
-
     setCurrentPage(1);
   }
 
-  function handleExport() {
-    if (!data?.users) return;
-
-    const csvData = Papa.unparse(data.users);
-
-    const blob = new Blob([csvData], { type: 'text/csv' });
-
-    const blobURL = URL.createObjectURL(blob);
-
-    const downloadLink = document.createElement('a');
-    downloadLink.href = blobURL;
-    downloadLink.download = 'users.csv';
-
-    downloadLink.textContent = 'Download CSV';
-
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-
-    URL.revokeObjectURL(blobURL);
-    document.body.removeChild(downloadLink);
-  }
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'user', filters }));
+  };
 
   function handleImport(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files?.[0]) return;
-
     const csv = Papa.parse(event.target.files[0] as any, {
       header: true,
       complete: result => {
@@ -109,28 +88,35 @@ export function UserListPage() {
 
   return (
     <>
-      <Header title='Users' />
+      <Header title='Users'>
+        <div className='flex justify-end w-full'>
+          <div className='flex items-center gap-2'>
+            <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
+              Import Users
+            </label>
+            <input
+              id='files'
+              className='hidden'
+              type='file'
+              name='file'
+              accept='.csv'
+              onChange={handleImport}
+            />
+            <Button
+              variant='secondary'
+              onClick={handleExportCSV}
+              disabled={data?.totalCount === 0 || isCSVLoading}
+            >
+              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+            </Button>
+            <AddUserButton />
+          </div>
+        </div>
+      </Header>
       <div className='mx-16'>
         <div className='flex flex-col space-y-6 mt-6'>
           <div className='flex items-center justify-between'>
             <h2 className='text-4xl font-bold'>Users</h2>
-            <div className='flex items-center gap-2'>
-              <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
-                Import Users
-              </label>
-              <input
-                id='files'
-                className='hidden'
-                type='file'
-                name='file'
-                accept='.csv'
-                onChange={handleImport}
-              />
-              <Button variant='secondary' onClick={handleExport}>
-                Export Users CSV
-              </Button>
-              <AddUserButton />
-            </div>
           </div>
           <UserFiltersForm
             handleInputChange={handleInputChange}
@@ -139,11 +125,11 @@ export function UserListPage() {
           <div className='flex flex-col items-center gap-4'>
             {isFetching ? (
               <div className='flex justify-center min-h-[8rem]'>
-                <Spinner size='lg' />
+                <Spinner size='lg' />{' '}
               </div>
             ) : data?.users?.length === 0 ? (
               <p className='text-body-default font-semibold'>
-                No users to display here. Most probably, nothing matches your search query
+                No users to display here. Most probably, nothing matches your search query{' '}
               </p>
             ) : (
               <Table

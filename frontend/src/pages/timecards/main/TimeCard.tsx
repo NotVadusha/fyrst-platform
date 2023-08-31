@@ -10,13 +10,19 @@ import { useFetchTimecardsQuery } from '../../../store/reducers/timecards/timeca
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFiltersDto } from '../../../../types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/ui/common/Spinner/Spinner';
+import { useCSVExport } from '../../../hooks/useCSVDownload';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { exportCSV } from '../../../store/reducers/csv/csvSlice';
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
 
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.csv.isLoading);
+  
   const filters: TimecardFiltersDto = {
     createdAt: searchParams.get('createdAt'),
     approvedAt: searchParams.get('approvedAt'),
@@ -38,6 +44,7 @@ const TimeCardPage = () => {
   if (data) {
     totalPages = Math.ceil(data.total / LIMIT);
   }
+  console.log('Timecard data',data)
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchParams(prevParams => {
@@ -65,6 +72,10 @@ const TimeCardPage = () => {
     });
   }
 
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'timecard', filters }));
+  };
+
   useEffect(() => {
     setSearchParams('');
   }, []);
@@ -74,7 +85,13 @@ const TimeCardPage = () => {
       <Header title='Timecards'>
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
-            <Button variant='secondary'>Export CSV</Button>
+            <Button
+              variant='secondary'
+              onClick={handleExportCSV}
+              disabled={data?.total === 0 || isCSVLoading}
+            >
+              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+            </Button>
             <Link to='/booking/create'>
               <Button variant='primary'>Create new booking</Button>
             </Link>
