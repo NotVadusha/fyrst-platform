@@ -10,13 +10,13 @@ export class Permissions extends Model {
 
   @Default(false)
   @Column
-  canManageTimecards: boolean;
+  manageTimecards: boolean;
 
   @Default(false)
   @Column
-  canManageBookings: boolean;
+  manageBookings: boolean;
 
   @Default(false)
   @Column
-  canManageUsers: boolean;
+  manageUsers: boolean;
 }
