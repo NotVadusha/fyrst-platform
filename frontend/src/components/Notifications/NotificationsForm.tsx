@@ -1,53 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button } from '../../ui/common/Button';
 import { useForm } from 'react-hook-form';
 import { Form } from '../ui/common/Form';
 import styles from './Notifications.module.css';
 import Checkbox from '../ui/common/Checkbox/Checkbox';
 import { useToast } from '../ui/common/Toast/useToast';
+import * as yup from 'yup';
+import { useAppSelector } from 'src/hooks/redux';
+import {
+  useGetNotificationsConfigQuery,
+  useUpdateNotificationsConfigMutation,
+} from 'src/store/reducers/notification-configs/notificationConfigApi';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-interface NotificationConfig {
-  id: number;
-  user_id: number;
-  timecards: boolean;
-  bookings: boolean;
-  payment_success: boolean;
-  password_change: boolean;
-  weekly_report: boolean;
-  money_sent: boolean;
-}
+const formSchema = yup.object({
+  id: yup.number(),
+  userId: yup.number(),
+  bookings: yup.boolean(),
+  timecards: yup.boolean(),
+  paymentSuccess: yup.boolean(),
+  passwordChange: yup.boolean(),
+  weeklyReport: yup.boolean(),
+  moneySent: yup.boolean(),
+});
+
+type FormValues = yup.InferType<typeof formSchema>;
 
 const NotificationsForm = () => {
-  const initialConfig: NotificationConfig = {
-    id: 1,
-    user_id: 12345,
-    timecards: true,
-    bookings: false,
-    payment_success: true,
-    password_change: false,
-    weekly_report: true,
-    money_sent: false,
-  };
+  const user = useAppSelector(state => state.user);
 
-  const [config, setConfig] = useState(initialConfig);
+  const { data, isLoading } = useGetNotificationsConfigQuery(user.id ?? 1);
+  const [updateNotificationsConfig] = useUpdateNotificationsConfigMutation();
+
+  const memoizedData = useMemo(() => data, [data]);
+
   const { toast } = useToast();
 
-  const form = useForm({
-    defaultValues: config,
+  const form = useForm<FormValues>({
+    resolver: yupResolver<FormValues>(formSchema),
   });
 
-  const { watch } = form;
-
-  const [isChanged, setIsChanged] = useState(false);
-
-  const values = watch();
-
   useEffect(() => {
-    setIsChanged(JSON.stringify(values) !== JSON.stringify(config));
-  }, [values, config]);
+    if (memoizedData) {
+      form.reset({ ...memoizedData });
+    }
+  }, [memoizedData, form]);
 
-  const onSubmit = (values: NotificationConfig) => {
-    setConfig(values);
+  const onSubmit = (values: FormValues) => {
+    const { id, ...rest } = values;
+
+    updateNotificationsConfig({ ...rest });
     toast({
       variant: 'default',
       title: 'Success',
@@ -63,16 +65,16 @@ const NotificationsForm = () => {
             <div className={styles.checkboxContainer}>
               <Checkbox control={form.control} name='timecards' label='Timecards' />
               <Checkbox control={form.control} name='bookings' label='Bookings' />
-              <Checkbox control={form.control} name='payment_success' label='Payment Success' />
+              <Checkbox control={form.control} name='paymentSuccess' label='Payment Success' />
             </div>
 
             <div className={styles.checkboxContainer}>
-              <Checkbox control={form.control} name='password_change' label='Password Change' />
-              <Checkbox control={form.control} name='weekly_report' label='Weekly report' />
-              <Checkbox control={form.control} name='money_sent' label='Sent money success' />
+              <Checkbox control={form.control} name='passwordChange' label='Password Change' />
+              <Checkbox control={form.control} name='weeklyReport' label='Weekly report' />
+              <Checkbox control={form.control} name='moneySent' label='Sent money success' />
             </div>
           </div>
-          <Button type='submit' className='w-full' disabled={!isChanged}>
+          <Button type='submit' className='w-full' disabled={isLoading}>
             Publish
           </Button>
         </form>

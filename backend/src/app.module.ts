@@ -15,7 +15,7 @@ import {
   FacilityModule,
   ChatModule,
   MessageModule,
-  NotificationConfigModule,
+  NotificationsConfigModule,
   BucketModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
@@ -34,7 +34,7 @@ import { AppGateway } from './app.gateway';
     FacilityModule,
     ChatModule,
     MessageModule,
-    NotificationConfigModule,
+    NotificationsConfigModule,
     BucketModule,
   ],
   controllers: [],
