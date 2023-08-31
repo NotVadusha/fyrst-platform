@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Header } from 'src/components/ui/layout/Header/Header';
 import { Button } from 'src/ui/common/Button';
 import Table, { ColumnInfo } from 'src/ui/common/Table/Table';
-import { useAddUsersMutation, useGetUsersQuery } from 'src/store/reducers/user/userApi';
+import { useAddUsersMutation, useGetUsersByParamsQuery } from 'src/store/reducers/user/userApi';
 import type { User } from 'types';
 import { Pagination } from 'src/ui/common/Pagination/Pagination';
 import { buttonVariants } from 'src/ui/common/Button/Button';
@@ -41,7 +41,7 @@ export function UserListPage() {
     filters[key as keyof UserFilters] === null && delete filters[key as keyof UserFilters];
   });
 
-  const { data, isFetching } = useGetUsersQuery({
+  const { data, isFetching } = useGetUsersByParamsQuery({
     currentPage,
     filters,
   });

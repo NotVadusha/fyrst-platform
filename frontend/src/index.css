@@ -2,10 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-.pac-container{
-  border-radius: .5rem;
+.pac-container {
+  border-radius: 0.5rem;
 }
-  
+
 .pac-icon {
   display: none;
+}
+@layer base {
+  html {
+    font-family: 'Mukta', sans-serif;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 16px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #083D77;
+  border-radius: 2rem;
+  height: 2rem;
 }
