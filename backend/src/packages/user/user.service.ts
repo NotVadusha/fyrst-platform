@@ -7,8 +7,8 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
-import { Permissions } from '../permissions/permissions.entity';
-import { Roles } from '../roles/entities/roles.entity';
+import { Permissions } from '../permissions/entities/permissions.entity';
+import jwtDecode from 'jwt-decode';
 
 @Injectable()
 export class UserService {
@@ -146,5 +146,10 @@ export class UserService {
   }
   async findByEmail(email: string) {
     return await this.userRepository.findOne({ where: { email: email } });
+  }
+  async findByJwt(jwt: string) {
+    const payload = jwtDecode<{ id: number }>(jwt);
+
+    return await this.findOne(payload.id);
   }
 }

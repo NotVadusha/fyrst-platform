@@ -11,7 +11,7 @@ import {
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { Chat } from 'src/packages/chat/entities/chat.entity';
-import { Permissions } from 'src/packages/permissions/permissions.entity';
+import { Permissions } from 'src/packages/permissions/entities/permissions.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
