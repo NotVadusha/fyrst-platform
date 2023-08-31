@@ -6,7 +6,7 @@ import {
 
 @ValidatorConstraint({ name: 'custom', async: false })
 export class PasswordValidator implements ValidatorConstraintInterface {
-  validate(value: any, args: ValidationArguments) {
+  validate(value: string, args: ValidationArguments) {
     const specialChars = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
     for (const char of specialChars) {
       if (value?.includes(char)) return true;
@@ -15,6 +15,6 @@ export class PasswordValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return 'Password must contain at least one cpecial character';
+    return 'Password must contain at least one special character';
   }
 }
