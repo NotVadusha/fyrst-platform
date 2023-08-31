@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ReactComponent as SearchLoupe } from 'src/icons/search-loupe.svg';
+import { ReactComponent as SearchLoupe } from 'src/assets/icons/search-loupe.svg';
 import { NewMessageInput } from './NewMessageInput';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { socket } from 'src/lib/socket';
+import { socket } from 'src/common/config/packages/socket/socket.config';
 import { Chat, Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
 import { cn } from 'src/common/helpers/helpers';

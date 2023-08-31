@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
 import { Button } from 'src/common/components/ui/common/Button';
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
-import { chatSchema } from 'src/lib/validations/chat';
+import { chatSchema } from 'src/common/packages/chat/types/validation-schemas/chat.validation-schema';
 import { useCreateChatMutation } from 'src/common/store/api/packages/chat/chatApi';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';

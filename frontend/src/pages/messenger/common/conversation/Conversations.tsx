@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ScrollArea } from 'src/common/components/ui/common/ScrollArea/ScrollArea';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
-import { socket } from 'src/lib/socket';
+import { socket } from 'src/common/config/packages/socket/socket.config';
 import { cn } from 'src/common/helpers/helpers';
 import {
   setConversations,
@@ -14,7 +14,7 @@ import {
   useSearchChatsQuery,
 } from 'src/common/store/api/packages/chat/chatApi';
 import { SearchInput } from './common/SearchInput';
-import { useDebounce } from 'src/hooks/useDebounce';
+import { useDebounce } from 'src/common/hooks/use-debounce/useDebounce.hook';
 
 export const Conversations: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');

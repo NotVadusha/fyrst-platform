@@ -4,7 +4,7 @@ import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
 import { CreateChatForm } from './CreateChatForm';
-import { socket } from 'src/lib/socket';
+import { socket } from 'src/common/config/packages/socket/socket.config';
 import { useAppSelector } from 'src/common/hooks/redux';
 
 const MessengerPage = () => {
