@@ -5,7 +5,7 @@ import * as y from 'yup';
 import { Button } from 'src/common/components/ui/common/Button';
 import { bookingSchema } from 'src/common/packages/booking/types/validation-schemas/booking.validation-schema';
 import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
-import { Form, FormField, FormItem } from 'src/common/components/ui/common/Form/Form';
+import { Form } from 'src/common/components/ui/common/Form/Form';
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
 import { useSelector } from 'react-redux';
@@ -33,6 +33,15 @@ export function CreateBookingForm({
       workingHours: 1,
     },
   });
+  const onSubmit = (values: CreateBookingFormValues) => {
+    const trimmedValues = {
+      ...values,
+      employersName: values.employersName.trim(),
+      notes: values.notes.trim(),
+    };
+
+    handleSubmit(trimmedValues);
+  };
 
   const { data: facilities } = useFetchFacilitiesQuery({});
   const options = facilities
@@ -44,7 +53,7 @@ export function CreateBookingForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='flex flex-col gap-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-6' noValidate>
         <TextInput
           name='employersName'
           control={form.control}
