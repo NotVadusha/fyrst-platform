@@ -13,8 +13,6 @@ const SuccessGoogleAuthPage = () => {
     const userInfoJson = Cookies.get('user');
     const userInfo = JSON.parse(userInfoJson || '');
 
-    console.log(userInfo);
-
     dispatch(setUser(userInfo));
 
     localStorage.setItem('accessToken', accessToken!);
