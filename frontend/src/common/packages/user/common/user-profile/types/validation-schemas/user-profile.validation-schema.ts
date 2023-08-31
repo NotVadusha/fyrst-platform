@@ -13,7 +13,14 @@ export const profileSchema = y.object().shape({
           .test('IsValidPhone', 'Phone number is too short', value => value.length > 6)
       : y.string().optional(),
   ),
-  city: y.string().min(2).max(58),
+  city: y.lazy(value =>
+    value
+      ? y
+          .string()
+          .required()
+          .test('IsValidCityName', 'City name is too short', value => value.length > 2)
+      : y.string().optional(),
+  ),
   birthdate: y
     .string()
     .test('IsAdult', `You must be 16+ y.o.`, (value: string | undefined) => {
