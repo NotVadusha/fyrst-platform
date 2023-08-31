@@ -1,10 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { NotificationsConfig } from '../../src/packages/notifications-config/entities/notifications-config.entity';
 import { NotificationsConfigService } from '../../src/packages/notifications-config/notifications-config.service';
 import {
   notificationsConfigsMock,
-  mockedNotificationsConfigService,
-  mockedNotificationsConfig,
   mockedUpdateNotificationsConfig,
   TestNotificationsConfig,
   existingId,

@@ -17,7 +17,6 @@ module.exports = {
       });
     }
     await queryInterface.bulkInsert('Notifications-Config', data, {});
-    return data;
   },
 
   async down(queryInterface, Sequelize) {

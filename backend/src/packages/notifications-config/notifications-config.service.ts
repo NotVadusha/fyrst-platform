@@ -17,9 +17,7 @@ export class NotificationsConfigService {
     const config = await this.notificationConfigRepository.findOne({
       where: { userId },
     });
-    // if (!config) {
-    //   return await this.create({ userId });
-    // }
+
     return config;
   }
 
