@@ -52,8 +52,8 @@ export const siteConfig = {
     {
       title: 'Messages',
       icon: Message,
-      mainPath: '/messanger',
-      path: '/messanger',
+      mainPath: '/chat',
+      path: '/chat',
       items: [],
     },
     {

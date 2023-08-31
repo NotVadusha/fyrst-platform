@@ -29,6 +29,10 @@ export class UserService {
     });
   }
 
+  async findAll() {
+    return await this.userRepository.findAll();
+  }
+
   async createMany(userInfo: CreateUserDto[]) {
     const createPromises = userInfo.map(user => this.create(user));
     return await Promise.all(createPromises);

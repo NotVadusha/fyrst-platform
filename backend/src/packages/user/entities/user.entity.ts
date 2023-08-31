@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
+import { Chat } from 'src/packages/chat/entities/chat.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
@@ -76,6 +77,24 @@ export class User extends Model {
   })
   role_id: number;
 
+  @ForeignKey(() => Chat)
+  @Column
+  chatId: number;
+
+  @BelongsToMany(() => Chat, () => UserChat)
+  chats: Chat[];
+
   @BelongsToMany(() => Booking, 'user_bookings', 'user_id', 'booking_id')
   bookings: Booking[];
+}
+
+@Table
+export class UserChat extends Model {
+  @ForeignKey(() => User)
+  @Column
+  userId: number;
+
+  @ForeignKey(() => Chat)
+  @Column
+  chatId: number;
 }

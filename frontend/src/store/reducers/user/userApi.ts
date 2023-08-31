@@ -15,7 +15,7 @@ interface getUsersPayload {
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: build => ({
-    getUsers: build.query<getUsersPayload, getUsersQueryParams>({
+    getUsersByParams: build.query<getUsersPayload, getUsersQueryParams>({
       query: args => {
         const params = new URLSearchParams();
 
@@ -27,6 +27,9 @@ export const userApi = apiSlice.injectEndpoints({
 
         return result;
       },
+    }),
+    getAllUsers: build.query<UserDefaultResponse[], void>({
+      query: () => '/user/many',
     }),
     addUsers: build.mutation<UserDefaultResponse[], UserDefaultResponse[]>({
       query: users => {
@@ -89,12 +92,12 @@ export const userApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetUsersQuery,
+  useGetUsersByParamsQuery,
+  useGetAllUsersQuery,
   useGetUserQuery,
   useAddUsersMutation,
   useAddUserMutation,
   useGetUserProfileMutation,
-  useLazyGetUsersQuery,
   useLazyGetUserQuery,
   useUpdateUserMutation,
   useUpdateUserProfileMutation,
