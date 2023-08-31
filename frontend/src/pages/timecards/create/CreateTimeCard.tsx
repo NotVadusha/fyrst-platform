@@ -9,17 +9,35 @@ import { useCreateTimecardMutation } from 'src/common/store/api/packages/timecar
 import { CreateTimecardFormValues } from './CreateTimeCardForm';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { useGetBookingByIdQuery } from 'src/common/store/api/packages/bookings/bookingApi';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 
 export default function CreateTimeCardPage() {
   const { bookingId } = useParams();
+
+  const { data: booking, isLoading } = useGetBookingByIdQuery(Number(bookingId));
+
   const [createTimecard] = useCreateTimecardMutation();
   const navigate = useNavigate();
 
   const user = useAppSelector(state => state.user);
 
   function handleCreteTimecardFormSubmit(values: CreateTimecardFormValues) {
-    createTimecard({ bookingId: Number(bookingId), createdBy: Number(user.id) });
+    createTimecard({
+      bookingId: Number(bookingId),
+      createdBy: Number(user.id),
+      lunchHours: values.lunchHours,
+      hoursWorked: values.hoursWorked,
+    });
     navigate(`/booking/${bookingId}`);
+  }
+
+  if (isLoading || !booking) {
+    return (
+      <div className='min-h-full flex items-center-justify-center'>
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -27,12 +45,16 @@ export default function CreateTimeCardPage() {
       <Header title='Create timecard' />
       <div className='mx-16'>
         <div className='flex flex-col space-y-6 py-6'>
-          <GoBackButton path='/timecard' className='text-dark-grey'>
-            All timecards
+          <GoBackButton path={`/booking/${bookingId}`} className='text-dark-grey'>
+            Back to booking
           </GoBackButton>
           <h2 className='text-4xl font-bold'>Create timecard</h2>
           <Card className='max-w-[640px]'>
-            <CreateTimeCardForm handleSubmit={handleCreteTimecardFormSubmit} user={user as User} />
+            <CreateTimeCardForm
+              handleSubmit={handleCreteTimecardFormSubmit}
+              user={user as User}
+              booking={booking}
+            />
           </Card>
         </div>
       </div>
