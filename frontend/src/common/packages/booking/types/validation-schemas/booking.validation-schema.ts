@@ -21,10 +21,7 @@ export const bookingSchema = y.object().shape({
     .required('Price per hour is a required field')
     .test('validAmount', 'Should be a valid amount', value => /^\d*.?\d{0,2}$/.test(String(value)))
     .typeError('Should be a number'),
-  notes: y
-    .string()
-    .trim(`Job description shouldn't contain only empty spaces`)
-    .required(`Employer's name is a required field`),
+  notes: y.string().required(`Employer's name is a required field`),
   facilityId: y.number().min(1).integer().required(),
   startDate: y
     .date()
