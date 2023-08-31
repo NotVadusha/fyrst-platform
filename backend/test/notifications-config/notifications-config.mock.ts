@@ -1,4 +1,4 @@
-import { NotificationConfig } from '../../src/packages/notifications-config/entities/notifications-config.entity';
+import { NotificationsConfig } from '../../src/packages/notifications-config/entities/notifications-config.entity';
 import { UpdateNotificationsConfigDto } from '../../src/packages/notifications-config/dto/update-config.dto';
 import { CreateNotificationsConfigDto } from 'src/packages/notifications-config/dto/create-config-dto';
 
@@ -85,7 +85,7 @@ export const mockedNotificationsConfigService = {
   }),
 };
 
-const buildModelMock = jest.fn().mockImplementation((partial: Partial<NotificationConfig>) => ({
+const buildModelMock = jest.fn().mockImplementation((partial: Partial<NotificationsConfig>) => ({
   ...partial,
   save: jest.fn().mockImplementation(() => {
     return Promise.resolve(notificationsConfigsMock[existingId]);

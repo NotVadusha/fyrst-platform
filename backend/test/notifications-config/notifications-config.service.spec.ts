@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificationConfig } from '../../src/packages/notifications-config/entities/notifications-config.entity';
+import { NotificationsConfig } from '../../src/packages/notifications-config/entities/notifications-config.entity';
 import { NotificationsConfigService } from '../../src/packages/notifications-config/notifications-config.service';
 import {
   notificationsConfigsMock,
@@ -16,7 +16,7 @@ import { getModelToken } from '@nestjs/sequelize';
 
 describe('NotificationsConfigService', () => {
   let service: NotificationsConfigService;
-  let notificationConfigModel: typeof NotificationConfig;
+  let notificationConfigModel: typeof NotificationsConfig;
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -24,15 +24,15 @@ describe('NotificationsConfigService', () => {
       providers: [
         NotificationsConfigService,
         {
-          provide: getModelToken(NotificationConfig),
+          provide: getModelToken(NotificationsConfig),
           useValue: mockedNotificationsConfigModel,
         },
       ],
     }).compile();
 
     service = moduleRef.get<NotificationsConfigService>(NotificationsConfigService);
-    notificationConfigModel = moduleRef.get<typeof NotificationConfig>(
-      getModelToken(NotificationConfig),
+    notificationConfigModel = moduleRef.get<typeof NotificationsConfig>(
+      getModelToken(NotificationsConfig),
     );
   });
 
