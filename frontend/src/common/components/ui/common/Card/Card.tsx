@@ -3,7 +3,7 @@ import { cn } from 'src/common/helpers/helpers';
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('rounded-md bg-white shadow-sm p-6', className)} {...props} />
+    <div ref={ref} className={cn('rounded-md bg-white shadow-lg p-6', className)} {...props} />
   ),
 );
 
