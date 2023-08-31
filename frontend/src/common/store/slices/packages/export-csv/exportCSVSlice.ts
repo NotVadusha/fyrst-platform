@@ -1,19 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { CSVState, ExportCSVPayload } from '../../../../packages/export-csv/models/ExportCSV.model';
 
-interface ExportCsvPayload {
-  feature: string;
-  filters: any;
-}
-
-interface CsvState {
-  isLoading: boolean;
-}
-
-const initialState: CsvState = {
+const initialState: CSVState = {
   isLoading: false,
 };
 
-export const exportCSV = createAsyncThunk<void, ExportCsvPayload, {}>(
+export const exportCSV = createAsyncThunk<void, ExportCSVPayload, {}>(
   'exportCSV',
   async ({ feature, filters }) => {
     const params = new URLSearchParams();
