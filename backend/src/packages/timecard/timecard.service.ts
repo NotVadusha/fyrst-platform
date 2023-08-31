@@ -10,7 +10,7 @@ import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { Op } from 'sequelize';
-import { getFilterParams } from 'shared/getFilterParams';
+import * as Papa from 'papaparse';
 
 @Injectable()
 export class TimecardService {
@@ -29,13 +29,27 @@ export class TimecardService {
   async getAllFiltered(filters: TimecardFiltersDto): Promise<GetAllTimecardsDto> {
     this.logger.log(filters.createdAt);
 
-    const whereFilters: Record<string, any>[] = getFilterParams(filters, [
-      'createdAt',
-      'approvedAt',
-      'status',
-      'createdBy',
-      'bookingId',
-    ]);
+    const whereFilters: Record<string, any>[] = [];
+
+    if (filters.createdAt !== undefined) {
+      whereFilters.push({ createdAt: filters.createdAt });
+    }
+
+    if (filters.approvedAt !== undefined) {
+      whereFilters.push({ approvedAt: filters.approvedAt });
+    }
+
+    if (filters.status !== undefined) {
+      whereFilters.push({ status: filters.status });
+    }
+
+    if (filters.createdBy !== undefined) {
+      whereFilters.push({ createdBy: filters.createdBy });
+    }
+
+    if (filters.bookingId !== undefined) {
+      whereFilters.push({ bookingId: filters.bookingId });
+    }
 
     const timecards = await this.timecardModel.findAll({
       where: whereFilters,
@@ -55,6 +69,47 @@ export class TimecardService {
     });
 
     return { items: timecards, total };
+  }
+
+  async generateCSVFromTimecards(timecards: Timecard[]): Promise<string> {
+    if (timecards.length === 0) {
+      throw new Error('No timecards available to generate CSV.');
+    }
+
+    const cleanData = timecards.map(timecard => ({
+      id: timecard.id,
+      status: timecard.status,
+      createdAt: timecard.createdAt,
+      approvedAt: timecard.approvedAt,
+      createdBy: timecard.createdBy,
+      bookingId: timecard.bookingId,
+      booking_age: timecard.booking?.age,
+      booking_createdAt: timecard.booking?.createdAt,
+      booking_employersName: timecard.booking?.employersName,
+      facility_name: timecard.booking?.facility?.name,
+      facility_address: timecard.booking?.facility?.address,
+      employee_email: timecard.employee?.email,
+    }));
+
+    const csv = Papa.unparse({
+      fields: [
+        'id',
+        'status',
+        'createdAt',
+        'approvedAt',
+        'createdBy',
+        'bookingId',
+        'booking_age',
+        'booking_createdAt',
+        'booking_employersName',
+        'facility_name',
+        'facility_address',
+        'employee_email',
+      ],
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async getById(id: number): Promise<Timecard> {
