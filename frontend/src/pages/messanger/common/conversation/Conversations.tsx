@@ -46,7 +46,6 @@ export const Conversations: React.FC = () => {
     };
   }, [user.id]);
 
-
   const handleChange = useCallback((value: string) => {
     setSearchQuery(value);
   }, []);
