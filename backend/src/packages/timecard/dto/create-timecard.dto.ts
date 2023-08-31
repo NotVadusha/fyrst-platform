@@ -6,4 +6,10 @@ export class CreateTimecardDto {
 
   @IsNumber()
   createdBy: number;
+
+  @IsNumber()
+  hoursWorked: number;
+
+  @IsNumber()
+  lunchHours: number;
 }

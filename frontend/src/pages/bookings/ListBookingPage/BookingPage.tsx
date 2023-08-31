@@ -36,7 +36,7 @@ const BookingPage = () => {
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchParams(prevParams => {
-      if (e.target.value === '') {
+      if (e.target.value === '' || parseInt(e.target.value) === 0) {
         console.log('Target', e.target.name);
         prevParams.delete(e.target.name);
       } else {

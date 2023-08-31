@@ -57,7 +57,7 @@ export function ProfileEditForm() {
   const onSubmit = async (valuesFromForm: Inputs) => {
     let base64;
 
-    if (!!avatarImage) {
+    if (!!avatarImage && avatarImage.includes('blob:')) {
       const blob = await (await fetch(avatarImage)).blob();
       const arrayBuffer = await blob.arrayBuffer();
       base64 = Buffer.from(arrayBuffer).toString('base64');

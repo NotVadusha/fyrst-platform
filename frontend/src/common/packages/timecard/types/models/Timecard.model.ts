@@ -13,4 +13,6 @@ export interface Timecard {
   status: TimecardStatus;
   bookingId: number;
   booking: Booking;
+  hoursWorked: number;
+  lunchHours: number;
 }

@@ -57,7 +57,9 @@ const SignInPage = () => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
-      dispatch(setUser(data.userInfo));
+      dispatch(
+        setUser({ ...data.userInfo, birthdate: data.userInfo.birthdate?.toString() || undefined }),
+      );
 
       toast({ title: 'Successfully signed in' });
 

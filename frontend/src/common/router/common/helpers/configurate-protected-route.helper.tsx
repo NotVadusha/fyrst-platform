@@ -29,7 +29,7 @@ export const ConfigurateProtectedRoute = ({ children }: ProtectedRouteProps) => 
         dispatch(
           setUser({
             ...result,
-            birthdate: result.birthdate ? new Date(result.birthdate) : undefined,
+            birthdate: result.birthdate || undefined,
           }),
         ),
       )
