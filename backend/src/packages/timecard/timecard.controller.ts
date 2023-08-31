@@ -11,12 +11,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardService } from './timecard.service';
+import { PermissionsGuard } from '../permissions/guards/permissions.guard';
 
 @ApiTags('Timecard endpoints')
 @Controller('timecard')
@@ -37,6 +39,7 @@ export class TimecardController {
     }
   }
 
+  @UseGuards(PermissionsGuard(['manageTimecards']))
   @Get()
   async getAllFiltered(@Query() query: TimecardFiltersDto) {
     try {

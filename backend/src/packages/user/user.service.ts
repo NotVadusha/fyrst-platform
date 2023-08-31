@@ -9,6 +9,7 @@ import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
 import { Permissions } from '../permissions/entities/permissions.entity';
 import jwtDecode from 'jwt-decode';
+import { Roles } from '../roles/entities/roles.entity';
 
 @Injectable()
 export class UserService {
@@ -111,7 +112,10 @@ export class UserService {
   }
 
   async findOne(userId: number) {
-    return await this.userRepository.findOne({ where: { id: userId } });
+    return await this.userRepository.findOne({
+      where: { id: userId },
+      include: [Roles, Permissions],
+    });
   }
 
   async findOneByEmail(email: string) {
