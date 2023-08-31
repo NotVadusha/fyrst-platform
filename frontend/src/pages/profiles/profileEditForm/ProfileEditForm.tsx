@@ -18,6 +18,7 @@ import CustomPhoneInput from './CustomPhoneInput';
 import DateInput from './DateInput';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { Buffer } from 'buffer';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -82,6 +83,11 @@ export function ProfileEditForm() {
       // @ts-ignore
       id: user.id,
       body: { avatar: base64 },
+    });
+
+    toast({
+      title: 'Changes applied',
+      description: 'Your profile updated',
     });
   };
 
