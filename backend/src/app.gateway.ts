@@ -10,13 +10,12 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
 import { ChatService } from './packages/chat/chat.service';
-// import { AuthService } from './packages/auth/auth.service';
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     @Inject(forwardRef(() => ChatService))
-    private readonly chatService: ChatService, // private readonly authService: AuthService,
+    private readonly chatService: ChatService,
   ) {}
 
   @WebSocketServer()
@@ -41,8 +40,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('get-conversations')
   async handleGetConversations(client: Socket, data: { userId: number }) {
-    // this.logger.log(client.handshake.headers.token);
-    // const payload = this.authService.getTokens
     const conversations = await this.chatService.findAllByUserId(data.userId);
     this.wss.to(client.id).emit('send-conversations', conversations);
   }

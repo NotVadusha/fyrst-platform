@@ -79,7 +79,6 @@ export class ChatService {
   async findAllByUserId(id: number) {
     const chats = await this.chatRepository.findAll({
       include: [
-        // { model: User, as: 'members', required: true, where: { id } },
         {
           model: Message,
           as: 'messages',

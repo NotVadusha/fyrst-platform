@@ -40,13 +40,6 @@ const messangerSlice = createSlice({
       );
     },
   },
-  // extraReducers: builder => {
-  //   builder.addCase(getChatById.fulfilled, (state, action) => {
-  //     console.log('reduces');
-  //     if (!action.payload) return;
-  //     state = action.payload;
-  //   });
-  // },
 });
 
 export default messangerSlice.reducer;

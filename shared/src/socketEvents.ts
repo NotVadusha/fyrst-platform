@@ -10,7 +10,6 @@ export interface Message {
   createdAt?: Date;
 }
 
-
 export interface Chat {
   id: number;
   name: string;
@@ -19,7 +18,6 @@ export interface Chat {
   messages: Message[];
   members: User[];
 }
-
 
 export interface ServerToClientEvents {
   'new-message': (payload: Message) => void;
@@ -38,7 +36,6 @@ export interface SendMessagePayload {
 }
 
 export interface ClientToServerEvents {
-  // 'client-ready': () => void;
   'send-message': (payload: SendMessagePayload) => void;
   'user-join-chat': (payload: { chatId: string }) => void;
   'user-leave-chat': (payload: { chatId: string }) => void;

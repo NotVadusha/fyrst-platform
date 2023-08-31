@@ -22,8 +22,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 
   let result = await baseQuery(args, api, extraOptions);
 
-  console.log(result);
-
   if (result?.error?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
@@ -46,8 +44,6 @@ export const baseQueryWithReauth: BaseQueryFn<
           api,
           extraOptions,
         );
-
-        console.log(refreshResult);
 
         if (refreshResult.error) {
           localStorage.removeItem('accessToken');
