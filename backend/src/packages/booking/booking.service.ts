@@ -39,13 +39,7 @@ export class BookingService {
 
   async find(id: number) {
     const booking = await this.bookingRepository.findByPk(id, {
-      include: [
-        Facility,
-        {
-          model: User,
-          as: 'users',
-        },
-      ],
+      include: [{ model: User, as: 'users' }, { model: Facility }, { model: User, as: 'creator' }],
     });
 
     if (!booking) {
@@ -75,7 +69,7 @@ export class BookingService {
       where: where,
       limit: limit,
       offset: offset,
-      include: [{ model: User, as: 'users' }, { model: Facility }],
+      include: [{ model: User, as: 'users' }, { model: Facility }, { model: User, as: 'creator' }],
     });
     const total = await this.bookingRepository.count({ where: where });
     return { bookings, total };
