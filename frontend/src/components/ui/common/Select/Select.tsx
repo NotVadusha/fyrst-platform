@@ -17,9 +17,7 @@ const SelectValue = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
 >(({ className, children, ...props }, ref) => (
   <span className='font-semibold'>
-    <SelectPrimitive.Value {...props}>
-      {children}
-    </SelectPrimitive.Value>
+    <SelectPrimitive.Value {...props}>{children}</SelectPrimitive.Value>
   </span>
 ));
 
