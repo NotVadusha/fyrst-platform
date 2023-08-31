@@ -3,7 +3,7 @@
 }
 
 .bookingContainer{
-	@apply max-w-[955px] ml-[80px] mr-[77px] mb-[80px] mt-[40px];
+	@apply max-w-[955px] mb-[80px] mt-[40px] mx-auto px-4 sm:px-6 lg:px-8;
 }
 
 .route{
@@ -38,7 +38,7 @@
 }
 
 .cardDescription {
-  @apply max-w-[515px]  min-w-[360px] mr-[32px];
+  @apply max-w-[515px]  min-w-[360px] mr-[32px] grow;
 }
 
 .cardDetails{
