@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
 import { BucketService } from '../bucket/bucket.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UserProfileService {
@@ -46,9 +47,20 @@ export class UserProfileService {
     let avatar = null;
 
     if (!!updateInfo.avatar) {
+      const { fileTypeFromBuffer } = await (eval('import("file-type")') as Promise<
+        typeof import('file-type')
+      >);
+
       const imgBuffer = Buffer.from(updateInfo.avatar, 'base64');
-      await this.bucketService.save(`avatars/${userId}.png`, imgBuffer);
-      avatar = `avatars/${userId}.png`;
+      const fileType = await fileTypeFromBuffer(imgBuffer);
+      const fileName = `${userId}_${crypto.randomUUID()}.${fileType.ext}`;
+      await this.bucketService.save(`avatars/${fileName}`, imgBuffer);
+      avatar = `avatars/${fileName}`;
+
+      const profile = await this.profileRepository.findOne({
+        where: { user_id: userId },
+      });
+      if (!!profile.avatar) await this.bucketService.delete(profile.avatar);
     }
 
     const [updatedProfile] = await this.profileRepository.update(
