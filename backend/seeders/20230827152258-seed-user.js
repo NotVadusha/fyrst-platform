@@ -11,6 +11,7 @@ module.exports = {
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
         email: faker.internet.email(),
+        phone_number: faker.phone.number('501-###-###'),
         city: faker.location.city(),
         birthdate: faker.date.birthdate(),
         password: faker.internet.password(),
