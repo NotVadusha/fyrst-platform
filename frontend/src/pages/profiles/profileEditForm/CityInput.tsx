@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   FormLabel,
   FormMessage,
@@ -14,7 +14,7 @@ export interface CityInputProps extends React.InputHTMLAttributes<HTMLInputEleme
 }
 
 const CityInput: React.FC<CityInputProps> = ({ control, setCity }) => {
-  const form = useFormField();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   return (
     <FormField
       control={control}
@@ -30,15 +30,14 @@ const CityInput: React.FC<CityInputProps> = ({ control, setCity }) => {
             apiKey={'AIzaSyBc69nuS10pB6M9fdKJt-hxdtVOd7V6Dlg'}
             language='en-GB'
             {...field}
-            id='cityInput'
+            ref={inputRef}
             onPlaceSelected={e => {
-              const input = document.getElementById('cityInput');
-              // @ts-ignore
-              if (field.onChange) field.onChange(e.address_components[0].long_name);
-              // @ts-ignore
-              setCity(e.address_components[0].long_name);
-              // @ts-ignore
-              if (input) input.value = e.address_components[0].long_name;
+              if (e && e.address_components && e.address_components.length > 0) {
+                const longName = e.address_components[0].long_name;
+                if (field.onChange) field.onChange(longName);
+                setCity(longName);
+                if (inputRef.current) inputRef.current.value = longName;
+              }
             }}
           />
           <FormMessage className={styles.error} />

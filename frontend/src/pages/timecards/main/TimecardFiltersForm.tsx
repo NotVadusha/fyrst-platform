@@ -62,14 +62,17 @@ export function TimecardFiltersForm({
                 name='createdAt'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <TextInput
                       control={form.control}
                       type='date'
                       id='createdAt'
                       label=''
                       {...field}
+                      value={
+                        field.value instanceof Date
+                          ? field.value.toISOString().split('T')[0]
+                          : field.value
+                      }
                       onChange={handleInputChange}
                     />
                   </FormItem>
@@ -86,14 +89,17 @@ export function TimecardFiltersForm({
                 name='approvedAt'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <TextInput
                       control={form.control}
                       type='date'
                       id='approvedAt'
                       label=''
                       {...field}
+                      value={
+                        field.value instanceof Date
+                          ? field.value.toISOString().split('T')[0]
+                          : field.value
+                      }
                       onChange={handleInputChange}
                     />
                   </FormItem>
@@ -110,11 +116,7 @@ export function TimecardFiltersForm({
                 name='status'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <Select onValueChange={value => handleSelectChange(value, 'status')}>
                         <FormControl>
                           <SelectTrigger>

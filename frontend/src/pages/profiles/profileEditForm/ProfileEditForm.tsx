@@ -29,9 +29,7 @@ export function ProfileEditForm() {
   const [avatarImage, setAvatarImage] = useState('');
 
   const token = localStorage.getItem('accessToken');
-  // eslint-disable-next-line
-  // @ts-ignore
-  const decode: DecodedUser = jwtDecode(token);
+  const decode: DecodedUser = jwtDecode(token as string);
   const userId = decode.id;
 
   const [updateProfile] = profileApi.useUpdateProfileMutation();
@@ -64,26 +62,24 @@ export function ProfileEditForm() {
       base64 = Buffer.from(arrayBuffer).toString('base64');
     }
 
-    await updateUser({
-      // eslint-disable-next-line
-      // @ts-ignore
-      id: user.id,
-      user: {
-        first_name: valuesFromForm?.first_name,
-        last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
-        email: valuesFromForm?.email,
-        city: valuesFromForm.city ? valuesFromForm.city : null,
-        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
-      },
-    });
+    if (user) {
+      await updateUser({
+        id: user.id,
+        user: {
+          first_name: valuesFromForm?.first_name,
+          last_name: valuesFromForm?.last_name,
+          phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
+          email: valuesFromForm?.email,
+          city: valuesFromForm.city ? valuesFromForm.city : null,
+          birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+        },
+      });
 
-    updateProfile({
-      // eslint-disable-next-line
-      // @ts-ignore
-      id: user.id,
-      body: { avatar: base64 },
-    });
+      updateProfile({
+        id: user.id,
+        body: { avatar: base64 },
+      });
+    }
 
     toast({
       title: 'Changes applied',

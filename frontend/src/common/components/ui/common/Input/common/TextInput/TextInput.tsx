@@ -32,7 +32,7 @@ const inputVariants = cva(styles.input, {
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   control: any;
   name: string;
-  label: string;
+  label?: string;
   disabled?: boolean;
 }
 

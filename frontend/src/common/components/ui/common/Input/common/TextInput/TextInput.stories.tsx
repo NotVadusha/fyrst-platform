@@ -17,7 +17,7 @@ type Story = StoryObj<typeof TextInput>;
 
 interface Props extends Omit<TextInputProps, 'control'> {
   name: string;
-  label: string;
+  label?: string;
   type?: string;
   disabled?: boolean;
 }

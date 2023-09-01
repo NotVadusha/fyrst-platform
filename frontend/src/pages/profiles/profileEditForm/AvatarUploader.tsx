@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import ReactSlider from 'react-slider';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
@@ -22,7 +22,7 @@ export const AvatarUploader = ({
   setImage,
 }: InputProps) => {
   const [tempImage, setTempImage] = useState('');
-  const imageInput = useRef(null);
+  const imageInput = useRef<AvatarEditor | null>(null);
   const [rangeValue, setRangeValue] = useState(10);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,8 +52,6 @@ export const AvatarUploader = ({
 
   const handleSave = async () => {
     if (tempImage && imageInput.current) {
-      // @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const dataUrl = imageInput.current.getImage().toDataURL();
       const result = await fetch(dataUrl);
       const blob = await result.blob();

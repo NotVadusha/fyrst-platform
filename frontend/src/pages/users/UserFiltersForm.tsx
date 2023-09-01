@@ -19,22 +19,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
-import { Button } from 'src/common/components/ui/common/Button';
-import { RefreshCcw } from 'lucide-react';
-import { Navigate, SetURLSearchParams, useNavigate } from 'react-router-dom';
+import { SetURLSearchParams } from 'react-router-dom';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 type FormValues = yup.InferType<typeof userFiltersSchema>;
 
 export function UserFiltersForm({
   handleInputChange,
-  setSearchParams,
 }: {
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement> | string) => void;
   setSearchParams: SetURLSearchParams;
 }) {
-  const navigate = useNavigate();
-
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(userFiltersSchema),
   });
@@ -50,12 +45,8 @@ export function UserFiltersForm({
                 name='name'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <TextInput
                         control={form.control}
                         type='text'
@@ -74,12 +65,8 @@ export function UserFiltersForm({
                 name='email'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <TextInput
                         control={form.control}
                         type='text'
@@ -98,12 +85,8 @@ export function UserFiltersForm({
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormLabel>City</FormLabel>
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <TextInput
                         control={form.control}
                         type='text'
@@ -122,12 +105,8 @@ export function UserFiltersForm({
                 name='emailConfirmed'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormLabel>Email Confirmed</FormLabel>
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <Select onValueChange={handleInputChange}>
                         <FormControl>
                           <SelectTrigger>
@@ -151,17 +130,18 @@ export function UserFiltersForm({
                 name='birthDate'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormLabel>Birthdate</FormLabel>
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <TextInput
                         control={form.control}
                         type='date'
                         required
                         {...field}
+                        value={
+                          field.value instanceof Date
+                            ? field.value.toISOString().split('T')[0]
+                            : field.value
+                        }
                         onChange={handleInputChange}
                       />
                     </FormControl>
