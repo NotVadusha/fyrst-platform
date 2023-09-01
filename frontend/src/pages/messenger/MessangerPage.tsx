@@ -19,6 +19,8 @@ const MessangerPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    socket.connect();
+
     socket.on('user-online', ({ userId }) => {
       dispatch(addOnlineUser({ userId }));
     });
@@ -36,6 +38,8 @@ const MessangerPage = () => {
       socket.emit('user-offline', { userId: user.id });
       socket.off('user-offline');
       socket.off('user-online');
+
+      socket.disconnect();
     };
   }, [user?.id]);
 

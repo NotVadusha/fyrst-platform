@@ -64,9 +64,9 @@ export const Conversations: React.FC = () => {
   }, []);
 
   return (
-    <div className='relative  lg:min-w-[260px]'>
+    <div className='relative'>
       <SearchInput value={searchQuery} onChange={handleChange} />
-      <ScrollArea className=' h-[120px] xl:h-[400px] w-full p-2'>
+      <ScrollArea className='h-[120px] xl:h-[400px] w-full p-2'>
         <div className='grid gap-4'>
           {chatsToShow?.length > 0 ? (
             chatsToShow?.map((chat: Chat) => {
@@ -97,13 +97,13 @@ function ConversationLink({ chat }: { chat: Chat }) {
     <Link to={`/chat/${chat.id}`} key={chat.id}>
       <div
         className={cn(
-          'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6',
+          'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 xl:w-[300px]',
           {
             'bg-grey': isOnPage,
           },
         )}
       >
-        <div className='flex gap-4'>
+        <div className='flex gap-4 truncate'>
           <Avatar>
             <AvatarImage src='https://github.com/shadcn.png' />
             <AvatarFallback>
@@ -116,7 +116,7 @@ function ConversationLink({ chat }: { chat: Chat }) {
               {otherMember?.first_name} {otherMember?.last_name ?? ''}
             </span>
             {lastMessage ? (
-              <p className='text-dark-grey text-body-small font-normal leading-5 flex gap-1 whitespace-nowrap overflow-hidden overflow-ellipsis'>
+              <p className='text-dark-grey text-body-small font-normal leading-5 flex gap-1 whitespace-nowrap overflow-hidden'>
                 <span
                   className={cn({
                     'text-blue': isAuthor,
