@@ -50,4 +50,12 @@ export class Timecard extends Model {
   @Default(TimecardStatus.Pending)
   @Column(DataType.ENUM(...Object.values(TimecardStatus)))
   status: TimecardStatus;
+
+  @AllowNull(false)
+  @Column
+  hoursWorked: number;
+
+  @AllowNull(false)
+  @Column
+  lunchHours: number;
 }

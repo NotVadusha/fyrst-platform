@@ -4,7 +4,7 @@ import { GoogleDto } from 'src/packages/auth/dto/google.dto';
 import { LoginDto } from 'src/packages/auth/dto/login.dto';
 import { RefreshDto } from 'src/packages/auth/dto/refresh.dto';
 import { RegistrationDto } from 'src/packages/auth/dto/registration.dto';
-import { JWTPayload } from 'src/packages/auth/types';
+import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
 import { CreateUserDto } from 'src/packages/user/dto/create-user.dto';
 
 export interface TestUser {
@@ -20,7 +20,7 @@ export interface TestUser {
   role_id: number;
 }
 
-export let usersMock: TestUser[] = [
+export const usersMock: TestUser[] = [
   {
     id: 1,
     first_name: 'string',

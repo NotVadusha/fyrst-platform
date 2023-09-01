@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from 'src/ui/common/Button';
-import { User } from 'types';
-import { ReactComponent as Settings } from 'src/icons/settings.svg';
-import { Modal } from 'src/components/ui/common/Modal';
+import { Button } from 'src/common/components/ui/common/Button';
+import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { ReactComponent as Settings } from 'src/assets/icons/settings.svg';
+import { Modal } from 'src/common/components/ui/common/Modal/Modal';
 import { EditUserForm } from './EditUserForm';
 
 export function UserActions({ user }: { user: User }) {

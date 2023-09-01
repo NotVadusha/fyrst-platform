@@ -1,30 +1,34 @@
 import * as React from 'react';
 
 import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem } from '../../../components/ui/common/Form';
+import { Form, FormField, FormItem } from '../../../common/components/ui/common/Form/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
-import { timecardSchema } from '../../../lib/validation-schemas/timecard';
-import { Button } from 'src/ui/common/Button';
-import TextInput from '../../../components/ui/common/TextInput/TextInput';
-import { User } from 'types/models/User';
+import { timecardSchema } from 'src/common/packages/timecard/types/validation-schemas/timecard.validation-schema';
+import { Button } from 'src/common/components/ui/common/Button';
+import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
+import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { Booking } from 'src/common/packages/booking/types/models/Booking.model';
 
 export type CreateTimecardFormValues = y.InferType<typeof timecardSchema>;
 
 export function CreateTimeCardForm({
   handleSubmit,
   user,
+  booking,
 }: {
   handleSubmit: (values: CreateTimecardFormValues) => void;
   user: User;
+  booking: Booking;
 }) {
+  console.log(booking);
+
   const form = useForm<CreateTimecardFormValues>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
-      type: 'Weekly',
       employeeName: user.first_name + ' ' + user.last_name,
-      managerName: 'Your manager name',
-      lunchTaken: '2 hours',
+      managerName: booking.creator.first_name + ' ' + booking.creator.last_name,
+      lunchHours: 2,
       hoursWorked: 12,
     },
   });
@@ -35,23 +39,7 @@ export function CreateTimeCardForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
-          control={form.control}
-          name='type'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <TextInput
-                control={form.control}
-                type='text'
-                id='text'
-                label='Timecard type'
-                {...field}
-              />
-            </FormItem>
-          )}
-        />
-
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8' noValidate>
         <FormField
           control={form.control}
           name='employeeName'
@@ -62,6 +50,7 @@ export function CreateTimeCardForm({
                 type='text'
                 id='employeeName'
                 label="Employee's name"
+                disabled
                 {...field}
               />
             </FormItem>
@@ -78,6 +67,7 @@ export function CreateTimeCardForm({
                 type='text'
                 id='managerName'
                 label='Facility Manager name'
+                disabled
                 {...field}
               />
             </FormItem>
@@ -91,10 +81,11 @@ export function CreateTimeCardForm({
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
+                type='number'
                 id='hoursWorked'
                 label='Hours Worked'
                 {...field}
+                min={1}
               />
             </FormItem>
           )}
@@ -102,15 +93,16 @@ export function CreateTimeCardForm({
 
         <FormField
           control={form.control}
-          name='lunchTaken'
+          name='lunchHours'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
+                type='number'
                 id='lunchTaken'
-                label='Lunch Taken'
+                label='Lunch hours'
                 {...field}
+                min={1}
               />
             </FormItem>
           )}

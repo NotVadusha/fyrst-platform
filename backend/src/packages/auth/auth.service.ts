@@ -7,7 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { RedisService } from 'src/packages/redis/redis.service';
 import { GoogleDto } from './dto/google.dto';
-import { JWTPayload } from './types';
+import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import { RegistrationDto } from './dto/registration.dto';
 import { UserProfileService } from '../user-profile/user-profile.service';
@@ -43,6 +43,7 @@ export class AuthService {
       const hashedPassword = await bcrypt.hash(registrationDto.password, 5);
       const createdUser = await this.userService.create({
         ...registrationDto,
+        email: registrationDto.email.toLowerCase(),
         password: hashedPassword,
         role_id: 1,
         is_confirmed: false,
@@ -63,7 +64,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     try {
-      const user = await this.userService.findOneByEmail(loginDto.email);
+      const user = await this.userService.findOneByEmail(loginDto.email.toLowerCase());
 
       if (!user) throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
 

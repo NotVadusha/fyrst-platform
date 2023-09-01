@@ -2,10 +2,10 @@ import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { Form } from '../../../components/ui/common/Form';
-import TextInput from '../../../components/ui/common/TextInput/TextInput';
-import { Dropdown } from 'src/components/ui/common/Dropdown/Dropdown';
-import { useFetchFacilitiesQuery } from 'src/store/reducers/facility/facilityApi';
+import { Form } from '../../../common/components/ui/common/Form/Form';
+import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
+import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
+import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
 
 const formSchema = yup.object({
   facility: yup.string(),
@@ -34,6 +34,7 @@ export const BookingFilters = ({
       }))
     : [];
 
+  options.unshift({ label: 'All', value: 0 });
   return (
     <Form {...form}>
       <form className='w-full'>
@@ -46,13 +47,14 @@ export const BookingFilters = ({
               name='status'
               control={form.control}
               options={[
+                { label: 'All', value: '' },
                 { label: 'Pending', value: 'pending' },
                 { label: 'Accepted', value: 'accepted' },
                 { label: 'Rejected', value: 'rejected' },
                 { label: 'Canceled', value: 'canceled' },
                 { label: 'Completed', value: 'completed' },
               ]}
-              ddType='default'
+              styleVariant='shadows'
               label=''
               placeholder='Select Status'
               onChange={handleInputChange}
@@ -66,7 +68,7 @@ export const BookingFilters = ({
               name='facility'
               control={form.control}
               options={options}
-              ddType='default'
+              styleVariant='shadows'
               label=''
               placeholder='Select an option'
               onChange={handleInputChange}

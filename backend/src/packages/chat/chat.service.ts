@@ -60,7 +60,7 @@ export class ChatService {
       chat,
     });
 
-    this.gateway.wss.emit('conversation-upsert', { ...chat.dataValues, messages: [] });
+    this.gateway.wss.emit('conversation-upsert', { ...chat, messages: [] });
 
     return chat;
   }
@@ -93,8 +93,6 @@ export class ChatService {
           ],
         },
       ],
-      order: [['updatedAt', 'DESC']],
-
     });
     this.logger.log(`Retrieved ${chats.length} chats`, { chats });
     return chats;
