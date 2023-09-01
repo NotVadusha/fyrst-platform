@@ -19,9 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
-import { Button } from 'src/common/components/ui/common/Button';
-import { RefreshCcw } from 'lucide-react';
-import { Navigate, SetURLSearchParams, useNavigate } from 'react-router-dom';
+import { SetURLSearchParams } from 'react-router-dom';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 type FormValues = yup.InferType<typeof userFiltersSchema>;
@@ -33,8 +31,6 @@ export function UserFiltersForm({
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSearchParams: SetURLSearchParams;
 }) {
-  const navigate = useNavigate();
-
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(userFiltersSchema),
   });

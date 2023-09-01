@@ -51,35 +51,29 @@ export class UserService {
         delete filters[key],
     );
 
-    // Number of users to show per page
     const limit = 5;
 
-    // To skip per page
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
-    const opSubstringFilters = {
+    const opiLikeFilters = {
       ...(filters.first_name && {
         first_name: {
-          [Op.substring]: filters.first_name ?? '',
-          [Op.substring]: filters.first_name,
+          [Op.iLike]: `%${filters.first_name}%`,
         },
       }),
       ...(filters.last_name && {
         last_name: {
-          [Op.substring]: filters.last_name ?? '',
-          [Op.substring]: filters.last_name,
+          [Op.iLike]: `%${filters.last_name}%`,
         },
       }),
       ...(filters.email && {
         email: {
-          [Op.substring]: filters.email ?? '',
-          [Op.substring]: filters.email,
+          [Op.iLike]: `%${filters.email}%`,
         },
       }),
       ...(filters.city && {
         city: {
-          [Op.substring]: filters.city ?? '',
-          [Op.substring]: filters.city,
+          [Op.iLike]: `%${filters.city}%`,
         },
       }),
     };
@@ -88,7 +82,7 @@ export class UserService {
       order: [['id', 'DESC']],
       where: {
         ...filters,
-        ...opSubstringFilters,
+        ...opiLikeFilters,
       },
       limit,
       offset,
@@ -97,7 +91,7 @@ export class UserService {
     const totalCount = await this.userRepository.count({
       where: {
         ...filters,
-        ...opSubstringFilters,
+        ...opiLikeFilters,
       },
     });
 
