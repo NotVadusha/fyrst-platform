@@ -24,6 +24,7 @@ jobs:
           npm install
           npm run init:backend
           npm run build:shared
+          npm run link-shared:global
           npm run link-shared:backend
 
       - name: Run unit tests
