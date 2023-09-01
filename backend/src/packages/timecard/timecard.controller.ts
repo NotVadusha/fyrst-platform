@@ -19,6 +19,7 @@ import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardService } from './timecard.service';
 import { PermissionsGuard } from '../permissions/guards/permissions.guard';
+import { RoleGuard } from '../roles/guards/roles.guard';
 
 @ApiTags('Timecard endpoints')
 @Controller('timecard')
@@ -39,7 +40,6 @@ export class TimecardController {
     }
   }
 
-  @UseGuards(PermissionsGuard(['manageTimecards']))
   @Get()
   async getAllFiltered(@Query() query: TimecardFiltersDto) {
     try {

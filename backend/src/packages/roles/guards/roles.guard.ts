@@ -1,10 +1,15 @@
 import { CanActivate, ExecutionContext, Injectable, mixin } from '@nestjs/common';
 import { UserService } from 'src/packages/user/user.service';
-import { Permissions } from '../entities/permissions.entity';
 import { InferCreationAttributes } from 'sequelize';
 import { Request } from 'express';
 
-export function PermissionsGuard(permissions: (keyof InferCreationAttributes<Permissions>)[]) {
+const userRoles = {
+  WORKER: 1,
+  FACILITY_MANAGER: 2,
+  PLATFORM_ADMIN: 3,
+};
+
+export function RoleGuard(role: keyof typeof userRoles) {
   @Injectable()
   class PermissionsGuardMixin implements CanActivate {
     constructor(readonly userService: UserService) {}
@@ -20,7 +25,7 @@ export function PermissionsGuard(permissions: (keyof InferCreationAttributes<Per
       const jwt = authorizationHeader.split(' ')[1];
 
       const user = await this.userService.findByJwt(jwt);
-      return permissions.every(key => user.permissions[key]);
+      return userRoles[user.role.label] >= userRoles[role];
     }
   }
 
