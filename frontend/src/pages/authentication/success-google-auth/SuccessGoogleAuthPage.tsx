@@ -8,18 +8,18 @@ const SuccessGoogleAuthPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const userInfoJson = Cookies.get('user');
     const accessToken = Cookies.get('accessToken');
     const refreshToken = Cookies.get('refreshToken');
-    const userInfoJson = Cookies.get('user');
     const userInfo = JSON.parse(userInfoJson || '');
 
+    console.log(accessToken, refreshToken, userInfo);
     dispatch(setUser(userInfo));
 
     localStorage.setItem('accessToken', accessToken!);
     localStorage.setItem('refreshToken', refreshToken!);
   }, []);
-
-  return <Navigate to={'/'} />;
+  return <></>;
 };
 
 export default SuccessGoogleAuthPage;
