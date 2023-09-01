@@ -12,7 +12,7 @@ import { Chat } from './entities/chat.entity';
 import { CreateChatDto, UpdateChatDto } from './dto/dto';
 import { UserService } from '../user/user.service';
 import { Message } from '../message/entities/message.entity';
-import { User } from '../user/entities/user.entity';
+import { User, UserChat } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { AppGateway } from 'src/app.gateway';
 
@@ -28,6 +28,8 @@ export class ChatService {
     private readonly userService: UserService,
     @Inject(AppGateway)
     private readonly gateway: AppGateway,
+    @InjectModel(UserChat)
+    private readonly userChatRepository: typeof UserChat,
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
@@ -54,13 +56,19 @@ export class ChatService {
       ownerId: createdData.ownerId,
     });
 
-    chat.$set('members', [...members, owner]);
+    const allMembers = [...members, owner];
+
+    chat.$set('members', allMembers);
 
     this.logger.log(`Created chat with ID ${chat.id}`, {
       chat,
     });
 
-    this.gateway.wss.emit('conversation-upsert', { ...chat, messages: [] });
+    this.gateway.wss.emit('new-conversation', {
+      ...chat.dataValues,
+      members: allMembers,
+      messages: [],
+    });
 
     return chat;
   }
@@ -72,7 +80,7 @@ export class ChatService {
         { model: User, as: 'user' },
       ],
     });
-    this.logger.log(`Retrieved ${chats.length} chats`, { chats });
+
     return chats;
   }
 
@@ -92,9 +100,13 @@ export class ChatService {
             },
           ],
         },
+        {
+          model: User,
+          as: 'members',
+        },
       ],
     });
-    this.logger.log(`Retrieved ${chats.length} chats`, { chats });
+
     return chats;
   }
 
@@ -126,6 +138,17 @@ export class ChatService {
 
     this.logger.log(`Searched ${chats.length} chats with query: ${query}`, { chats });
     return chats;
+  }
+
+  async getAllChatIdsByUserId(userId: number) {
+    return (
+      await this.userChatRepository.findAll({
+        where: {
+          userId,
+        },
+        attributes: ['chatId'],
+      })
+    ).map(({ chatId }) => String(chatId));
   }
 
   async update(id: number, updatedData: UpdateChatDto & { ownerId: number }) {

@@ -20,7 +20,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
-
   // userId - socketId
   private onlineUsers = new Map<number, string>();
   private logger = new Logger('AppGateway');
@@ -35,7 +34,11 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`${client.id} joined chat ${data.chatId}`);
     client.join(data.chatId);
     const chat = await this.chatService.find(Number(data.chatId));
-    this.wss.to(client.id).emit('chat-joined', chat);
+    const onlineUsers = chat.members
+      .map(member => (this.onlineUsers.get(member.id) ? member.id : undefined))
+      .filter(val => val);
+    this.logger.log('onlineUsers', onlineUsers);
+    this.wss.to(client.id).emit('chat-joined', { chat, onlineUsers });
   }
 
   @SubscribeMessage('get-conversations')
@@ -51,15 +54,32 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('user-online')
-  handleUserOnline(client: Socket, data: { userId: number }) {
+  async handleUserOnline(client: Socket, data: { userId: number }) {
     this.onlineUsers.set(data.userId, client.id);
-    this.logger.log(client.handshake.headers.authorization);
     for (const [key, value] of this.onlineUsers.entries()) {
       this.logger.log(`Key: ${key}, Value: ${value}`);
     }
+    const chatIds = await this.chatService.getAllChatIdsByUserId(data.userId);
+    this.wss.to(chatIds).emit('user-online', { ...data });
+  }
+
+  @SubscribeMessage('user-offline')
+  async handleUserOffline(client: Socket, data: { userId: number }) {
+    this.onlineUsers.delete(data.userId);
+    for (const [key, value] of this.onlineUsers.entries()) {
+      this.logger.log(`Key: ${key}, Value: ${value}`);
+    }
+
+    const chatIds = await this.chatService.getAllChatIdsByUserId(data.userId);
+    this.wss.to(chatIds).emit('user-offline', { ...data });
   }
 
   handleDisconnect(client: Socket) {
     this.logger.log('Client disconnected');
+    this.onlineUsers.forEach((socketId, userId) => {
+      if (socketId === client.id) {
+        this.onlineUsers.delete(userId);
+      }
+    });
   }
 }

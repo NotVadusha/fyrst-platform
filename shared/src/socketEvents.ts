@@ -30,11 +30,12 @@ export interface ServerToClientEvents {
   onFind: (payload: Message) => void;
   onUpdate: (payload: Message) => void;
   onDelete: (payload: Message) => void;
-  'chat-joined': (payload: Chat) => void;
-  'conversation-upsert': (payload: Chat) => void;
+  'chat-joined': (payload: { chat: Chat; onlineUsers: number[] }) => void;
   'send-conversations': (payload: Chat[]) => void;
   'new-conversation': (payload: Chat) => void;
   'conversation-update': (payload: UpdateConversationPayload) => void;
+  'user-online': (payload: { userId: number }) => void;
+  'user-offline': (payload: { userId: number }) => void;
 }
 
 export interface SendMessagePayload {
@@ -46,5 +47,6 @@ export interface ClientToServerEvents {
   'user-join-chat': (payload: { chatId: string }) => void;
   'user-leave-chat': (payload: { chatId: string }) => void;
   'user-online': (payload: { userId: number }) => void;
+  'user-offline': (payload: { userId: number }) => void;
   'get-conversations': (payload: { userId: number }) => void;
 }

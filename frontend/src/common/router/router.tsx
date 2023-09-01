@@ -4,7 +4,7 @@ import BookingPage from '../../pages/bookings/ListBookingPage/BookingPage';
 import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
-import MessengerPage from '../../pages/messenger/MessangerPage';
+import MessangerPage from '../../pages/messenger/MessangerPage';
 import PaymentsPage from '../../pages/payments/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
@@ -80,7 +80,7 @@ export const router = createBrowserRouter([
           {
             path: '/chat',
             errorElement: <ErrorPage />,
-            element: <MessengerPage />,
+            element: <MessangerPage />,
             children: [
               {
                 path: ':chatId',
@@ -116,7 +116,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <MessengerPage />,
+                element: <MessangerPage />,
               },
             ],
           },

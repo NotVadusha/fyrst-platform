@@ -5,17 +5,38 @@ import { Button } from 'src/common/components/ui/common/Button';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
 import { CreateChatForm } from './CreateChatForm';
 import { socket } from 'src/common/config/packages/socket/socket.config';
-import { useAppSelector } from 'src/common/hooks/redux';
+import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
+import {
+  addOnlineUser,
+  removeOnlineUser,
+} from 'src/common/store/slices/packages/messenger/messangerSlice';
 
-const MessengerPage = () => {
+const MessangerPage = () => {
   const [open, setIsOpen] = useState(false);
 
   const user = useAppSelector(state => state.user);
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
+    socket.on('user-online', ({ userId }) => {
+      dispatch(addOnlineUser({ userId }));
+    });
+
+    socket.on('user-offline', ({ userId }) => {
+      dispatch(removeOnlineUser({ userId }));
+    });
+
     if (!user?.id) return;
 
     socket.emit('user-online', { userId: user.id });
+
+    return () => {
+      if (!user?.id) return;
+      socket.emit('user-offline', { userId: user.id });
+      socket.off('user-offline');
+      socket.off('user-online');
+    };
   }, [user?.id]);
 
   return (
@@ -39,4 +60,4 @@ const MessengerPage = () => {
   );
 };
 
-export default MessengerPage;
+export default MessangerPage;
