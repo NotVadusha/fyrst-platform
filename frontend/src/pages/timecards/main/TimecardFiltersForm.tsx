@@ -53,7 +53,7 @@ export function TimecardFiltersForm({
       <Form {...form}>
         <form>
           <div className='flex gap-x-4'>
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 min-w-[171px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='createdAt'>
                 Created at
               </label>
@@ -77,7 +77,7 @@ export function TimecardFiltersForm({
               />
             </div>
 
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 min-w-[171px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
                 Approved at
               </label>
@@ -101,7 +101,7 @@ export function TimecardFiltersForm({
               />
             </div>
 
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 min-w-[171px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
                 Status
               </label>
@@ -119,13 +119,13 @@ export function TimecardFiltersForm({
                         <FormControl>
                           <SelectTrigger>
                             <span className='font-semibold'>
-                              <SelectValue placeholder='no option selected' />
+                              <SelectValue placeholder='all' />
                             </span>
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <span className='font-semibold text-dark-blue'>
-                            <SelectItem value=''>no option selected</SelectItem>
+                            <SelectItem value=''>all</SelectItem>
                           </span>
                           {Object.values(TimecardStatus).map(status => (
                             <span className='font-semibold text-dark-blue' key={status}>
