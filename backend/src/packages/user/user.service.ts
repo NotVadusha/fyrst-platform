@@ -109,36 +109,10 @@ export class UserService {
       throw new Error('No users available to generate CSV.');
     }
 
-    const cleanData = users.map(user => ({
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      phone_number: user.phone_number,
-      city: user.city,
-      birthdate: user.birthdate,
-      password: user.password,
-      is_confirmed: user.is_confirmed,
-      role_id: user.role_id,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    }));
-
+    const cleanData = users.map(user => user.toJSON());
+    const fieldKeys = Object.keys(cleanData[0]);
     const csv = Papa.unparse({
-      fields: [
-        'id',
-        'first_name',
-        'last_name',
-        'email',
-        'phone_number',
-        'city',
-        'birthdate',
-        'password',
-        'is_confirmed',
-        'role_id',
-        'createdAt',
-        'updatedAt',
-      ],
+      fields: fieldKeys,
       data: cleanData,
     });
 

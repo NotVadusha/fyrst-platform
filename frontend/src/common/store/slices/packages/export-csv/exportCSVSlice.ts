@@ -28,12 +28,12 @@ export const exportCSV = createAsyncThunk<void, ExportCSVPayload, {}>(
     const filename = matches != null && matches[1] ? matches[1] : `${feature}.csv`;
 
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   },
 );
 

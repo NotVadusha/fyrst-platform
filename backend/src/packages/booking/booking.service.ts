@@ -9,6 +9,7 @@ import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
 import * as Papa from 'papaparse';
+import { prefixKeys } from '../../helpers/prefixKeys';
 
 @Injectable()
 export class BookingService {
@@ -81,54 +82,27 @@ export class BookingService {
       throw new Error('No bookings available to generate CSV.');
     }
 
-    const cleanData = bookings.map(booking => ({
-      id: booking.id,
-      status: booking.status,
-      createdAt: booking.createdAt,
-      numberOfPositions: booking.numberOfPositions,
-      createdBy: booking.createdBy,
-      sex: booking.sex,
-      age: booking.age,
-      education: booking.education,
-      positionsAvailable: booking.positionsAvailable,
-      workingHours: booking.workingHours,
-      pricePerHour: booking.pricePerHour,
-      notes: booking.notes,
-      startDate: booking.startDate,
-      endDate: booking.endDate,
-      employersName: booking.employersName,
-      updatedAt: booking.updatedAt,
-      facilityName: booking.facility?.name,
-      facilityCity: booking.facility?.city,
-      facilityDescription: booking.facility?.description,
-      users: booking.users
+    const cleanData = bookings.map(booking => {
+      const bookingJSON = booking.toJSON();
+      const facilityJSON = booking.facility.toJSON();
+
+      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+
+      const usersStr = booking.users
         .map(user => `${user.first_name} ${user.last_name} (${user.id})`)
-        .join('; '),
-    }));
+        .join('; ');
+
+      return {
+        ...bookingJSON,
+        ...prefixedFacilityJSON,
+        users: usersStr,
+      };
+    });
+
+    const fieldKeys = Object.keys(cleanData[0]).filter(key => !['facility'].includes(key));
 
     const csv = Papa.unparse({
-      fields: [
-        'id',
-        'status',
-        'createdAt',
-        'numberOfPositions',
-        'createdBy',
-        'sex',
-        'age',
-        'education',
-        'positionsAvailable',
-        'workingHours',
-        'pricePerHour',
-        'notes',
-        'startDate',
-        'endDate',
-        'employersName',
-        'updatedAt',
-        'facilityName',
-        'facilityCity',
-        'facilityDescription',
-        'users',
-      ],
+      fields: fieldKeys,
       data: cleanData,
     });
 

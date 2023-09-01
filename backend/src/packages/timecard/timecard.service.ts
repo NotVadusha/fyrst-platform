@@ -11,6 +11,8 @@ import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { Op } from 'sequelize';
 import * as Papa from 'papaparse';
+import _ from 'lodash';
+import { prefixKeys } from '../../helpers/prefixKeys';
 
 @Injectable()
 export class TimecardService {
@@ -76,36 +78,25 @@ export class TimecardService {
       throw new Error('No timecards available to generate CSV.');
     }
 
-    const cleanData = timecards.map(timecard => ({
-      id: timecard.id,
-      status: timecard.status,
-      createdAt: timecard.createdAt,
-      approvedAt: timecard.approvedAt,
-      createdBy: timecard.createdBy,
-      bookingId: timecard.bookingId,
-      booking_age: timecard.booking?.age,
-      booking_createdAt: timecard.booking?.createdAt,
-      booking_employersName: timecard.booking?.employersName,
-      facility_name: timecard.booking?.facility?.name,
-      facility_address: timecard.booking?.facility?.address,
-      employee_email: timecard.employee?.email,
-    }));
+    const cleanData = timecards.map(timecard => {
+      const timecardJSON = timecard.toJSON();
+      const bookingJSON = timecard.booking.toJSON();
+      const facilityJSON = timecard.booking.facility.toJSON();
 
+      const prefixedBookingJSON = prefixKeys('booking', bookingJSON);
+      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+
+      return {
+        ...timecardJSON,
+        ...prefixedBookingJSON,
+        ...prefixedFacilityJSON,
+      };
+    });
+    const fieldKeys = Object.keys(cleanData[0]).filter(
+      key => key !== 'employee' && key !== 'facilityManager' && key !== 'booking',
+    );
     const csv = Papa.unparse({
-      fields: [
-        'id',
-        'status',
-        'createdAt',
-        'approvedAt',
-        'createdBy',
-        'bookingId',
-        'booking_age',
-        'booking_createdAt',
-        'booking_employersName',
-        'facility_name',
-        'facility_address',
-        'employee_email',
-      ],
+      fields: fieldKeys,
       data: cleanData,
     });
 
