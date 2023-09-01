@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Message } from 'shared/socketEvents';
+import { Message, UpdateConversationPayload } from 'shared/socketEvents';
 import { useGetChatByIdQuery } from './chat/chatApi';
 import { Chat } from 'shared/socketEvents';
 
@@ -29,18 +29,17 @@ const messangerSlice = createSlice({
     setConversations(state, action: PayloadAction<Chat[]>) {
       state.conversations = action.payload;
     },
-    upsertConversation(state, action: PayloadAction<Chat>) {
-      if (!state.conversations.find(({ id }) => id === action.payload.id)) {
-        state.conversations = [...state.conversations, action.payload];
-        return;
-      }
-
+    addConversation(state, action: PayloadAction<Chat>) {
+      state.conversations = [...state.conversations, action.payload];
+    },
+    updateConversation(state, action: PayloadAction<UpdateConversationPayload>) {
       state.conversations = state.conversations.map(conv =>
-        conv.id === action.payload.id ? { conv, ...action.payload } : conv,
+        conv.id === action.payload.chatId ? { ...conv, messages: [action.payload.message] } : conv,
       );
     },
   },
 });
 
 export default messangerSlice.reducer;
-export const { addMessage, setConversations, upsertConversation } = messangerSlice.actions;
+export const { addMessage, setConversations, addConversation, updateConversation } =
+  messangerSlice.actions;

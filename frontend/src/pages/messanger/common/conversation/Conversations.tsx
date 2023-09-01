@@ -5,7 +5,11 @@ import { ScrollArea } from 'src/components/ui/common/ScrollArea/ScrollArea';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { socket } from 'src/lib/socket';
 import { cn } from 'src/lib/utils';
-import { setConversations, upsertConversation } from 'src/store/reducers/messanger.store';
+import {
+  setConversations,
+  addConversation,
+  updateConversation,
+} from 'src/store/reducers/messanger.store';
 import { useGetAllUserChatsQuery, useSearchChatsQuery } from 'src/store/reducers/chat/chatApi';
 import { SearchInput } from './common/SearchInput';
 import { useDebounce } from 'src/hooks/useDebounce';
@@ -27,14 +31,15 @@ export const Conversations: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('conversations useEffect');
     socket.on('send-conversations', conversations => {
       console.log(conversations);
       dispatch(setConversations(conversations));
     });
 
-    socket.on('conversation-upsert', conversation => {
-      console.log(conversation);
-      dispatch(upsertConversation(conversation));
+    socket.on('new-conversation', conversation => {
+      console.log('conversation', conversation);
+      dispatch(addConversation(conversation));
     });
 
     if (!user?.id) return;

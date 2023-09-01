@@ -31,6 +31,7 @@ export class MessageService {
     });
 
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
+    this.gateway.wss.emit('conversation-update', ({chatId, message: messageWithUser}))
 
     this.logger.log(`Created message with ID ${messageWithUser.id}`, {
       messageWithUser,

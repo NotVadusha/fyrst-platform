@@ -19,6 +19,11 @@ export interface Chat {
   members: User[];
 }
 
+export interface UpdateConversationPayload {
+  chatId: number;
+  message: Message;
+}
+
 export interface ServerToClientEvents {
   'new-message': (payload: Message) => void;
   onFindAll: (payload: Message[]) => void;
@@ -26,9 +31,10 @@ export interface ServerToClientEvents {
   onUpdate: (payload: Message) => void;
   onDelete: (payload: Message) => void;
   'chat-joined': (payload: Chat) => void;
-  'new-conversation': (payload: Omit<Chat, 'members'>) => void;
+  'new-conversation': (payload: Chat) => void;
   'conversation-upsert': (payload: Chat) => void;
   'send-conversations': (payload: Chat[]) => void;
+  'conversation-update': (payload: UpdateConversationPayload) => void;
 }
 
 export interface SendMessagePayload {
