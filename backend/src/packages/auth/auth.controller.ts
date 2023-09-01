@@ -68,7 +68,7 @@ export class AuthController {
           path: '/',
           secure: true, // must be true in production
           maxAge: 60 * 10, // 1 year
-          domain: process.env.ENVIRONMENT === 'development' ? '' : `.example.com`, // the period before is important and intentional
+          domain: `.fyrst.site`, // the period before is important and intentional
           // maxAge: 1000 * 60 * 10,
           // sameSite: true,
           // secure: false,
