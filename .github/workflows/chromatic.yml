@@ -1,6 +1,6 @@
 name: 'Chromatic - Public'
 
-on: pull_request
+on: workflow_dispatch
 
 jobs:
   chromatic-frontend:

@@ -48,6 +48,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         if (refreshResult.error) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
+          window.location.href = '/auth/signin';
         } else {
           const tokens = refreshResult.data as TokenResponseDto;
 
