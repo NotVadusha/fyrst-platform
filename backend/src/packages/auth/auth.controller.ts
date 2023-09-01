@@ -67,7 +67,7 @@ export class AuthController {
           path: '/',
           secure: false,
           maxAge: 60 * 10,
-          domain: '.fyrst.site',
+          domain: process.env.ENVIRONMENT === 'develop' ? '' : '.fyrst.site',
         }),
         cookie.serialize('refreshToken', result.tokens.refreshToken, {
           sameSite: 'lax',
@@ -75,7 +75,7 @@ export class AuthController {
           path: '/',
           secure: false,
           maxAge: 60 * 10,
-          domain: '.fyrst.site',
+          domain: process.env.ENVIRONMENT === 'develop' ? '' : '.fyrst.site',
         }),
         cookie.serialize('user', JSON.stringify(result.user), {
           sameSite: 'lax',
@@ -83,7 +83,7 @@ export class AuthController {
           path: '/',
           secure: false,
           maxAge: 60 * 10,
-          domain: '.fyrst.site',
+          domain: process.env.ENVIRONMENT === 'develop' ? '' : '.fyrst.site',
         }),
       ]);
     }
