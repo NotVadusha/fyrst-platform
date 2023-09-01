@@ -8,7 +8,7 @@ import { Response } from 'express';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { RegistrationDto } from './dto/registration.dto';
-import cookie from 'cookie';
+const cookie = require('cookie');
 @ApiTags('Authorization and authentication endpoints')
 @Controller('auth')
 export class AuthController {
@@ -60,48 +60,32 @@ export class AuthController {
   async googleCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.googleAuthentication(req.user);
     if (!!result.tokens.accessToken) {
-      res.setHeader(
-        'Set-Cookie',
+      res.setHeader('Set-Cookie', [
         cookie.serialize('accessToken', result.tokens.accessToken, {
           sameSite: 'lax',
-          httpOnly: true,
+          httpOnly: false,
           path: '/',
-          secure: true, // must be true in production
-          maxAge: 60 * 10, // 1 year
-          domain: `.fyrst.site`, // the period before is important and intentional
-          // maxAge: 1000 * 60 * 10,
-          // sameSite: true,
-          // secure: false,
+          secure: false,
+          maxAge: 60 * 10,
+          domain: '.fyrst.site',
         }),
-      );
-      res.setHeader(
-        'Set-Cookie',
-        cookie.serialize('refreshToken', result.tokens.accessToken, {
+        cookie.serialize('refreshToken', result.tokens.refreshToken, {
           sameSite: 'lax',
-          httpOnly: true,
+          httpOnly: false,
           path: '/',
-          secure: true, // must be true in production
-          maxAge: 60 * 10, // 1 year
-          domain: `.fyrst.site`, // the period before is important and intentional
-          // maxAge: 1000 * 60 * 10,
-          // sameSite: true,
-          // secure: false,
+          secure: false,
+          maxAge: 60 * 10,
+          domain: '.fyrst.site',
         }),
-      );
-      res.setHeader(
-        'Set-Cookie',
-        cookie.serialize('user', result.tokens.accessToken, {
+        cookie.serialize('user', JSON.stringify(result.user), {
           sameSite: 'lax',
-          httpOnly: true,
+          httpOnly: false,
           path: '/',
-          secure: true, // must be true in production
-          maxAge: 60 * 10, // 1 year
-          domain: `.fyrst.site`, // the period before is important and intentional
-          // maxAge: 1000 * 60 * 10,
-          // sameSite: true,
-          // secure: false,
+          secure: false,
+          maxAge: 60 * 10,
+          domain: '.fyrst.site',
         }),
-      );
+      ]);
     }
     res.redirect(process.env.GOOGLE_AUTH_SUCCESS_URL);
   }
