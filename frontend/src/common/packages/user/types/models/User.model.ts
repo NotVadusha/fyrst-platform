@@ -7,7 +7,7 @@ export interface User {
   email: string;
   phone_number: string;
   city: string;
-  birthdate: Date;
+  birthdate: string;
   password: string;
   is_confirmed: boolean;
   role_id: number;

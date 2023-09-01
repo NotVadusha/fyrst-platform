@@ -6,7 +6,7 @@ import {
   useAddUsersMutation,
   useGetUsersByParamsQuery,
 } from 'src/common/store/api/packages/user/userApi';
-import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';

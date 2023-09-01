@@ -7,7 +7,7 @@ import * as y from 'yup';
 import { timecardSchema } from 'src/common/packages/timecard/types/validation-schemas/timecard.validation-schema';
 import { Button } from 'src/common/components/ui/common/Button';
 import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
-import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import { Booking } from 'src/common/packages/booking/types/models/Booking.model';
 
 export type CreateTimecardFormValues = y.InferType<typeof timecardSchema>;

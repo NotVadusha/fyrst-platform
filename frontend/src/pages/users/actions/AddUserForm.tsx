@@ -47,11 +47,7 @@ export function AddUserForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
-    addUser({
-      ...values,
-      birthdate: values.birthdate ?? undefined,
-      phone_number: values.phone_number ?? undefined,
-    })
+    addUser({ ...values })
       .unwrap()
       .then(payload => {
         navigate(0);

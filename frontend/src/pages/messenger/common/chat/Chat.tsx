@@ -7,7 +7,7 @@ import { socket } from 'src/common/config/packages/socket/socket.config';
 import { Chat, Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
 import { cn } from 'src/common/helpers/helpers';
-import { UserDefaultResponse } from 'src/common/packages/user/types/dto/UserDto';
+import { User } from 'src/common/packages/user/types/models/User.model';
 
 export const ChatPage: React.FC = () => {
   const { chatId } = useParams();
@@ -64,9 +64,7 @@ export const ChatPage: React.FC = () => {
         <div className='grid gap-2'>
           <p className='text-2xl/[24px] font-semibold text-black'>
             {otherMembers
-              ?.map(
-                ({ first_name, last_name }: UserDefaultResponse) => `${first_name} ${last_name}`,
-              )
+              ?.map(({ first_name, last_name }: User) => `${first_name} ${last_name}`)
               .join(', ')}
           </p>
           <span className='text-dark-grey text-sm/[14px] font-medium'>online</span>
