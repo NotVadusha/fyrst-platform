@@ -12,6 +12,7 @@ import {
   useUpdateNotificationsConfigMutation,
 } from 'src/common/store/api/packages/notification-configs/notificationConfigApi';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { selectUser } from '../../common/store/slices/packages/user/userSelectors';
 
 const formSchema = yup.object({
   id: yup.number(),
@@ -27,7 +28,7 @@ const formSchema = yup.object({
 type FormValues = yup.InferType<typeof formSchema>;
 
 const NotificationsForm = () => {
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   const { data, isLoading } = useGetNotificationsConfigQuery(user.id ?? 1);
   const [updateNotificationsConfig] = useUpdateNotificationsConfigMutation();

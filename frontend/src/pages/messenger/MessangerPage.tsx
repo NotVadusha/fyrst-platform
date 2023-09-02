@@ -6,11 +6,12 @@ import { Modal } from 'src/common/components/ui/common/Modal/Modal';
 import { CreateChatForm } from './CreateChatForm';
 import { socket } from 'src/common/config/packages/socket/socket.config';
 import { useAppSelector } from 'src/common/hooks/redux';
+import { selectUser } from '../../common/store/slices/packages/user/userSelectors';
 
 const MessengerPage = () => {
   const [open, setIsOpen] = useState(false);
 
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   useEffect(() => {
     if (!user?.id) return;
