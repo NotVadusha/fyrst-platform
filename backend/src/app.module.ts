@@ -24,6 +24,7 @@ import {
   StatisticsModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
+import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
 @Module({
   imports: [
     SequelizeModule.forRoot(development),
@@ -46,6 +47,7 @@ import { AppGateway } from './app.gateway';
     InvoiceModule,
     PermissionsModule,
     StatisticsModule,
+    CalendarEventsModule,
   ],
   controllers: [],
   providers: [AppGateway],
