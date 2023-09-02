@@ -19,16 +19,9 @@ import {
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
+import { timecardFiltersSchema } from '../../../common/packages/timecard/types/validation-schemas/timecard-filters.validation-schema';
 
-const formSchema = yup.object({
-  createdAt: yup.date(),
-  approvedAt: yup.date(),
-  status: yup.string().oneOf(Object.values(TimecardStatus)),
-  createdBy: yup.number(),
-  approvedBy: yup.number().nullable(),
-});
-
-type FormValues = yup.InferType<typeof formSchema>;
+type FormValues = yup.InferType<typeof timecardFiltersSchema>;
 
 export function TimecardFiltersForm({
   handleInputChange,
@@ -38,7 +31,7 @@ export function TimecardFiltersForm({
   handleSelectChange: (value: string, param: string) => void;
 }) {
   const form = useForm<FormValues>({
-    resolver: yupResolver<FormValues>(formSchema),
+    resolver: yupResolver<FormValues>(timecardFiltersSchema),
   });
 
   const statusOptions = Object.values(TimecardStatus).map(status => ({
