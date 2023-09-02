@@ -10,12 +10,14 @@ import * as bcrypt from 'bcryptjs';
 import { Permissions } from '../permissions/entities/permissions.entity';
 import jwtDecode from 'jwt-decode';
 import { Roles } from '../roles/entities/roles.entity';
+import { PermissionsService } from '../permissions/permissions.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
+    private permissionsService: PermissionsService,
   ) {}
 
   async create(userInfo: CreateUserDto) {
@@ -37,7 +39,7 @@ export class UserService {
   }
 
   async findAll() {
-    return await this.userRepository.findAll();
+    return await this.userRepository.findAll({ include: [Roles, Permissions] });
   }
 
   async createMany(userInfo: CreateUserDto[]) {
@@ -97,6 +99,7 @@ export class UserService {
         ...filters,
         ...opSubstringFilters,
       },
+      include: [Roles, Permissions],
       limit,
       offset,
     });
@@ -119,7 +122,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email } });
+    return await this.userRepository.findOne({ where: { email }, include: [Roles, Permissions] });
   }
 
   async update(updateInfo: UpdateUserDto, userId: number) {
@@ -127,10 +130,18 @@ export class UserService {
       const role = await this.rolesService.findOne(updateInfo.role_id);
       if (!role) throw new NotFoundException("This role doesn't exist");
     }
-    const [updatedUser] = await this.userRepository.update(updateInfo, { where: { id: userId } });
-    if (!updatedUser) throw new NotFoundException('User do not exist');
-    return updatedUser;
+
+    const user = await this.findOne(userId);
+    Object.assign(user, updateInfo);
+
+    if (updateInfo.permissions) {
+      this.permissionsService.updateByUser(user.id, updateInfo.permissions);
+    }
+
+    await user.save();
+    return await this.findOne(user.id);
   }
+
   async changePassword(userId: number, currentPassword: string, newPassword: string) {
     const user = await this.findOne(userId);
     if (!user) throw new NotFoundException('User not found');
@@ -149,7 +160,10 @@ export class UserService {
     return await this.userRepository.update({ is_confirmed: true }, { where: { email: email } });
   }
   async findByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email: email } });
+    return await this.userRepository.findOne({
+      where: { email: email },
+      include: [Roles, Permissions],
+    });
   }
   async findByJwt(jwt: string) {
     const payload = jwtDecode<{ id: number }>(jwt);
