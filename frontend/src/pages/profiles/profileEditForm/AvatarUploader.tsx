@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import ReactSlider from 'react-slider';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
@@ -13,6 +13,8 @@ interface InputProps {
   setImage: (imageUrl: string) => void;
 }
 
+const MAX_IMAGE_SIZE = 5e6;
+
 export const AvatarUploader = ({
   width,
   height,
@@ -21,15 +23,15 @@ export const AvatarUploader = ({
   setShown,
   setImage,
 }: InputProps) => {
-  const [tempImage, setTempImage] = useState('');
-  const imageInput = useRef(null);
-  const [rangeValue, setRangeValue] = useState(10);
+  const [tempImage, setTempImage] = useState<string>('');
+  const imageInput = useRef<HTMLInputElement | null>(null);
+  const [rangeValue, setRangeValue] = useState<number>(10);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newImage = e.target.files[0];
       console.log(newImage);
-      if (newImage.size >= 5e6) {
+      if (newImage.size >= MAX_IMAGE_SIZE) {
         toast({
           title: 'Image size must be less than 5MB',
           description: 'Please, choose another image less than 5mb size',
@@ -47,7 +49,7 @@ export const AvatarUploader = ({
   };
 
   const handleUploadImage = () => {
-    document.getElementById('avatar-image-upload')?.click();
+    imageInput.current?.click();
   };
 
   const handleSave = async () => {
@@ -83,10 +85,10 @@ export const AvatarUploader = ({
           id='avatar-image-upload'
           type='file'
           onChange={handleImageChange}
+          ref={imageInput}
         />
 
         <AvatarEditor
-          ref={imageInput}
           image={tempImage}
           width={width}
           height={height}
