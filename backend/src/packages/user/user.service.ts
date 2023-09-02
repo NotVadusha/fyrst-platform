@@ -31,7 +31,7 @@ export class UserService {
       {
         phone_number: null,
         is_confirmed: false,
-        permissions: {},
+        permissions: { ...userInfo.permissions },
         ...userInfo,
       },
       { include: Permissions },

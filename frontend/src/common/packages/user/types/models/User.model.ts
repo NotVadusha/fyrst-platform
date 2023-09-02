@@ -1,4 +1,5 @@
 import { Role } from '../../../roles/types/models/Role.model';
+import { Permissions } from 'src/common/packages/permissions/types/Permissions';
 
 export interface User {
   id: number;
@@ -12,6 +13,7 @@ export interface User {
   is_confirmed: boolean;
   role_id: number;
   role: Role;
+  permissions: Permissions;
 }
 
 export interface DecodedUser {

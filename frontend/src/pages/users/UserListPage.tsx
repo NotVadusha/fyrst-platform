@@ -1,28 +1,25 @@
+import Papa from 'papaparse';
 import React, { useEffect, useState } from 'react';
-import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { Button } from 'src/common/components/ui/common/Button/index';
+import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import Table from 'src/common/components/ui/common/Table/Table';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import {
   useAddUsersMutation,
   useGetUsersByParamsQuery,
 } from 'src/common/store/api/packages/user/userApi';
-import { User } from 'src/common/packages/user/types/models/User.model';
-import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
-import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { UserFiltersForm } from './UserFiltersForm';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
-import Papa from 'papaparse';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
-import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [addUsers, result] = useAddUsersMutation();
-
+  const [addUsers] = useAddUsersMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,11 +40,10 @@ export function UserListPage() {
     filters[key as keyof UserFilters] === null && delete filters[key as keyof UserFilters];
   });
 
-  const { data, isFetching } = useGetUsersByParamsQuery({
+  const { data } = useGetUsersByParamsQuery({
     currentPage,
     filters,
   });
-
   const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
@@ -139,11 +135,7 @@ export function UserListPage() {
             setSearchParams={setSearchParams}
           />
           <div className='flex flex-col items-center gap-4'>
-            {isFetching ? (
-              <div className='flex justify-center min-h-[8rem]'>
-                <Spinner size='lg' />
-              </div>
-            ) : data?.users?.length === 0 ? (
+            {data?.users?.length === 0 ? (
               <p className='text-body-default font-semibold'>
                 No users to display here. Most probably, nothing matches your search query
               </p>
