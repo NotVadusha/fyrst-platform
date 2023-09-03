@@ -10,6 +10,8 @@ const initialState: Partial<User> = {
   birthdate: undefined,
   email: undefined,
   role_id: undefined,
+  role: undefined,
+  permissions: undefined,
 };
 
 const userSlice = createSlice({
@@ -25,6 +27,8 @@ const userSlice = createSlice({
       state.birthdate = action.payload?.birthdate;
       state.email = action.payload?.email;
       state.role_id = action.payload?.role_id;
+      state.role = action.payload?.role;
+      state.permissions = action.payload?.permissions;
     },
     clearUser(state) {
       state.id = undefined;
@@ -35,6 +39,8 @@ const userSlice = createSlice({
       state.birthdate = undefined;
       state.email = undefined;
       state.role_id = undefined;
+      state.role = undefined;
+      state.permissions = undefined;
     },
   },
 });

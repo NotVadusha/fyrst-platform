@@ -25,6 +25,8 @@ import ProfileSecurity from '../../pages/profiles/ProfileSecurity/ProfileSecurit
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
+import { RoleProtectedRoute } from './common/helpers/role-protected-route.helper';
+import { PermissionsProtectedRoute } from './common/helpers/permissions-protected-route.helper';
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
@@ -65,7 +67,13 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <TimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                    <PermissionsProtectedRoute permissions={['manageBookings', 'manageTimecards']}>
+                      <TimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
               {
                 path: ':id',

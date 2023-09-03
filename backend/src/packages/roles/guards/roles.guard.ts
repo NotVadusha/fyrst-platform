@@ -1,13 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, mixin } from '@nestjs/common';
 import { UserService } from 'src/packages/user/user.service';
-import { InferCreationAttributes } from 'sequelize';
 import { Request } from 'express';
-
-const userRoles = {
-  WORKER: 1,
-  FACILITY_MANAGER: 2,
-  PLATFORM_ADMIN: 3,
-};
+import { userRoles } from 'shared/packages/roles/userRoles';
 
 export function RoleGuard(role: keyof typeof userRoles) {
   @Injectable()
