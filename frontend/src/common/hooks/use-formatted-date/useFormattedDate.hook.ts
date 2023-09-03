@@ -1,11 +1,16 @@
 import { useMemo } from 'react';
 
 export interface UseFormattedDateProps {
-  dateString?: string | null;
+  dateString?: string | Date | null;
   format?: 'dash' | 'dot';
+  locale?: string;
 }
 
-export const useFormattedDate = ({ dateString, format = 'dot' }: UseFormattedDateProps): string => {
+export const useFormattedDate = ({
+  dateString,
+  format = 'dot',
+  locale = 'de-DE',
+}: UseFormattedDateProps): string => {
   return useMemo(() => {
     if (!dateString) return '';
 
@@ -19,8 +24,8 @@ export const useFormattedDate = ({ dateString, format = 'dot' }: UseFormattedDat
       year: 'numeric',
     };
 
-    const formattedDate = new Intl.DateTimeFormat('de-DE', options).format(date);
+    const formattedDate = new Intl.DateTimeFormat(locale, options).format(date);
 
     return formattedDate.replace(/\//g, separator);
-  }, [dateString, format]);
+  }, [dateString, format, locale]);
 };

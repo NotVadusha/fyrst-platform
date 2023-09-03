@@ -12,20 +12,11 @@ import {
   useUpdateNotificationsConfigMutation,
 } from 'src/common/store/api/packages/notification-configs/notificationConfigApi';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { selectUser } from '../../common/store/slices/packages/user/userSelectors';
+import { selectUser } from '../../common/store/slices/packages/user/userSelectors';=======
+import { notificationsSchema } from '../../common/packages/notifications/validation-schemas/notifications.validation-schema';
 
-const formSchema = yup.object({
-  id: yup.number(),
-  userId: yup.number(),
-  bookings: yup.boolean(),
-  timecards: yup.boolean(),
-  paymentSuccess: yup.boolean(),
-  passwordChange: yup.boolean(),
-  weeklyReport: yup.boolean(),
-  moneySent: yup.boolean(),
-});
 
-type FormValues = yup.InferType<typeof formSchema>;
+type FormValues = yup.InferType<typeof notificationsSchema>;
 
 const NotificationsForm = () => {
   const user = useAppSelector(selectUser);
@@ -38,7 +29,7 @@ const NotificationsForm = () => {
   const { toast } = useToast();
 
   const form = useForm<FormValues>({
-    resolver: yupResolver<FormValues>(formSchema),
+    resolver: yupResolver<FormValues>(notificationsSchema),
   });
 
   useEffect(() => {

@@ -7,6 +7,7 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import * as Papa from 'papaparse';
 
 @Injectable()
 export class UserService {
@@ -41,45 +42,39 @@ export class UserService {
   async getAllByParams({
     currentPage,
     filters,
+    isCSVExport = false,
   }: {
     currentPage: number;
     filters: Omit<UserFiltersDto, 'currentPage'>;
+    isCSVExport?: boolean;
   }) {
     Object.keys(filters).forEach(
       key =>
         (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
         delete filters[key],
     );
-
-    // Number of users to show per page
-    const limit = 5;
-
-    // To skip per page
+    const limit = isCSVExport ? Number.MAX_SAFE_INTEGER : 5;
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
-    const opSubstringFilters = {
+    const opiLikeFilters = {
       ...(filters.first_name && {
         first_name: {
-          [Op.substring]: filters.first_name ?? '',
-          [Op.substring]: filters.first_name,
+          [Op.iLike]: `%${filters.first_name}%`,
         },
       }),
       ...(filters.last_name && {
         last_name: {
-          [Op.substring]: filters.last_name ?? '',
-          [Op.substring]: filters.last_name,
+          [Op.iLike]: `%${filters.last_name}%`,
         },
       }),
       ...(filters.email && {
         email: {
-          [Op.substring]: filters.email ?? '',
-          [Op.substring]: filters.email,
+          [Op.iLike]: `%${filters.email}%`,
         },
       }),
       ...(filters.city && {
         city: {
-          [Op.substring]: filters.city ?? '',
-          [Op.substring]: filters.city,
+          [Op.iLike]: `%${filters.city}%`,
         },
       }),
     };
@@ -88,7 +83,7 @@ export class UserService {
       order: [['id', 'DESC']],
       where: {
         ...filters,
-        ...opSubstringFilters,
+        ...opiLikeFilters,
       },
       limit,
       offset,
@@ -97,11 +92,26 @@ export class UserService {
     const totalCount = await this.userRepository.count({
       where: {
         ...filters,
-        ...opSubstringFilters,
+        ...opiLikeFilters,
       },
     });
 
     return { users, totalCount };
+  }
+
+  async generateCSVFromUsers(users: User[]): Promise<string> {
+    if (users.length === 0) {
+      throw new Error('No users available to generate CSV.');
+    }
+
+    const cleanData = users.map(user => user.toJSON());
+    const fieldKeys = Object.keys(cleanData[0]);
+    const csv = Papa.unparse({
+      fields: fieldKeys,
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async findOne(userId: number) {

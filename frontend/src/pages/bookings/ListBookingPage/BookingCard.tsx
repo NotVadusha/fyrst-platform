@@ -6,6 +6,7 @@ import { ReactComponent as ProfileIcon } from 'src/assets/icons/profile.svg';
 import { Card } from 'src/common/components/ui/common/Card/Card';
 import { Booking } from 'src/common/packages/booking/types/models/Booking.model';
 import { Link } from 'react-router-dom';
+import { useFormattedDate } from '../../../common/hooks/use-formatted-date/useFormattedDate.hook';
 
 interface BookingCardProps {
   booking: Booking;
@@ -29,13 +30,22 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   };
 
   const statusClass = statusClassMap[booking.status as keyof StatusClassMap];
-  const createdAt = new Intl.DateTimeFormat('de-DE', {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric',
-  }).format(new Date(booking.createdAt));
-  const startDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.startDate));
-  const endDate = new Intl.DateTimeFormat('fr-CA').format(new Date(booking.endDate));
+  const createdAt = useFormattedDate({
+    dateString: booking.createdAt,
+    format: 'dot',
+  });
+
+  const startDate = useFormattedDate({
+    dateString: new Date(booking.startDate),
+    format: 'dash',
+    locale: 'fr-CA',
+  });
+  const endDate = useFormattedDate({
+    dateString: new Date(booking.endDate),
+    format: 'dash',
+    locale: 'fr-CA',
+  });
+
   const fullNames = booking.users.map(user => `${user.first_name} ${user.last_name}`).join(', ');
 
   return (
