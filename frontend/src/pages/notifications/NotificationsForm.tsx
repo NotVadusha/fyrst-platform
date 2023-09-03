@@ -12,9 +12,8 @@ import {
   useUpdateNotificationsConfigMutation,
 } from 'src/common/store/api/packages/notification-configs/notificationConfigApi';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { selectUser } from '../../common/store/slices/packages/user/userSelectors';=======
+import { selectUser } from '../../common/store/slices/packages/user/userSelectors';
 import { notificationsSchema } from '../../common/packages/notifications/validation-schemas/notifications.validation-schema';
-
 
 type FormValues = yup.InferType<typeof notificationsSchema>;
 
