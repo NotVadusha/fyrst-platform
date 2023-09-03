@@ -7,6 +7,7 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import * as Papa from 'papaparse';
 
 @Injectable()
 export class UserService {
@@ -41,20 +42,19 @@ export class UserService {
   async getAllByParams({
     currentPage,
     filters,
+    isCSVExport = false,
   }: {
     currentPage: number;
     filters: Omit<UserFiltersDto, 'currentPage'>;
+    isCSVExport?: boolean;
   }) {
     Object.keys(filters).forEach(
       key =>
         (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
         delete filters[key],
     );
+    const limit = isCSVExport ? Number.MAX_SAFE_INTEGER : 5;
 
-    // Number of users to show per page
-    const limit = 5;
-
-    // To skip per page
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
     const opSubstringFilters = {
@@ -102,6 +102,21 @@ export class UserService {
     });
 
     return { users, totalCount };
+  }
+
+  async generateCSVFromUsers(users: User[]): Promise<string> {
+    if (users.length === 0) {
+      throw new Error('No users available to generate CSV.');
+    }
+
+    const cleanData = users.map(user => user.toJSON());
+    const fieldKeys = Object.keys(cleanData[0]);
+    const csv = Papa.unparse({
+      fields: fieldKeys,
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async findOne(userId: number) {

@@ -10,7 +10,9 @@ import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { Op } from 'sequelize';
-import { getFilterParams } from 'shared/getFilterParams';
+import * as Papa from 'papaparse';
+import _ from 'lodash';
+import { prefixKeys } from '../../helpers/prefixKeys';
 
 @Injectable()
 export class TimecardService {
@@ -29,13 +31,27 @@ export class TimecardService {
   async getAllFiltered(filters: TimecardFiltersDto): Promise<GetAllTimecardsDto> {
     this.logger.log(filters.createdAt);
 
-    const whereFilters: Record<string, any>[] = getFilterParams(filters, [
-      'createdAt',
-      'approvedAt',
-      'status',
-      'createdBy',
-      'bookingId',
-    ]);
+    const whereFilters: Record<string, any>[] = [];
+
+    if (filters.createdAt !== undefined) {
+      whereFilters.push({ createdAt: filters.createdAt });
+    }
+
+    if (filters.approvedAt !== undefined) {
+      whereFilters.push({ approvedAt: filters.approvedAt });
+    }
+
+    if (filters.status !== undefined) {
+      whereFilters.push({ status: filters.status });
+    }
+
+    if (filters.createdBy !== undefined) {
+      whereFilters.push({ createdBy: filters.createdBy });
+    }
+
+    if (filters.bookingId !== undefined) {
+      whereFilters.push({ bookingId: filters.bookingId });
+    }
 
     const timecards = await this.timecardModel.findAll({
       where: whereFilters,
@@ -55,6 +71,36 @@ export class TimecardService {
     });
 
     return { items: timecards, total };
+  }
+
+  async generateCSVFromTimecards(timecards: Timecard[]): Promise<string> {
+    if (timecards.length === 0) {
+      throw new Error('No timecards available to generate CSV.');
+    }
+
+    const cleanData = timecards.map(timecard => {
+      const timecardJSON = timecard.toJSON();
+      const bookingJSON = timecard.booking.toJSON();
+      const facilityJSON = timecard.booking.facility.toJSON();
+
+      const prefixedBookingJSON = prefixKeys('booking', bookingJSON);
+      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+
+      return {
+        ...timecardJSON,
+        ...prefixedBookingJSON,
+        ...prefixedFacilityJSON,
+      };
+    });
+    const fieldKeys = Object.keys(cleanData[0]).filter(
+      key => key !== 'employee' && key !== 'facilityManager' && key !== 'booking',
+    );
+    const csv = Papa.unparse({
+      fields: fieldKeys,
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async getById(id: number): Promise<Timecard> {
