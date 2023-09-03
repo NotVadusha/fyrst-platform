@@ -1,3 +1,5 @@
+import { from } from 'rxjs';
+
 export { EmailConfirmationModule } from './email-confirmation/emailConfirmation.module';
 export { UserModule } from './user/user.module';
 export { TimecardModule } from './timecard/timecard.module';
@@ -13,3 +15,4 @@ export { MessageModule } from './message/message.module';
 export { NotificationsConfigModule } from './notifications-config/notifications-config.module';
 export { BucketModule } from './bucket/bucket.module';
 export { NotificationModule } from './notification/notification.module';
+export { WebSocketModule } from './websocket/websocket.module';

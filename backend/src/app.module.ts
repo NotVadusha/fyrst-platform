@@ -18,6 +18,7 @@ import {
   NotificationsConfigModule,
   BucketModule,
   NotificationModule,
+  WebSocketModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
 @Module({
@@ -38,6 +39,7 @@ import { AppGateway } from './app.gateway';
     NotificationsConfigModule,
     BucketModule,
     NotificationModule,
+    WebSocketModule,
   ],
   controllers: [],
   providers: [AppGateway],

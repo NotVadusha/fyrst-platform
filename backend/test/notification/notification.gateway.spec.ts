@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificationGateway } from '../../src/packages/notification/notification.gateway';
+import { NotificationGateway } from '../../src/packages/websocket/notification.gateway';
 import { NotificationService } from '../../src/packages/notification/notification.service';
 
 describe('NotificationGateway', () => {
