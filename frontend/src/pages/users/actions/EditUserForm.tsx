@@ -194,12 +194,12 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
               <div className='grid grid-cols-2 gap-4'>
                 <Checkbox
                   control={form.control}
-                  name='permissions.manageTimecards'
+                  name='permissions.manageBookings'
                   label='Manage bookings'
                 />
                 <Checkbox
                   control={form.control}
-                  name='permissions.manageBookings'
+                  name='permissions.manageTimecards'
                   label='Manage timecards'
                 />
                 <Checkbox

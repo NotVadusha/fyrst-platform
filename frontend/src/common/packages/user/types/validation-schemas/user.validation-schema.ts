@@ -16,7 +16,10 @@ export const userSchema = yup
       .required('Last name is a required field'),
     email: yup.string().email('Email has to be valid').required('Email is a required field'),
     is_confirmed: yup.boolean().optional(),
-    phone_number: yup.string().matches(phoneRegex, 'Phone number is not valid').optional(),
+    phone_number: yup
+      .string()
+      .matches(phoneRegex, { message: 'Phone number is not valid', excludeEmptyString: true })
+      .optional(),
     city: yup.string().max(32).optional(),
     birthdate: yup.string().optional(),
     password: yup.string().max(20, 'Password is too long').optional(),
