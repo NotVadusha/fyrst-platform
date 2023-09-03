@@ -28,6 +28,7 @@ import { ConfigurateProtectedRoute } from './common/helpers/configurate-protecte
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
+import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -184,6 +185,10 @@ export const router = createBrowserRouter([
           {
             path: 'signup',
             element: <SignUpPage />,
+          },
+          {
+            path: 'verify-email',
+            element: <VerifyEmailPage />,
           },
           {
             path: 'google-success',
