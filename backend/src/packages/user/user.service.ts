@@ -11,6 +11,8 @@ import { Permissions } from '../permissions/entities/permissions.entity';
 import jwtDecode from 'jwt-decode';
 import { Roles } from '../roles/entities/roles.entity';
 import { PermissionsService } from '../permissions/permissions.service';
+import { userRoles } from 'shared/packages/roles/userRoles';
+import { InferAttributes } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -26,7 +28,9 @@ export class UserService {
       throw new BadRequestException(`email ${sameEmailUser.email} is already in use`);
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
-    console.log('creating');
+
+    this.updatePermissionsByRole(role.label as keyof typeof userRoles, userInfo.permissions);
+
     return await this.userRepository.create(
       {
         phone_number: null,
@@ -126,17 +130,19 @@ export class UserService {
   }
 
   async update(updateInfo: UpdateUserDto, userId: number) {
+    const user = await this.findOne(userId);
+
     if (updateInfo.role_id) {
       const role = await this.rolesService.findOne(updateInfo.role_id);
       if (!role) throw new NotFoundException("This role doesn't exist");
+
+      if (updateInfo.permissions) {
+        this.updatePermissionsByRole(role.label as keyof typeof userRoles, updateInfo.permissions);
+        this.permissionsService.updateByUser(user.id, updateInfo.permissions);
+      }
     }
 
-    const user = await this.findOne(userId);
     Object.assign(user, updateInfo);
-
-    if (updateInfo.permissions) {
-      this.permissionsService.updateByUser(user.id, updateInfo.permissions);
-    }
 
     await user.save();
     return await this.findOne(user.id);
@@ -169,5 +175,23 @@ export class UserService {
     const payload = jwtDecode<{ id: number }>(jwt);
 
     return await this.findOne(payload.id);
+  }
+
+  private updatePermissionsByRole(
+    role: keyof typeof userRoles,
+    permissions: InferAttributes<Permissions>,
+  ) {
+    switch (role) {
+      case 'PLATFORM_ADMIN':
+        permissions.manageBookings = true;
+        permissions.manageTimecards = true;
+        permissions.manageUsers = true;
+        break;
+      case 'WORKER':
+        permissions.manageBookings = false;
+        permissions.manageTimecards = false;
+        permissions.manageUsers = false;
+        break;
+    }
   }
 }
