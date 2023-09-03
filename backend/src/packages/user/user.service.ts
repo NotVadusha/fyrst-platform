@@ -7,12 +7,15 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import { NotificationService } from '../notification/notification.service';
+import { notificationTemplatePasswordChange } from 'shared/packages/notification/types/notificationTemplates';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(userInfo: CreateUserDto) {
@@ -129,6 +132,10 @@ export class UserService {
     if (!isMatch) throw new BadRequestException('Current password is incorrect');
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    this.notificationService.create({
+      recipientId: userId,
+      content: notificationTemplatePasswordChange(),
+    });
     return this.update({ password: hashedNewPassword }, userId);
   }
 

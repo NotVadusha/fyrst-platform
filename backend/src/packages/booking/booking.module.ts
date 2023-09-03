@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { FacilityModule } from '../facility/facility.module';
 import { NotificationModule } from '../notification/notification.module';
 import { Notification } from '../notification/entities/notification.entity';
+import { NotificationService } from '../notification/notification.service';
 import { NotificationGateway } from '../websocket/notification.gateway';
 
 @Module({
@@ -17,7 +18,7 @@ import { NotificationGateway } from '../websocket/notification.gateway';
     NotificationModule,
   ],
   controllers: [BookingController],
-  providers: [BookingService, NotificationGateway, Logger],
+  providers: [BookingService, NotificationService, NotificationGateway, Logger],
   exports: [BookingService, Logger],
 })
 export class BookingModule {}

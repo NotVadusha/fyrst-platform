@@ -6,11 +6,13 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { NotificationsConfigModule } from '../notifications-config/notifications-config.module';
 import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
 import { NotificationsConfig } from '../notifications-config/entities/notifications-config.entity';
+import { WebSocketModule } from '../websocket/websocket.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Notification, NotificationsConfig]),
     NotificationsConfigModule,
+    WebSocketModule,
   ],
   providers: [NotificationService, NotificationGateway, NotificationsConfigService],
   exports: [NotificationService],

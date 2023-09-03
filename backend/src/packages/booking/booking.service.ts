@@ -8,7 +8,8 @@ import { FilterBookingDto } from './dto/filter-booking.dto';
 import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
-import { NotificationGateway } from '../websocket/notification.gateway';
+import { NotificationService } from '../notification/notification.service';
+import { notificationTemplateBooking } from 'shared/packages/notification/types/notificationTemplates';
 
 @Injectable()
 export class BookingService {
@@ -19,7 +20,7 @@ export class BookingService {
     private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly facilityService: FacilityService,
-    private readonly notificationGateway: NotificationGateway,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createdData: CreateBookingDto) {
@@ -91,12 +92,12 @@ export class BookingService {
     const updatedBooking = await this.find(id);
     if (updatedData?.status) {
       updatedBooking.users.forEach(user => {
-        this.notificationGateway.create({
+        this.notificationService.create({
           recipientId: user.id,
-          content: `Booking ${updatedBooking.facility} has been ${updatedData.status}`,
+          content: notificationTemplateBooking(updatedBooking.facility.name, updatedBooking.status),
         });
       });
-      this.notificationGateway.create({
+      this.notificationService.create({
         recipientId: updatedBooking.creator.id,
         content: `Booking ${updatedBooking.facility} has been ${updatedData.status}`,
       });

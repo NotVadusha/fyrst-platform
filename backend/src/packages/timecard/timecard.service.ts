@@ -11,14 +11,15 @@ import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { Op } from 'sequelize';
 import { getFilterParams } from 'shared/getFilterParams';
-import { NotificationGateway } from '../websocket/notification.gateway';
+import { NotificationService } from '../notification/notification.service';
+import { notificationTemplateTimecard } from 'shared/packages/notification/types/notificationTemplates';
 
 @Injectable()
 export class TimecardService {
   private logger = new Logger(TimecardService.name);
   constructor(
     @InjectModel(Timecard) private readonly timecardModel: typeof Timecard,
-    private readonly notificationGateway: NotificationGateway,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
@@ -81,9 +82,9 @@ export class TimecardService {
     await timecard.save();
     const updatedTimecard = await this.getById(id);
     if (updateTimecardDto?.status) {
-      this.notificationGateway.create({
+      this.notificationService.create({
         recipientId: updatedTimecard.createdBy,
-        content: `Your timecard for ${updatedTimecard.booking.facility.name} has been ${updatedTimecard.status}`,
+        content: notificationTemplateTimecard(updatedTimecard.id, updateTimecardDto.status),
       });
     }
     return updatedTimecard;

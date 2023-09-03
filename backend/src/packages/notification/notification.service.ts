@@ -2,18 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { Notification } from './entities/notification.entity';
 import { InjectModel } from '@nestjs/sequelize';
+import { NotificationGateway } from '../websocket/notification.gateway';
 
 @Injectable()
 export class NotificationService {
   constructor(
     @InjectModel(Notification)
     private readonly notificationRepository: typeof Notification,
+    private readonly notificationGateway: NotificationGateway,
   ) {}
 
   async create(createNotificationDto: CreateNotificationDto): Promise<Notification> {
     const notification = await this.notificationRepository.create(
       createNotificationDto as Partial<Notification>,
     );
+    this.notificationGateway.create(notification);
     return notification;
   }
 
