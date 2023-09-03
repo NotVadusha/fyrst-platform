@@ -4,21 +4,19 @@ import { Link, useLocation } from 'react-router-dom';
 import { ScrollArea } from 'src/common/components/ui/common/ScrollArea/ScrollArea';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { cn } from 'src/common/helpers/helpers';
-import {
-  useGetAllUserChatsQuery,
-  useSearchChatsQuery,
-} from 'src/common/store/api/packages/chat/chatApi';
 import { SearchInput } from './common/SearchInput';
 import { useDebounce } from 'src/common/hooks/use-debounce/useDebounce.hook';
 import { Chat } from 'shared/socketEvents';
 import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/common/Avatar/Avatar';
+import { getConversationsByUserNames } from 'src/common/store/slices/packages/messenger/messangerSlice';
 
 export const Conversations: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
-  const { data: allChats } = useGetAllUserChatsQuery('');
-  const { data: searchedChats } = useSearchChatsQuery(searchQuery);
+  const searchedChats = useAppSelector(state =>
+    getConversationsByUserNames(state, debouncedSearchQuery.split(' ')),
+  );
 
   const conversations = useAppSelector(state => state.messanger.conversations);
 
@@ -28,22 +26,21 @@ export const Conversations: React.FC = () => {
     setSearchQuery(value);
   }, []);
 
-  if (!chatsToShow.length) {
-    return <div>nothing</div>;
-  }
-
   return (
     <div className='relative'>
       <SearchInput value={searchQuery} onChange={handleChange} />
       <ScrollArea className='h-[120px] xl:h-[400px] w-full p-2'>
         <div className='grid gap-4'>
-          {chatsToShow?.length > 0 &&
+          {chatsToShow?.length > 0 ? (
             chatsToShow?.map((chat: Chat) => {
               if (chat.members.length > 2) {
                 return <GroupChatLink chat={chat} key={chat.id} />;
               }
               return <ConversationLink chat={chat} key={chat.id} />;
-            })}
+            })
+          ) : (
+            <div className='flex items-center gap-2 xl:w-[300px]'>Nothing matches your search.</div>
+          )}
         </div>
       </ScrollArea>
     </div>
@@ -75,7 +72,9 @@ function ConversationLink({ chat }: { chat: Chat }) {
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src='https://github.com/shadcn.png' />
+            <AvatarImage
+            //   src={message.user.profile.avatar}
+            />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}
@@ -135,7 +134,9 @@ function GroupChatLink({ chat }: { chat: Chat }) {
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src='https://github.com/shadcn.png' />
+            <AvatarImage
+            //   src={message.user.profile.avatar}
+            />
             <AvatarFallback>
               {otherMembers?.[0].first_name?.[0]}
               {otherMembers?.[0].last_name?.[0] ?? ''}

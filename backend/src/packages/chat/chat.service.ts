@@ -16,6 +16,8 @@ import { User, UserChat } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { AppGateway } from 'src/app.gateway';
 import sequelize from 'sequelize';
+import { BucketService } from '../bucket/bucket.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class ChatService {
@@ -31,6 +33,7 @@ export class ChatService {
     private readonly gateway: AppGateway,
     @InjectModel(UserChat)
     private readonly userChatRepository: typeof UserChat,
+    private bucketService: BucketService,
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
@@ -66,7 +69,9 @@ export class ChatService {
     }
 
     const chat = await this.chatRepository.create({
-      name: createdData.name,
+      name: allMembers
+        .map(({ first_name, last_name }) => `${first_name} ${last_name ?? ''}`)
+        .join(' '),
       ownerId: createdData.ownerId,
     });
 
@@ -160,6 +165,21 @@ export class ChatService {
     return chats;
   }
 
+  async uploadAttachment(userId: number, attachment: string) {
+    const { fileTypeFromBuffer } = await (eval('import("file-type")') as Promise<
+      typeof import('file-type')
+    >);
+
+    const imgBuffer = Buffer.from(attachment, 'base64');
+    const fileType = await fileTypeFromBuffer(imgBuffer);
+    const fileName = `${userId}_${crypto.randomUUID()}.${fileType.ext}`;
+
+    const attachmentPath = `attachment/${fileName}`;
+    await this.bucketService.save(attachmentPath, imgBuffer);
+
+    return attachmentPath;
+  }
+
   async find(id: number) {
     const chat = await this.chatRepository.findByPk(id, {
       include: [
@@ -167,6 +187,27 @@ export class ChatService {
         { model: User, as: 'members' },
       ],
     });
+
+    if (chat && chat.messages) {
+      // Use Promise.all to process each message asynchronously
+      chat.messages = await Promise.all(
+        chat.messages.map(async m => {
+          if (m.attachment) {
+            const attachmentLink = await this.bucketService.getFileLink(
+              m.attachment,
+              'read',
+              Date.now() + 1000 * 60 * 60 * 24 * 7,
+            );
+
+            // Update the attachment field of the message
+            m.attachment = attachmentLink;
+          }
+          return m;
+        }),
+      );
+    }
+
+    // Logger.log(chat.messages?.[0]);
 
     if (!chat) {
       throw new NotFoundException('Chat not found');

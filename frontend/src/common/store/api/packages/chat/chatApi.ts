@@ -60,6 +60,19 @@ export const chatApi = apiSlice.injectEndpoints({
         return result;
       },
     }),
+    getMessagesWithMedia: build.query<Message[], { chatId: string }>({
+      query: ({ chatId }) => `/chat/${chatId}/message/media`,
+    }),
+    uploadAttachment: build.mutation<string, { attachment: string }>({
+      query: ({ attachment }) => {
+        return {
+          method: 'POST',
+          url: `/chat/upload`,
+          body: { attachment },
+          responseHandler: response => response.text(),
+        };
+      },
+    }),
   }),
 });
 
@@ -71,4 +84,6 @@ export const {
   useGetAllMessagesQuery,
   useSendNewMessageMutation,
   useGetMessagesByParamsQuery,
+  useUploadAttachmentMutation,
+  useGetMessagesWithMediaQuery,
 } = chatApi;

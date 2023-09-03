@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as SearchLoupe } from 'src/assets/icons/search-loupe.svg';
+import { ReactComponent as Media } from 'src/assets/icons/media.svg';
 import { NewMessageInput } from './NewMessageInput';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
@@ -62,6 +63,7 @@ export const ChatPage: React.FC = () => {
     socket.emit('user-join-chat', { chatId });
 
     socket.on('new-message', message => {
+      console.log('new-message', message);
       dispatch(addMessage(message));
       scrollToLastMessage({ behavior: 'smooth' as ScrollBehavior });
     });
@@ -99,12 +101,20 @@ export const ChatPage: React.FC = () => {
               .join(', ')}
           </p>
         </div>
-        <Link
-          className={cn(buttonVariants({ variant: 'tertiary' }), 'p-0 w-fit h-fit')}
-          to={`search`}
-        >
-          <SearchLoupe />
-        </Link>
+        <div className='flex items-center gap-2'>
+          <Link
+            className={cn(buttonVariants({ variant: 'tertiary' }), 'p-0 w-fit h-fit')}
+            to={`media`}
+          >
+            <Media className='text-dark-grey' />
+          </Link>
+          <Link
+            className={cn(buttonVariants({ variant: 'tertiary' }), 'p-0 w-fit h-fit')}
+            to={`search`}
+          >
+            <SearchLoupe />
+          </Link>
+        </div>
       </div>
       <div
         className='h-[320px] mb-[100px] py-2 overflow-y-auto overflow-x-hidden	 scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
@@ -159,7 +169,7 @@ const MessageElement = ({
 
   const isAuthor = user.id === message.userId;
 
-  const fallback = `${message.user?.first_name?.[0]}${message.user?.last_name?.[0]}` || '';
+  const fallback = `${message.user?.first_name?.[0]}${message.user?.last_name?.[0] ?? ''}` || '';
 
   return (
     <div className={cn('flex gap-2 self-start whitespace-normal', { 'self-end': isAuthor })}>
@@ -177,6 +187,7 @@ const MessageElement = ({
         )}
       >
         <p className='text-black text-sm font-medium'>{message.messageContent}</p>
+        {!!message.attachment && <img src={message.attachment} />}
         <span className='text-dark-grey text-body-small font-medium text-end text-sm '>
           {!!message.createdAt && format(new Date(message.createdAt), 'HH:mm')}
         </span>
@@ -203,7 +214,10 @@ function UserAvatar({
 }) {
   return (
     <Avatar className={cn('relative overflow-visible', className)}>
-      <AvatarImage src='https://github.com/shadcn.png' className='rounded-full' />
+      <AvatarImage
+        //   src={message.user.profile.avatar}
+        className='rounded-full'
+      />
       <AvatarFallback>{fallback}</AvatarFallback>
       <span
         className={cn('absolute right-0 bottom-0 w-3 h-3 border border-black rounded-full', {

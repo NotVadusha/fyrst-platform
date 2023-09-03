@@ -8,6 +8,7 @@ import { AppGateway } from 'src/app.gateway';
 import { User } from '../user/entities/user.entity';
 import { MessageFiltersDto } from './dto/message-filters.dto';
 import { Op } from 'sequelize';
+import { BucketService } from '../bucket/bucket.service';
 @Injectable()
 export class MessageService {
   constructor(
@@ -17,6 +18,7 @@ export class MessageService {
     private readonly chatService: ChatService,
     private readonly userService: UserService,
     private readonly gateway: AppGateway,
+    private bucketService: BucketService,
   ) {}
 
   async create(chatId: number, data: CreateMessageDto & { chatId: number; userId: number }) {
@@ -31,6 +33,13 @@ export class MessageService {
     const messageWithUser = await createdMessage.reload({
       include: [User],
     });
+
+    if (!!messageWithUser.attachment)
+      messageWithUser.attachment = await this.bucketService.getFileLink(
+        messageWithUser.attachment,
+        'read',
+        Date.now() + 1000 * 60 * 60 * 24 * 7,
+      );
 
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
     this.gateway.wss.emit('conversation-update', { chatId, message: createdMessage });
@@ -59,6 +68,44 @@ export class MessageService {
 
     this.logger.log(`Retrieved ${messages.length} messages`, { messages });
     return messages;
+  }
+
+  async findAllMedia(chatId: number) {
+    await this.validateChatExistence(chatId);
+    const messages = await this.messageRepository.findAll({
+      where: {
+        chatId: chatId,
+        attachment: {
+          [Op.not]: null,
+        },
+      },
+      limit: 5,
+      order: [['createdAt', 'DESC']],
+      include: [{ model: User, as: 'user' }],
+    });
+
+    this.logger.log('just messages without link', messages);
+
+    if (messages) {
+      const a = await Promise.all(
+        messages.map(async m => {
+          if (m.attachment) {
+            const attachment = await this.bucketService.getFileLink(
+              m.attachment,
+              'read',
+              Date.now() + 1000 * 60 * 60 * 24 * 7,
+            );
+
+            m.attachment = attachment;
+          }
+          return m;
+        }),
+      );
+      this.logger.log('Media messages', a);
+      return a;
+    }
+
+    return [];
   }
 
   async find(chatId: number, id: number) {

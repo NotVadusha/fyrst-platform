@@ -49,7 +49,7 @@ const Messanger: React.FC = () => {
           <div className='w-full h-full bg-white shadow-md rounded-2xl'>
             <div className='flex flex-col xl:flex-row gap-2 xl:gap-4 p-6'>
               <Conversations />
-              <hr className='border-b border-grey' />
+              <hr className='xl:h-[450px] border-b border-2 xl:border-r border-grey' />
               <Outlet />
             </div>
           </div>

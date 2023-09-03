@@ -30,6 +30,7 @@ import { ConfigurateProtectedRoute } from './common/helpers/configurate-protecte
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
 import { SeachChatMessagesPage } from 'src/pages/messenger/common/chat/search/SeachChatMessagesPage';
 import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
+import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -95,6 +96,10 @@ export const router = createBrowserRouter([
               {
                 path: ':chatId/search',
                 element: <SeachChatMessagesPage />,
+              },
+              {
+                path: ':chatId/media',
+                element: <SharedMediaPage />,
               },
             ],
           },

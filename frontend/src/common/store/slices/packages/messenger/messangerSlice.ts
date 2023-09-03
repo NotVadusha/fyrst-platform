@@ -1,12 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Message, UpdateConversationPayload } from 'shared/socketEvents';
 import { Chat } from 'shared/socketEvents';
+import { RootState } from 'src/common/store';
 
 type MessangerState = {
   conversations: Chat[];
   messages: Message[];
   onlineUsers: number[];
   currentChat?: Chat;
+  attachment?: string;
 };
 
 const initialState: MessangerState = {
@@ -14,6 +16,7 @@ const initialState: MessangerState = {
   messages: [],
   onlineUsers: [],
   currentChat: undefined,
+  attachment: undefined,
 };
 
 const messangerSlice = createSlice({
@@ -61,6 +64,9 @@ const messangerSlice = createSlice({
     removeOnlineUser(state, action: PayloadAction<{ userId: number }>) {
       state.onlineUsers = state.onlineUsers.filter(id => id !== action.payload.userId);
     },
+    setAttachment(state, action: PayloadAction<string | undefined>) {
+      state.attachment = action.payload;
+    },
   },
 });
 
@@ -75,4 +81,8 @@ export const {
   addConversation,
   updateConversation,
   setCurrentChat,
+  setAttachment,
 } = messangerSlice.actions;
+
+export const getConversationsByUserNames = (state: RootState, names: string[]) =>
+  state.messanger.conversations.filter(conv => names.every(sub => conv.name.includes(sub)));

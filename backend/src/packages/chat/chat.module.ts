@@ -7,9 +7,10 @@ import { UserModule } from '../user/user.module';
 import { User, UserChat } from '../user/entities/user.entity';
 import { UserController } from '../user/user.controller';
 import { AppGateway } from 'src/app.gateway';
+import { BucketModule } from '../bucket/bucket.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Chat, UserChat]), UserModule],
+  imports: [SequelizeModule.forFeature([User, Chat, UserChat]), UserModule, BucketModule],
   controllers: [ChatController],
   providers: [ChatService, Logger, AppGateway],
   exports: [ChatService, Logger, AppGateway],

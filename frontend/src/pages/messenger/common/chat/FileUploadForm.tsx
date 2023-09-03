@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { useAppDispatch } from 'src/common/hooks/redux';
+import { useUploadAttachmentMutation } from 'src/common/store/api/packages/chat/chatApi';
+import { setAttachment } from 'src/common/store/slices/packages/messenger/messangerSlice';
 
-export function FileUploadForm() {
-  const [file, setFile] = useState<File>();
+export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
+  const [base64String, setBase64String] = useState<string | undefined>('');
+
+  const dispatch = useAppDispatch();
+
+  const [uploadAttachment, result] = useUploadAttachmentMutation();
 
   const uploadFile = async () => {
-    if (!file) return;
+    if (!base64String) return;
 
-    let base64;
+    await uploadAttachment({ attachment: base64String }).then(res => {
+      // @ts-expect-error we will set either string or undefined
+      dispatch(setAttachment(res?.data as string | undefined));
+    });
 
-    const messageImage = URL.createObjectURL(file);
-
-    if (!!messageImage && messageImage.includes('blob:')) {
-      const blob = await (await fetch(messageImage)).blob();
-      const arrayBuffer = await blob.arrayBuffer();
-      base64 = Buffer.from(arrayBuffer).toString('base64');
-
-      console.log(base64);
-    }
+    onUpload();
   };
 
   return (
@@ -26,9 +29,27 @@ export function FileUploadForm() {
         <label htmlFor='picture' className='text-xl text-dark'>
           Picture
         </label>
-        <input id='picture' type='file' />
+        <input
+          id='picture'
+          type='file'
+          onChange={event => {
+            if (!event.target.files?.[0]) return;
+            const file = event.target.files?.[0];
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+              const result = event.target?.result as string;
+              const base64 = result.split(',')[1];
+              setBase64String(base64);
+
+              console.log(base64);
+            };
+
+            reader.readAsDataURL(file);
+          }}
+        />
       </div>
-      <Button className='w-full' disabled={!file} onClick={() => uploadFile()}>
+      <Button className='w-full' disabled={!base64String} onClick={() => uploadFile()}>
         Upload
       </Button>
     </div>

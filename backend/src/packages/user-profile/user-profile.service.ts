@@ -23,7 +23,7 @@ export class UserProfileService {
     const isProfileExist = await this.profileRepository.findOne({
       where: { user_id: profileInfo.user_id },
     });
-    if (isProfileExist) throw new ConflictException('Profile for this user is already exist');
+    if (isProfileExist) throw new ConflictException('Profile for this user already exists');
     this.notificationsConfigService.create({ userId: profileInfo.user_id });
     return await this.profileRepository.create({ description: '', ...profileInfo });
   }

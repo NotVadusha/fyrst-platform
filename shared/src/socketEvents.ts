@@ -3,7 +3,7 @@ import { User } from 'user';
 export interface Message {
   id: number;
   messageContent: string;
-  attachments?: string[];
+  attachment?: string;
   chatId: number;
   userId: number;
   user?: User | null;

@@ -1,4 +1,4 @@
-import { MoreHorizontal, Paperclip } from 'lucide-react';
+import { MoreHorizontal, Paperclip, Trash2, X } from 'lucide-react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
@@ -10,8 +10,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { socket } from 'src/common/helpers/socket';
 import { TypingUser } from 'shared/socketEvents';
-import { useAppSelector } from 'src/common/hooks/redux';
+import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
+import { setAttachment } from 'src/common/store/slices/packages/messenger/messangerSlice';
 
 const messageSchema = yup.object().shape({
   messageContent: yup.string().max(60, 'Message is too long'),
@@ -30,16 +31,27 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
 
   const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
 
+  const attachment = useAppSelector(state => state.messanger.attachment);
+  const dispatch = useAppDispatch();
+
   const socket = useContext(SocketContext);
 
-  function handleNewMessage({ messageContent }: { messageContent: string }) {
+  function handleNewMessage({
+    messageContent,
+    attachment,
+  }: {
+    messageContent: string;
+    attachment?: string;
+  }) {
     sendNewMessage({
       chatId,
       message: {
         messageContent,
+        attachment,
       },
     });
     form.resetField('messageContent');
+    dispatch(setAttachment(undefined));
   }
 
   const form = useForm<Inputs>({
@@ -51,7 +63,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
 
   function onSubmit(val: Inputs) {
     if (!val.messageContent) return;
-    handleNewMessage({ messageContent: val.messageContent });
+    handleNewMessage({ messageContent: val.messageContent, attachment });
   }
 
   useEffect(() => {
@@ -71,7 +83,6 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
 
   const handleTyping = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = { user: { id: user.id, first_name: user.first_name }, chatId };
-    console.log(event.target.value);
     if (!event.target.value) {
       setIsTyping(false);
       socket.emit('user-stop-type', data);
@@ -132,13 +143,23 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
               />
             </form>
           </Form>
-          <Button
-            variant={'tertiary'}
-            className='absolute top-4 right-4 w-fit h-fit p-0 text-dark-grey'
-            onClick={() => setIsOpen(true)}
-          >
-            <Paperclip className='w-6 h-6' />
-          </Button>
+          {!attachment ? (
+            <Button
+              variant={'tertiary'}
+              className='absolute top-4 right-4 w-fit h-fit p-0 text-dark-grey'
+              onClick={() => setIsOpen(true)}
+            >
+              <Paperclip className='w-6 h-6' />
+            </Button>
+          ) : (
+            <Button
+              variant={'tertiary'}
+              className='absolute top-4 right-4 w-fit h-fit p-0 text-dark-grey'
+              onClick={() => dispatch(setAttachment(undefined))}
+            >
+              <Trash2 className='w-6 h-6' />
+            </Button>
+          )}
           <div className='absolute mt-2 text-sm flex items-center gap-2 text-grey'>
             {!!typingUsers.length &&
               `${typingUsers.map(({ first_name }) => first_name).join(', ')} ${
@@ -149,7 +170,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
         </div>
       </div>
       <Modal title='Upload an image' open={open} onOpenChange={setIsOpen}>
-        <FileUploadForm />
+        <FileUploadForm onUpload={() => setIsOpen(false)} />
       </Modal>
     </>
   );
