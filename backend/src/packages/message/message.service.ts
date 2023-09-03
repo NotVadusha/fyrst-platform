@@ -6,6 +6,8 @@ import { ChatService } from '../chat/chat.service';
 import { UserService } from '../user/user.service';
 import { AppGateway } from 'src/app.gateway';
 import { User } from '../user/entities/user.entity';
+import { MessageFiltersDto } from './dto/message-filters.dto';
+import { Op } from 'sequelize';
 @Injectable()
 export class MessageService {
   constructor(
@@ -40,13 +42,17 @@ export class MessageService {
     return messageWithUser;
   }
 
-  async findAll(chatId: number) {
+  async findAll(chatId: number, filters: MessageFiltersDto) {
     await this.validateChatExistence(chatId);
 
     const messages = await this.messageRepository.findAll({
       where: {
         chatId: chatId,
+        messageContent: { [Op.substring]: filters.messageContent },
       },
+      limit: 5,
+      order: [['createdAt', 'DESC']],
+      include: [{ model: User, as: 'user' }],
     });
 
     this.gateway.wss.emit('onFindAll', messages);

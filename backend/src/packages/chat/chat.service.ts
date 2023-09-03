@@ -15,6 +15,7 @@ import { Message } from '../message/entities/message.entity';
 import { User, UserChat } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { AppGateway } from 'src/app.gateway';
+import sequelize from 'sequelize';
 
 @Injectable()
 export class ChatService {
@@ -51,12 +52,23 @@ export class ChatService {
 
     const owner = await this.userRepository.findOne({ where: { id: createdData.ownerId } });
 
+    const allMembers = [...members, owner];
+
+    if (allMembers.length === 2) {
+      const conv = await this.findUserConversations(allMembers.map(({ id }) => id));
+
+      if (conv.length > 0) {
+        throw new HttpException(
+          'You already have a conversation with this user',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
     const chat = await this.chatRepository.create({
       name: createdData.name,
       ownerId: createdData.ownerId,
     });
-
-    const allMembers = [...members, owner];
 
     chat.$set('members', allMembers);
 
@@ -84,35 +96,72 @@ export class ChatService {
     return chats;
   }
 
-  async findAllByUserId(id: number) {
-    const chats = await this.chatRepository.findAll({
-      include: [
-        {
-          model: Message,
-          as: 'messages',
-          separate: true,
-          limit: 1,
-          order: [['createdAt', 'DESC']],
-          include: [
-            {
-              model: User,
-              as: 'user',
-            },
-          ],
-        },
-        {
-          model: User,
-          as: 'members',
-        },
-      ],
+  async findUserConversations(ids: number[]) {
+    const userChats = await UserChat.findAll({
+      attributes: ['chatId'],
+      group: ['chatId'],
+      having: sequelize.where(sequelize.literal('array_agg("userId")'), {
+        [sequelize.Op.in]: [ids],
+      }),
     });
+
+    return userChats;
+  }
+
+  async findAllByUserId(id: number) {
+    // chats with {messages: [{}], members: [{}, {}]}
+
+    if (!id) {
+      throw new HttpException(
+        'Cannot get your chats, try loggin in first.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    this.logger.log('getting chats');
+
+    const chats = (
+      await this.userChatRepository.findAll({
+        attributes: [],
+        include: [
+          {
+            model: Chat,
+            as: 'chat',
+            include: [
+              {
+                model: Message,
+                as: 'messages',
+                separate: true,
+                limit: 1,
+                order: [['createdAt', 'DESC']],
+                include: [{ model: User, as: 'user' }],
+              },
+              { model: User, as: 'members' },
+            ],
+          },
+        ],
+        where: {
+          userId: id,
+        },
+      })
+    )
+      .map(chatData => chatData.chat)
+      .sort(
+        ({ messages: messagesA }, { messages: messagesB }) =>
+          messagesB?.[0]?.createdAt - messagesA?.[0]?.createdAt,
+      );
+
+    this.logger.log('chats: ', chats);
 
     return chats;
   }
 
   async find(id: number) {
     const chat = await this.chatRepository.findByPk(id, {
-      include: [{ model: Message }, { model: User, as: 'members' }],
+      include: [
+        { model: Message, include: [{ model: User, as: 'user' }] },
+        { model: User, as: 'members' },
+      ],
     });
 
     if (!chat) {

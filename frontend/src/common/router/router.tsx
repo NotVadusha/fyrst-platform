@@ -28,6 +28,8 @@ import { ConfigurateProtectedRoute } from './common/helpers/configurate-protecte
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
+import { SeachChatMessagesPage } from 'src/pages/messenger/common/chat/search/SeachChatMessagesPage';
+import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -83,8 +85,16 @@ export const router = createBrowserRouter([
             element: <MessangerPage />,
             children: [
               {
+                path: '', // This represents the default outlet when no chatId is provided
+                element: <SelectMessagePage />,
+              },
+              {
                 path: ':chatId',
                 element: <ChatPage />,
+              },
+              {
+                path: ':chatId/search',
+                element: <SeachChatMessagesPage />,
               },
             ],
           },

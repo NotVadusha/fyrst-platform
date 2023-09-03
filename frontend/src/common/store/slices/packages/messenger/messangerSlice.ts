@@ -33,6 +33,7 @@ const messangerSlice = createSlice({
       state.conversations = action.payload;
     },
     addConversation(state, action: PayloadAction<Chat>) {
+      if (state.conversations.some(conv => conv.id === action.payload.id)) return;
       state.conversations = [...state.conversations, action.payload];
     },
     updateConversation(state, action: PayloadAction<UpdateConversationPayload>) {

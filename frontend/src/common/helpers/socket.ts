@@ -1,11 +1,15 @@
 import { Socket, io } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
 
-const SERVER = 'http://localhost:8001/';
+const SERVER = process.env.REACT_APP_WSS_URL!;
 
-const token = localStorage.getItem('accessToken');
+const accessToken = localStorage.getItem('accessToken');
+
+console.log(SERVER);
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(SERVER, {
   transports: ['websocket'],
-  // query: { token: localStorage.getItem('accessToken') },
+  extraHeaders: {
+    Authorization: `Bearer ${accessToken}`,
+  },
 });

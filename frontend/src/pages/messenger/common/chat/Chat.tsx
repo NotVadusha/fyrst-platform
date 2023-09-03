@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as SearchLoupe } from 'src/assets/icons/search-loupe.svg';
 import { NewMessageInput } from './NewMessageInput';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
@@ -15,6 +15,8 @@ import {
   setOnlineUsers,
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
 import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/common/Avatar/Avatar';
+import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 
 export const ChatPage: React.FC = () => {
   const { chatId } = useParams();
@@ -28,22 +30,28 @@ export const ChatPage: React.FC = () => {
 
   // const { data } = useGetChatByIdQuery(chatId);
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const dispatch = useAppDispatch();
   const chat = useAppSelector(state => state.messanger.currentChat);
   const messages = useAppSelector(state => state.messanger.messages);
 
   const otherMembers = chat?.members.filter(({ id }) => id !== user?.id);
 
-  const scrollToLastMessage = React.useCallback(() => {
-    if (!scrollAreaRef?.current || !lastMessageRef.current) return;
-    scrollAreaRef.current.scrollTo({
-      top: lastMessageRef.current.offsetTop,
-      behavior: 'smooth',
-    });
-  }, [scrollAreaRef, lastMessageRef]);
+  const scrollToLastMessage = React.useCallback(
+    ({ behavior }: { behavior?: ScrollBehavior }) => {
+      if (!scrollAreaRef?.current || !lastMessageRef.current) return;
+      scrollAreaRef.current.scrollTo({
+        top: lastMessageRef.current.offsetTop,
+        behavior,
+      });
+    },
+    [scrollAreaRef, lastMessageRef],
+  );
 
   useEffect(() => {
     socket.on('chat-joined', ({ chat, onlineUsers }) => {
+      setIsLoading(false);
       dispatch(setCurrentChat(chat));
       dispatch(setMessages(chat.messages));
       dispatch(setOnlineUsers(onlineUsers));
@@ -53,10 +61,11 @@ export const ChatPage: React.FC = () => {
 
     socket.on('new-message', message => {
       dispatch(addMessage(message));
-      scrollToLastMessage();
+      scrollToLastMessage({ behavior: 'smooth' as ScrollBehavior });
     });
 
     return () => {
+      if (!socket) return;
       socket.off('new-message');
       socket.off('chat-joined');
       socket.emit('user-leave-chat', { chatId });
@@ -64,8 +73,16 @@ export const ChatPage: React.FC = () => {
   }, [chatId]);
 
   useEffect(() => {
-    scrollToLastMessage();
+    scrollToLastMessage({ behavior: 'instant' as ScrollBehavior });
   }, [chatId, lastMessageRef?.current]);
+
+  if (isLoading) {
+    return (
+      <div className='relative w-full h-[320px] flex items-center justify-center lg:min-w-[500px]'>
+        <Spinner size='lg' />
+      </div>
+    );
+  }
 
   return (
     <div className='relative w-full flex-1 lg:min-w-[500px]'>
@@ -80,30 +97,43 @@ export const ChatPage: React.FC = () => {
               .join(', ')}
           </p>
         </div>
-        <SearchLoupe />
+        <Link
+          className={cn(buttonVariants({ variant: 'tertiary' }), 'p-0 w-fit h-fit')}
+          to={`search`}
+        >
+          <SearchLoupe />
+        </Link>
       </div>
       <div
-        className='h-[320px] mb-16 py-2 overflow-y-auto truncate scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
+        className='h-[320px] mb-[100px] py-2 overflow-y-auto overflow-x-hidden	 scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
         ref={scrollAreaRef}
       >
-        <div className='text-center text-dark-grey text-sm font-medium'>Today</div>
-        <div className='mt-4 flex flex-col w-full pr-4'>
-          {messages?.map((message: Message, index) => {
-            const isAuthor = message.userId === user.id;
-            const hasNextMessage = messages[index + 1]?.userId === message.userId;
+        <div className='mt-4 flex flex-col w-full pr-4 overflow-x-hidden	'>
+          {!!messages &&
+            messages.map((message: Message, index) => {
+              const isAuthor = message.userId === user.id;
+              const hasNextMessage = messages[index + 1]?.userId === message.userId;
 
-            if (messages.length - 1 === index) {
+              if (messages.length - 1 === index) {
+                return (
+                  <div
+                    ref={lastMessageRef}
+                    key={message.id}
+                    className={cn({ 'self-end': isAuthor })}
+                  >
+                    <MessageElement message={message} hasNextMessage={hasNextMessage} />
+                  </div>
+                );
+              }
+
               return (
-                <div ref={lastMessageRef} key={message.id} className={cn({ 'self-end': isAuthor })}>
-                  <MessageElement message={message} hasNextMessage={hasNextMessage} />
-                </div>
+                <MessageElement
+                  key={message.id}
+                  message={message}
+                  hasNextMessage={hasNextMessage}
+                />
               );
-            }
-
-            return (
-              <MessageElement key={message.id} message={message} hasNextMessage={hasNextMessage} />
-            );
-          })}
+            })}
         </div>
       </div>
       <div className='absolute bottom-0 z-10 w-full'>
@@ -125,14 +155,12 @@ const MessageElement = ({
 
   const isOnline = onlineUsers.includes(message.userId);
 
-  console.log(onlineUsers, message.userId);
-
   const isAuthor = user.id === message.userId;
 
   const fallback = `${message.user?.first_name?.[0]}${message.user?.last_name?.[0]}` || '';
 
   return (
-    <div className={cn('flex gap-2 self-start', { 'self-end': isAuthor })}>
+    <div className={cn('flex gap-2 self-start whitespace-normal', { 'self-end': isAuthor })}>
       {!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
@@ -142,13 +170,13 @@ const MessageElement = ({
       )}
       <div
         className={cn(
-          'inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl bg-inactive',
+          'inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl bg-inactive break-all',
           { 'rounded-bl-2xl': isAuthor, 'rounded-br-2xl': !isAuthor },
         )}
       >
         <p className='text-black text-sm font-medium'>{message.messageContent}</p>
-        <span className='text-dark-grey text-body-small font-medium text-end text-sm'>
-          {message.createdAt && format(new Date(message.createdAt), 'HH:mm')}
+        <span className='text-dark-grey text-body-small font-medium text-end text-sm '>
+          {!!message.createdAt && format(new Date(message.createdAt), 'HH:mm')}
         </span>
       </div>
       {!!isAuthor && (
@@ -171,6 +199,8 @@ function UserAvatar({
   className?: string;
   fallback: string;
 }) {
+  console.log(fallback);
+
   return (
     <Avatar className={cn('relative overflow-visible', className)}>
       <AvatarImage src='https://github.com/shadcn.png' className='rounded-full' />

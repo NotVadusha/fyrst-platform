@@ -57,7 +57,8 @@ export const AvatarUploader = ({
       const dataUrl = imageInput.current.getImage().toDataURL();
       const result = await fetch(dataUrl);
       const blob = await result.blob();
-      setImage(URL.createObjectURL(blob));
+      const image = URL.createObjectURL(blob);
+      setImage(image);
     }
     setShown(false);
   };

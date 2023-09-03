@@ -9,11 +9,13 @@ import {
   ParseIntPipe,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MessageService } from './message.service';
 import { CreateMessageDto, UpdateMessageDto } from './dto/dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
+import { MessageFiltersDto } from './dto/message-filters.dto';
 
 @ApiTags('message')
 @Controller('chat/:chatId/message')
@@ -31,8 +33,11 @@ export class MessageController {
   }
 
   @Get()
-  async getAllMessages(@Param('chatId', ParseIntPipe) chatId: number) {
-    return this.messageService.findAll(chatId);
+  async getAllMessages(
+    @Param('chatId', ParseIntPipe) chatId: number,
+    @Query() query: MessageFiltersDto,
+  ) {
+    return this.messageService.findAll(chatId, { messageContent: query.messageContent });
   }
 
   @Get(':id')

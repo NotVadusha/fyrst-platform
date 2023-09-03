@@ -1,4 +1,4 @@
-import { Inject, Logger, forwardRef } from '@nestjs/common';
+import { Inject, Logger, UseGuards, forwardRef } from '@nestjs/common';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -8,10 +8,13 @@ import {
   MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
+import { ClientToServerEvents, ServerToClientEvents, TypingUser } from 'shared/socketEvents';
 import { ChatService } from './packages/chat/chat.service';
+import { SocketAuthMiddleware } from './packages/auth/ws.md';
+import { WsJwtGuard } from './packages/auth/guards/ws-jwt.guard';
 
 @WebSocketGateway()
+@UseGuards(WsJwtGuard)
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     @Inject(forwardRef(() => ChatService))
@@ -23,6 +26,11 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // userId - socketId
   private onlineUsers = new Map<number, string>();
   private logger = new Logger('AppGateway');
+
+  afterInit(client: Socket) {
+    client.use(SocketAuthMiddleware() as any);
+    Logger.log('afterInit');
+  }
 
   handleConnection(client: { emit: (arg0: string, arg1: string) => void }) {
     this.logger.log(`${client} New client connected`);
@@ -72,6 +80,12 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const chatIds = await this.chatService.getAllChatIdsByUserId(data.userId);
     this.wss.to(chatIds).emit('user-offline', { ...data });
+  }
+
+  @SubscribeMessage('user-type')
+  handleUserType(client: Socket, data: { user: TypingUser; chatId: string }) {
+    this.logger.log(`${data.user.id} is typing in chat ${data.chatId}`);
+    client.to(data.chatId).emit('user-typing', { user: data.user });
   }
 
   handleDisconnect(client: Socket) {
