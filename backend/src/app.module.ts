@@ -17,6 +17,9 @@ import {
   MessageModule,
   NotificationsConfigModule,
   BucketModule,
+  PaymentModule,
+  StripeModule,
+  InvoiceModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
 @Module({
@@ -36,6 +39,9 @@ import { AppGateway } from './app.gateway';
     MessageModule,
     NotificationsConfigModule,
     BucketModule,
+    PaymentModule,
+    StripeModule,
+    InvoiceModule,
   ],
   controllers: [],
   providers: [AppGateway],
