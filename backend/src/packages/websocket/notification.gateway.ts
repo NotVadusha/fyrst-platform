@@ -6,11 +6,11 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { Notification } from '../notification/entities/notification.entity';
 import { NotificationService } from '../notification/notification.service';
 import { Server, Socket } from 'socket.io';
 import { ServerToClientEvents } from 'shared/packages/notification/types/notificationSocketEvents';
 import { Logger } from '@nestjs/common';
+import { CreateNotificationDto } from 'shared/packages/notification/types/notification';
 
 @WebSocketGateway({
   cors: {
@@ -32,26 +32,17 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log('Client disconnected' + client.id);
+    this.logger.log('Client disconnected');
   }
 
-  @SubscribeMessage('createNotification')
-  async create(@MessageBody() newNotification: Notification) {
-    console.log(newNotification);
-    this.sendNotification(newNotification);
+  async create(notificationDto: CreateNotificationDto) {
+    const newNotification = await this.notificationService.create(notificationDto);
+    this.server.emit('notificationCreated', newNotification);
   }
 
   @SubscribeMessage('markNotificationAsRead')
   async markAsRead(@MessageBody() notificationId: number) {
     const updatedNotification = await this.notificationService.markAsRead(notificationId);
-    this.updateNotification(updatedNotification);
-  }
-
-  sendNotification(notification: Notification) {
-    this.server.emit('notificationNew', notification);
-  }
-
-  updateNotification(notification: Notification) {
-    this.server.emit('notificationUpdate', notification);
+    this.server.emit('notificationIsRead', updatedNotification);
   }
 }

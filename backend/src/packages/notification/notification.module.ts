@@ -13,5 +13,6 @@ import { NotificationsConfig } from '../notifications-config/entities/notificati
     NotificationsConfigModule,
   ],
   providers: [NotificationService, NotificationGateway, NotificationsConfigService],
+  exports: [NotificationService],
 })
 export class NotificationModule {}

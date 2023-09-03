@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { Notification } from './entities/notification.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { NotificationGateway } from '../websocket/notification.gateway';
 
 @Injectable()
 export class NotificationService {

@@ -7,3 +7,8 @@ export interface Notification {
   isRead: boolean;
   recipientId: number;
 }
+
+export interface CreateNotificationDto {
+  content: string;
+  recipientId: number;
+}
