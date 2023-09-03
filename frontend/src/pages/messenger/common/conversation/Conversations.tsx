@@ -15,6 +15,8 @@ import {
 } from 'src/common/store/api/packages/chat/chatApi';
 import { SearchInput } from './common/SearchInput';
 import { useDebounce } from 'src/common/hooks/use-debounce/useDebounce.hook';
+import { selectUser } from '../../../../common/store/slices/packages/user/userSelectors';
+import { RootState } from '../../../../common/store';
 
 export const Conversations: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,9 +29,9 @@ export const Conversations: React.FC = () => {
 
   // const [conversations, setConversations] = useState<Omit<Chat, 'members'>[]>([]);
 
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
-  const conversations = useAppSelector(state => state.messanger.conversations);
+  const conversations = useAppSelector((state: RootState) => state.messanger.conversations);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

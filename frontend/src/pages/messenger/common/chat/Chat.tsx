@@ -8,6 +8,7 @@ import { Chat, Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
 import { cn } from 'src/common/helpers/helpers';
 import { UserDefaultResponse } from 'src/common/packages/user/types/dto/UserDto';
+import { selectUser } from '../../../../common/store/slices/packages/user/userSelectors';
 
 export const ChatPage: React.FC = () => {
   const { chatId } = useParams();
@@ -20,7 +21,7 @@ export const ChatPage: React.FC = () => {
   const [chat, setChat] = useState<Chat>();
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   // const { data } = useGetChatByIdQuery(chatId);
 

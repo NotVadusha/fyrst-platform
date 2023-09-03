@@ -10,10 +10,11 @@ import { useToast } from '../../../common/components/ui/common/Toast/useToast';
 import { useChangePasswordMutation } from 'src/common/store/api/packages/user/userApi';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { Link } from 'react-router-dom';
+import { selectUserId } from '../../../common/store/slices/packages/user/userSelectors';
 
 const ProfileSecurityForm = () => {
   const [changePassword] = useChangePasswordMutation();
-  const id = useAppSelector(state => state.user.id);
+  const id = useAppSelector(selectUserId);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const form = useForm({
