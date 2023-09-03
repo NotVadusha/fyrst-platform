@@ -15,12 +15,15 @@ import {
 import { UserFiltersForm } from './UserFiltersForm';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
+import { useAppSelector } from 'src/common/hooks/redux';
+import { hasRole } from 'src/common/helpers/authorization/hasRole';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [addUsers] = useAddUsersMutation();
   const navigate = useNavigate();
+  const user = useAppSelector(state => state.user);
 
   useEffect(() => {
     setSearchParams('');
@@ -113,21 +116,25 @@ export function UserListPage() {
           <div className='flex items-center justify-between'>
             <h2 className='text-4xl font-bold'>Users</h2>
             <div className='flex items-center gap-2'>
-              <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
-                Import Users
-              </label>
-              <input
-                id='files'
-                className='hidden'
-                type='file'
-                name='file'
-                accept='.csv'
-                onChange={handleImport}
-              />
               <Button variant='secondary' onClick={handleExport}>
-                Export Users CSV
+                Export CSV
               </Button>
-              <AddUserButton />
+              {hasRole('PLATFORM_ADMIN', user as User) && (
+                <>
+                  <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
+                    Import Users
+                  </label>
+                  <input
+                    id='files'
+                    className='hidden'
+                    type='file'
+                    name='file'
+                    accept='.csv'
+                    onChange={handleImport}
+                  />
+                  <AddUserButton />
+                </>
+              )}
             </div>
           </div>
           <UserFiltersForm

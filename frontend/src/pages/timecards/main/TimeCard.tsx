@@ -10,12 +10,16 @@ import { useFetchTimecardsQuery } from 'src/common/store/api/packages/timecards/
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFiltersDto } from 'src/common/packages/timecard/types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { hasPermissions } from 'src/common/helpers/authorization/hasPermissions';
+import { useAppSelector } from 'src/common/hooks/redux';
+import { User } from 'src/common/packages/user/types/models/User.model';
 
 const LIMIT = 5;
 
 const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
+  const user = useAppSelector(state => state.user);
 
   const filters: TimecardFiltersDto = {
     createdAt: searchParams.get('createdAt'),
@@ -75,9 +79,11 @@ const TimeCardPage = () => {
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
             <Button variant='secondary'>Export CSV</Button>
-            <Link to='/booking/create'>
-              <Button variant='primary'>Create new booking</Button>
-            </Link>
+            {hasPermissions(['manageBookings'], user as User) && (
+              <Link to='/booking/create'>
+                <Button variant='primary'>Create new booking</Button>
+              </Link>
+            )}
           </div>
         </div>
       </Header>

@@ -58,7 +58,13 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'create',
-                element: <CreateBookingPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                    <PermissionsProtectedRoute permissions={['manageBookings']}>
+                      <CreateBookingPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },
@@ -69,7 +75,7 @@ export const router = createBrowserRouter([
                 index: true,
                 element: (
                   <RoleProtectedRoute role='FACILITY_MANAGER'>
-                    <PermissionsProtectedRoute permissions={['manageBookings', 'manageTimecards']}>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
                       <TimeCardPage />
                     </PermissionsProtectedRoute>
                   </RoleProtectedRoute>
@@ -77,11 +83,23 @@ export const router = createBrowserRouter([
               },
               {
                 path: ':id',
-                element: <ViewTimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
+                      <ViewTimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
               {
                 path: 'create/:bookingId',
-                element: <CreateTimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
+                      <CreateTimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },
@@ -158,7 +176,13 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <UserListPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                    <PermissionsProtectedRoute permissions={['manageUsers']}>
+                      <UserListPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },

@@ -9,12 +9,16 @@ import { BookingFiltersDto } from 'src/common/packages/booking/types/dto/Booking
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
+import { useAppSelector } from 'src/common/hooks/redux';
+import { hasPermissions } from 'src/common/helpers/authorization/hasPermissions';
+import { User } from 'src/common/packages/user/types/models/User.model';
 
 const LIMIT = 6;
 
 const BookingPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const user = useAppSelector(state => state.user);
   const filters: BookingFiltersDto = {
     facilityId: searchParams.get('facility'),
     endDate: searchParams.get('endDate'),
@@ -55,14 +59,16 @@ const BookingPage = () => {
   return (
     <>
       <Header title='Bookings'>
-        <div className='flex flex-1 justify-end'>
-          <div className='flex gap-x-4'>
-            <Button variant='secondary'>Export CSV</Button>
-            <Link to='create'>
-              <Button variant='primary'>Create new booking</Button>
-            </Link>
+        {user.permissions && hasPermissions(['manageBookings'], user as User) && (
+          <div className='flex flex-1 justify-end'>
+            <div className='flex gap-x-4'>
+              <Button variant='secondary'>Export CSV</Button>
+              <Link to='create'>
+                <Button variant='primary'>Create new booking</Button>
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
       </Header>
       <div className='container lg:w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 '>
         <h5 className='text-2xl leading-6 font-semibold text-dark-grey mb-6'>Bookings</h5>

@@ -23,6 +23,8 @@ import { useFetchRolesQuery } from 'src/common/store/api/packages/roles/rolesApi
 import CityInput from 'src/pages/profiles/profileEditForm/CityInput';
 import * as y from 'yup';
 import { roleToText } from './roleToText';
+import { hasRole } from 'src/common/helpers/authorization/hasRole';
+import { useAppSelector } from 'src/common/hooks/redux';
 
 export type EditUserFormInputs = y.InferType<typeof userSchema>;
 interface EditUserFormProps {
@@ -34,6 +36,7 @@ interface EditUserFormProps {
 export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
   const [_, setCity] = React.useState('');
   const { data: roles, isFetching: isRolesFetching, isError: isRolesError } = useFetchRolesQuery();
+  const currentUser = useAppSelector(state => state.user);
 
   const form = useForm<EditUserFormInputs>({
     resolver: yupResolver<EditUserFormInputs>(userSchema),
@@ -162,53 +165,57 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name='role_id'
-            render={({ field }) => (
-              <FormItem className='flex flex-col'>
-                <FormLabel>Role</FormLabel>
-                <FormControl>
-                  <Dropdown
-                    control={form.control}
-                    name='role_id'
-                    label='Role'
-                    options={options}
-                    ddType='in-form'
-                    placeholder='Role'
-                    className='z-10'
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          {hasRole('PLATFORM_ADMIN', currentUser as User) && (
+            <>
+              <FormField
+                control={form.control}
+                name='role_id'
+                render={({ field }) => (
+                  <FormItem className='flex flex-col'>
+                    <FormLabel>Role</FormLabel>
+                    <FormControl>
+                      <Dropdown
+                        control={form.control}
+                        name='role_id'
+                        label='Role'
+                        options={options}
+                        ddType='in-form'
+                        placeholder='Role'
+                        className='z-10'
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-          <div className='col-span-2'>
-            <FormLabel>Email confirmed</FormLabel>
-            <Checkbox control={form.control} name='is_confirmed' label='Confirm email?' />
-          </div>
-
-          {String(roleId) === '2' && (
-            <div className='col-span-2'>
-              <FormLabel>Permissions</FormLabel>
-              <div className='grid grid-cols-2 gap-4'>
-                <Checkbox
-                  control={form.control}
-                  name='permissions.manageBookings'
-                  label='Manage bookings'
-                />
-                <Checkbox
-                  control={form.control}
-                  name='permissions.manageTimecards'
-                  label='Manage timecards'
-                />
-                <Checkbox
-                  control={form.control}
-                  name='permissions.manageUsers'
-                  label='Manage users'
-                />
+              <div className='col-span-2'>
+                <FormLabel>Email confirmed</FormLabel>
+                <Checkbox control={form.control} name='is_confirmed' label='Confirm email?' />
               </div>
-            </div>
+
+              {String(roleId) === '2' && (
+                <div className='col-span-2'>
+                  <FormLabel>Permissions</FormLabel>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <Checkbox
+                      control={form.control}
+                      name='permissions.manageBookings'
+                      label='Manage bookings'
+                    />
+                    <Checkbox
+                      control={form.control}
+                      name='permissions.manageTimecards'
+                      label='Manage timecards'
+                    />
+                    <Checkbox
+                      control={form.control}
+                      name='permissions.manageUsers'
+                      label='Manage users'
+                    />
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <div className='col-span-2'>
