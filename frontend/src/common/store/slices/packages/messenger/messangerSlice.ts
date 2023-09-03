@@ -53,7 +53,6 @@ const messangerSlice = createSlice({
       }
     },
     setOnlineUsers(state, action: PayloadAction<number[]>) {
-      console.log('in setter', action.payload);
       state.onlineUsers = action.payload;
     },
     addOnlineUser(state, action: PayloadAction<{ userId: number }>) {

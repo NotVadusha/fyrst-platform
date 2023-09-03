@@ -78,15 +78,15 @@ function ConversationLink({ chat }: { chat: Chat }) {
             <AvatarImage src='https://github.com/shadcn.png' />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
-              {otherMember.last_name?.[0]}
+              {otherMember.last_name?.[0] ?? ''}
             </AvatarFallback>
           </Avatar>
-          <div className='flex flex-col'>
-            <span className={cn('text-body-default font-semibold text-black leading-6')}>
+          <div className='flex flex-col max-w-[200px]'>
+            <span className={cn('text-body-default font-semibold text-black leading-6 truncate')}>
               {otherMember?.first_name} {otherMember?.last_name ?? ''}
             </span>
             {lastMessage ? (
-              <p className='text-dark-grey text-body-small font-normal leading-5 flex gap-1 whitespace-nowrap overflow-hidden'>
+              <p className='truncate text-dark-grey text-body-small font-normal leading-5 flex gap-1 whitespace-nowrap overflow-hidden'>
                 <span
                   className={cn({
                     'text-blue': isAuthor,
@@ -138,15 +138,15 @@ function GroupChatLink({ chat }: { chat: Chat }) {
             <AvatarImage src='https://github.com/shadcn.png' />
             <AvatarFallback>
               {otherMembers?.[0].first_name?.[0]}
-              {otherMembers?.[0].last_name?.[0]}
+              {otherMembers?.[0].last_name?.[0] ?? ''}
             </AvatarFallback>
           </Avatar>
-          <div className='flex flex-col'>
-            <span className={cn('text-body-default font-semibold text-black leading-6')}>
+          <div className='flex flex-col max-w-[200px]'>
+            <span className={cn('text-body-default font-semibold text-black leading-6 truncate')}>
               {otherMembers.map(m => `${m.first_name} ${m.last_name ?? ''}`).join(', ')}
             </span>
             {lastMessage ? (
-              <p className='text-dark-grey text-body-small font-normal leading-5 flex gap-1 whitespace-nowrap overflow-hidden'>
+              <p className='truncate text-dark-grey text-body-small font-normal leading-5 flex gap-1 whitespace-nowrap overflow-hidden'>
                 <span
                   className={cn({
                     'text-blue': isAuthor,

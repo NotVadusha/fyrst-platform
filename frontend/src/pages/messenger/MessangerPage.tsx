@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Messanger } from './common/messanger/Messanger';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
-import { socket } from 'src/common/config/packages/socket/socket.config';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import {
   addOnlineUser,
@@ -9,13 +8,18 @@ import {
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
 import { NewConversationButton } from './common/actions/common/NewConversationButton';
 import { NewGroupChatButton } from './common/actions/common/NewGroupChatButton';
+import { SocketContext } from 'src/common/config/packages/socket/socket.config';
 
 const MessangerPage = () => {
   const user = useAppSelector(state => state.user);
 
   const dispatch = useAppDispatch();
 
+  const socket = useContext(SocketContext);
+
   useEffect(() => {
+    if (!socket.active) socket.connect();
+
     socket.on('user-online', ({ userId }) => {
       dispatch(addOnlineUser({ userId }));
     });
@@ -29,14 +33,14 @@ const MessangerPage = () => {
     socket.emit('user-online', { userId: user.id });
 
     return () => {
-      if (!user?.id || !socket) return;
+      if (!user?.id) return;
       socket.emit('user-offline', { userId: user.id });
       socket.off('user-offline');
       socket.off('user-online');
 
-      // socket.disconnect();
+      socket.disconnect();
     };
-  }, [user?.id, socket]);
+  }, [user?.id]);
 
   return (
     <>

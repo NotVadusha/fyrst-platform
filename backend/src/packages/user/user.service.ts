@@ -21,7 +21,6 @@ export class UserService {
       throw new BadRequestException(`email ${sameEmailUser.email} is already in use`);
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
-    console.log('creating');
     return await this.userRepository.create({
       phone_number: null,
       is_confirmed: false,

@@ -37,6 +37,12 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('connection', 'Successfully connected to server');
   }
 
+  getOnlineMembers(memberIds: number[]) {
+    const sockets = memberIds.map(id => this.onlineUsers.get(id)).filter(val => val);
+    this.logger.log(sockets);
+    return sockets;
+  }
+
   @SubscribeMessage('user-join-chat')
   async handleJoinChat(client: Socket, data: { chatId: string }) {
     this.logger.log(`${client.id} joined chat ${data.chatId}`);
@@ -86,6 +92,12 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleUserType(client: Socket, data: { user: TypingUser; chatId: string }) {
     this.logger.log(`${data.user.id} is typing in chat ${data.chatId}`);
     client.to(data.chatId).emit('user-typing', { user: data.user });
+  }
+
+  @SubscribeMessage('user-stop-type')
+  handleUserStopType(client: Socket, data: { user: TypingUser; chatId: string }) {
+    this.logger.log(`${data.user.id} stopped typing in chat ${data.chatId}`);
+    client.to(data.chatId).emit('user-stop-typing', { user: data.user });
   }
 
   handleDisconnect(client: Socket) {

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as SearchLoupe } from 'src/assets/icons/search-loupe.svg';
 import { NewMessageInput } from './NewMessageInput';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
-import { socket } from 'src/common/config/packages/socket/socket.config';
-import { Chat, Message } from 'shared/socketEvents';
+import { SocketContext } from 'src/common/config/packages/socket/socket.config';
+import { Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
 import { cn } from 'src/common/helpers/helpers';
 import { UserDefaultResponse } from 'src/common/packages/user/types/dto/UserDto';
@@ -31,6 +31,8 @@ export const ChatPage: React.FC = () => {
   // const { data } = useGetChatByIdQuery(chatId);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const socket = useContext(SocketContext);
 
   const dispatch = useAppDispatch();
   const chat = useAppSelector(state => state.messanger.currentChat);
@@ -199,8 +201,6 @@ function UserAvatar({
   className?: string;
   fallback: string;
 }) {
-  console.log(fallback);
-
   return (
     <Avatar className={cn('relative overflow-visible', className)}>
       <AvatarImage src='https://github.com/shadcn.png' className='rounded-full' />

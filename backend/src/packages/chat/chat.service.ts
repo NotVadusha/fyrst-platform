@@ -76,7 +76,11 @@ export class ChatService {
       chat,
     });
 
-    this.gateway.wss.emit('new-conversation', {
+    const onlineMembers = this.gateway.getOnlineMembers(allMembers.map(({ id }) => id));
+
+    this.logger.log(`Emmitted creation to online members: ${onlineMembers}`);
+
+    this.gateway.wss.to(onlineMembers).emit('new-conversation', {
       ...chat.dataValues,
       members: allMembers,
       messages: [],
@@ -122,7 +126,7 @@ export class ChatService {
 
     const chats = (
       await this.userChatRepository.findAll({
-        attributes: [],
+        // attributes: ["chat"],
         include: [
           {
             model: Chat,
@@ -132,8 +136,8 @@ export class ChatService {
                 model: Message,
                 as: 'messages',
                 separate: true,
-                limit: 1,
-                order: [['createdAt', 'DESC']],
+                // limit: 1,
+                // order: [['createdAt', 'DESC']],
                 include: [{ model: User, as: 'user' }],
               },
               { model: User, as: 'members' },

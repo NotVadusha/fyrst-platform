@@ -37,6 +37,7 @@ export interface ServerToClientEvents {
   'user-online': (payload: { userId: number }) => void;
   'user-offline': (payload: { userId: number }) => void;
   'user-typing': (payload: { user: TypingUser }) => void;
+  'user-stop-typing': (payload: { user: TypingUser }) => void;
 }
 
 export interface SendMessagePayload {
@@ -52,5 +53,6 @@ export interface ClientToServerEvents {
   'user-online': (payload: { userId: number }) => void;
   'user-offline': (payload: { userId: number }) => void;
   'get-conversations': (payload: { userId: number }) => void;
-  'user-type': (payload: { user: TypingUser, chatId: string }) => void;
+  'user-type': (payload: { user: TypingUser; chatId: string }) => void;
+  'user-stop-type': (payload: { user: TypingUser; chatId: string }) => void;
 }

@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Conversations } from '../conversation/Conversations';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { NoConversations } from '../conversation/NoConversations';
-import { socket } from 'src/common/helpers/socket';
 import {
   addConversation,
   setConversations,
   updateConversation,
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
+import { SocketContext } from 'src/common/config/packages/socket/socket.config';
 
 const Messanger: React.FC = () => {
   const conversations = useAppSelector(state => state.messanger.conversations);
   const user = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     socket.on('send-conversations', conversations => {
@@ -29,7 +31,6 @@ const Messanger: React.FC = () => {
     });
 
     if (!user?.id) return;
-    console.log('getting conversations', socket);
 
     socket.emit('get-conversations', { userId: user?.id });
 
@@ -39,7 +40,7 @@ const Messanger: React.FC = () => {
       socket.off('conversation-update');
       socket.off('new-conversation');
     };
-  }, [user.id, socket]);
+  }, [user.id]);
 
   return (
     <>

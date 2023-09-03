@@ -36,8 +36,6 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
   });
 
   const handleChange = useCallback((value: string) => {
-    // console.log(value);
-    console.log(debouncedSearchQuery);
     setSearchQuery(value);
   }, []);
 
