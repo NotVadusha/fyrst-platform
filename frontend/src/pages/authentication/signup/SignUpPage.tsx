@@ -12,6 +12,7 @@ import { ReactComponent as GoogleLogo } from 'src/assets/icons/google.svg';
 import { authApi } from 'src/common/store/api/packages/authentication/authApi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { isCompanyEmail } from 'company-email-validator';
 
 type RegistrationInputs = yup.InferType<typeof registrationSchema>;
 
@@ -41,14 +42,19 @@ const SignUpPage = () => {
       password: data.password,
     };
 
+    const domain = data.email.split('@')[1];
+    const redirect = !isCompanyEmail(data.email)
+      ? `/auth/verify-email?domain=${domain}`
+      : '/auth/verify-email';
+
     registration(body)
       .unwrap()
       .then(() => {
         toast({
-          title: 'Successfully signed up',
-          description: 'Check your email for further instructions.',
+          title: 'Account created successfully!',
+          description: "You're almost there. Please proceed to verify your email.",
         });
-        navigate('/auth/signin');
+        navigate(redirect);
       })
       .catch(() => console.log(error));
   };

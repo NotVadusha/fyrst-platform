@@ -13,13 +13,14 @@ import { Spinner } from '../../../common/components/ui/common/Spinner/Spinner';
 import { useFormattedDate } from 'src/common/hooks/use-formatted-date/useFormattedDate.hook';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { useFetchTimecardsQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
+import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 
 const BookingOverview = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   const { data: booking, isLoading, isError } = useGetBookingByIdQuery(Number(id));
 

@@ -31,6 +31,7 @@ import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
 import { SeachChatMessagesPage } from 'src/pages/messenger/common/chat/search/SeachChatMessagesPage';
 import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
+import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -199,6 +200,10 @@ export const router = createBrowserRouter([
           {
             path: 'signup',
             element: <SignUpPage />,
+          },
+          {
+            path: 'verify-email',
+            element: <VerifyEmailPage />,
           },
           {
             path: 'google-success',

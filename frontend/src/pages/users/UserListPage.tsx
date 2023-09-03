@@ -16,12 +16,17 @@ import Papa from 'papaparse';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { useAppDispatch, useAppSelector } from '../../common/hooks/redux';
+import { exportCSV } from '../../common/store/slices/packages/export-csv/exportCSVSlice';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
 
   const [addUsers, result] = useAddUsersMutation();
+
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
 
   const navigate = useNavigate();
 
@@ -72,28 +77,6 @@ export function UserListPage() {
     setCurrentPage(1);
   }
 
-  function handleExport() {
-    if (!data?.users) return;
-
-    const csvData = Papa.unparse(data.users);
-
-    const blob = new Blob([csvData], { type: 'text/csv' });
-
-    const blobURL = URL.createObjectURL(blob);
-
-    const downloadLink = document.createElement('a');
-    downloadLink.href = blobURL;
-    downloadLink.download = 'users.csv';
-
-    downloadLink.textContent = 'Download CSV';
-
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-
-    URL.revokeObjectURL(blobURL);
-    document.body.removeChild(downloadLink);
-  }
-
   function handleImport(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files?.[0]) return;
 
@@ -107,6 +90,10 @@ export function UserListPage() {
       },
     });
   }
+
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'user', filters }));
+  };
 
   return (
     <>
@@ -127,8 +114,12 @@ export function UserListPage() {
                 accept='.csv'
                 onChange={handleImport}
               />
-              <Button variant='secondary' onClick={handleExport}>
-                Export Users CSV
+              <Button
+                variant='secondary'
+                onClick={handleExportCSV}
+                disabled={data?.totalCount === 0 || isCSVLoading}
+              >
+                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </Button>
               <AddUserButton />
             </div>

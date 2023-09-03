@@ -1,10 +1,10 @@
 import React from 'react';
 
-type AuthWrapperProps = {
+interface AuthWrapperProps {
   children: React.ReactNode;
   image: string;
   text?: string;
-};
+}
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children, image, text }) => {
   return (
