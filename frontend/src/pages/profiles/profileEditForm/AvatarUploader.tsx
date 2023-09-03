@@ -30,7 +30,6 @@ export const AvatarUploader = ({
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newImage = e.target.files[0];
-      console.log(newImage);
       if (newImage.size >= MAX_IMAGE_SIZE) {
         toast({
           title: 'Image size must be less than 5MB',
@@ -53,11 +52,8 @@ export const AvatarUploader = ({
   };
 
   const handleSave = async () => {
-    if (tempImage && imageInput.current) {
-      // @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const dataUrl = imageInput.current.getImage().toDataURL();
-      const result = await fetch(dataUrl);
+    if (tempImage) {
+      const result = await fetch(tempImage);
       const blob = await result.blob();
       setImage(URL.createObjectURL(blob));
     }
