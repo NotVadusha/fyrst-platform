@@ -6,7 +6,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const timecards = [];
 
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < 150; i++) {
       const status = faker.helpers.arrayElement(['pending', 'approved', 'rejected']);
       const createdAt = faker.date.past();
       let approvedAt = null;
@@ -20,7 +20,7 @@ module.exports = {
       timecards.push({
         createdAt,
         createdBy: faker.number.int({ min: 1, max: 19 }),
-        bookingId: faker.number.int({ min: 1, max: 19 }),
+        bookingId: faker.number.int({ min: 1, max: 49 }),
         approvedBy,
         approvedAt,
         status,

@@ -25,6 +25,8 @@ import ProfileSecurity from '../../pages/profiles/ProfileSecurity/ProfileSecurit
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
+import { RoleProtectedRoute } from './common/helpers/role-protected-route.helper';
+import { PermissionsProtectedRoute } from './common/helpers/permissions-protected-route.helper';
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
@@ -60,7 +62,13 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'create',
-                element: <CreateBookingPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageBookings']}>
+                      <CreateBookingPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },
@@ -69,11 +77,23 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <TimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
+                      <TimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
               {
                 path: ':id',
-                element: <ViewTimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
+                      <ViewTimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
               {
                 path: 'create/:bookingId',
@@ -166,7 +186,13 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <UserListPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageUsers']}>
+                      <UserListPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },

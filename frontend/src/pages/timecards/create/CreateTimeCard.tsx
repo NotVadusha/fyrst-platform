@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateTimecardMutation } from 'src/common/store/api/packages/timecards/timecardsApi';
 import { CreateTimecardFormValues } from './CreateTimeCardForm';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import { useGetBookingByIdQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
