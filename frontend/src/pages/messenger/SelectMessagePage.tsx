@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NewConversationBlueButton } from './common/actions/common/NewConversationBlueButton';
+import { NewConversationBlueButton } from './common/forms/common/NewConversationBlueButton';
 
 export default function SelectMessagePage() {
   return (

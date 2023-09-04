@@ -8,7 +8,6 @@ import { Form, FormField, FormItem, FormMessage } from 'src/common/components/ui
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { socket } from 'src/common/helpers/socket';
 import { TypingUser } from 'shared/socketEvents';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';

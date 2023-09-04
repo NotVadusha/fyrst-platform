@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
 import emptyMessanger from 'src/assets/empty-messanger.png';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
-import { CreateConversationForm } from '../actions/CreateConversationForm';
+import { CreateConversationForm } from '../forms/CreateConversationForm';
 
 export function NoConversations() {
   const [open, setIsOpen] = useState(false);

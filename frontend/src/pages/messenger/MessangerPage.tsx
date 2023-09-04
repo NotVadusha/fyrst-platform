@@ -6,8 +6,8 @@ import {
   addOnlineUser,
   removeOnlineUser,
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
-import { NewConversationButton } from './common/actions/common/NewConversationButton';
-import { NewGroupChatButton } from './common/actions/common/NewGroupChatButton';
+import { NewConversationButton } from './common/forms/common/NewConversationButton';
+import { NewGroupChatButton } from './common/forms/common/NewGroupChatButton';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
 
 const MessangerPage = () => {

@@ -118,8 +118,6 @@ export class ChatService {
   }
 
   async findAllByUserId(id: number) {
-    // chats with {messages: [{}], members: [{}, {}]}
-
     if (!id) {
       throw new HttpException(
         'Cannot get your chats, try loggin in first.',
@@ -189,7 +187,6 @@ export class ChatService {
     });
 
     if (chat && chat.messages) {
-      // Use Promise.all to process each message asynchronously
       chat.messages = await Promise.all(
         chat.messages.map(async m => {
           if (m.attachment) {
@@ -199,7 +196,6 @@ export class ChatService {
               Date.now() + 1000 * 60 * 60 * 24 * 7,
             );
 
-            // Update the attachment field of the message
             m.attachment = attachmentLink;
           }
           return m;
@@ -207,13 +203,10 @@ export class ChatService {
       );
     }
 
-    // Logger.log(chat.messages?.[0]);
-
     if (!chat) {
       throw new NotFoundException('Chat not found');
     }
 
-    // this.logger.log(`Finding chat with ID ${id}`, { chat });
     return chat;
   }
 
