@@ -21,7 +21,7 @@ export class CalendarEventsService {
     if (createCalendarEventDto && createCalendarEventDto.bookingId)
       await this.validateBookingExists(createCalendarEventDto.bookingId);
 
-    const calendarEvent = await this.calendarEventRepository.create({ createCalendarEventDto });
+    const calendarEvent = await this.calendarEventRepository.create({ ...createCalendarEventDto });
 
     this.logger.log(`Created note with ID ${calendarEvent.id}`);
     return calendarEvent;

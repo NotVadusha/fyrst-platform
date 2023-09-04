@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCalendarEventDto {
   @IsString()
   @IsNotEmpty()
+  @IsIn(['Booking', 'Interview'])
   eventType: string;
 
   @IsNumber()

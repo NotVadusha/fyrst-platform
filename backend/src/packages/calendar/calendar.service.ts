@@ -7,13 +7,13 @@ import { UserService } from '../user/user.service';
 @Injectable()
 export class CalendarService {
   constructor(
-    @InjectModel(Calendar)
-    private readonly calendarRepository: typeof Calendar,
+    @InjectModel(Calendar) private readonly calendarRepository: typeof Calendar,
     private readonly userService: UserService,
   ) {}
   async create(createCalendarDto: CreateCalendarDto) {
+    console.log({ ...createCalendarDto });
     await this.validateUserExists(createCalendarDto.userId);
-    return this.calendarRepository.create({ createCalendarDto });
+    return this.calendarRepository.create({ ...createCalendarDto });
   }
 
   async findAll() {
