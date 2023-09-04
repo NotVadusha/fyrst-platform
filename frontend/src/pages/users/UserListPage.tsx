@@ -83,7 +83,6 @@ export function UserListPage() {
     const csv = Papa.parse(event.target.files[0] as any, {
       header: true,
       complete: result => {
-        console.log(result.data);
         addUsers(result.data as User[])
           .unwrap()
           .then(() => navigate(0))

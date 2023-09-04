@@ -8,6 +8,10 @@ interface NewChatPayload {
   members: string[];
 }
 
+export interface MessageFilters {
+  messageContent?: string;
+}
+
 export const chatApi = apiSlice.injectEndpoints({
   endpoints: build => ({
     getAllUserChats: build.query({
@@ -43,6 +47,32 @@ export const chatApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    getMessagesByParams: build.query<Message[], { chatId: string; filters: MessageFilters }>({
+      query: ({ chatId, filters }) => {
+        const params = new URLSearchParams();
+
+        Object.keys(filters).forEach(key =>
+          params.set(key, String(filters[key as keyof MessageFilters])),
+        );
+
+        const result = `/chat/${chatId}/message?` + params;
+
+        return result;
+      },
+    }),
+    getMessagesWithMedia: build.query<Message[], { chatId: string }>({
+      query: ({ chatId }) => `/chat/${chatId}/message/media`,
+    }),
+    uploadAttachment: build.mutation<string, { attachment: string }>({
+      query: ({ attachment }) => {
+        return {
+          method: 'POST',
+          url: `/chat/upload`,
+          body: { attachment },
+          responseHandler: response => response.text(),
+        };
+      },
+    }),
   }),
 });
 
@@ -53,4 +83,7 @@ export const {
   useCreateChatMutation,
   useGetAllMessagesQuery,
   useSendNewMessageMutation,
+  useGetMessagesByParamsQuery,
+  useUploadAttachmentMutation,
+  useGetMessagesWithMediaQuery,
 } = chatApi;

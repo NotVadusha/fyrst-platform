@@ -41,9 +41,11 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
-      if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
+      if (data.statusCode === 404) navigate('/auth/signin');
+
       const profile = await getProfile(data.id).unwrap();
+      console.log(profile);
       setAvatarImage(profile.avatar || '');
     };
 

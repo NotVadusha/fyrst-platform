@@ -5,11 +5,9 @@ class CreateMessageDto {
   @IsNotEmpty()
   readonly messageContent: string;
 
-  @IsNotEmpty()
+  @IsString()
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  readonly attachments?: string[]; //TODO: refactor it in 'sharing files functionality' task
+  readonly attachment?: string;
 }
 
 export { CreateMessageDto };

@@ -12,9 +12,12 @@ import { Chat } from './entities/chat.entity';
 import { CreateChatDto, UpdateChatDto } from './dto/dto';
 import { UserService } from '../user/user.service';
 import { Message } from '../message/entities/message.entity';
-import { User } from '../user/entities/user.entity';
+import { User, UserChat } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { AppGateway } from 'src/app.gateway';
+import sequelize from 'sequelize';
+import { BucketService } from '../bucket/bucket.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class ChatService {
@@ -28,6 +31,9 @@ export class ChatService {
     private readonly userService: UserService,
     @Inject(AppGateway)
     private readonly gateway: AppGateway,
+    @InjectModel(UserChat)
+    private readonly userChatRepository: typeof UserChat,
+    private bucketService: BucketService,
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
@@ -49,18 +55,41 @@ export class ChatService {
 
     const owner = await this.userRepository.findOne({ where: { id: createdData.ownerId } });
 
+    const allMembers = [...members, owner];
+
+    if (allMembers.length === 2) {
+      const conv = await this.findUserConversations(allMembers.map(({ id }) => id));
+
+      if (conv.length > 0) {
+        throw new HttpException(
+          'You already have a conversation with this user',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
     const chat = await this.chatRepository.create({
-      name: createdData.name,
+      name: allMembers
+        .map(({ first_name, last_name }) => `${first_name} ${last_name ?? ''}`)
+        .join(' '),
       ownerId: createdData.ownerId,
     });
 
-    chat.$set('members', [...members, owner]);
+    chat.$set('members', allMembers);
 
     this.logger.log(`Created chat with ID ${chat.id}`, {
       chat,
     });
 
-    this.gateway.wss.emit('conversation-upsert', { ...chat, messages: [] });
+    const onlineMembers = this.gateway.getOnlineMembers(allMembers.map(({ id }) => id));
+
+    this.logger.log(`Emmitted creation to online members: ${onlineMembers}`);
+
+    this.gateway.wss.to(onlineMembers).emit('new-conversation', {
+      ...chat.dataValues,
+      members: allMembers,
+      messages: [],
+    });
 
     return chat;
   }
@@ -72,42 +101,112 @@ export class ChatService {
         { model: User, as: 'user' },
       ],
     });
-    this.logger.log(`Retrieved ${chats.length} chats`, { chats });
+
     return chats;
   }
 
-  async findAllByUserId(id: number) {
-    const chats = await this.chatRepository.findAll({
-      include: [
-        {
-          model: Message,
-          as: 'messages',
-          separate: true,
-          limit: 1,
-          order: [['createdAt', 'DESC']],
-          include: [
-            {
-              model: User,
-              as: 'user',
-            },
-          ],
-        },
-      ],
+  async findUserConversations(ids: number[]) {
+    const userChats = await UserChat.findAll({
+      attributes: ['chatId'],
+      group: ['chatId'],
+      having: sequelize.where(sequelize.literal('array_agg("userId")'), {
+        [sequelize.Op.in]: [ids],
+      }),
     });
-    this.logger.log(`Retrieved ${chats.length} chats`, { chats });
+
+    return userChats;
+  }
+
+  async findAllByUserId(id: number) {
+    if (!id) {
+      throw new HttpException(
+        'Cannot get your chats, try loggin in first.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    this.logger.log('getting chats');
+
+    const chats = (
+      await this.userChatRepository.findAll({
+        // attributes: ["chat"],
+        include: [
+          {
+            model: Chat,
+            as: 'chat',
+            include: [
+              {
+                model: Message,
+                as: 'messages',
+                separate: true,
+                // limit: 1,
+                // order: [['createdAt', 'DESC']],
+                include: [{ model: User, as: 'user' }],
+              },
+              { model: User, as: 'members' },
+            ],
+          },
+        ],
+        where: {
+          userId: id,
+        },
+      })
+    )
+      .map(chatData => chatData.chat)
+      .sort(
+        ({ messages: messagesA }, { messages: messagesB }) =>
+          messagesB?.[0]?.createdAt - messagesA?.[0]?.createdAt,
+      );
+
+    this.logger.log('chats: ', chats);
+
     return chats;
+  }
+
+  async uploadAttachment(userId: number, attachment: string) {
+    const { fileTypeFromBuffer } = await (eval('import("file-type")') as Promise<
+      typeof import('file-type')
+    >);
+
+    const imgBuffer = Buffer.from(attachment, 'base64');
+    const fileType = await fileTypeFromBuffer(imgBuffer);
+    const fileName = `${userId}_${crypto.randomUUID()}.${fileType.ext}`;
+
+    const attachmentPath = `attachment/${fileName}`;
+    await this.bucketService.save(attachmentPath, imgBuffer);
+
+    return attachmentPath;
   }
 
   async find(id: number) {
     const chat = await this.chatRepository.findByPk(id, {
-      include: [{ model: Message }, { model: User, as: 'members' }],
+      include: [
+        { model: Message, include: [{ model: User, as: 'user' }] },
+        { model: User, as: 'members' },
+      ],
     });
+
+    if (chat && chat.messages) {
+      chat.messages = await Promise.all(
+        chat.messages.map(async m => {
+          if (m.attachment) {
+            const attachmentLink = await this.bucketService.getFileLink(
+              m.attachment,
+              'read',
+              Date.now() + 1000 * 60 * 60 * 24 * 7,
+            );
+
+            m.attachment = attachmentLink;
+          }
+          return m;
+        }),
+      );
+    }
 
     if (!chat) {
       throw new NotFoundException('Chat not found');
     }
 
-    // this.logger.log(`Finding chat with ID ${id}`, { chat });
     return chat;
   }
 
@@ -126,6 +225,17 @@ export class ChatService {
 
     this.logger.log(`Searched ${chats.length} chats with query: ${query}`, { chats });
     return chats;
+  }
+
+  async getAllChatIdsByUserId(userId: number) {
+    return (
+      await this.userChatRepository.findAll({
+        where: {
+          userId,
+        },
+        attributes: ['chatId'],
+      })
+    ).map(({ chatId }) => String(chatId));
   }
 
   async update(id: number, updatedData: UpdateChatDto & { ownerId: number }) {

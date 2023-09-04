@@ -21,8 +21,6 @@ export function CreateTimeCardForm({
   user: User;
   booking: Booking;
 }) {
-  console.log(booking);
-
   const form = useForm<CreateTimecardFormValues>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
