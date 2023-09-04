@@ -13,7 +13,7 @@ export const resetPasswordSchema = yup
       )
       .test(
         'contains-spec-chars',
-        'Password must contain at least one cpecial character',
+        'Password must contain at least one special character',
         value => {
           const specialChars = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
           for (const char of specialChars) {

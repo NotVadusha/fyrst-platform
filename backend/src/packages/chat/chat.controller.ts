@@ -10,6 +10,7 @@ import {
   Patch,
   UseGuards,
   Query,
+  Logger,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
@@ -20,6 +21,12 @@ import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
+
+  @UseGuards(AccessTokenGuard)
+  @Post('upload')
+  async uploadAttachment(@Request() req, @Body() data: { attachment: string }) {
+    return await this.chatService.uploadAttachment(req.user['id'], data.attachment);
+  }
 
   @UseGuards(AccessTokenGuard)
   @Post()

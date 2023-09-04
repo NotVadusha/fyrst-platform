@@ -107,4 +107,7 @@ export class UserChat extends Model {
   @ForeignKey(() => Chat)
   @Column
   chatId: number;
+
+  @BelongsTo(() => Chat)
+  chat: Chat;
 }

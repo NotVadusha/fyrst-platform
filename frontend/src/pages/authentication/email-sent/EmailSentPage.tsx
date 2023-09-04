@@ -6,10 +6,11 @@ import { resetPasswordApi } from 'src/common/store/api/packages/reset-password/r
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { setEmail } from 'src/common/store/slices/packages/reset-password/resetPasswordSlice';
+import { selectResetPasswordEmail } from '../../../common/store/slices/packages/reset-password/resetPasswordSelectors';
 
 const EmailSentPage = () => {
   const [forgot, { error }] = resetPasswordApi.useLazyForgotQuery();
-  const email = useAppSelector(state => state.resetPassword.email);
+  const email = useAppSelector(selectResetPasswordEmail);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

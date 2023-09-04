@@ -11,15 +11,15 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
+  Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardService } from './timecard.service';
-import { PermissionsGuard } from '../permissions/guards/permissions.guard';
-import { RoleGuard } from '../roles/guards/roles.guard';
+import { Readable } from 'stream';
+import { Response as ExpressResponse } from 'express';
 
 @ApiTags('Timecard endpoints')
 @Controller('timecard')
@@ -50,6 +50,32 @@ export class TimecardController {
     } catch (error) {
       this.logger.error("Couldn't get timecards", error);
       throw new InternalServerErrorException("Couldn't get timecards");
+    }
+  }
+
+  @Get('export-csv')
+  async exportAllTimecardsToCSV(
+    @Res() response: ExpressResponse,
+    @Query() filters?: TimecardFiltersDto,
+  ): Promise<void> {
+    try {
+      const timecardsData = await this.timecardService.getAllFiltered(filters);
+      const timecards = timecardsData.items;
+
+      const csv = await this.timecardService.generateCSVFromTimecards(timecards);
+
+      const stream = new Readable();
+      stream.push(csv);
+      stream.push(null);
+
+      response.set({
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename=timecards.csv`,
+      });
+
+      stream.pipe(response);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to export timecards');
     }
   }
 

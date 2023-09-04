@@ -9,9 +9,10 @@ import { BookingFiltersDto } from 'src/common/packages/booking/types/dto/Booking
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
-import { useAppSelector } from 'src/common/hooks/redux';
 import { hasPermissions } from 'src/common/helpers/authorization/hasPermissions';
 import { User } from 'src/common/packages/user/types/models/User.model';
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
+import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
 
 const LIMIT = 6;
 
@@ -19,6 +20,10 @@ const BookingPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const user = useAppSelector(state => state.user);
+
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
+
   const filters: BookingFiltersDto = {
     facilityId: searchParams.get('facility'),
     endDate: searchParams.get('endDate'),
@@ -52,6 +57,10 @@ const BookingPage = () => {
     });
   }
 
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'booking', filters }));
+  };
+
   useEffect(() => {
     setSearchParams('');
   }, []);
@@ -62,7 +71,13 @@ const BookingPage = () => {
         {user.permissions && hasPermissions(['manageBookings'], user as User) && (
           <div className='flex flex-1 justify-end'>
             <div className='flex gap-x-4'>
-              <Button variant='secondary'>Export CSV</Button>
+              <Button
+                variant='secondary'
+                onClick={handleExportCSV}
+                disabled={data?.total === 0 || isCSVLoading}
+              >
+                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+              </Button>
               <Link to='create'>
                 <Button variant='primary'>Create new booking</Button>
               </Link>

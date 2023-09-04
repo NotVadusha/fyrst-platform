@@ -48,6 +48,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         if (refreshResult.error) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
+          window.location.href = '/auth/signin';
         } else {
           const tokens = refreshResult.data as TokenResponseDto;
 
@@ -75,7 +76,6 @@ export const baseQueryWithReauth: BaseQueryFn<
     }
   } else if (result?.error) {
     const { data } = result.error as { data?: { message?: string } };
-    console.log('here');
 
     toast({
       variant: 'destructive',

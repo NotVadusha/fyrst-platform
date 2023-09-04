@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
+import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -31,7 +32,7 @@ const Layout = () => {
     }
   };
 
-  const user = useAppSelector(store => store.user);
+  const user = useAppSelector(selectUser);
 
   React.useEffect(() => {
     if (user?.id) return;

@@ -4,7 +4,7 @@ import BookingPage from '../../pages/bookings/ListBookingPage/BookingPage';
 import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
-import MessengerPage from '../../pages/messenger/MessangerPage';
+import MessangerPage from '../../pages/messenger/MessangerPage';
 import PaymentsPage from '../../pages/payments/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
@@ -30,6 +30,10 @@ import { PermissionsProtectedRoute } from './common/helpers/permissions-protecte
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
+import { SeachChatMessagesPage } from 'src/pages/messenger/common/chat/search/SeachChatMessagesPage';
+import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
+import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
+import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -100,11 +104,23 @@ export const router = createBrowserRouter([
           {
             path: '/chat',
             errorElement: <ErrorPage />,
-            element: <MessengerPage />,
+            element: <MessangerPage />,
             children: [
+              {
+                path: '', // This represents the default outlet when no chatId is provided
+                element: <SelectMessagePage />,
+              },
               {
                 path: ':chatId',
                 element: <ChatPage />,
+              },
+              {
+                path: ':chatId/search',
+                element: <SeachChatMessagesPage />,
+              },
+              {
+                path: ':chatId/media',
+                element: <SharedMediaPage />,
               },
             ],
           },
@@ -136,7 +152,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <MessengerPage />,
+                element: <MessangerPage />,
               },
             ],
           },
@@ -210,6 +226,10 @@ export const router = createBrowserRouter([
           {
             path: 'signup',
             element: <SignUpPage />,
+          },
+          {
+            path: 'verify-email',
+            element: <VerifyEmailPage />,
           },
           {
             path: 'google-success',

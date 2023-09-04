@@ -15,13 +15,19 @@ import {
 import { UserFiltersForm } from './UserFiltersForm';
 import { AddUserButton } from './actions/AddUserButton';
 import { columns } from './usersTableConfig';
-import { useAppSelector } from 'src/common/hooks/redux';
 import { hasRole } from 'src/common/helpers/authorization/hasRole';
+import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { useAppDispatch, useAppSelector } from '../../common/hooks/redux';
+import { exportCSV } from '../../common/store/slices/packages/export-csv/exportCSVSlice';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [addUsers] = useAddUsersMutation();
+
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
+
   const navigate = useNavigate();
   const user = useAppSelector(state => state.user);
 
@@ -71,35 +77,12 @@ export function UserListPage() {
     setCurrentPage(1);
   }
 
-  function handleExport() {
-    if (!data?.users) return;
-
-    const csvData = Papa.unparse(data.users);
-
-    const blob = new Blob([csvData], { type: 'text/csv' });
-
-    const blobURL = URL.createObjectURL(blob);
-
-    const downloadLink = document.createElement('a');
-    downloadLink.href = blobURL;
-    downloadLink.download = 'users.csv';
-
-    downloadLink.textContent = 'Download CSV';
-
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-
-    URL.revokeObjectURL(blobURL);
-    document.body.removeChild(downloadLink);
-  }
-
   function handleImport(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files?.[0]) return;
 
     const csv = Papa.parse(event.target.files[0] as any, {
       header: true,
       complete: result => {
-        console.log(result.data);
         addUsers(result.data as User[])
           .unwrap()
           .then(() => navigate(0))
@@ -107,6 +90,10 @@ export function UserListPage() {
       },
     });
   }
+
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'user', filters }));
+  };
 
   return (
     <>
@@ -116,8 +103,12 @@ export function UserListPage() {
           <div className='flex items-center justify-between'>
             <h2 className='text-4xl font-bold'>Users</h2>
             <div className='flex items-center gap-2'>
-              <Button variant='secondary' onClick={handleExport}>
-                Export CSV
+              <Button
+                variant='secondary'
+                onClick={handleExportCSV}
+                disabled={data?.totalCount === 0 || isCSVLoading}
+              >
+                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </Button>
               {hasRole('PLATFORM_ADMIN', user as User, false) && (
                 <>

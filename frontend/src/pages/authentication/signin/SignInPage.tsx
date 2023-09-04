@@ -57,7 +57,9 @@ const SignInPage = () => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
-      dispatch(setUser(data.userInfo));
+      dispatch(
+        setUser({ ...data.userInfo, birthdate: data.userInfo.birthdate?.toString() || undefined }),
+      );
 
       toast({ title: 'Successfully signed in' });
 
@@ -70,7 +72,7 @@ const SignInPage = () => {
       image={authImage}
       text='Finding the right candidate has never been easier! A few clicks and the deal is ready.'
     >
-      <div className='flex flex-col gap-10 w-[450px]'>
+      <div className='flex flex-col gap-10 w-[450px] px-5'>
         <h1 className='2xl:text-h1 xl:text-h2 text-h3 text-black font-bold mb-4'>
           Welcome back
           <br />

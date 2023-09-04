@@ -4,11 +4,13 @@ import userSlice from './slices/packages/user/userSlice';
 import { apiSlice } from './api/api';
 import { chatApi } from './api/packages/chat/chatApi';
 import messangerSlice from './slices/packages/messenger/messangerSlice';
+import exportCSVSlice from './slices/packages/export-csv/exportCSVSlice';
 
 const rootReducer = combineReducers({
   resetPassword: resetPasswordSlice,
   user: userSlice,
   messanger: messangerSlice,
+  exportCSV: exportCSVSlice,
   [apiSlice.reducerPath]: apiSlice.reducer,
   [chatApi.reducerPath]: chatApi.reducer,
 });

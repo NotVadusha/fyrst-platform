@@ -76,7 +76,7 @@ describe('UsersController', () => {
   describe('getUsersByParams', () => {
     describe('when getUsersByParams is called', () => {
       let users: TestUser[];
-      const userFiltersDto: UserFiltersDto = { currentPage: '1', first_name: '', last_name: '' };
+      const userFiltersDto: UserFiltersDto = { currentPage: 1, first_name: '', last_name: '' };
 
       beforeEach(async () => {
         const data = await userController.getAllByParams(userFiltersDto);

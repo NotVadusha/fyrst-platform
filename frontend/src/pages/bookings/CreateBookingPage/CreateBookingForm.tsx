@@ -33,6 +33,15 @@ export function CreateBookingForm({
       workingHours: 1,
     },
   });
+  const onSubmit = (values: CreateBookingFormValues) => {
+    const trimmedValues = {
+      ...values,
+      employersName: values.employersName.trim(),
+      notes: values.notes.trim(),
+    };
+
+    handleSubmit(trimmedValues);
+  };
 
   const { data: facilities } = useFetchFacilitiesQuery({});
   const options = facilities
@@ -44,7 +53,7 @@ export function CreateBookingForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='flex flex-col gap-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-6' noValidate>
         <TextInput
           name='employersName'
           control={form.control}
@@ -57,7 +66,7 @@ export function CreateBookingForm({
           control={form.control}
           label='Facility'
           options={options}
-          ddType='in-form'
+          styleVariant='borders'
           placeholder='Facility'
         />
         <TextInput
@@ -65,8 +74,15 @@ export function CreateBookingForm({
           control={form.control}
           label='Positions available'
           type='number'
+          min={1}
         />
-        <TextInput name='pricePerHour' control={form.control} label='Pay per hour' type='number' />
+        <TextInput
+          name='pricePerHour'
+          control={form.control}
+          label='Pay per hour'
+          type='number'
+          min={1}
+        />
         <TextInput name='startDate' control={form.control} label='' type='date' />
         <TextInput name='endDate' control={form.control} label='' type='date' />
         <TextInput name='notes' control={form.control} label='Job description' type='text' />

@@ -10,6 +10,9 @@ import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { getFilterParams } from 'shared/getFilterParams';
+import * as Papa from 'papaparse';
+import _ from 'lodash';
+import { prefixKeys } from '../../helpers/prefixKeys';
 
 @Injectable()
 export class TimecardService {
@@ -57,6 +60,36 @@ export class TimecardService {
     });
 
     return { items: timecards, total };
+  }
+
+  async generateCSVFromTimecards(timecards: Timecard[]): Promise<string> {
+    if (timecards.length === 0) {
+      throw new Error('No timecards available to generate CSV.');
+    }
+
+    const cleanData = timecards.map(timecard => {
+      const timecardJSON = timecard.toJSON();
+      const bookingJSON = timecard.booking.toJSON();
+      const facilityJSON = timecard.booking.facility.toJSON();
+
+      const prefixedBookingJSON = prefixKeys('booking', bookingJSON);
+      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+
+      return {
+        ...timecardJSON,
+        ...prefixedBookingJSON,
+        ...prefixedFacilityJSON,
+      };
+    });
+    const fieldKeys = Object.keys(cleanData[0]).filter(
+      key => key !== 'employee' && key !== 'facilityManager' && key !== 'booking',
+    );
+    const csv = Papa.unparse({
+      fields: fieldKeys,
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async getById(id: number): Promise<Timecard> {

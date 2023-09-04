@@ -17,7 +17,6 @@ export type Inputs = y.InferType<typeof chatSchema>;
 export function CreateChatForm() {
   const [createChat, result] = useCreateChatMutation();
   const [isLoading, setIsLoading] = React.useState(false);
-  const navigate = useNavigate();
 
   const form = useForm<Inputs>({
     resolver: yupResolver(chatSchema),
@@ -33,8 +32,7 @@ export function CreateChatForm() {
       .unwrap()
       .then(res => {
         setIsLoading(false);
-        // navigate(0);
-        toast({ title: 'Success', description: 'New chat successfully created' });
+        toast({ title: 'Success', description: 'New conversation successfully created' });
       })
       .catch(err => setIsLoading(false));
   }

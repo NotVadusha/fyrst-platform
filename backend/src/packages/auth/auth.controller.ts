@@ -8,7 +8,7 @@ import { Response } from 'express';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { RegistrationDto } from './dto/registration.dto';
-
+const cookie = require('cookie');
 @ApiTags('Authorization and authentication endpoints')
 @Controller('auth')
 export class AuthController {
@@ -60,21 +60,32 @@ export class AuthController {
   async googleCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.googleAuthentication(req.user);
     if (!!result.tokens.accessToken) {
-      res.cookie('accessToken', result.tokens.accessToken, {
-        maxAge: 1000 * 60 * 10,
-        sameSite: true,
-        secure: false,
-      });
-      res.cookie('refreshToken', result.tokens.refreshToken, {
-        maxAge: 1000 * 60 * 10,
-        sameSite: true,
-        secure: false,
-      });
-      res.cookie('user', JSON.stringify(result.user), {
-        maxAge: 1000 * 60 * 10,
-        sameSite: true,
-        secure: false,
-      });
+      res.setHeader('Set-Cookie', [
+        cookie.serialize('accessToken', result.tokens.accessToken, {
+          sameSite: 'lax',
+          httpOnly: false,
+          path: '/',
+          secure: false,
+          maxAge: 60 * 10,
+          domain: process.env.ENVIRONMENT === 'develop' ? '' : '.fyrst.site',
+        }),
+        cookie.serialize('refreshToken', result.tokens.refreshToken, {
+          sameSite: 'lax',
+          httpOnly: false,
+          path: '/',
+          secure: false,
+          maxAge: 60 * 10,
+          domain: process.env.ENVIRONMENT === 'develop' ? '' : '.fyrst.site',
+        }),
+        cookie.serialize('user', JSON.stringify(result.user), {
+          sameSite: 'lax',
+          httpOnly: false,
+          path: '/',
+          secure: false,
+          maxAge: 60 * 10,
+          domain: process.env.ENVIRONMENT === 'develop' ? '' : '.fyrst.site',
+        }),
+      ]);
     }
     res.redirect(process.env.GOOGLE_AUTH_SUCCESS_URL);
   }

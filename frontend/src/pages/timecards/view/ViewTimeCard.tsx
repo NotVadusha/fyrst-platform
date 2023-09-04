@@ -13,12 +13,13 @@ import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { TimecardStatus } from 'shared/timecard-status';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 
 export default function ViewTimeCardPage() {
   const { id } = useParams();
   const { data: timecard, isFetching } = useFetchTimecardQuery(Number(id));
   const [updateTimecard] = useUpdateTimecardMutation();
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   function handleSubmitTimecard(facilityManagerId: number) {
     updateTimecard({

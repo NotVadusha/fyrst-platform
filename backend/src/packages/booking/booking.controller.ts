@@ -9,12 +9,14 @@ import {
   ParseIntPipe,
   Query,
   InternalServerErrorException,
-  HttpCode,
+  Res,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto, UpdateBookingDto } from './dto/dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FilterBookingDto } from './dto/filter-booking.dto';
+import { Readable } from 'stream';
+import { Response } from 'express';
 
 @ApiTags('Booking endpoints')
 @Controller('booking')
@@ -45,6 +47,32 @@ export class BookingController {
       return this.bookingService.getAllFiltered(filters);
     } catch (error) {
       throw new InternalServerErrorException('Failed to fetch bookings');
+    }
+  }
+
+  @Get('export-csv')
+  async exportAllBookingsToCSV(
+    @Res() response: Response,
+    @Query() filters?: Omit<FilterBookingDto, 'limit'>,
+  ): Promise<void> {
+    try {
+      const { bookings } = await this.bookingService.getAllFiltered({
+        ...filters,
+      });
+
+      const csv = await this.bookingService.generateCSVFromBookings(bookings);
+      const stream = new Readable();
+      stream.push(csv);
+      stream.push(null);
+
+      response.set({
+        'Content-Type': 'text/csv',
+        'Content-Disposition': 'attachment; filename=bookings.csv',
+      });
+
+      stream.pipe(response);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to export bookings');
     }
   }
 

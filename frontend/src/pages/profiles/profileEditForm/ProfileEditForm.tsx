@@ -18,6 +18,7 @@ import CustomPhoneInput from './CustomPhoneInput';
 import DateInput from './DateInput';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { Buffer } from 'buffer';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -40,9 +41,11 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
-      if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
+      if (data.statusCode === 404) navigate('/auth/signin');
+
       const profile = await getProfile(data.id).unwrap();
+      console.log(profile);
       setAvatarImage(profile.avatar || '');
     };
 
@@ -51,13 +54,13 @@ export function ProfileEditForm() {
 
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
 
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState<string>('');
   const [updateUser] = useUpdateUserMutation();
 
   const onSubmit = async (valuesFromForm: Inputs) => {
     let base64;
 
-    if (!!avatarImage) {
+    if (!!avatarImage && avatarImage.includes('blob:')) {
       const blob = await (await fetch(avatarImage)).blob();
       const arrayBuffer = await blob.arrayBuffer();
       base64 = Buffer.from(arrayBuffer).toString('base64');
@@ -70,10 +73,10 @@ export function ProfileEditForm() {
       user: {
         first_name: valuesFromForm?.first_name,
         last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm?.phone_number,
+        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
         email: valuesFromForm?.email,
-        city: valuesFromForm?.city,
-        birthdate: valuesFromForm?.birthdate,
+        city: valuesFromForm.city ? valuesFromForm.city : null,
+        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
       },
     });
 
@@ -82,6 +85,11 @@ export function ProfileEditForm() {
       // @ts-ignore
       id: user.id,
       body: { avatar: base64 },
+    });
+
+    toast({
+      title: 'Changes applied',
+      description: 'Your profile updated',
     });
   };
 
@@ -191,6 +199,7 @@ export function ProfileEditForm() {
                       id='phone_number'
                       label='Phone'
                       {...field}
+                      value={field.value ? field.value : ''}
                     />
                   </FormItem>
                 )}
@@ -200,7 +209,12 @@ export function ProfileEditForm() {
                 name='city'
                 render={({ field }) => (
                   <FormItem>
-                    <CityInput control={form.control} {...field} setCity={setCity} />
+                    <CityInput
+                      control={form.control}
+                      {...field}
+                      value={field.value ? field.value : ''}
+                      setCity={setCity}
+                    />
                   </FormItem>
                 )}
               />

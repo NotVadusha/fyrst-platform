@@ -21,8 +21,6 @@ export function CreateTimeCardForm({
   user: User;
   booking: Booking;
 }) {
-  console.log(booking);
-
   const form = useForm<CreateTimecardFormValues>({
     resolver: yupResolver(timecardSchema),
     defaultValues: {
@@ -39,7 +37,7 @@ export function CreateTimeCardForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8' noValidate>
         <FormField
           control={form.control}
           name='employeeName'
@@ -81,10 +79,11 @@ export function CreateTimeCardForm({
             <FormItem className='flex flex-col'>
               <TextInput
                 control={form.control}
-                type='text'
+                type='number'
                 id='hoursWorked'
                 label='Hours Worked'
                 {...field}
+                min={1}
               />
             </FormItem>
           )}
@@ -101,6 +100,7 @@ export function CreateTimeCardForm({
                 id='lunchTaken'
                 label='Lunch hours'
                 {...field}
+                min={1}
               />
             </FormItem>
           )}

@@ -86,11 +86,13 @@ EMAIL_CONFIRMATION_URL=http://localhost:${BACKEND_PORT}/api/v1/email-confirmatio
 LOGIN_URL=http://localhost:${FRONTEND_PORT}/auth/signin
 
 REACT_APP_API_URL=http://localhost:${BACKEND_PORT}/api/v1
+REACT_APP_WSS_URL=http://localhost:${BACKEND_PORT}/
 
 BUCKET_PROJECT_ID=
 BUCKET_PRIVATE_KEY=
 BUCKET_CLIENT_EMAIL=
 BUCKET_NAME=
+ENVIRONMENT=develop
 ```
 
 ---

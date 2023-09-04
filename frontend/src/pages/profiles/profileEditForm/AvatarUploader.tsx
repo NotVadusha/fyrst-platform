@@ -1,6 +1,7 @@
-import React, { ChangeEvent, MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import ReactSlider from 'react-slider';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 interface InputProps {
   width: number;
@@ -12,6 +13,8 @@ interface InputProps {
   setImage: (imageUrl: string) => void;
 }
 
+const MAX_IMAGE_SIZE = 5e6;
+
 export const AvatarUploader = ({
   width,
   height,
@@ -20,14 +23,22 @@ export const AvatarUploader = ({
   setShown,
   setImage,
 }: InputProps) => {
-  const [tempImage, setTempImage] = useState('');
-  const imageInput = useRef(null);
-  const [rangeValue, setRangeValue] = useState(10);
+  const [tempImage, setTempImage] = useState<string>('');
+  const imageInput = useRef<HTMLInputElement | null>(null);
+  const [rangeValue, setRangeValue] = useState<number>(10);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const newImage = URL.createObjectURL(e.target.files[0]);
-      setTempImage(newImage);
+      const newImage = e.target.files[0];
+      if (newImage.size >= MAX_IMAGE_SIZE) {
+        toast({
+          title: 'Image size must be less than 5MB',
+          description: 'Please, choose another image less than 5mb size',
+          variant: 'destructive',
+        });
+        return;
+      }
+      setTempImage(URL.createObjectURL(newImage));
     }
   };
 
@@ -37,17 +48,15 @@ export const AvatarUploader = ({
   };
 
   const handleUploadImage = () => {
-    document.getElementById('avatar-image-upload')?.click();
+    imageInput.current?.click();
   };
 
   const handleSave = async () => {
-    if (tempImage && imageInput.current) {
-      // @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const dataUrl = imageInput.current.getImage().toDataURL();
-      const result = await fetch(dataUrl);
+    if (tempImage) {
+      const result = await fetch(tempImage);
       const blob = await result.blob();
-      setImage(URL.createObjectURL(blob));
+      const image = URL.createObjectURL(blob);
+      setImage(image);
     }
     setShown(false);
   };
@@ -65,18 +74,18 @@ export const AvatarUploader = ({
         }}
         className='relative w-fit ml-80 mt-6 px-20 py-10 bg-black'
       >
-        <h5 className='text-white font-semibold text-2xl mb-8'>Replace profile picture</h5>
-
+        <h5 className='text-white font-semibold text-2xl mb-2'>Replace profile picture</h5>
+        <p className='font-semibold text-grey text-lg mb-4'>Image size must be less than 5MB</p>
         <input
           accept='image/*'
           hidden
           id='avatar-image-upload'
           type='file'
           onChange={handleImageChange}
+          ref={imageInput}
         />
 
         <AvatarEditor
-          ref={imageInput}
           image={tempImage}
           width={width}
           height={height}

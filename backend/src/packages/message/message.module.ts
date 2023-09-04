@@ -6,9 +6,10 @@ import { MessageController } from './message.controller';
 import { MessageService } from './message.service';
 import { ChatModule } from '../chat/chat.module';
 import { AppGateway } from 'src/app.gateway';
+import { BucketModule } from '../bucket/bucket.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Message]), UserModule, ChatModule],
+  imports: [SequelizeModule.forFeature([Message]), UserModule, ChatModule, BucketModule],
   controllers: [MessageController],
   providers: [MessageService, Logger, AppGateway],
   exports: [MessageService, Logger, AppGateway],
