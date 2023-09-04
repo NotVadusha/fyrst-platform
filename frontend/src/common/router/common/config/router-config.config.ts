@@ -21,7 +21,7 @@ export const routerConfig = {
           title: 'Create booking',
           path: '/booking/create',
           isPrivate: true,
-          canAccess: ['PLATFORM_ADMIN', 'FACILITY_MANAGER'],
+          neededPermission: 'manageBookings',
         },
       ],
     },
@@ -31,7 +31,7 @@ export const routerConfig = {
       path: '/timecard',
       mainPath: '/timecard',
       isPrivate: true,
-      canAccess: ['PLATFORM_ADMIN', 'FACILITY_MANAGER'],
+      neededPermission: 'manageTimecards',
     },
     {
       title: 'Profile',
@@ -67,7 +67,7 @@ export const routerConfig = {
       path: '/payments',
       items: [],
       isPrivate: true,
-      canAccess: ['PLATFORM_ADMIN', 'FACILITY_MANAGER'],
+      neededPermission: 'manageTimecards',
     },
     {
       title: 'Users',
@@ -76,7 +76,7 @@ export const routerConfig = {
       path: '/users',
       items: [],
       isPrivate: true,
-      canAccess: ['PLATFORM_ADMIN'],
+      neededPermission: 'manageUsers',
     },
   ] as NavItem[],
 };

@@ -78,13 +78,12 @@ function NavItem({ item }: { item: INavItem }) {
 
   const user = useAppSelector(selectUser);
 
-  const canAccess = !item.isPrivate || item.canAccess?.includes(user.role?.label ?? '');
+  const canAccess =
+    !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]);
 
   const canAccessSomeChildren = item.items?.some(
-    item => !item.isPrivate || item.canAccess?.includes(user.role?.label ?? ''),
+    item => !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]),
   );
-
-  console.log(item.path, canAccess);
 
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
 
@@ -131,7 +130,9 @@ function NavItem({ item }: { item: INavItem }) {
       {isOpen &&
         item.items?.map((child, indx) => {
           const isCurrentPath = location.pathname.includes(child.path);
-          const canAccess = !child.isPrivate || child.canAccess?.includes(user.role?.label ?? '');
+          const canAccess =
+            !child.isPrivate ||
+            (child.neededPermission && user.permissions?.[child.neededPermission]);
 
           return (
             <Link

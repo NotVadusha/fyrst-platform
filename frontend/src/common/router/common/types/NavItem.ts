@@ -1,4 +1,5 @@
 import { SVGIconProps } from 'src/common/types/interfaces/svg-icon.interface';
+import { Permissions } from 'src/common/packages/permissions/types/Permissions';
 
 export type NavItem = {
   title: string;
@@ -7,5 +8,5 @@ export type NavItem = {
   icon?: React.FunctionComponent<SVGIconProps>;
   items?: NavItem[];
   isPrivate?: boolean;
-  canAccess?: string[];
+  neededPermission?: keyof Omit<Permissions, 'userId'>;
 };
