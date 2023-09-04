@@ -27,6 +27,7 @@ import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
 import { RoleProtectedRoute } from './common/helpers/role-protected-route.helper';
 import { PermissionsProtectedRoute } from './common/helpers/permissions-protected-route.helper';
+import { ReportsPage } from 'src/pages/reports/ReportsPage';
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
@@ -193,6 +194,16 @@ export const router = createBrowserRouter([
                     </PermissionsProtectedRoute>
                   </RoleProtectedRoute>
                 ),
+              },
+            ],
+          },
+          {
+            path: 'reports',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <ReportsPage />,
               },
             ],
           },
