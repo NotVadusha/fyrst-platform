@@ -196,6 +196,10 @@ export class UserService {
     role: keyof typeof userRoles,
     permissions: InferAttributes<Permissions>,
   ) {
+    if (!permissions) {
+      return;
+    }
+
     switch (role) {
       case 'PLATFORM_ADMIN':
         permissions.manageBookings = true;
