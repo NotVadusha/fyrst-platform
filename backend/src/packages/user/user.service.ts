@@ -1,5 +1,5 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -22,6 +22,8 @@ export class UserService {
     private permissionsService: PermissionsService,
   ) {}
 
+  private logger = new Logger(UserService.name);
+
   async create(userInfo: CreateUserDto) {
     const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });
     if (sameEmailUser)
@@ -30,6 +32,7 @@ export class UserService {
     if (!role) throw new NotFoundException("This role doesn't exist");
 
     this.updatePermissionsByRole(role.label as keyof typeof userRoles, userInfo.permissions);
+    this.updateFacilityByRole(role.label as keyof typeof userRoles, userInfo);
 
     return await this.userRepository.create(
       {
@@ -140,6 +143,8 @@ export class UserService {
         this.updatePermissionsByRole(role.label as keyof typeof userRoles, updateInfo.permissions);
         this.permissionsService.updateByUser(user.id, updateInfo.permissions);
       }
+
+      this.updateFacilityByRole(role.label as keyof typeof userRoles, updateInfo as CreateUserDto);
     }
 
     Object.assign(user, updateInfo);
@@ -192,6 +197,13 @@ export class UserService {
         permissions.manageTimecards = false;
         permissions.manageUsers = false;
         break;
+    }
+  }
+
+  private updateFacilityByRole(role: keyof typeof userRoles, createInfo: CreateUserDto) {
+    if (role !== 'FACILITY_MANAGER') {
+      createInfo.facility_id = null;
+      this.logger.log(JSON.stringify(createInfo));
     }
   }
 }
