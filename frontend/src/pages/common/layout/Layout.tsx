@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
+import Notifications from '../notifications/Notifications';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -53,7 +54,10 @@ const Layout = () => {
   return (
     <div className='flex'>
       <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[280px]'>
-        <h2 className='font-bold text-lg'>{routerConfig.name}</h2>
+        <div className='flex justify-between items-center gap-2'>
+          <h2 className='font-bold text-lg'>{routerConfig.name}</h2>
+          <Notifications />
+        </div>
         <div className='flex flex-col gap-4'>
           {routerConfig.mainNav.map((item, index) => (
             <NavItem key={index} item={item} />
