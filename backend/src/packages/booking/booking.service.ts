@@ -10,6 +10,8 @@ import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
 import * as Papa from 'papaparse';
 import { prefixKeys } from '../../helpers/prefixKeys';
+import { UserProfileService } from '../user-profile/user-profile.service';
+import { RecommendationService } from '../common/recommendation.service';
 
 @Injectable()
 export class BookingService {
@@ -20,6 +22,10 @@ export class BookingService {
     private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly facilityService: FacilityService,
+    @Inject(UserProfileService)
+    private readonly userProfile: UserProfileService,
+    @Inject(RecommendationService)
+    private readonly recommendation: RecommendationService,
   ) {}
 
   async create(createdData: CreateBookingDto) {
@@ -141,6 +147,30 @@ export class BookingService {
     this.logger.log(`Added user with ID ${userId} to booking with ID ${bookingId}`);
 
     return { message: 'User successfully added to booking!', booking: updatedBooking };
+  }
+
+  async getBookingRecommendationsByUser(userId: number) {
+    const availableBookings = await this.bookingRepository.findAll({
+      where: {
+        status: 'pending',
+      },
+    });
+
+    const user = await this.userService.findOne(userId);
+
+    const profile = await this.userProfile.findOne(userId);
+
+    if (!user) return;
+
+    const rankedBookings = await this.recommendation.makeBookingRecommendationRankingByProfile(
+      availableBookings,
+      {
+        user,
+        profile,
+      },
+    );
+
+    this.logger.log(rankedBookings);
   }
 
   private async validateUserExists(userId: number) {

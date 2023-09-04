@@ -67,6 +67,11 @@ class Booking extends Model<InferAttributes<Booking>, InferCreationAttributes<Bo
   @Column
   startDate: Date;
 
+  @Column({
+    type: DataType.ARRAY(DataType.TEXT),
+  })
+  languages: string[];
+
   @Column
   endDate: Date;
 
