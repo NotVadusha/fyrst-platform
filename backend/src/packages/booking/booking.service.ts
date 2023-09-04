@@ -10,6 +10,8 @@ import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
 import { NotificationService } from '../notification/notification.service';
 import { notificationTemplateBooking } from 'shared/packages/notification/types/notificationTemplates';
+import * as Papa from 'papaparse';
+import { prefixKeys } from '../../helpers/prefixKeys';
 
 @Injectable()
 export class BookingService {
@@ -76,6 +78,38 @@ export class BookingService {
     });
     const total = await this.bookingRepository.count({ where: where });
     return { bookings, total };
+  }
+
+  async generateCSVFromBookings(bookings: Booking[]): Promise<string> {
+    if (bookings.length === 0) {
+      throw new Error('No bookings available to generate CSV.');
+    }
+
+    const cleanData = bookings.map(booking => {
+      const bookingJSON = booking.toJSON();
+      const facilityJSON = booking.facility.toJSON();
+
+      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+
+      const usersStr = booking.users
+        .map(user => `${user.first_name} ${user.last_name} (${user.id})`)
+        .join('; ');
+
+      return {
+        ...bookingJSON,
+        ...prefixedFacilityJSON,
+        users: usersStr,
+      };
+    });
+
+    const fieldKeys = Object.keys(cleanData[0]).filter(key => !['facility'].includes(key));
+
+    const csv = Papa.unparse({
+      fields: fieldKeys,
+      data: cleanData,
+    });
+
+    return csv;
   }
 
   async update(id: number, updatedData: UpdateBookingDto) {

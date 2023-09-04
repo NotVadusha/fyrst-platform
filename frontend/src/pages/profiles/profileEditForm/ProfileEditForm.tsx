@@ -9,7 +9,7 @@ import TextInput from 'src/common/components/ui/common/Input/common/TextInput/Te
 import { profileSchema } from 'src/common/packages/user/common/user-profile/types/validation-schemas/user-profile.validation-schema';
 import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { Button } from 'src/common/components/ui/common/Button';
-import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import * as y from 'yup';
 import { AvatarUploader } from './AvatarUploader';
@@ -41,9 +41,11 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
-      if (data.statusCode === 404) navigate('/auth/signin');
       setUser(data);
+      if (data.statusCode === 404) navigate('/auth/signin');
+
       const profile = await getProfile(data.id).unwrap();
+      console.log(profile);
       setAvatarImage(profile.avatar || '');
     };
 
@@ -71,10 +73,10 @@ export function ProfileEditForm() {
       user: {
         first_name: valuesFromForm?.first_name,
         last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
+        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : undefined,
         email: valuesFromForm?.email,
-        city: valuesFromForm.city ? valuesFromForm.city : null,
-        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+        city: valuesFromForm.city ? valuesFromForm.city : undefined,
+        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : undefined,
       },
     });
 

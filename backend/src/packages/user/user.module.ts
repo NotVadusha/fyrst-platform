@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -9,6 +9,8 @@ import { Notification } from '../notification/entities/notification.entity';
 import { NotificationModule } from '../notification/notification.module';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationGateway } from '../websocket/notification.gateway';
+
+@Global()
 @Module({
   providers: [UserService, NotificationService, NotificationGateway],
   controllers: [UserController],

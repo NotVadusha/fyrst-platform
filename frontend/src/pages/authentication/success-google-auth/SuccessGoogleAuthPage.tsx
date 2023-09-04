@@ -13,13 +13,12 @@ const SuccessGoogleAuthPage = () => {
     const refreshToken = Cookies.get('refreshToken');
     const userInfo = JSON.parse(userInfoJson || '');
 
-    console.log(accessToken, refreshToken, userInfo);
     dispatch(setUser(userInfo));
 
     localStorage.setItem('accessToken', accessToken!);
     localStorage.setItem('refreshToken', refreshToken!);
   }, []);
-  return <></>;
+  return <Navigate to={'/'} />;
 };
 
 export default SuccessGoogleAuthPage;

@@ -6,15 +6,9 @@ import { Form } from '../../../common/components/ui/common/Form/Form';
 import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
 import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
 import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
+import { bookingFiltersSchema } from '../../../common/packages/booking/types/validation-schemas/booking-filters.validation-schema';
 
-const formSchema = yup.object({
-  facility: yup.string(),
-  endDate: yup.date(),
-  startDate: yup.date(),
-  status: yup.string().oneOf(['pending', 'accepted', 'rejected', 'canceled', 'completed']),
-});
-
-type FormValues = yup.InferType<typeof formSchema>;
+type FormValues = yup.InferType<typeof bookingFiltersSchema>;
 
 export const BookingFilters = ({
   handleInputChange,
@@ -22,7 +16,7 @@ export const BookingFilters = ({
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   const form = useForm<FormValues>({
-    resolver: yupResolver<FormValues>(formSchema),
+    resolver: yupResolver<FormValues>(bookingFiltersSchema),
   });
 
   const { data: facilities } = useFetchFacilitiesQuery({});

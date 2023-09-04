@@ -8,6 +8,7 @@ import { Booking } from 'src/common/packages/booking/types/models/Booking.model'
 import { Timecard } from 'src/common/packages/timecard/types/models/Timecard.model';
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { Link } from 'react-router-dom';
+import { selectUserId } from '../../../common/store/slices/packages/user/userSelectors';
 
 interface BookingHeaderProps {
   facility: string;
@@ -17,7 +18,7 @@ interface BookingHeaderProps {
 }
 
 const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users, timecard }) => {
-  const userId = useAppSelector(state => state.user.id);
+  const userId = useAppSelector(selectUserId);
   const { toast } = useToast();
 
   const [addUserToBooking, { isLoading }] = useAddUserToBookingMutation();

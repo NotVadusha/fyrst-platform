@@ -16,3 +16,4 @@ export { NotificationsConfigModule } from './notifications-config/notifications-
 export { BucketModule } from './bucket/bucket.module';
 export { NotificationModule } from './notification/notification.module';
 export { WebSocketModule } from './websocket/websocket.module';
+export { PermissionsModule } from './permissions/permissions.module';

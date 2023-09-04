@@ -10,12 +10,21 @@ import { useFetchTimecardsQuery } from 'src/common/store/api/packages/timecards/
 import { useSearchParams } from 'react-router-dom';
 import { TimecardFiltersDto } from 'src/common/packages/timecard/types/dto/TimecardFiltersDto';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { hasPermissions } from 'src/common/helpers/authorization/hasPermissions';
+import { User } from 'src/common/packages/user/types/models/User.model';
+import { hasRole } from 'src/common/helpers/authorization/hasRole';
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
+import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
 
 const LIMIT = 5;
 
 const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
+  const user = useAppSelector(state => state.user);
+
+  const dispatch = useAppDispatch();
+  const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
 
   const filters: TimecardFiltersDto = {
     createdAt: searchParams.get('createdAt'),
@@ -27,10 +36,16 @@ const TimeCardPage = () => {
     offset: String((page - 1) * LIMIT),
   };
 
+  if (hasRole('FACILITY_MANAGER', user as User, true)) {
+    filters.facilityId = String(user.facility_id);
+  }
+
   Object.keys(filters).forEach(key => {
     filters[key as keyof TimecardFiltersDto] === null &&
       delete filters[key as keyof TimecardFiltersDto];
   });
+
+  console.log(filters);
 
   const { data, isFetching } = useFetchTimecardsQuery(filters);
 
@@ -65,6 +80,10 @@ const TimeCardPage = () => {
     });
   }
 
+  const handleExportCSV = () => {
+    dispatch(exportCSV({ feature: 'timecard', filters }));
+  };
+
   useEffect(() => {
     setSearchParams('');
   }, []);
@@ -74,10 +93,18 @@ const TimeCardPage = () => {
       <Header title='Timecards'>
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
-            <Button variant='secondary'>Export CSV</Button>
-            <Link to='/booking/create'>
-              <Button variant='primary'>Create new booking</Button>
-            </Link>
+            <Button
+              variant='secondary'
+              onClick={handleExportCSV}
+              disabled={data?.total === 0 || isCSVLoading}
+            >
+              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+            </Button>
+            {hasPermissions(['manageBookings'], user as User) && (
+              <Link to='/booking/create'>
+                <Button variant='primary'>Create new booking</Button>
+              </Link>
+            )}
           </div>
         </div>
       </Header>

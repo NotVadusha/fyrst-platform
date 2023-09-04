@@ -1,7 +1,8 @@
-import { UpdateUserBody, UserDefaultResponse } from 'src/common/packages/user/types/dto/UserDto';
+import { UpdateUserBody } from 'src/common/packages/user/types/dto/UserDto';
 import { UserProfile } from 'src/common/packages/user/common/user-profile/types/models/UserProfile.model';
 import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
 import { apiSlice } from '../../api';
+import { User } from 'src/common/packages/user/types/models/User.model';
 
 export interface getUsersQueryParams {
   currentPage: number;
@@ -9,7 +10,7 @@ export interface getUsersQueryParams {
 }
 
 interface getUsersPayload {
-  users: UserDefaultResponse[];
+  users: User[];
   totalCount: number;
 }
 
@@ -28,10 +29,10 @@ export const userApi = apiSlice.injectEndpoints({
         return result;
       },
     }),
-    getAllUsers: build.query<UserDefaultResponse[], void>({
+    getAllUsers: build.query<User[], void>({
       query: () => '/user/many',
     }),
-    addUsers: build.mutation<UserDefaultResponse[], UserDefaultResponse[]>({
+    addUsers: build.mutation<User[], User[]>({
       query: users => {
         return {
           url: `/user/many`,
@@ -40,7 +41,7 @@ export const userApi = apiSlice.injectEndpoints({
         };
       },
     }),
-    addUser: build.mutation<UserDefaultResponse, Omit<UserDefaultResponse, 'id' | 'is_confirmed'>>({
+    addUser: build.mutation<User, UpdateUserBody>({
       query: user => {
         return {
           url: '/user',
@@ -49,26 +50,26 @@ export const userApi = apiSlice.injectEndpoints({
         };
       },
     }),
-    getUser: build.query<UserDefaultResponse, number>({
+    getUser: build.query<User, number>({
       query(id) {
         return `/user/${id}`;
       },
     }),
-    updateUser: build.mutation<UserDefaultResponse, { id: number; user: UpdateUserBody }>({
+    updateUser: build.mutation<User, { id: number; user: UpdateUserBody }>({
       query: args => ({
         url: `/user/${args.id}`,
         method: 'PATCH',
         body: args.user,
       }),
     }),
-    getUserProfile: build.mutation<UserDefaultResponse, { id: number }>({
+    getUserProfile: build.mutation<User, { id: number }>({
       query: body => ({
         url: `/profile/${body.id}`,
         method: 'GET',
         body,
       }),
     }),
-    updateUserProfile: build.mutation<UserDefaultResponse, UserProfile>({
+    updateUserProfile: build.mutation<User, UserProfile>({
       query: body => ({
         url: `/profile/${body.id}`,
         method: 'PATCH',

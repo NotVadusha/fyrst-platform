@@ -8,10 +8,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateTimecardMutation } from 'src/common/store/api/packages/timecards/timecardsApi';
 import { CreateTimecardFormValues } from './CreateTimeCardForm';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import { useGetBookingByIdQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 
 export default function CreateTimeCardPage() {
   const { bookingId } = useParams();
@@ -21,7 +22,7 @@ export default function CreateTimeCardPage() {
   const [createTimecard] = useCreateTimecardMutation();
   const navigate = useNavigate();
 
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   function handleCreteTimecardFormSubmit(values: CreateTimecardFormValues) {
     createTimecard({

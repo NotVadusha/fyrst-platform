@@ -1,5 +1,5 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,6 +9,13 @@ import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
 import { NotificationService } from '../notification/notification.service';
 import { notificationTemplatePasswordChange } from 'shared/packages/notification/types/notificationTemplates';
+import { Permissions } from '../permissions/entities/permissions.entity';
+import jwtDecode from 'jwt-decode';
+import { Roles } from '../roles/entities/roles.entity';
+import { PermissionsService } from '../permissions/permissions.service';
+import { userRoles } from 'shared/packages/roles/userRoles';
+import { InferAttributes } from 'sequelize';
+import * as Papa from 'papaparse';
 
 @Injectable()
 export class UserService {
@@ -16,7 +23,10 @@ export class UserService {
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
     private readonly notificationService: NotificationService,
+    private permissionsService: PermissionsService,
   ) {}
+
+  private logger = new Logger(UserService.name);
 
   async create(userInfo: CreateUserDto) {
     const sameEmailUser = await this.userRepository.findOne({ where: { email: userInfo.email } });
@@ -24,16 +34,23 @@ export class UserService {
       throw new BadRequestException(`email ${sameEmailUser.email} is already in use`);
     const role = await this.rolesService.findOne(userInfo.role_id);
     if (!role) throw new NotFoundException("This role doesn't exist");
-    console.log('creating');
-    return await this.userRepository.create({
-      phone_number: null,
-      is_confirmed: false,
-      ...userInfo,
-    });
+
+    this.updatePermissionsByRole(role.label as keyof typeof userRoles, userInfo.permissions);
+    this.updateFacilityByRole(role.label as keyof typeof userRoles, userInfo);
+
+    return await this.userRepository.create(
+      {
+        phone_number: null,
+        is_confirmed: false,
+        permissions: { ...userInfo.permissions },
+        ...userInfo,
+      },
+      { include: Permissions },
+    );
   }
 
   async findAll() {
-    return await this.userRepository.findAll();
+    return await this.userRepository.findAll({ include: [Roles, Permissions] });
   }
 
   async createMany(userInfo: CreateUserDto[]) {
@@ -44,45 +61,39 @@ export class UserService {
   async getAllByParams({
     currentPage,
     filters,
+    isCSVExport = false,
   }: {
     currentPage: number;
     filters: Omit<UserFiltersDto, 'currentPage'>;
+    isCSVExport?: boolean;
   }) {
     Object.keys(filters).forEach(
       key =>
         (filters[key] === undefined || (typeof filters[key] !== 'string' && isNaN(filters[key]))) &&
         delete filters[key],
     );
-
-    // Number of users to show per page
-    const limit = 5;
-
-    // To skip per page
+    const limit = isCSVExport ? Number.MAX_SAFE_INTEGER : 5;
     const offset = typeof currentPage === 'number' ? (currentPage - 1) * limit : 0;
 
-    const opSubstringFilters = {
+    const opiLikeFilters = {
       ...(filters.first_name && {
         first_name: {
-          [Op.substring]: filters.first_name ?? '',
-          [Op.substring]: filters.first_name,
+          [Op.iLike]: `%${filters.first_name}%`,
         },
       }),
       ...(filters.last_name && {
         last_name: {
-          [Op.substring]: filters.last_name ?? '',
-          [Op.substring]: filters.last_name,
+          [Op.iLike]: `%${filters.last_name}%`,
         },
       }),
       ...(filters.email && {
         email: {
-          [Op.substring]: filters.email ?? '',
-          [Op.substring]: filters.email,
+          [Op.iLike]: `%${filters.email}%`,
         },
       }),
       ...(filters.city && {
         city: {
-          [Op.substring]: filters.city ?? '',
-          [Op.substring]: filters.city,
+          [Op.iLike]: `%${filters.city}%`,
         },
       }),
     };
@@ -91,8 +102,9 @@ export class UserService {
       order: [['id', 'DESC']],
       where: {
         ...filters,
-        ...opSubstringFilters,
+        ...opiLikeFilters,
       },
+      include: [Roles, Permissions],
       limit,
       offset,
     });
@@ -100,30 +112,60 @@ export class UserService {
     const totalCount = await this.userRepository.count({
       where: {
         ...filters,
-        ...opSubstringFilters,
+        ...opiLikeFilters,
       },
     });
 
     return { users, totalCount };
   }
 
+  async generateCSVFromUsers(users: User[]): Promise<string> {
+    if (users.length === 0) {
+      throw new Error('No users available to generate CSV.');
+    }
+
+    const cleanData = users.map(user => user.toJSON());
+    const fieldKeys = Object.keys(cleanData[0]);
+    const csv = Papa.unparse({
+      fields: fieldKeys,
+      data: cleanData,
+    });
+
+    return csv;
+  }
+
   async findOne(userId: number) {
-    return await this.userRepository.findOne({ where: { id: userId } });
+    return await this.userRepository.findOne({
+      where: { id: userId },
+      include: [Roles, Permissions],
+    });
   }
 
   async findOneByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email } });
+    return await this.userRepository.findOne({ where: { email }, include: [Roles, Permissions] });
   }
 
   async update(updateInfo: UpdateUserDto, userId: number) {
+    const user = await this.findOne(userId);
+
     if (updateInfo.role_id) {
       const role = await this.rolesService.findOne(updateInfo.role_id);
       if (!role) throw new NotFoundException("This role doesn't exist");
+
+      if (updateInfo.permissions) {
+        this.updatePermissionsByRole(role.label as keyof typeof userRoles, updateInfo.permissions);
+        this.permissionsService.updateByUser(user.id, updateInfo.permissions);
+      }
+
+      this.updateFacilityByRole(role.label as keyof typeof userRoles, updateInfo as CreateUserDto);
     }
-    const [updatedUser] = await this.userRepository.update(updateInfo, { where: { id: userId } });
-    if (!updatedUser) throw new NotFoundException('User do not exist');
-    return updatedUser;
+
+    Object.assign(user, updateInfo);
+
+    await user.save();
+    return await this.findOne(user.id);
   }
+
   async changePassword(userId: number, currentPassword: string, newPassword: string) {
     const user = await this.findOne(userId);
     if (!user) throw new NotFoundException('User not found');
@@ -146,6 +188,39 @@ export class UserService {
     return await this.userRepository.update({ is_confirmed: true }, { where: { email: email } });
   }
   async findByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email: email } });
+    return await this.userRepository.findOne({
+      where: { email: email },
+      include: [Roles, Permissions],
+    });
+  }
+  async findByJwt(jwt: string) {
+    const payload = jwtDecode<{ id: number }>(jwt);
+
+    return await this.findOne(payload.id);
+  }
+
+  private updatePermissionsByRole(
+    role: keyof typeof userRoles,
+    permissions: InferAttributes<Permissions>,
+  ) {
+    switch (role) {
+      case 'PLATFORM_ADMIN':
+        permissions.manageBookings = true;
+        permissions.manageTimecards = true;
+        permissions.manageUsers = true;
+        break;
+      case 'WORKER':
+        permissions.manageBookings = false;
+        permissions.manageTimecards = false;
+        permissions.manageUsers = false;
+        break;
+    }
+  }
+
+  private updateFacilityByRole(role: keyof typeof userRoles, createInfo: CreateUserDto) {
+    if (role !== 'FACILITY_MANAGER') {
+      createInfo.facility_id = null;
+      this.logger.log(JSON.stringify(createInfo));
+    }
   }
 }

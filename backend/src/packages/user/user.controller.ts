@@ -9,6 +9,9 @@ import {
   ParseIntPipe,
   NotFoundException,
   Query,
+  Res,
+  InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,6 +19,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { UserFiltersDto } from './dto/user-filters.dto';
+import { Response as ExpressResponse } from 'express';
+import { Readable } from 'stream';
 
 @ApiTags('User endpoints')
 @Controller('user')
@@ -27,14 +32,38 @@ export class UserController {
     return await this.userService.create(userInfo);
   }
 
-  @Get('/many')
-  async getAll() {
-    return await this.userService.findAll();
-  }
-
   @Post('/many')
   async createMany(@Body() userInfo: CreateUserDto[]) {
     return await this.userService.createMany(userInfo);
+  }
+
+  @Get('export-csv')
+  async exportAllUsersToCSV(
+    @Res() response: ExpressResponse,
+    @Query() filters?: UserFiltersDto,
+  ): Promise<void> {
+    try {
+      const usersData = await this.userService.getAllByParams({
+        currentPage: 1,
+        filters,
+        isCSVExport: true,
+      });
+
+      const users = usersData.users;
+      const csv = await this.userService.generateCSVFromUsers(users);
+      const stream = new Readable();
+      stream.push(csv);
+      stream.push(null);
+
+      response.set({
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename=users.csv`,
+      });
+
+      stream.pipe(response);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to export users');
+    }
   }
 
   @Get(':id')
@@ -61,13 +90,13 @@ export class UserController {
       },
     });
   }
+
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) userId: number,
     @Body()
     updateUserInfo: UpdateUserDto,
   ) {
-    console.log(userId, updateUserInfo);
     const updatedUser = await this.userService.update(updateUserInfo, userId);
     if (!updatedUser) throw new NotFoundException();
     return this.userService.findOne(userId);
