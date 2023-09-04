@@ -1,11 +1,11 @@
 import React from 'react';
 import { Header } from '../../common/components/ui/layout/Header/Header';
 import { Button } from '../../common/components/ui/common/Button';
-import styles from './Notifications.module.css';
-import NotificationsForm from './NotificationsForm';
+import styles from './NotificationsSettings.module.css';
+import NotificationsForm from './NotificationsSettingsForm';
 import { useNavigate } from 'react-router-dom';
 
-const Notifications = () => {
+const NotificationsSettings = () => {
   const navigate = useNavigate();
   const handleCreateBookingClick = () => {
     navigate('/booking/create');
@@ -35,4 +35,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default NotificationsSettings;
