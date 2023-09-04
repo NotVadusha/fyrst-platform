@@ -18,17 +18,17 @@ export class CalendarController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.calendarService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.calendarService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCalendarDto: UpdateCalendarDto) {
-    return this.calendarService.update(+id, updateCalendarDto);
+  update(@Param('id') id: number, @Body() updateCalendarDto: UpdateCalendarDto) {
+    return this.calendarService.update(id, updateCalendarDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.calendarService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.calendarService.remove(id);
   }
 }

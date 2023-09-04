@@ -6,6 +6,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModule } from '../user/user.module';
 
 @Module({
+  exports: [CalendarService],
   imports: [SequelizeModule.forFeature([Calendar]), UserModule],
   controllers: [CalendarController],
   providers: [CalendarService],
