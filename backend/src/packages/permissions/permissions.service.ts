@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Permissions } from './entities/permissions.entity';
-import { UpdatePermissionsDto } from './dto/updare-permissions.dto';
+import { UpdatePermissionsDto } from './dto/update-permissions.dto';
 
 @Injectable()
 export class PermissionsService {
