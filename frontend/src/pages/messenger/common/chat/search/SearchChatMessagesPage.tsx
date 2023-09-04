@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/co
 import { Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
 
-export function SeachChatMessagesPage() {
+export function SearchChatMessagesPage() {
   const { chatId } = useParams();
 
   if (!chatId) return <>Not found</>;

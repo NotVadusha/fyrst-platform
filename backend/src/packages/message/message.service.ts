@@ -87,22 +87,22 @@ export class MessageService {
     this.logger.log('just messages without link', messages);
 
     if (messages) {
-      const a = await Promise.all(
-        messages.map(async m => {
-          if (m.attachment) {
+      const messagesWithAttachmentLink = await Promise.all(
+        messages.map(async message => {
+          if (message.attachment) {
             const attachment = await this.bucketService.getFileLink(
-              m.attachment,
+              message.attachment,
               'read',
               Date.now() + 1000 * 60 * 60 * 24 * 7,
             );
 
-            m.attachment = attachment;
+            message.attachment = attachment;
           }
-          return m;
+          return message;
         }),
       );
-      this.logger.log('Media messages', a);
-      return a;
+      this.logger.log('Media messages', messagesWithAttachmentLink);
+      return messages;
     }
 
     return [];

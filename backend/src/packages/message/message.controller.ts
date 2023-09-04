@@ -45,7 +45,6 @@ export class MessageController {
   @UseGuards(AccessTokenGuard)
   @Get('media')
   async getAllMessagesWithMedia(@Param('chatId', ParseIntPipe) chatId: number) {
-    Logger.log('getting them medi');
     return this.messageService.findAllMedia(chatId);
   }
 

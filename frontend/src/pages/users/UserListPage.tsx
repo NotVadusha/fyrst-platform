@@ -98,7 +98,7 @@ export function UserListPage() {
   return (
     <>
       <Header title='Users' />
-      <div className='mx-16'>
+      <div className='mx-16 pb-4'>
         <div className='flex flex-col space-y-6 mt-6'>
           <div className='flex items-center justify-between'>
             <h2 className='text-4xl font-bold'>Users</h2>

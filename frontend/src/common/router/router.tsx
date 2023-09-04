@@ -28,7 +28,7 @@ import { ConfigurateProtectedRoute } from './common/helpers/configurate-protecte
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
-import { SeachChatMessagesPage } from 'src/pages/messenger/common/chat/search/SeachChatMessagesPage';
+import { SearchChatMessagesPage } from 'src/pages/messenger/common/chat/search/SearchChatMessagesPage';
 import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
@@ -96,7 +96,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: ':chatId/search',
-                element: <SeachChatMessagesPage />,
+                element: <SearchChatMessagesPage />,
               },
               {
                 path: ':chatId/media',

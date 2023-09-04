@@ -139,8 +139,6 @@ export class ChatService {
                 model: Message,
                 as: 'messages',
                 separate: true,
-                // limit: 1,
-                // order: [['createdAt', 'DESC']],
                 include: [{ model: User, as: 'user' }],
               },
               { model: User, as: 'members' },
