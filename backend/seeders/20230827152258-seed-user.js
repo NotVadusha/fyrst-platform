@@ -43,8 +43,9 @@ module.exports = {
       password: '$2a$12$BfwCC5c4ZBHTPrbH/XHAg.UCLNMbcNJoXdV5OgdPw5iQ1GP6FoPvW',
       createdAt: faker.date.past(),
       updatedAt: faker.date.past(),
-      role_id: 3,
+      role_id: 2,
       is_confirmed: true,
+      facility_id: 1,
     };
 
     const worker = {
@@ -56,7 +57,7 @@ module.exports = {
       password: '$2a$12$BfwCC5c4ZBHTPrbH/XHAg.UCLNMbcNJoXdV5OgdPw5iQ1GP6FoPvW',
       createdAt: faker.date.past(),
       updatedAt: faker.date.past(),
-      role_id: 3,
+      role_id: 1,
       is_confirmed: true,
     };
 

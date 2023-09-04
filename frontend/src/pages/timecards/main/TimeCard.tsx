@@ -13,6 +13,7 @@ import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { hasPermissions } from 'src/common/helpers/authorization/hasPermissions';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { User } from 'src/common/packages/user/types/models/User.model';
+import { hasRole } from 'src/common/helpers/authorization/hasRole';
 
 const LIMIT = 5;
 
@@ -31,10 +32,16 @@ const TimeCardPage = () => {
     offset: String((page - 1) * LIMIT),
   };
 
+  if (hasRole('FACILITY_MANAGER', user as User, true)) {
+    filters.facilityId = String(user.facility_id);
+  }
+
   Object.keys(filters).forEach(key => {
     filters[key as keyof TimecardFiltersDto] === null &&
       delete filters[key as keyof TimecardFiltersDto];
   });
+
+  console.log(filters);
 
   const { data, isFetching } = useFetchTimecardsQuery(filters);
 

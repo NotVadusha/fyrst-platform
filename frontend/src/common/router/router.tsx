@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
               {
                 path: 'create',
                 element: (
-                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
                     <PermissionsProtectedRoute permissions={['manageBookings']}>
                       <CreateBookingPage />
                     </PermissionsProtectedRoute>
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: (
-                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
                     <PermissionsProtectedRoute permissions={['manageTimecards']}>
                       <TimeCardPage />
                     </PermissionsProtectedRoute>
@@ -84,7 +84,7 @@ export const router = createBrowserRouter([
               {
                 path: ':id',
                 element: (
-                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
                     <PermissionsProtectedRoute permissions={['manageTimecards']}>
                       <ViewTimeCardPage />
                     </PermissionsProtectedRoute>
@@ -93,13 +93,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'create/:bookingId',
-                element: (
-                  <RoleProtectedRoute role='FACILITY_MANAGER'>
-                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
-                      <CreateTimeCardPage />
-                    </PermissionsProtectedRoute>
-                  </RoleProtectedRoute>
-                ),
+                element: <CreateTimeCardPage />,
               },
             ],
           },
@@ -177,7 +171,7 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: (
-                  <RoleProtectedRoute role='FACILITY_MANAGER'>
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
                     <PermissionsProtectedRoute permissions={['manageUsers']}>
                       <UserListPage />
                     </PermissionsProtectedRoute>

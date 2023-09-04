@@ -119,7 +119,7 @@ export function UserListPage() {
               <Button variant='secondary' onClick={handleExport}>
                 Export CSV
               </Button>
-              {hasRole('PLATFORM_ADMIN', user as User) && (
+              {hasRole('PLATFORM_ADMIN', user as User, false) && (
                 <>
                   <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
                     Import Users

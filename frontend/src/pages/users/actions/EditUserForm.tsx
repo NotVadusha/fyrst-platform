@@ -179,7 +179,7 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
             )}
           />
 
-          {hasRole('PLATFORM_ADMIN', currentUser as User) && (
+          {hasRole('PLATFORM_ADMIN', currentUser as User, false) && (
             <>
               <FormField
                 control={form.control}

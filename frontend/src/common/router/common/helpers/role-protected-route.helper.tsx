@@ -9,9 +9,10 @@ import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 export type RoleProtectedRouteProps = {
   children: JSX.Element;
   role: keyof typeof userRoles;
+  strict: boolean;
 };
 
-export const RoleProtectedRoute = ({ children, role }: RoleProtectedRouteProps) => {
+export const RoleProtectedRoute = ({ children, role, strict }: RoleProtectedRouteProps) => {
   const user = useAppSelector(state => state.user);
 
   if (!user.role) {
@@ -22,7 +23,7 @@ export const RoleProtectedRoute = ({ children, role }: RoleProtectedRouteProps) 
     );
   }
 
-  if (!hasRole(role, user as User)) {
+  if (!hasRole(role, user as User, strict)) {
     return <Navigate to={'/booking'} replace />;
   }
 

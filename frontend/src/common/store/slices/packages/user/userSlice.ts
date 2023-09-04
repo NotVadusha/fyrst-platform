@@ -29,6 +29,7 @@ const userSlice = createSlice({
       state.role_id = action.payload?.role_id;
       state.role = action.payload?.role;
       state.permissions = action.payload?.permissions;
+      state.facility_id = action.payload?.facility_id;
     },
     clearUser(state) {
       state.id = undefined;
@@ -41,6 +42,7 @@ const userSlice = createSlice({
       state.role_id = undefined;
       state.role = undefined;
       state.permissions = undefined;
+      state.facility_id = undefined;
     },
   },
 });

@@ -9,7 +9,6 @@ import { User } from '../user/entities/user.entity';
 import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
-import { Op } from 'sequelize';
 import { getFilterParams } from 'shared/getFilterParams';
 
 @Injectable()
@@ -29,7 +28,7 @@ export class TimecardService {
   async getAllFiltered(filters: TimecardFiltersDto): Promise<GetAllTimecardsDto> {
     this.logger.log(filters.createdAt);
 
-    const whereFilters: Record<string, any>[] = getFilterParams(filters, [
+    const timecardFilters: Record<string, any>[] = getFilterParams(filters, [
       'createdAt',
       'approvedAt',
       'status',
@@ -37,21 +36,24 @@ export class TimecardService {
       'bookingId',
     ]);
 
+    const bookingFilters: Record<string, any>[] = getFilterParams(filters, ['facilityId']);
+
+    this.logger.log(JSON.stringify(bookingFilters));
+
     const timecards = await this.timecardModel.findAll({
-      where: whereFilters,
+      where: timecardFilters,
       limit: filters.limit,
       offset: filters.offset,
       include: [
         { model: User, as: 'employee', include: [Roles] },
         { model: User, as: 'facilityManager', include: [Roles] },
-        { model: Booking, include: [Facility] },
+        { model: Booking, where: bookingFilters, include: [Facility] },
       ],
     });
 
     const total = await this.timecardModel.count({
-      where: {
-        [Op.and]: whereFilters,
-      },
+      where: timecardFilters,
+      include: [{ model: Booking, where: bookingFilters, include: [Facility] }],
     });
 
     return { items: timecards, total };
