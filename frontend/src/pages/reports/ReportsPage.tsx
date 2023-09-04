@@ -7,7 +7,7 @@ export function ReportsPage() {
     <section className='min-h-full'>
       <Header title='Reports' />
       <div className='px-20 py-10 flex flex-col gap-y-6'>
-        <BookingStatistics />
+        <BookingStatistics facilityId={1} startDate={new Date('2022-09-04')} />
       </div>
     </section>
   );
