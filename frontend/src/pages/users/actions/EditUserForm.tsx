@@ -193,7 +193,6 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
                         name='role_id'
                         label='Role'
                         options={roleOptions}
-                        ddType='in-form'
                         placeholder='Role'
                         className='z-20'
                       />
@@ -218,7 +217,6 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
                         control={form.control}
                         label='Facility'
                         options={facilityOptions}
-                        ddType='in-form'
                         placeholder='Facility'
                       />
                     </div>

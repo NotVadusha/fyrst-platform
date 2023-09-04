@@ -73,10 +73,10 @@ export function ProfileEditForm() {
       user: {
         first_name: valuesFromForm?.first_name,
         last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
+        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : undefined,
         email: valuesFromForm?.email,
-        city: valuesFromForm.city ? valuesFromForm.city : null,
-        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+        city: valuesFromForm.city ? valuesFromForm.city : undefined,
+        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : undefined,
       },
     });
 

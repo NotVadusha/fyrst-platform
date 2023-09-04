@@ -1,5 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { User } from 'src/common/packages/user/types/models/User.model';
+import { Role } from 'src/common/packages/roles/types/models/Role.model';
+import { Permissions } from 'src/common/packages/permissions/types/Permissions';
 
 export interface UserState {
   id?: number;
@@ -10,6 +12,9 @@ export interface UserState {
   city?: string;
   birthdate?: string;
   role_id?: number;
+  role?: Role;
+  permissions?: Permissions;
+  facility_id?: number;
 }
 
 const initialState: UserState = {
@@ -23,6 +28,7 @@ const initialState: UserState = {
   role_id: undefined,
   role: undefined,
   permissions: undefined,
+  facility_id: undefined,
 };
 
 const userSlice = createSlice({
