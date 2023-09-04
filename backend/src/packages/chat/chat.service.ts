@@ -18,7 +18,6 @@ import { AppGateway } from 'src/app.gateway';
 import sequelize from 'sequelize';
 import { BucketService } from '../bucket/bucket.service';
 import * as crypto from 'crypto';
-
 @Injectable()
 export class ChatService {
   constructor(
@@ -37,11 +36,23 @@ export class ChatService {
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
-    const members = await this.userRepository.findAll({ where: { email: createdData.members } });
+    let membersWithoutOwner = createdData.members;
 
-    if (members.find(({ id }) => id === createdData.ownerId)) {
-      throw new HttpException('You cannot add yourself to a conversation', HttpStatus.BAD_REQUEST);
+    if (createdData.members.length >= 2) {
+      membersWithoutOwner = createdData.members.filter(
+        memberId => memberId !== createdData.ownerId,
+      );
+    } else if (
+      createdData.members.length === 1 &&
+      createdData.members.includes(createdData.ownerId)
+    ) {
+      throw new HttpException(
+        'You cannot create a conversation with yourself',
+        HttpStatus.BAD_REQUEST,
+      );
     }
+
+    const members = await this.userRepository.findAll({ where: { id: membersWithoutOwner } });
 
     if (!members.length) {
       const plural = createdData.members.length > 1;
@@ -139,8 +150,6 @@ export class ChatService {
                 model: Message,
                 as: 'messages',
                 separate: true,
-                // limit: 1,
-                // order: [['createdAt', 'DESC']],
                 include: [{ model: User, as: 'user' }],
               },
               { model: User, as: 'members' },

@@ -36,7 +36,7 @@ export function CreateConversationForm({ onCreate }: { onCreate: () => void }) {
 
   async function createConversation(user: User) {
     if (!user) return;
-    createChat({ name: 'Any', members: [user.email] })
+    createChat({ name: 'Any', members: [user.id] })
       .unwrap()
       .then(res => {
         setIsLoading(true);

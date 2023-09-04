@@ -42,7 +42,7 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
   async function createConversation() {
     if (!selectedUsers.length) return;
     setIsCreating(true);
-    createChat({ name: 'Any', members: selectedUsers.map(({ email }) => email) })
+    createChat({ name: 'Any', members: selectedUsers.map(({ id }) => id) })
       .unwrap()
       .then(res => {
         toast({ title: 'Success', description: 'New chat successfully created' });
@@ -134,23 +134,6 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
     </div>
   );
 }
-
-// function SelectUserButton({ user, onClick }: { user: User; onClick: (user: User) => void }) {
-//   return (
-//     <button
-//       className='w-full flex items-center px-1 py-2 gap-2  rounded-md cursor-pointer hover:bg-grey mt-2'
-//       onClick={void onClick(user)}
-//     >
-//       <Avatar className='w-6 h-6'>
-//         <AvatarImage src='https://github.com/shadcn.png2' />
-//         <AvatarFallback>{`${user.first_name?.[0]}${user.last_name?.[0] ?? ''}`}</AvatarFallback>
-//       </Avatar>
-//       <span>
-//         {user.first_name} {user.last_name}
-//       </span>
-//     </button>
-//   );
-// }
 
 function SelectUserButtonSkeleton() {
   return (

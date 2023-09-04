@@ -5,7 +5,7 @@ import { Chat } from 'shared/socketEvents';
 
 interface NewChatPayload {
   name: string;
-  members: string[];
+  members: number[];
 }
 
 export interface MessageFilters {
