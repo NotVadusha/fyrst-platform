@@ -19,6 +19,7 @@ import DateInput from './DateInput';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { Buffer } from 'buffer';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -46,7 +47,7 @@ export function ProfileEditForm() {
 
       const profile = await getProfile(data.id).unwrap();
       console.log(profile);
-      setAvatarImage(profile.avatar || '');
+      setAvatarImage(profile.avatar || defaultAvatar);
     };
 
     userFetch(userId);
