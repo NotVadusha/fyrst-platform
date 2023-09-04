@@ -3,10 +3,10 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './config/swagger/swagger.config';
-import * as bodyParser from 'body-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { rawBody: true });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -14,7 +14,7 @@ async function bootstrap() {
     }),
   );
 
-  app.use(bodyParser.json({ limit: '5mb' }));
+  app.useBodyParser('json', { limit: '5mb' });
   app.setGlobalPrefix('api/v1');
   app.enableCors();
 
