@@ -186,7 +186,7 @@ const MessageElement = ({
         )}
       >
         <p className='text-black text-sm font-medium'>{message.messageContent}</p>
-        {!!message.attachment && <img src={message.attachment} />}
+        {!!message.attachment && <img loading='lazy' src={message.attachment} />}
         <span className='text-dark-grey text-body-small font-medium text-end text-sm '>
           {!!message.createdAt && format(new Date(message.createdAt), 'HH:mm')}
         </span>
