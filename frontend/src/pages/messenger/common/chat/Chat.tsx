@@ -93,7 +93,7 @@ export const ChatPage: React.FC = () => {
         <div className='grid gap-2'>
           <p className='text-2xl/[24px] font-semibold text-black'>
             {otherMembers
-              ?.map(({ first_name, last_name }: User) => `${first_name} ${last_name}`)
+              ?.map(({ first_name, last_name }: User) => `${first_name} ${last_name ?? ''}`)
               .join(', ')}
           </p>
         </div>
