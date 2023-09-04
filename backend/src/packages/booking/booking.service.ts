@@ -9,7 +9,7 @@ import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
 import * as Papa from 'papaparse';
-import { prefixKeys } from '../../helpers/prefixKeys';
+import { flatten } from 'flat';
 
 @Injectable()
 export class BookingService {
@@ -82,25 +82,32 @@ export class BookingService {
       throw new Error('No bookings available to generate CSV.');
     }
 
-    const cleanData = bookings.map(booking => {
-      const bookingJSON = booking.toJSON();
-      const facilityJSON = booking.facility.toJSON();
+    const excludedKeys = [
+      'creator_password',
+      'creator_role_id',
+      'creator_chatId',
+      'creator_facility_id',
+      'facility_logo',
+    ];
 
-      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+    const excludedUserKeyParts = [
+      'password',
+      'is_confirmed',
+      'createdAt',
+      'chatId',
+      'facility_id',
+      'updatedAt',
+    ];
 
-      const usersStr = booking.users
-        .map(user => `${user.first_name} ${user.last_name} (${user.id})`)
-        .join('; ');
+    const cleanData = bookings.map(booking => flatten(booking.toJSON(), { delimiter: '_' }));
 
-      return {
-        ...bookingJSON,
-        ...prefixedFacilityJSON,
-        users: usersStr,
-      };
-    });
+    const isValidFieldKey = (key: string, dynamicRegex: RegExp) => {
+      return !excludedKeys.includes(key) && !dynamicRegex.test(key);
+    };
 
-    const fieldKeys = Object.keys(cleanData[0]).filter(key => !['facility'].includes(key));
+    const dynamicRegex = new RegExp(`^users_\\d+_(${excludedUserKeyParts.join('|')})$`);
 
+    const fieldKeys = Object.keys(cleanData[0]).filter(key => isValidFieldKey(key, dynamicRegex));
     const csv = Papa.unparse({
       fields: fieldKeys,
       data: cleanData,
