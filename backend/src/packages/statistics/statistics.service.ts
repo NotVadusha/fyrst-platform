@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Booking } from '../booking/entities/booking.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { BookingStatisticsResponseDto } from './dto/booking-amount-statistics.dto';
-import { BookingsByMonthDto } from './dto/bookings-by-month.dto';
+import { BookingsByMonthResponseDto } from './dto/bookings-by-month.dto';
 import { Op } from 'sequelize';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Injectable()
 export class StatisticsService {
@@ -50,10 +50,10 @@ export class StatisticsService {
     };
   }
 
-  async getBookingsByMonth(facilityId: number): Promise<BookingsByMonthDto[]> {
-    const startDate = moment().subtract(1, 'year');
+  async getBookingsByMonth(facilityId: number): Promise<BookingsByMonthResponseDto[]> {
+    const startDate = moment(new Date()).subtract(1, 'year');
 
-    const result: BookingsByMonthDto[] = [];
+    const result: BookingsByMonthResponseDto[] = [];
 
     while (startDate.add(1, 'month') <= moment()) {
       const numberOfBookings = await this.bookingModel.count({
@@ -65,7 +65,7 @@ export class StatisticsService {
         },
       });
 
-      result.push({ month: startDate.format('M'), numberOfBookings });
+      result.push({ month: startDate.format('MMMM'), numberOfBookings });
 
       startDate.add(1, 'month');
     }
