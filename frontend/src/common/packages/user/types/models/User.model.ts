@@ -14,6 +14,7 @@ export interface User {
   role_id: number;
   role: Role;
   permissions: Permissions;
+  facility_id: number;
 }
 
 export interface DecodedUser {

@@ -25,6 +25,7 @@ import * as y from 'yup';
 import { roleToText } from './roleToText';
 import { hasRole } from 'src/common/helpers/authorization/hasRole';
 import { useAppSelector } from 'src/common/hooks/redux';
+import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
 
 export type EditUserFormInputs = y.InferType<typeof userSchema>;
 interface EditUserFormProps {
@@ -36,6 +37,11 @@ interface EditUserFormProps {
 export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
   const [_, setCity] = React.useState('');
   const { data: roles, isFetching: isRolesFetching, isError: isRolesError } = useFetchRolesQuery();
+  const {
+    data: facilities,
+    isFetching: isFacilitiesFetching,
+    isError: isFacilitiesError,
+  } = useFetchFacilitiesQuery({});
   const currentUser = useAppSelector(state => state.user);
 
   const form = useForm<EditUserFormInputs>({
@@ -49,6 +55,7 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
       last_name: user?.last_name ? user.last_name : '',
       phone_number: user?.phone_number ? user.phone_number : '',
       role_id: user?.role_id ? user.role_id : 1,
+      facility_id: user?.facility_id ? user.facility_id : 1,
       permissions: {
         manageBookings: user?.permissions ? user.permissions.manageBookings : false,
         manageTimecards: user?.permissions ? user.permissions.manageTimecards : false,
@@ -59,11 +66,11 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
 
   const roleId = useWatch({ name: 'role_id', control: form.control });
 
-  if (isRolesError) {
+  if (isRolesError || isFacilitiesError) {
     toast({ variant: 'destructive', title: 'Error', description: "Can't fetch necessary data" });
   }
 
-  if (isRolesFetching || !roles) {
+  if (isRolesFetching || !roles || isFacilitiesFetching || !facilities) {
     return (
       <div className='min-h-full flex items-center justify-center'>
         <Spinner />
@@ -71,15 +78,22 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
     );
   }
 
-  const options = roles.map(role => ({
+  const roleOptions = roles.map(role => ({
     label: roleToText(role.label),
     value: role.id,
   }));
 
+  const facilityOptions = facilities
+    ? facilities.map(facility => ({
+        label: facility.name,
+        value: facility.id,
+      }))
+    : [];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-3 gap-4'>
           <FormField
             control={form.control}
             name='first_name'
@@ -178,47 +192,63 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
                         control={form.control}
                         name='role_id'
                         label='Role'
-                        options={options}
+                        options={roleOptions}
                         ddType='in-form'
                         placeholder='Role'
-                        className='z-10'
+                        className='z-20'
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
-              <div className='col-span-2'>
-                <FormLabel>Email confirmed</FormLabel>
+              <div>
+                <FormLabel className='my-1 inline-block'>Email confirmed</FormLabel>
                 <Checkbox control={form.control} name='is_confirmed' label='Confirm email?' />
               </div>
 
               {String(roleId) === '2' && (
-                <div className='col-span-2'>
-                  <FormLabel>Permissions</FormLabel>
-                  <div className='grid grid-cols-2 gap-4'>
-                    <Checkbox
-                      control={form.control}
-                      name='permissions.manageBookings'
-                      label='Manage bookings'
-                    />
-                    <Checkbox
-                      control={form.control}
-                      name='permissions.manageTimecards'
-                      label='Manage timecards'
-                    />
-                    <Checkbox
-                      control={form.control}
-                      name='permissions.manageUsers'
-                      label='Manage users'
-                    />
+                <>
+                  <div className='col-span-3 space-y-4'>
+                    <div>
+                      <FormLabel>Facility</FormLabel>
+                      <Dropdown
+                        className='z-10'
+                        name='facility_id'
+                        control={form.control}
+                        label='Facility'
+                        options={facilityOptions}
+                        ddType='in-form'
+                        placeholder='Facility'
+                      />
+                    </div>
+                    <div>
+                      <FormLabel>Permissions</FormLabel>
+                      <div className='grid grid-cols-3 gap-4'>
+                        <Checkbox
+                          control={form.control}
+                          name='permissions.manageBookings'
+                          label='Manage bookings'
+                        />
+                        <Checkbox
+                          control={form.control}
+                          name='permissions.manageTimecards'
+                          label='Manage timecards'
+                        />
+                        <Checkbox
+                          control={form.control}
+                          name='permissions.manageUsers'
+                          label='Manage users'
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </>
           )}
 
-          <div className='col-span-2'>
+          <div className='col-span-3'>
             <Button type='submit' variant='primary' className='w-full'>
               {isLoading && <Loader2 className='w-8 h-8 animate-spin mr-2' />}
               Submit

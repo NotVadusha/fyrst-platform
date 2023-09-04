@@ -12,6 +12,7 @@ import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { Chat } from 'src/packages/chat/entities/chat.entity';
 import { Permissions } from 'src/packages/permissions/entities/permissions.entity';
+import { Facility } from 'src/packages/facility/entities/facility.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
@@ -91,6 +92,10 @@ export class User extends Model {
 
   @HasOne(() => Permissions)
   permissions: Permissions;
+
+  @ForeignKey(() => Facility)
+  @Column
+  facility_id: number;
 }
 
 @Table

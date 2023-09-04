@@ -53,4 +53,8 @@ export class CreateUserDto {
 
   @IsOptional()
   permissions?: Permissions;
+
+  @IsOptional()
+  @IsNumber()
+  facility_id?: number;
 }

@@ -24,6 +24,10 @@ export const userSchema = yup
     birthdate: yup.string().optional(),
     password: yup.string().max(20, 'Password is too long').optional(),
     role_id: yup.number().required('Role id is a required field'),
+    facility_id: yup
+      .number()
+      .optional()
+      .when('role_id', { is: 2, then: schema => schema.required('You must specify facility') }),
     permissions: yup
       .object()
       .shape({
