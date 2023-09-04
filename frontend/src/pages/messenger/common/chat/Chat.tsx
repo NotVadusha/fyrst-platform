@@ -63,7 +63,6 @@ export const ChatPage: React.FC = () => {
     socket.emit('user-join-chat', { chatId });
 
     socket.on('new-message', message => {
-      console.log('new-message', message);
       dispatch(addMessage(message));
       scrollToLastMessage({ behavior: 'smooth' as ScrollBehavior });
     });
