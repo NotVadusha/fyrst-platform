@@ -55,7 +55,7 @@ export class StatisticsService {
 
     const result: BookingsByMonthResponseDto[] = [];
 
-    while (startDate.add(1, 'month') <= moment()) {
+    while (startDate.add(1, 'M') <= moment()) {
       const numberOfBookings = await this.bookingModel.count({
         where: {
           facilityId,
@@ -66,8 +66,6 @@ export class StatisticsService {
       });
 
       result.push({ month: startDate.format('MMMM'), numberOfBookings });
-
-      startDate.add(1, 'month');
     }
 
     return result;

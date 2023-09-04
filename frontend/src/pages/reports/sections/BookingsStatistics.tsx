@@ -68,9 +68,11 @@ export function BookingStatistics({
           <span className='underline'>{stats.pending}</span> of them are still pending.
         </p>
       </div>
-      <div className='col-span-1 text-center'>
-        <Pie data={chartData} options={chartOptions} />
-        <span className='mt-2 inline-block text-grey'>Completed to pending ratio</span>
+      <div className='col-span-1 flex flex-col items-center justify-center'>
+        <div className='max-h-[35vh]'>
+          <Pie data={chartData} options={chartOptions} />
+        </div>
+        <span className='mt-2 text-grey'>Completed to pending ratio</span>
       </div>
     </section>
   );
