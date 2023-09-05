@@ -109,9 +109,6 @@ function NavItem({ item }: { item: INavItem }) {
             className='flex items-center p-0 h-auto'
             onClick={e => {
               e.preventDefault();
-              // if (!isCurrentPath) {
-              //   return setIsOpen(true);
-              // }
               setIsOpen(prev => !prev);
             }}
           >
