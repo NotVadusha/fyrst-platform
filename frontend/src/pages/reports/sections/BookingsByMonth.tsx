@@ -16,15 +16,6 @@ import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const options = {
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-  },
-};
-
 export function BookingsByMonth({ facilityId }: { facilityId: number }) {
   const {
     data: stats,
@@ -51,11 +42,12 @@ export function BookingsByMonth({ facilityId }: { facilityId: number }) {
   }
 
   const chartOptions = {
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: true },
     },
   };
-  const chartLabels = stats.map(item => item.month);
+
   const chartData = {
     labels: stats.map(item => item.month),
     datasets: [
@@ -68,9 +60,9 @@ export function BookingsByMonth({ facilityId }: { facilityId: number }) {
   };
 
   return (
-    <section className='max-h-[35vh]'>
+    <section className='max-h-[45vh] mb-20'>
       <h2 className='text-h2 font-bold'>Total bookings by month</h2>
-      <Line options={options} data={chartData} />
+      <Line options={chartOptions} data={chartData} />
     </section>
   );
 }
