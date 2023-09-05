@@ -86,4 +86,24 @@ export class TimecardService {
 
     return timecard;
   }
+
+  async getWorkersByFacilityAdminId(id: number) {
+    return await this.timecardModel.findAll({
+      where: {
+        '$booking.createdBy$': id,
+      },
+      attributes: [],
+      include: [
+        {
+          model: Booking,
+          attributes: [],
+        },
+        {
+          model: User,
+          as: 'employee',
+          attributes: ['id', 'first_name', 'last_name'],
+        },
+      ],
+    });
+  }
 }

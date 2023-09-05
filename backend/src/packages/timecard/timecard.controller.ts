@@ -88,4 +88,9 @@ export class TimecardController {
       throw new InternalServerErrorException("Couldn't remove timecard");
     }
   }
+
+  @Get('/:userId/workers')
+  async getWorkersByFacilityAdminId(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.timecardService.getWorkersByFacilityAdminId(userId);
+  }
 }

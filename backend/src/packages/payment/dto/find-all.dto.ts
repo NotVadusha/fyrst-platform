@@ -1,7 +1,9 @@
-import { IsInt, IsOptional, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsOptional, IsDate, IsNumber } from 'class-validator';
 
 export class FindAllDto {
-  @IsInt()
+  @Type(() => Number)
+  @IsNumber()
   @IsOptional()
   userId?: number;
 
@@ -12,4 +14,14 @@ export class FindAllDto {
   @IsDate()
   @IsOptional()
   maxDate?: Date;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  limit? = Number.MAX_SAFE_INTEGER;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  offset? = 0;
 }

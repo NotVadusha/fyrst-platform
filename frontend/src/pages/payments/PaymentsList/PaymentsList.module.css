@@ -1,5 +1,5 @@
 .paymentsContainer{
-	@apply mt-[40px] ml-[80px] max-w-[995px]
+	@apply mt-[40px] mx-auto max-w-[995px]
 }
 
 .paymentsHeader{
