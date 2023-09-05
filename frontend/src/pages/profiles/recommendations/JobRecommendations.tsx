@@ -4,6 +4,7 @@ import { RefreshButton } from 'src/common/components/ui/common/Button/common/ref
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { calculateTotalPages } from 'src/common/helpers/helpers';
 
 import { useGetBookingRecommendationsQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import BookingGrid from 'src/pages/bookings/ListBookingPage/BookingsGrid';
@@ -13,9 +14,7 @@ export default function JobRecommendations() {
 
   const { data, isFetching, refetch } = useGetBookingRecommendationsQuery(currentPage);
 
-  const limit = 6;
-
-  const totalPages = data ? Math.ceil(data.totalCount / limit) : 0;
+  const totalPages = calculateTotalPages({ limit: 6, totalCount: data?.totalCount });
 
   return (
     <div>
