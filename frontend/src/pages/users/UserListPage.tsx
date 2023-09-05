@@ -134,7 +134,7 @@ export function UserListPage() {
             handleInputChange={handleInputChange}
             setSearchParams={setSearchParams}
           />
-          <div className='flex flex-col items-center gap-4'>
+          <div className='flex flex-col items-center gap-4 w-fit mx-auto'>
             {data?.users?.length === 0 ? (
               <p className='text-body-default font-semibold'>
                 No users to display here. Most probably, nothing matches your search query
@@ -149,14 +149,16 @@ export function UserListPage() {
                 }}
               />
             )}
-            {!!totalPages && (
-              <Pagination
-                onChange={setCurrentPage}
-                value={currentPage}
-                siblingsCount={2}
-                totalCount={totalPages}
-              />
-            )}
+            <div className='self-end'>
+              {!!totalPages && (
+                <Pagination
+                  onChange={setCurrentPage}
+                  value={currentPage}
+                  siblingsCount={2}
+                  totalCount={totalPages}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
