@@ -6,4 +6,10 @@ export class CreateNotificationDto {
 
   @IsNotEmpty()
   readonly recipientId: number;
+
+  @IsNotEmpty()
+  readonly type: string;
+
+  @IsNotEmpty()
+  readonly refId: number;
 }

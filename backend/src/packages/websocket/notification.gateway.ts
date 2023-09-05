@@ -8,12 +8,12 @@ import { Server, Socket } from 'socket.io';
 import { ServerToClientEvents } from 'shared/packages/notification/types/notificationSocketEvents';
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Notification } from 'shared/packages/notification/types/notification';
-import { AccessTokenGuard } from '../auth/guards/access-token.guard';
+import { WsJwtGuard } from '../auth/guards/ws-jwt.guard';
 
 @WebSocketGateway({
   namespace: 'notification',
 })
-@UseGuards(AccessTokenGuard)
+@UseGuards(WsJwtGuard)
 @Injectable()
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()

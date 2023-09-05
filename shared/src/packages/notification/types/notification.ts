@@ -5,6 +5,7 @@ export interface Notification {
   isRead: boolean;
   recipientId: number;
   type: NotificationType;
+  refId: number;
 }
 
 export enum NotificationType {

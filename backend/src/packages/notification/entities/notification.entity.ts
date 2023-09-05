@@ -32,6 +32,9 @@ export class Notification extends Model {
   @Column(DataType.ENUM(...Object.values(NotificationType)))
   type: NotificationType;
 
+  @Column
+  refId: number;
+
   @ForeignKey(() => User)
   @Column
   recipientId: number;

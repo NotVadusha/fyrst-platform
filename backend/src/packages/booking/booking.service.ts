@@ -129,11 +129,15 @@ export class BookingService {
         this.notificationService.create({
           recipientId: user.id,
           content: notificationTemplateBooking(updatedBooking.facility.name, updatedBooking.status),
+          refId: updatedBooking.id,
+          type: 'booking',
         });
       });
       this.notificationService.create({
         recipientId: updatedBooking.creator.id,
         content: `Booking ${updatedBooking.facility} has been ${updatedData.status}`,
+        refId: updatedBooking.id,
+        type: 'booking',
       });
     }
     return booking;

@@ -120,6 +120,8 @@ export class TimecardService {
       this.notificationService.create({
         recipientId: updatedTimecard.createdBy,
         content: notificationTemplateTimecard(updatedTimecard.id, updateTimecardDto.status),
+        type: 'timecard',
+        refId: updatedTimecard.id,
       });
     }
     return updatedTimecard;
