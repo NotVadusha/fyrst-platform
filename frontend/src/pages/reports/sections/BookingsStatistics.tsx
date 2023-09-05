@@ -41,12 +41,12 @@ export function BookingStatistics({
   }
 
   const chartData = {
-    labels: ['Completed', 'Pending'],
+    labels: ['Completed', 'Pending', 'Rejected'],
     datasets: [
       {
         label: '# of Votes',
-        data: [stats.completed, stats.pending],
-        backgroundColor: ['rgb(38, 196, 133)', 'rgb(8, 61, 119)'],
+        data: [stats.completed, stats.pending, stats.rejected],
+        backgroundColor: ['rgb(38, 196, 133)', 'rgb(8, 61, 119)', 'rgb(187, 17, 40)'],
         borderWidth: 1,
       },
     ],
@@ -63,9 +63,10 @@ export function BookingStatistics({
       <div className='col-span-2'>
         <SectionHeader>Amount of bookings</SectionHeader>
         <p className='text-body-large'>
-          In last month your company submitted total of{' '}
+          During the last, month your company submitted total of{' '}
           <span className='underline'>{stats.total}</span> bookings.{' '}
-          <span className='underline'>{stats.completed}</span> of them were completed and{' '}
+          <span className='underline'>{stats.completed}</span> of them were completed,{' '}
+          <span className='underline'>{stats.rejected}</span> of them were rejected and{' '}
           <span className='underline'>{stats.pending}</span> of them are still pending.
         </p>
       </div>

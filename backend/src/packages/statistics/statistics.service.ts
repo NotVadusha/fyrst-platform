@@ -51,10 +51,21 @@ export class StatisticsService {
       },
     });
 
+    const rejected = await this.bookingModel.count({
+      where: {
+        facilityId,
+        createdAt: {
+          [Op.gte]: startDate,
+        },
+        status: 'rejected',
+      },
+    });
+
     return {
       total,
       completed,
       pending,
+      rejected,
     };
   }
 

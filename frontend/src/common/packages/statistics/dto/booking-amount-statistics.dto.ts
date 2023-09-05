@@ -7,4 +7,5 @@ export interface BookingAmountStatisticsResponseDto {
   total: number;
   completed: number;
   pending: number;
+  rejected: number;
 }

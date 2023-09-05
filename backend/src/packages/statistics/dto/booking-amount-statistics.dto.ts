@@ -20,4 +20,7 @@ export class BookingStatisticsResponseDto {
 
   @IsNumber()
   pending: number;
+
+  @IsNumber()
+  rejected: number;
 }
