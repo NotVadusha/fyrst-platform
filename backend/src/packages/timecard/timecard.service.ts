@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
@@ -14,11 +14,15 @@ import { Sequelize } from 'sequelize-typescript';
 import * as Papa from 'papaparse';
 import _ from 'lodash';
 import { flatten } from 'flat';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class TimecardService {
   private logger = new Logger(TimecardService.name);
-  constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
+  constructor(
+    @InjectModel(Timecard) private readonly timecardModel: typeof Timecard,
+    private userService: UserService,
+  ) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
     this.logger.log(createTimecardDto);
@@ -110,11 +114,15 @@ export class TimecardService {
     return timecard;
   }
 
-  async getWorkersByFacilityAdminId(id: number) {
+  async getWorkersByUserId(id: number) {
+    const user = await this.userService.findOne(id);
+    const where = {};
+
+    if (user.role_id === 1) throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+    if (user.role_id === 2) where['$booking.createdBy$'] = id;
+
     return await this.timecardModel.findAll({
-      where: {
-        '$booking.createdBy$': id,
-      },
+      where,
       attributes: ['employee.id', 'employee.first_name', 'employee.last_name'],
       include: [
         {

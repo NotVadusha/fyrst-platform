@@ -119,7 +119,7 @@ export class TimecardController {
   }
 
   @Get('/:userId/workers')
-  async getWorkersByFacilityAdminId(@Param('userId', ParseIntPipe) userId: number) {
-    return await this.timecardService.getWorkersByFacilityAdminId(userId);
+  async getWorkersByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.timecardService.getWorkersByUserId(userId);
   }
 }
