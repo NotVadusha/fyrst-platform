@@ -51,11 +51,11 @@ const IdCardParser = ({ setData }: IdCardParserInputs) => {
           );
           const first_name = truncateSpaces(parsed.fields.firstName as string);
           const last_name = truncateSpaces(parsed.fields.lastName as string);
-          console.log(last_name);
+
           const dataToSave: parseInfo = {
-            first_name: first_name,
-            last_name: last_name,
-            birthDate: birthDate,
+            first_name,
+            last_name,
+            birthDate,
             sex: parsed.fields.sex,
             documentNumber: parsed.fields.documentNumber.replaceAll('O', 0).replaceAll('B', 8),
           };
@@ -94,7 +94,7 @@ const IdCardParser = ({ setData }: IdCardParserInputs) => {
 
     const { data } = await worker.recognize(imagePath, {});
     await worker.terminate();
-    console.log(data);
+
     const idLine = data.lines.find(value => value.text.includes('ID'));
     const msrFormat = idLine?.paragraph.lines.map(line =>
       (line.text.replaceAll('\n', '') + '<<<<<<<').slice(0, 30),
