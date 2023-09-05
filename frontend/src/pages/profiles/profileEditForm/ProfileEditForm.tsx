@@ -45,9 +45,7 @@ export function ProfileEditForm() {
   const [updateUser] = useUpdateUserMutation();
 
   const token = localStorage.getItem('accessToken');
-  // eslint-disable-next-line
-  // @ts-ignore
-  const decode: DecodedUser = jwtDecode(token);
+  const decode: DecodedUser = jwtDecode(token as string);
   const userId = decode.id;
 
   const [updateProfile] = profileApi.useUpdateProfileMutation();
@@ -81,7 +79,6 @@ export function ProfileEditForm() {
         birthdate: parsedData.birthDate.toISOString().split('T')[0],
         document_number: parsedData.documentNumber,
       };
-      console.log(infoToUpdate);
       setUser(infoToUpdate);
     }
   }, [parsedData]);
@@ -95,40 +92,37 @@ export function ProfileEditForm() {
       base64 = Buffer.from(arrayBuffer).toString('base64');
     }
 
-    await updateUser({
-      // eslint-disable-next-line
-      // @ts-ignore
-      id: user.id,
-      user: {
-        first_name: valuesFromForm?.first_name,
-        last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
-        email: valuesFromForm?.email,
-        city: valuesFromForm.city ? valuesFromForm.city : null,
-        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
-        document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
-      },
-    });
+    if (user) {
+      await updateUser({
+        id: user.id,
+        user: {
+          first_name: valuesFromForm?.first_name,
+          last_name: valuesFromForm?.last_name,
+          phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
+          email: valuesFromForm?.email,
+          city: valuesFromForm.city ? valuesFromForm.city : null,
+          birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+          document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
+        },
+      });
 
-    updateProfile({
-      // eslint-disable-next-line
-      // @ts-ignore
-      id: user.id,
-      body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
-    });
+      updateProfile({
+        id: user.id,
+        body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
+      });
 
-    toast({
-      title: 'Changes applied',
-      description: 'Your profile updated',
-    });
+      toast({
+        title: 'Changes applied',
+        description: 'Your profile updated',
+      });
+    }
   };
 
   const openAvatarEditor = () => {
     setAvatarEditorShown(true);
   };
   const form = useForm<Inputs>({
-    // eslint-disable-next-line
-    // @ts-ignore
+    //@ts-ignore
     resolver: yupResolver(profileSchema),
     defaultValues: {
       first_name: user?.first_name,
