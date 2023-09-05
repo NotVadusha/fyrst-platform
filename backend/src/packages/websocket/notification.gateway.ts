@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ServerToClientEvents } from 'shared/packages/notification/types/notificationSocketEvents';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Notification } from 'shared/packages/notification/types/notification';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
@@ -14,6 +14,7 @@ import { AccessTokenGuard } from '../auth/guards/access-token.guard';
   namespace: 'notification',
 })
 @UseGuards(AccessTokenGuard)
+@Injectable()
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server<any, ServerToClientEvents>;

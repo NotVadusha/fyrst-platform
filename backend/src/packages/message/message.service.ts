@@ -1,10 +1,10 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Message } from './entities/message.entity';
 import { CreateMessageDto, UpdateMessageDto } from './dto/dto';
 import { ChatService } from '../chat/chat.service';
 import { UserService } from '../user/user.service';
-import { AppGateway } from 'src/app.gateway';
+import { ChatGateway } from 'src/packages/websocket/chat.gateway';
 import { User } from '../user/entities/user.entity';
 import { MessageFiltersDto } from './dto/message-filters.dto';
 import { Op } from 'sequelize';
@@ -16,8 +16,11 @@ export class MessageService {
     private readonly messageRepository: typeof Message,
     private readonly logger: Logger,
     private readonly chatService: ChatService,
+    @InjectModel(User)
+    private readonly userRepository: typeof User,
     private readonly userService: UserService,
-    private readonly gateway: AppGateway,
+    @Inject(ChatGateway)
+    private readonly gateway: ChatGateway,
     private bucketService: BucketService,
   ) {}
 

@@ -6,13 +6,14 @@ import { ChatService } from './chat.service';
 import { UserModule } from '../user/user.module';
 import { User, UserChat } from '../user/entities/user.entity';
 import { UserController } from '../user/user.controller';
-import { AppGateway } from 'src/app.gateway';
+import { ChatGateway } from 'src/packages/websocket/chat.gateway';
 import { BucketModule } from '../bucket/bucket.module';
+import { WebSocketModule } from '../websocket/websocket.module';
 
 @Module({
   imports: [SequelizeModule.forFeature([User, Chat, UserChat]), UserModule, BucketModule],
   controllers: [ChatController],
-  providers: [ChatService, Logger, AppGateway],
-  exports: [ChatService, Logger, AppGateway],
+  providers: [ChatService, Logger, ChatGateway],
+  exports: [ChatService, Logger, ChatGateway],
 })
 export class ChatModule {}

@@ -22,7 +22,7 @@ import {
   WebSocketModule,
   PermissionsModule,
 } from './packages';
-import { AppGateway } from './app.gateway';
+import { ChatGateway } from './packages/websocket/chat.gateway';
 @Module({
   imports: [
     SequelizeModule.forRoot(development),
@@ -45,6 +45,6 @@ import { AppGateway } from './app.gateway';
     PermissionsModule,
   ],
   controllers: [],
-  providers: [AppGateway],
+  providers: [ChatGateway],
 })
 export class AppModule {}

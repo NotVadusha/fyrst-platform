@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';

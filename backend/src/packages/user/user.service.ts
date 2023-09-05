@@ -22,7 +22,6 @@ export class UserService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
-    private readonly notificationService: NotificationService,
     private permissionsService: PermissionsService,
   ) {}
 
@@ -174,10 +173,7 @@ export class UserService {
     if (!isMatch) throw new BadRequestException('Current password is incorrect');
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    this.notificationService.create({
-      recipientId: userId,
-      content: notificationTemplatePasswordChange(),
-    });
+
     return this.update({ password: hashedNewPassword }, userId);
   }
 
