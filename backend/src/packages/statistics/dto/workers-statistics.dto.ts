@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsNumber, IsDate } from 'class-validator';
 
-export class AverageWorkersStatistcsDto {
+export class WorkersStatistcsDto {
   @Type(() => Number)
   @IsNumber()
   facilityId: number;
@@ -11,7 +11,13 @@ export class AverageWorkersStatistcsDto {
   startDate: Date;
 }
 
-export class AverageWorkersStatistcsResponseDto {
+export class WorkersStatistcsResponseDto {
   @IsNumber()
   averageWorkers: number;
+
+  @IsNumber()
+  totalWorkers: number;
+
+  @IsNumber()
+  averagePayment: number;
 }

@@ -2,7 +2,7 @@ import { Controller, Get, InternalServerErrorException, ParseIntPipe, Query } fr
 import { ApiTags } from '@nestjs/swagger';
 import { StatisticsService } from './statistics.service';
 import { BookingStatisticsDto } from './dto/booking-amount-statistics.dto';
-import { AverageWorkersStatistcsDto } from './dto/average-workers-statistics.dto';
+import { WorkersStatistcsDto } from './dto/workers-statistics.dto';
 
 @ApiTags('Statistics module endpoiints')
 @Controller('statistics')
@@ -27,13 +27,14 @@ export class StatisticsController {
     }
   }
 
-  @Get('average-workers')
-  async getAverageWorkers(@Query() statsDto: AverageWorkersStatistcsDto) {
+  @Get('worker-stats')
+  async getAverageWorkers(@Query() statsDto: WorkersStatistcsDto) {
     try {
-      return await this.statisticsService.getAverageWorkers(statsDto);
     } catch (error) {
       throw new InternalServerErrorException("Couldn't get statistics on average workers");
     }
+
+    return await this.statisticsService.getWorkerStats(statsDto);
   }
 
   @Get('workers-by-month')

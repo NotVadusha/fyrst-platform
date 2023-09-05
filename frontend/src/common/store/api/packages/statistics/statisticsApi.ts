@@ -5,9 +5,9 @@ import {
 } from '../../../../packages/statistics/dto/booking-amount-statistics.dto';
 import { BookingsByMonthResponseDto } from 'src/common/packages/statistics/dto/bookings-by-month-statistics.dto';
 import {
-  AverageWorkersStatistcsDto,
-  AverageWorkersStatistcsResponseDto,
-} from 'src/common/packages/statistics/dto/average-workers-statistcs.dto';
+  WorkersStatistcsDto,
+  WorkersStatistcsResponseDto,
+} from 'src/common/packages/statistics/dto/workers-statistcs.dto';
 import { WorkersByMonthStatisticsDto } from 'src/common/packages/statistics/dto/workers-by-month-statistics.dto';
 
 const statisticsApi = apiSlice.injectEndpoints({
@@ -35,14 +35,11 @@ const statisticsApi = apiSlice.injectEndpoints({
         },
       }),
 
-      fetchAverageWorkers: builder.query<
-        AverageWorkersStatistcsResponseDto,
-        AverageWorkersStatistcsDto
-      >({
+      fetchWorkerStats: builder.query<WorkersStatistcsResponseDto, WorkersStatistcsDto>({
         query(filters) {
           const params = new URLSearchParams({ ...filters });
 
-          return '/statistics/average-workers?' + params;
+          return '/statistics/worker-stats?' + params;
         },
       }),
 
@@ -60,6 +57,6 @@ const statisticsApi = apiSlice.injectEndpoints({
 export const {
   useFetchBookingsAmountStatisticsQuery,
   useFetchBookingsByMonthStatisticsQuery,
-  useFetchAverageWorkersQuery,
+  useFetchWorkerStatsQuery,
   useFetchWorkersByMonthQuery,
 } = statisticsApi;

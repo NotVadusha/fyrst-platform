@@ -3,10 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Booking } from '../booking/entities/booking.entity';
 import { Timecard } from '../timecard/entities/timecard.entity';
-import {
-  AverageWorkersStatistcsDto,
-  AverageWorkersStatistcsResponseDto,
-} from './dto/average-workers-statistics.dto';
+import { WorkersStatistcsDto, WorkersStatistcsResponseDto } from './dto/workers-statistics.dto';
 import { BookingStatisticsResponseDto } from './dto/booking-amount-statistics.dto';
 import { BookingsByMonthResponseDto } from './dto/bookings-by-month.dto';
 import { WorkersByMonthResponseDto } from './dto/workers-by-month.dto';
@@ -82,16 +79,20 @@ export class StatisticsService {
     return result;
   }
 
-  async getAverageWorkers(
-    statsDto: AverageWorkersStatistcsDto,
-  ): Promise<AverageWorkersStatistcsResponseDto> {
+  async getWorkerStats(statsDto: WorkersStatistcsDto): Promise<WorkersStatistcsResponseDto> {
     const Sequelize = this.bookingModel.sequelize.Sequelize;
 
-    const average = (await this.bookingModel.findOne({
+    this.logger.log('Before average');
+    const workerStats = (await this.bookingModel.findOne({
+      raw: true,
       attributes: [
         [
           Sequelize.fn('AVG', Sequelize.literal('"numberOfPositions" - "positionsAvailable"')),
           'averageWorkers',
+        ],
+        [
+          Sequelize.fn('SUM', Sequelize.literal('"numberOfPositions" - "positionsAvailable"')),
+          'totalWorkers',
         ],
       ],
       where: {
@@ -100,9 +101,27 @@ export class StatisticsService {
           [Op.gte]: statsDto.startDate,
         },
       },
-    })) as unknown as AverageWorkersStatistcsResponseDto;
+    })) as unknown as WorkersStatistcsResponseDto;
 
-    return average;
+    const averagePayment = (await this.timecardModel.findOne({
+      raw: true,
+      attributes: [
+        [
+          Sequelize.fn(
+            'AVG',
+            Sequelize.literal(
+              '"booking"."pricePerHour" * ("Timecard"."hoursWorked" - "Timecard"."lunchHours")',
+            ),
+          ),
+          'value',
+        ],
+      ],
+      where: { status: 'approved' },
+      include: [{ model: Booking, attributes: [] }],
+      group: ['booking.id'],
+    })) as unknown as { value: number };
+
+    return { ...workerStats, averagePayment: averagePayment.value };
   }
 
   async getWorkersByMonth(facilityId: number) {
