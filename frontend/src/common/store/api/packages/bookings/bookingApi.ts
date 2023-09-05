@@ -17,6 +17,9 @@ export const bookingApi = apiSlice.injectEndpoints({
       },
       providesTags: ['Bookings'],
     }),
+    getBookingRecommendations: builder.query<{ bookings: Booking[]; totalCount: number }, number>({
+      query: currentPage => `/booking/recommendations?currentPage=${String(currentPage)}`,
+    }),
     getBookingById: builder.query<Booking, number>({
       query: id => `booking/${id}`,
       providesTags: ['Bookings'],
@@ -59,4 +62,5 @@ export const {
   useUpdateBookingMutation,
   useAddUserToBookingMutation,
   useDeleteBookingMutation,
+  useGetBookingRecommendationsQuery,
 } = bookingApi;

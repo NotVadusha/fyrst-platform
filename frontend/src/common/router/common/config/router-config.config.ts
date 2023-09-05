@@ -44,12 +44,20 @@ export const routerConfig = {
           path: '/profile/edit',
         },
         {
+          title: 'Edit portfolio',
+          path: '/profile/portfolio',
+        },
+        {
           title: 'Notifications',
           path: '/profile/notifications',
         },
         {
           title: 'Security',
           path: '/profile/security',
+        },
+        {
+          title: 'Recommendations',
+          path: '/profile/recommendations',
         },
       ],
     },

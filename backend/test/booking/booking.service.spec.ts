@@ -6,12 +6,14 @@ import {
   mockedBooking,
   mockedBookings,
   mockedUpdatedBooking,
+  userProfileServiceMock,
   userServiceMock,
 } from './booking.mock';
 import { UserService } from 'src/packages/user/user.service';
 import { BookingService } from 'src/packages/booking/booking.service';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { FacilityService } from 'src/packages/facility/facility.service';
+import { UserProfileService } from 'src/packages/user-profile/user-profile.service';
 
 describe('BookingService', () => {
   let bookingService: BookingService;
@@ -41,6 +43,7 @@ describe('BookingService', () => {
           useValue: userServiceMock,
         },
         { provide: FacilityService, useValue: facilityServiceMock },
+        { provide: UserProfileService, useValue: userProfileServiceMock },
       ],
     }).compile();
 

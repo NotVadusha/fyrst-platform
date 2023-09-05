@@ -19,6 +19,7 @@ import { hasRole } from 'src/common/helpers/authorization/hasRole';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { useAppDispatch, useAppSelector } from '../../common/hooks/redux';
 import { exportCSV } from '../../common/store/slices/packages/export-csv/exportCSVSlice';
+import { calculateTotalPages } from 'src/common/helpers/helpers';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,7 +54,8 @@ export function UserListPage() {
     currentPage,
     filters,
   });
-  const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
+
+  const totalPages = calculateTotalPages({ limit: 5, totalCount: data?.totalCount });
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
     setSearchParams(prevParams => {
