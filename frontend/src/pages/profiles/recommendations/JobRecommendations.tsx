@@ -11,7 +11,7 @@ import BookingGrid from 'src/pages/bookings/ListBookingPage/BookingsGrid';
 export default function JobRecommendations() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isFetching } = useGetBookingRecommendationsQuery(currentPage);
+  const { data, isFetching, refetch } = useGetBookingRecommendationsQuery(currentPage);
 
   const limit = 6;
 
@@ -29,7 +29,7 @@ export default function JobRecommendations() {
               profile
             </Link>
           </h1>
-          <RefreshButton className='self-center' />
+          <RefreshButton onClick={refetch} className='self-center' />
         </div>
         {!!data?.bookings && !isFetching && <BookingGrid bookings={data.bookings} />}
         {isFetching && (
