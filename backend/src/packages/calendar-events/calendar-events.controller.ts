@@ -22,6 +22,11 @@ export class CalendarEventsController {
     return this.calendarEventsService.findById(id);
   }
 
+  @Get(':id/calendar')
+  findAllByCalendar(@Param('id') id: number) {
+    return this.calendarEventsService.getAllByCalendarId(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateCalendarEventDto: UpdateCalendarEventDto) {
     return this.calendarEventsService.update(id, updateCalendarEventDto);

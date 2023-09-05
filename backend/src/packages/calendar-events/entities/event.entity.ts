@@ -6,6 +6,7 @@ import {
   AutoIncrement,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { Calendar } from 'src/packages/calendar/entities/calendar.entity';
@@ -25,6 +26,9 @@ export class Event extends Model {
   @ForeignKey(() => Booking)
   @Column
   bookingId: number;
+
+  @BelongsTo(() => Booking)
+  booking: Booking;
 
   @Column
   name: string;

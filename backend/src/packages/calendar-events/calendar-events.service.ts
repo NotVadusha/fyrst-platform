@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 import { CalendarService } from '../calendar/calendar.service';
 import { BookingService } from '../booking/booking.service';
+import { Booking } from '../booking/entities/booking.entity';
 
 @Injectable()
 export class CalendarEventsService {
@@ -45,7 +46,10 @@ export class CalendarEventsService {
   async getAllByCalendarId(calendarId: number) {
     await this.validateCalendarExists(calendarId);
 
-    const calendarEvents = await this.calendarEventRepository.findAll({ where: { calendarId } });
+    const calendarEvents = await this.calendarEventRepository.findAll({
+      where: { calendarId },
+      include: Booking,
+    });
     this.logger.log(`Retrieved ${calendarEvents.length} calendar events`);
 
     return calendarEvents;

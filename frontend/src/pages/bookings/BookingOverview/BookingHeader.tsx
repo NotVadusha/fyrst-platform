@@ -9,6 +9,7 @@ import { Timecard } from 'src/common/packages/timecard/types/models/Timecard.mod
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { Link } from 'react-router-dom';
 import { selectUserId } from '../../../common/store/slices/packages/user/userSelectors';
+import { useCreateEventsMutation } from 'src/common/store/api/packages/calendar/calendarApi';
 
 interface BookingHeaderProps {
   facility: string;
@@ -23,12 +24,20 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users,
 
   const [addUserToBooking, { isLoading }] = useAddUserToBookingMutation();
 
+  const [createEvent] = useCreateEventsMutation();
+
   const userExists = users.some((user: { id: number }) => user.id === userId);
 
   const handleApplyClick = async () => {
     try {
       await addUserToBooking({ bookingId: booking.id, userId });
-
+      await createEvent({
+        eventType: 'Booking',
+        name: `Work at ${booking.facility.name}`,
+        description: 'Hello world',
+        calendarId: 1,
+        bookingId: booking.id,
+      });
       toast({
         variant: 'default',
         title: 'Success',

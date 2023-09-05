@@ -38,6 +38,7 @@ import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmail
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
 import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
 import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
+import { CalendarPage } from 'src/pages/calendar/CalendarPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -273,6 +274,11 @@ export const router = createBrowserRouter([
             element: <Navigate to='/auth/signup' replace />,
           },
         ],
+      },
+      {
+        path: 'calendar',
+        errorElement: <ErrorPage></ErrorPage>,
+        children: [{ index: true, element: <CalendarPage></CalendarPage> }],
       },
     ],
   },
