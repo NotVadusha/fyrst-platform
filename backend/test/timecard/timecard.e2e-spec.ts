@@ -13,6 +13,9 @@ import {
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
+import { User } from 'src/packages/user/entities/user.entity';
+import { UserService } from 'src/packages/user/user.service';
+import { Roles } from 'src/packages/roles/entities/roles.entity';
 
 const timecardApiPrefix = '/timecard';
 
@@ -25,6 +28,12 @@ describe('TimecardModule', () => {
     })
       .overrideProvider(getModelToken(Timecard))
       .useValue(mockTimecardModel)
+      .overrideProvider(getModelToken(User))
+      .useValue({})
+      .overrideProvider(getModelToken(Roles))
+      .useValue({})
+      .overrideProvider(UserService)
+      .useValue({})
       .compile();
 
     app = moduleFixture.createNestApplication();
