@@ -9,7 +9,7 @@ import TextInput from 'src/common/components/ui/common/Input/common/TextInput/Te
 import { profileSchema } from 'src/common/packages/user/common/user-profile/types/validation-schemas/user-profile.validation-schema';
 import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { Button } from 'src/common/components/ui/common/Button';
-import { User } from 'src/common/packages/user/types/interfaces/User.interface';
+import { User } from 'src/common/packages/user/types/models/User.model';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import * as y from 'yup';
 import { AvatarUploader } from './AvatarUploader';
@@ -19,6 +19,7 @@ import DateInput from './DateInput';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { Buffer } from 'buffer';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
 
 type Inputs = y.InferType<typeof profileSchema>;
 
@@ -45,8 +46,7 @@ export function ProfileEditForm() {
       if (data.statusCode === 404) navigate('/auth/signin');
 
       const profile = await getProfile(data.id).unwrap();
-      console.log(profile);
-      setAvatarImage(profile.avatar || '');
+      setAvatarImage(profile.avatar || defaultAvatar);
     };
 
     userFetch(userId);
@@ -73,10 +73,10 @@ export function ProfileEditForm() {
       user: {
         first_name: valuesFromForm?.first_name,
         last_name: valuesFromForm?.last_name,
-        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : null,
+        phone_number: valuesFromForm.phone_number ? valuesFromForm.phone_number : undefined,
         email: valuesFromForm?.email,
-        city: valuesFromForm.city ? valuesFromForm.city : null,
-        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+        city: valuesFromForm.city ? valuesFromForm.city : undefined,
+        birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : undefined,
       },
     });
 

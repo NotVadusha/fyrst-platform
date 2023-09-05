@@ -9,10 +9,10 @@ import { User } from '../user/entities/user.entity';
 import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
-import { Op } from 'sequelize';
+import { getFilterParams } from 'shared/getFilterParams';
 import * as Papa from 'papaparse';
 import _ from 'lodash';
-import { prefixKeys } from '../../helpers/prefixKeys';
+import { flatten } from 'flat';
 
 @Injectable()
 export class TimecardService {
@@ -31,43 +31,32 @@ export class TimecardService {
   async getAllFiltered(filters: TimecardFiltersDto): Promise<GetAllTimecardsDto> {
     this.logger.log(filters.createdAt);
 
-    const whereFilters: Record<string, any>[] = [];
+    const timecardFilters: Record<string, any>[] = getFilterParams(filters, [
+      'createdAt',
+      'approvedAt',
+      'status',
+      'createdBy',
+      'bookingId',
+    ]);
 
-    if (filters.createdAt !== undefined) {
-      whereFilters.push({ createdAt: filters.createdAt });
-    }
+    const bookingFilters: Record<string, any>[] = getFilterParams(filters, ['facilityId']);
 
-    if (filters.approvedAt !== undefined) {
-      whereFilters.push({ approvedAt: filters.approvedAt });
-    }
-
-    if (filters.status !== undefined) {
-      whereFilters.push({ status: filters.status });
-    }
-
-    if (filters.createdBy !== undefined) {
-      whereFilters.push({ createdBy: filters.createdBy });
-    }
-
-    if (filters.bookingId !== undefined) {
-      whereFilters.push({ bookingId: filters.bookingId });
-    }
+    this.logger.log(JSON.stringify(bookingFilters));
 
     const timecards = await this.timecardModel.findAll({
-      where: whereFilters,
+      where: timecardFilters,
       limit: filters.limit,
       offset: filters.offset,
       include: [
         { model: User, as: 'employee', include: [Roles] },
         { model: User, as: 'facilityManager', include: [Roles] },
-        { model: Booking, include: [Facility] },
+        { model: Booking, where: bookingFilters, include: [Facility] },
       ],
     });
 
     const total = await this.timecardModel.count({
-      where: {
-        [Op.and]: whereFilters,
-      },
+      where: timecardFilters,
+      include: [{ model: Booking, where: bookingFilters, include: [Facility] }],
     });
 
     return { items: timecards, total };
@@ -78,22 +67,9 @@ export class TimecardService {
       throw new Error('No timecards available to generate CSV.');
     }
 
-    const cleanData = timecards.map(timecard => {
-      const timecardJSON = timecard.toJSON();
-      const bookingJSON = timecard.booking.toJSON();
-      const facilityJSON = timecard.booking.facility.toJSON();
-
-      const prefixedBookingJSON = prefixKeys('booking', bookingJSON);
-      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
-
-      return {
-        ...timecardJSON,
-        ...prefixedBookingJSON,
-        ...prefixedFacilityJSON,
-      };
-    });
+    const cleanData = timecards.map(timecard => flatten(timecard.toJSON(), { delimiter: '_' }));
     const fieldKeys = Object.keys(cleanData[0]).filter(
-      key => key !== 'employee' && key !== 'facilityManager' && key !== 'booking',
+      key => !['employee_password', 'booking_facility_logo'].includes(key),
     );
     const csv = Papa.unparse({
       fields: fieldKeys,

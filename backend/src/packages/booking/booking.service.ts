@@ -9,9 +9,9 @@ import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
 import * as Papa from 'papaparse';
-import { prefixKeys } from '../../helpers/prefixKeys';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { RecommendationService } from '../common/recommendation.service';
+import { flatten } from 'flat';
 
 @Injectable()
 export class BookingService {
@@ -88,25 +88,32 @@ export class BookingService {
       throw new Error('No bookings available to generate CSV.');
     }
 
-    const cleanData = bookings.map(booking => {
-      const bookingJSON = booking.toJSON();
-      const facilityJSON = booking.facility.toJSON();
+    const excludedKeys = [
+      'creator_password',
+      'creator_role_id',
+      'creator_chatId',
+      'creator_facility_id',
+      'facility_logo',
+    ];
 
-      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
+    const excludedUserKeyParts = [
+      'password',
+      'is_confirmed',
+      'createdAt',
+      'chatId',
+      'facility_id',
+      'updatedAt',
+    ];
 
-      const usersStr = booking.users
-        .map(user => `${user.first_name} ${user.last_name} (${user.id})`)
-        .join('; ');
+    const cleanData = bookings.map(booking => flatten(booking.toJSON(), { delimiter: '_' }));
 
-      return {
-        ...bookingJSON,
-        ...prefixedFacilityJSON,
-        users: usersStr,
-      };
-    });
+    const isValidFieldKey = (key: string, dynamicRegex: RegExp) => {
+      return !excludedKeys.includes(key) && !dynamicRegex.test(key);
+    };
 
-    const fieldKeys = Object.keys(cleanData[0]).filter(key => !['facility'].includes(key));
+    const dynamicRegex = new RegExp(`^users_\\d+_(${excludedUserKeyParts.join('|')})$`);
 
+    const fieldKeys = Object.keys(cleanData[0]).filter(key => isValidFieldKey(key, dynamicRegex));
     const csv = Papa.unparse({
       fields: fieldKeys,
       data: cleanData,
@@ -149,16 +156,24 @@ export class BookingService {
     return { message: 'User successfully added to booking!', booking: updatedBooking };
   }
 
-  async getBookingRecommendationsByUser(userId: number) {
+  async getBookingRecommendationsByUser(userId: number, currentPage: number) {
+    const user = await this.userService.findOne(userId);
+    const profile = await this.userProfile.findOne(userId);
+
+    const filters: { status: string; sex?: string } = {
+      status: 'pending',
+    };
+
+    if (profile.sex) {
+      filters.sex = profile.sex;
+    }
+
     const availableBookings = await this.bookingRepository.findAll({
       where: {
-        status: 'pending',
+        ...filters,
       },
+      include: [{ model: User, as: 'users' }, { model: Facility }, { model: User, as: 'creator' }],
     });
-
-    const user = await this.userService.findOne(userId);
-
-    const profile = await this.userProfile.findOne(userId);
 
     if (!user) return;
 
@@ -168,8 +183,10 @@ export class BookingService {
         user,
         profile,
       },
+      currentPage,
     );
 
+    return { bookings: rankedBookings, totalCount: availableBookings.length };
     this.logger.log(rankedBookings);
   }
 

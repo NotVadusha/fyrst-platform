@@ -6,7 +6,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const bookings = [];
 
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < 50; i++) {
       let positionsAvailable, startDate, endDate;
 
       const status = faker.helpers.arrayElement(['pending', 'rejected', 'canceled', 'completed']);

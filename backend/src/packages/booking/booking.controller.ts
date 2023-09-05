@@ -82,9 +82,9 @@ export class BookingController {
 
   @UseGuards(AccessTokenGuard)
   @Get('recommendations')
-  async getBookingRecommendations(@Request() req) {
+  async getBookingRecommendations(@Request() req, @Query('currentPage', ParseIntPipe) currentPage) {
     Logger.log('this user wants to get booking reccomendations', req.user);
-    return this.bookingService.getBookingRecommendationsByUser(req.user['id']);
+    return await this.bookingService.getBookingRecommendationsByUser(req.user['id'], currentPage);
   }
 
   @Get(':id')

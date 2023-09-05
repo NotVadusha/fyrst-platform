@@ -9,9 +9,8 @@ export class RecommendationService {
   async makeBookingRecommendationRankingByProfile(
     bookings: Booking[],
     userData: { user: User; profile: UserProfile },
+    currentPage: number,
   ) {
-    Logger.log('received bookings and profile', bookings, userData.profile);
-    Logger.log(userData.user.birthdate);
     let yearsOld;
 
     if (userData.user.birthdate) {
@@ -26,35 +25,42 @@ export class RecommendationService {
 
         const ageCompatibility = this.calculateAgeCompatibility(yearsOld, booking.age);
 
-        Logger.log('age compatibility', ageCompatibility);
-
         rating += ageIsIncompatible ? 0 : ageCompatibility;
       }
-
-      Logger.log('rating', rating);
 
       const languageCompatibility = userData.profile.languages?.some(lang =>
         booking.languages.includes(lang),
       );
 
-      Logger.log('lanuage compatibility', languageCompatibility);
-
       rating += Number(!!languageCompatibility);
 
       const descriptionCompatibility = this.calculateTextCompatibility(
-        userData.profile.description,
-        booking.notes,
+        userData.profile.description || '',
+        booking.notes || '',
+      );
+
+      const educationCompatibility = this.calculateTextCompatibility(
+        userData.profile.education || '',
+        booking.education || '',
       );
 
       rating += descriptionCompatibility;
+      rating += educationCompatibility;
+
+      if (booking.sex) rating += Number(booking.sex === userData.profile.sex);
 
       return {
         rating,
-        ...booking,
+        ...booking.dataValues,
       };
     });
 
-    return bookingsWithRating.sort((bookingA, bookingB) => bookingB.rating - bookingA.rating);
+    const take = 6;
+    const skip = (currentPage - 1) * take;
+
+    return bookingsWithRating
+      .sort((bookingA, bookingB) => bookingB.rating - bookingA.rating)
+      .splice(skip, take);
   }
 
   calculateAge(birthday) {
@@ -72,6 +78,7 @@ export class RecommendationService {
   }
 
   calculateTextCompatibility(textA: string, textB: string): number {
+    if (!textA || !textB) return 0;
     const compatibility = similarity(textA, textB);
 
     return compatibility;

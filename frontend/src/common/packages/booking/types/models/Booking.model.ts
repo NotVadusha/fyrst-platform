@@ -11,6 +11,7 @@ export interface Booking {
   creator: User;
   sex: string;
   age: number;
+  languages: string[];
   education: string;
   positionsAvailable: number;
   workingHours: number;
