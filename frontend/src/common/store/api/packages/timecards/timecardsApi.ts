@@ -59,4 +59,5 @@ export const {
   useUpdateTimecardMutation,
   useCreateTimecardMutation,
   useFetchWorkersByFacilityAdminIdQuery,
+  useLazyFetchWorkersByFacilityAdminIdQuery,
 } = timecardsApi;

@@ -6,6 +6,9 @@ import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
+import { PaymentsFiltersDto } from './dto/payments-filters.dto';
+import { UserService } from '../user/user.service';
+import { Booking } from '../booking/entities/booking.entity';
 
 @Injectable()
 export class PaymentService {
@@ -14,6 +17,7 @@ export class PaymentService {
   constructor(
     @InjectModel(Payment)
     private readonly paymentRepository: typeof Payment,
+    private userService: UserService,
   ) {}
 
   async findOneById(id: number) {
@@ -58,29 +62,46 @@ export class PaymentService {
     return payment;
   }
 
-  async findAll(userId?: number, minDate?: Date, maxDate?: Date) {
+  async findAll(filters: PaymentsFiltersDto, id: number) {
+    const user = await this.userService.findOne(id);
+
     const where: any = {};
 
-    if (!!userId) where['$timecard.employee.id$'] = userId;
-
-    if (!!minDate || !!maxDate) {
-      where.createdAt = {};
-
-      if (minDate) {
-        where.createdAt[Op.gte] = minDate;
-      }
-
-      if (maxDate) {
-        where.createdAt[Op.lte] = maxDate;
+    if (user.role_id === 1) where['$timecard.employee.id$'] = user.id;
+    else if (user.role_id === 2) {
+      where['$timecard.booking.createdBy$'] = user.id;
+      if (!!filters.worker) {
+        where['$timecard.employee.id$'] = filters.worker;
       }
     }
 
-    return await this.paymentRepository.findAll({
+    if (!!filters.minDate || !!filters.maxDate) {
+      where.createdAt = {};
+
+      if (filters.minDate) {
+        where.createdAt[Op.gte] = filters.minDate;
+      }
+
+      if (filters.maxDate) {
+        where.createdAt[Op.lte] = filters.maxDate;
+      }
+    }
+
+    console.log(where);
+
+    const payments = await this.paymentRepository.findAll({
       where,
+      limit: filters.limit,
+      offset: filters.offset,
       include: [
         {
           model: Timecard,
+          as: 'timecard',
           include: [
+            {
+              model: Booking,
+              attributes: [],
+            },
             {
               model: User,
               attributes: ['id', 'first_name', 'last_name'],
@@ -91,6 +112,30 @@ export class PaymentService {
         },
       ],
     });
+
+    const total = await this.paymentRepository.count({
+      where,
+      include: [
+        {
+          model: Timecard,
+          as: 'timecard',
+          include: [
+            {
+              model: Booking,
+              attributes: [],
+            },
+            {
+              model: User,
+              attributes: ['id', 'first_name', 'last_name'],
+              as: 'employee',
+            },
+          ],
+          attributes: ['id'],
+        },
+      ],
+    });
+
+    return { payments, total };
   }
 
   async delete(id: number) {

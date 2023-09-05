@@ -1,16 +1,18 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsDate, IsNumber } from 'class-validator';
 
-export class FindAllDto {
+export class PaymentsFiltersDto {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  userId?: number;
+  worker?: number;
 
+  @Type(() => Date)
   @IsDate()
   @IsOptional()
   minDate?: Date;
 
+  @Type(() => Date)
   @IsDate()
   @IsOptional()
   maxDate?: Date;

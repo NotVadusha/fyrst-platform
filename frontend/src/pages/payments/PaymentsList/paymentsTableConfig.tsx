@@ -11,7 +11,7 @@ const statusColors = [
 export const paymentsColumns: ColumnInfo<Payment>[] = [
   {
     columnName: 'Date',
-    renderCell: item => item.createdAt.toLocaleDateString(),
+    renderCell: item => new Date(item.createdAt).toLocaleDateString(),
   },
   {
     columnName: 'Worker',

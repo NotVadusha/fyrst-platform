@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { useFetchWorkersByFacilityAdminIdQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
+import { useLazyFetchWorkersByFacilityAdminIdQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 import * as yup from 'yup';
 import styles from './PaymentsList.module.css';
 import {
@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
+import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
 
 type PaymentsFiltersProps = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -39,7 +40,11 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
 }): React.ReactElement => {
   const userId = useAppSelector(state => state.user.id);
   const userRoleId = useAppSelector(state => state.user.role_id);
-  const { data: workers } = useFetchWorkersByFacilityAdminIdQuery(userId!);
+  const [getWorkers, { data: workers }] = useLazyFetchWorkersByFacilityAdminIdQuery();
+
+  useEffect(() => {
+    if (!!userId) getWorkers(userId);
+  }, [userId]);
 
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(formSchema),
@@ -57,7 +62,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
         <form>
           <div className='flex gap-x-4'>
             {userRoleId !== 1 ? (
-              <div className='flex flex-col w-full'>
+              <div className='flex flex-col gap-y-2 w-[250px]'>
                 <label className='text-body-default text-blue font-medium' htmlFor='worker'>
                   Worker
                 </label>
@@ -98,7 +103,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
                 />
               </div>
             ) : null}
-            <div className='flex flex-col w-full'>
+            <div className='flex flex-col gap-y-2'>
               <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
                 Start date
               </label>
@@ -121,7 +126,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
                 )}
               />
             </div>
-            <div className='flex flex-col w-full'>
+            <div className='flex flex-col gap-y-2'>
               <label className='text-body-default text-blue font-medium' htmlFor='endDate'>
                 End date
               </label>

@@ -60,7 +60,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           }
         }
 
-        return refreshResult;
+        return result;
       } catch (err) {
         toast({
           variant: 'destructive',

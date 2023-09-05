@@ -11,6 +11,7 @@ import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { Op } from 'sequelize';
 import { getFilterParams } from 'shared/getFilterParams';
+import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class TimecardService {
@@ -92,7 +93,7 @@ export class TimecardService {
       where: {
         '$booking.createdBy$': id,
       },
-      attributes: [],
+      attributes: ['employee.id', 'employee.first_name', 'employee.last_name'],
       include: [
         {
           model: Booking,
@@ -104,6 +105,7 @@ export class TimecardService {
           attributes: ['id', 'first_name', 'last_name'],
         },
       ],
+      group: ['employee.id'],
     });
   }
 }

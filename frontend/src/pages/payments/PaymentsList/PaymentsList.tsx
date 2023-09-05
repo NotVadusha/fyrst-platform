@@ -77,7 +77,7 @@ const PaymentsList = () => {
           <div className='flex justify-center min-h-[8rem]'>
             <Spinner size='lg' />
           </div>
-        ) : data?.payments.length === 0 ? (
+        ) : data?.payments?.length === 0 || data?.payments === undefined ? (
           <p className='text-body-default font-semibold'>
             No payments to display here. Most probably, nothing matches your search query
           </p>
@@ -86,13 +86,9 @@ const PaymentsList = () => {
             <Table
               items={data?.payments || []}
               columns={paymentsColumns}
-              getRowId={item =>
-                item.createdAt +
-                (item.timecard.employee?.first_name ?? '') +
-                (item.timecard.employee?.last_name ?? '')
-              }
+              getRowId={item => item.id}
             />
-            <div className='flex justify-end'>
+            <div className='flex justify-end my-6'>
               {totalPages > 1 && (
                 <Pagination
                   totalCount={totalPages}

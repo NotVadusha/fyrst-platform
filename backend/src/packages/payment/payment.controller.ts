@@ -13,9 +13,10 @@ import {
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { Payment } from './entities/payment.entity';
-import { FindAllDto } from './dto/find-all.dto';
+import { PaymentsFiltersDto } from './dto/payments-filters.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
+import { AllPaymentsDto } from './dto/all-payments.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -27,9 +28,10 @@ export class PaymentController {
     return this.paymentService.findOneById(id);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get()
-  findAll(@Query() findAllDto: FindAllDto, @Request() req): Promise<Payment[]> {
-    return this.paymentService.findAll(findAllDto.userId, findAllDto.minDate, findAllDto.maxDate);
+  findAll(@Query() findAllDto: PaymentsFiltersDto, @Request() req): Promise<AllPaymentsDto> {
+    return this.paymentService.findAll(findAllDto, req.user['id']);
   }
 
   @Post()

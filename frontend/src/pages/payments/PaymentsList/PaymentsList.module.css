@@ -1,11 +1,11 @@
 .paymentsContainer{
-	@apply mt-[40px] mx-auto max-w-[995px]
+	@apply mt-[40px] mx-auto max-w-[995px] flex flex-col gap-y-6
 }
 
 .paymentsHeader{
-	@apply text-dark-grey text-[20px]
+	@apply text-h5 text-dark-grey font-semibold
 }
 
 .paymentsFilters{
-	@apply flex gap-6 mt-[24px]
+	@apply flex gap-6
 }
