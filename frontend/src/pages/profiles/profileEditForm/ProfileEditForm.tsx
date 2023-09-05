@@ -60,7 +60,6 @@ export function ProfileEditForm() {
       if (data.statusCode === 404) navigate('/auth/signin');
 
       const profile = await getProfile(data.id).unwrap();
-      console.log(profile);
       setAvatarImage(profile.avatar || defaultAvatar);
     };
 
