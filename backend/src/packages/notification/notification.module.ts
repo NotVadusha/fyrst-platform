@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { NotificationGateway } from '../websocket/notification.gateway';
 import { Notification } from './entities/notification.entity';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { NotificationsConfigModule } from '../notifications-config/notifications-config.module';
@@ -16,7 +15,7 @@ import { NotificationController } from './notification.controller';
     WebSocketModule,
   ],
   controllers: [NotificationController],
-  providers: [NotificationService, NotificationsConfigService, NotificationGateway],
+  providers: [NotificationService, NotificationsConfigService],
   exports: [NotificationService],
 })
 export class NotificationModule {}

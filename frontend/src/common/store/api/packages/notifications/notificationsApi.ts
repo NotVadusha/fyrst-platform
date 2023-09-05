@@ -16,17 +16,17 @@ export const notificationsApi = apiSlice.injectEndpoints({
     }),
     createNotification: builder.mutation<Notification, number>({
       query: userId => ({
-        url: `notification-config/${userId}`,
+        url: `notification/${userId}`,
         method: 'POST',
       }),
-      invalidatesTags: ['Notification config'],
+      invalidatesTags: ['Notifications'],
     }),
     deleteNotification: builder.mutation<Notification, number>({
       query: notificationId => ({
-        url: `notification-config/${notificationId}`,
+        url: `notification/${notificationId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Notification config'],
+      invalidatesTags: ['Notifications'],
     }),
   }),
 });

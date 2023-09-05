@@ -3,16 +3,16 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  SubscribeMessage,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ServerToClientEvents } from 'shared/packages/notification/types/notificationSocketEvents';
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Notification } from 'shared/packages/notification/types/notification';
 import { WsJwtGuard } from '../auth/guards/ws-jwt.guard';
+import { SocketAuthMiddleware } from '../auth/ws.md';
 
-@WebSocketGateway({
-  namespace: 'notification',
-})
+@WebSocketGateway()
 @UseGuards(WsJwtGuard)
 @Injectable()
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -21,20 +21,42 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
 
   private logger = new Logger('NotificationGateway');
 
-  handleConnection(client: Socket) {
-    this.logger.log(`${client} New client connected`);
-    client.emit('connection', 'Successfully connected to server');
+  private connectedClients = new Map<number, string>();
+
+  afterInit(client: Socket) {
+    client.use(SocketAuthMiddleware() as any);
+    Logger.log('afterInit');
   }
 
-  handleDisconnect(client: Socket) {
-    this.logger.log('Client disconnected');
+  handleConnection(client: Socket) {
+    this.logger.log(`${client} New client connected`);
+    client.emit('connection', 'Successfully connected to ws server');
   }
 
   async create(notification: Notification) {
-    this.server.emit('notificationCreated', notification);
+    this.logger.log(`created notification was send for ${notification.recipientId})}`);
+    this.server
+      .to(this.connectedClients.get(notification.recipientId))
+      .emit('notificationCreated', notification);
   }
 
   async markAsRead(notification: Notification) {
-    return this.server.emit('notificationIsRead', notification);
+    this.logger.log(`notification is read by ${notification.recipientId}`);
+    this.server
+      .to(this.connectedClients.get(notification.recipientId))
+      .emit('notificationIsRead', notification);
+  }
+
+  @SubscribeMessage('mapping')
+  async mapping(client: Socket, data: { userId: number }) {
+    if (this.connectedClients.get(data.userId) === client.id) {
+      return;
+    }
+    this.connectedClients.set(data.userId, client.id);
+    this.logger.log(`mapping ${data.userId} with ${client.id}`);
+  }
+
+  handleDisconnect(client: Socket) {
+    this.logger.log(`Client ${client.id} disconnected`);
   }
 }

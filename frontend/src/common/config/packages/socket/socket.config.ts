@@ -1,6 +1,16 @@
 import * as React from 'react';
 import { Socket, io } from 'socket.io-client';
-import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
+import {
+  ClientToServerEvents as ChatClientToServerEvents,
+  ServerToClientEvents as ChatServerToClientEvents,
+} from 'shared/socketEvents';
+import {
+  ServerToClientEvents as NotificationServerToClientEvents,
+  ClientToServerEvents as NotificationClientToServerEvents,
+} from 'shared/packages/notification/types/notificationSocketEvents';
+
+interface ServerToClientEvents extends ChatServerToClientEvents, NotificationServerToClientEvents {}
+interface ClientToServerEvents extends ChatClientToServerEvents, NotificationClientToServerEvents {}
 
 const SERVER = process.env.REACT_APP_WSS_URL!;
 
