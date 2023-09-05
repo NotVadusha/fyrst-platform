@@ -11,9 +11,14 @@ import { BucketModule } from '../bucket/bucket.module';
 import { WebSocketModule } from '../websocket/websocket.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Chat, UserChat]), UserModule, BucketModule],
+  imports: [
+    SequelizeModule.forFeature([User, Chat, UserChat]),
+    UserModule,
+    BucketModule,
+    forwardRef(() => WebSocketModule),
+  ],
   controllers: [ChatController],
-  providers: [ChatService, Logger, ChatGateway],
-  exports: [ChatService, Logger, ChatGateway],
+  providers: [ChatService, Logger],
+  exports: [ChatService, Logger],
 })
 export class ChatModule {}

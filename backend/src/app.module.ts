@@ -45,6 +45,6 @@ import { ChatGateway } from './packages/websocket/chat.gateway';
     PermissionsModule,
   ],
   controllers: [],
-  providers: [ChatGateway],
+  providers: [],
 })
 export class AppModule {}

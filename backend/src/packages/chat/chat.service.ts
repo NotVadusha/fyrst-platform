@@ -6,6 +6,7 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Chat } from './entities/chat.entity';
@@ -28,7 +29,7 @@ export class ChatService {
     private readonly logger: Logger,
     @Inject(UserService)
     private readonly userService: UserService,
-    @Inject(ChatGateway)
+    @Inject(forwardRef(() => ChatGateway))
     private readonly gateway: ChatGateway,
     @InjectModel(UserChat)
     private readonly userChatRepository: typeof UserChat,
