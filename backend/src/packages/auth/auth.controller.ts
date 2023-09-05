@@ -1,4 +1,14 @@
-import { Body, Controller, Post, Get, Request, UseGuards, Res, HttpCode } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Request,
+  UseGuards,
+  Res,
+  HttpCode,
+  Inject,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
@@ -9,6 +19,7 @@ import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { RegistrationDto } from './dto/registration.dto';
 const cookie = require('cookie');
+
 @ApiTags('Authorization and authentication endpoints')
 @Controller('auth')
 export class AuthController {

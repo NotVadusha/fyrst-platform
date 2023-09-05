@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Invoice } from './entities/invoice.entity';
 import { Timecard } from '../timecard/entities/timecard.entity';
@@ -8,13 +8,23 @@ import { Booking } from '../booking/entities/booking.entity';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { InvoicesFiltersDto } from './dto/invoices-filters.dto';
 import { UserService } from '../user/user.service';
+import { ClientProxy } from '@nestjs/microservices';
+import { BookingService } from '../booking/booking.service';
+import { FacilityService } from '../facility/facility.service';
+import { TimecardService } from '../timecard/timecard.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class InvoiceService {
   constructor(
     @InjectModel(Invoice)
-    private readonly invoiceRepository: typeof Invoice,
+    @Inject('INVOICE_SERVICE')
+    private invoiceService: ClientProxy,
     private userService: UserService,
+    private bookingService: BookingService,
+    private facilityService: FacilityService,
+    private timecardService: TimecardService,
+    private readonly invoiceRepository: typeof Invoice,
   ) {}
 
   async findOneById(id: number) {
@@ -139,5 +149,21 @@ export class InvoiceService {
 
   async create(data: CreateInvoiceDto) {
     return await this.invoiceRepository.create(data);
+  }
+
+  async getInvoice(timecardId: number) {
+    const timecard = await this.timecardService.getById(timecardId);
+    const user = await this.userService.findOne(timecard.createdBy);
+    const booking = await this.bookingService.find(timecard.bookingId);
+    const facility = await this.facilityService.findById(booking.facilityId);
+
+    return await firstValueFrom(
+      this.invoiceService.send('get_invoice_pdf_link', {
+        timecard,
+        user,
+        booking,
+        facility,
+      }),
+    );
   }
 }

@@ -9,6 +9,7 @@ import {
   HttpCode,
   Delete,
   Request,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { Invoice } from './entities/invoice.entity';
@@ -51,5 +52,10 @@ export class InvoiceController {
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<boolean> {
     return this.invoiceService.delete(id);
+  }
+
+  @Get(':id/pdf')
+  async getInvoicePdfLink(@Param('id', ParseIntPipe) invoiceId: number) {
+    return await this.invoiceService.getInvoice(invoiceId);
   }
 }
