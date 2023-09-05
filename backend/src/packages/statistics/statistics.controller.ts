@@ -30,10 +30,18 @@ export class StatisticsController {
   @Get('average-workers')
   async getAverageWorkers(@Query() statsDto: AverageWorkersStatistcsDto) {
     try {
+      return await this.statisticsService.getAverageWorkers(statsDto);
     } catch (error) {
       throw new InternalServerErrorException("Couldn't get statistics on average workers");
     }
+  }
 
-    return await this.statisticsService.getAverageWorkers(statsDto);
+  @Get('workers-by-month')
+  async getWorkersByMonth(@Query('facilityId', ParseIntPipe) facilityId: number) {
+    try {
+      return await this.statisticsService.getWorkersByMonth(facilityId);
+    } catch (error) {
+      throw new InternalServerErrorException("Couldn't get statistics on average workers");
+    }
   }
 }
