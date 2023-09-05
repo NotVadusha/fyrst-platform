@@ -6,6 +6,7 @@ export interface UserDefaultResponse {
   phone_number?: string;
   city?: string;
   birthdate?: string | null;
+  document_number?: string | null;
   password?: string;
   is_confirmed: boolean;
   role_id: number;
@@ -18,6 +19,7 @@ export type UpdateUserBody = {
   phone_number?: string | null;
   city?: string | null;
   birthdate?: string | null;
+  document_number?: string | null;
 };
 
 export interface EditUserPage {
@@ -28,5 +30,6 @@ export interface EditUserPage {
   email: string;
   city: string;
   birthdate: string;
+  document_number?: string | null;
   role_id: number;
 }

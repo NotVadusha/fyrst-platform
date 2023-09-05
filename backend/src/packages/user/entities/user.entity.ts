@@ -67,6 +67,13 @@ export class User extends Model {
   })
   is_confirmed: boolean;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  document_number: string;
+
   @BelongsTo(() => Roles)
   role: Roles;
 

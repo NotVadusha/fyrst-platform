@@ -6,6 +6,7 @@ export interface User {
   phone_number?: string;
   city?: string;
   birthdate?: string | null;
+  document_number?: string | null;
   password?: string;
   is_confirmed: boolean;
   role_id: number;
