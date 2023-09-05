@@ -1,14 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { Booking } from '../booking/entities/booking.entity';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
+import { Booking } from '../booking/entities/booking.entity';
+import { Timecard } from '../timecard/entities/timecard.entity';
+import {
+  AverageWorkersStatistcsDto,
+  AverageWorkersStatistcsResponseDto,
+} from './dto/average-workers-statistics.dto';
 import { BookingStatisticsResponseDto } from './dto/booking-amount-statistics.dto';
 import { BookingsByMonthResponseDto } from './dto/bookings-by-month.dto';
-import { Op } from 'sequelize';
 import * as moment from 'moment';
 
 @Injectable()
 export class StatisticsService {
-  constructor(@InjectModel(Booking) private bookingModel: typeof Booking) {}
+  constructor(
+    @InjectModel(Booking) private bookingModel: typeof Booking,
+    @InjectModel(Timecard) private timecardModel: typeof Timecard,
+  ) {}
 
   async getBookingStats(
     startDate: Date,
@@ -69,5 +77,28 @@ export class StatisticsService {
     }
 
     return result;
+  }
+
+  async getAverageWorkers(
+    statsDto: AverageWorkersStatistcsDto,
+  ): Promise<AverageWorkersStatistcsResponseDto> {
+    const Sequelize = this.bookingModel.sequelize.Sequelize;
+
+    const average = (await this.bookingModel.findOne({
+      attributes: [
+        [
+          Sequelize.fn('AVG', Sequelize.literal('"numberOfPositions" - "positionsAvailable"')),
+          'averageWorkers',
+        ],
+      ],
+      where: {
+        facilityId: statsDto.facilityId,
+        createdAt: {
+          [Op.gte]: statsDto.startDate,
+        },
+      },
+    })) as unknown as AverageWorkersStatistcsResponseDto;
+
+    return average;
   }
 }
