@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { NonNullableMapped } from 'shared/NonNullableMapped';
+import { cn } from 'src/common/helpers/helpers';
 
 export const spinnerVariants = cva('bg-black rounded-full absolute inset-0 m-auto', {
   variants: {
@@ -15,7 +16,10 @@ export const spinnerVariants = cva('bg-black rounded-full absolute inset-0 m-aut
   },
 });
 
-export function Spinner({ size }: NonNullableMapped<VariantProps<typeof spinnerVariants>>) {
+export function Spinner({
+  size,
+  className,
+}: NonNullableMapped<VariantProps<typeof spinnerVariants>> & { className?: string }) {
   const dots: ReactElement[] = [];
 
   function getSpinnerDotSize(size: 'sm' | 'lg' | 'base' | undefined, order: number) {
@@ -46,7 +50,7 @@ export function Spinner({ size }: NonNullableMapped<VariantProps<typeof spinnerV
   }
 
   return (
-    <div className='flex items-center justify-center'>
+    <div className={cn('flex items-center justify-center', className)}>
       <div className='relative'>{dots}</div>
     </div>
   );

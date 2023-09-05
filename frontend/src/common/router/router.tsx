@@ -4,7 +4,7 @@ import BookingPage from '../../pages/bookings/ListBookingPage/BookingPage';
 import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
-import MessengerPage from '../../pages/messenger/MessangerPage';
+import MessangerPage from '../../pages/messenger/MessangerPage';
 import PaymentsPage from '../../pages/payments/PaymentsList/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
@@ -25,9 +25,17 @@ import ProfileSecurity from '../../pages/profiles/ProfileSecurity/ProfileSecurit
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
+import { RoleProtectedRoute } from './common/helpers/role-protected-route.helper';
+import { PermissionsProtectedRoute } from './common/helpers/permissions-protected-route.helper';
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
+import { SearchChatMessagesPage } from 'src/pages/messenger/common/chat/search/SearchChatMessagesPage';
+import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
+import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
+import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
+import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
+import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -56,7 +64,13 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'create',
-                element: <CreateBookingPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageBookings']}>
+                      <CreateBookingPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },
@@ -65,11 +79,23 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <TimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
+                      <TimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
               {
                 path: ':id',
-                element: <ViewTimeCardPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageTimecards']}>
+                      <ViewTimeCardPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
               {
                 path: 'create/:bookingId',
@@ -80,11 +106,23 @@ export const router = createBrowserRouter([
           {
             path: '/chat',
             errorElement: <ErrorPage />,
-            element: <MessengerPage />,
+            element: <MessangerPage />,
             children: [
+              {
+                path: '', // This represents the default outlet when no chatId is provided
+                element: <SelectMessagePage />,
+              },
               {
                 path: ':chatId',
                 element: <ChatPage />,
+              },
+              {
+                path: ':chatId/search',
+                element: <SearchChatMessagesPage />,
+              },
+              {
+                path: ':chatId/media',
+                element: <SharedMediaPage />,
               },
             ],
           },
@@ -95,6 +133,10 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <ProfilePage />,
+              },
+              {
+                path: 'portfolio',
+                element: <PortfolioPage />,
               },
               {
                 path: 'edit',
@@ -108,6 +150,10 @@ export const router = createBrowserRouter([
                 path: 'security',
                 element: <ProfileSecurity />,
               },
+              {
+                path: 'recommendations',
+                element: <JobRecommendations />,
+              },
             ],
           },
           {
@@ -116,7 +162,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <MessengerPage />,
+                element: <MessangerPage />,
               },
             ],
           },
@@ -150,7 +196,13 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <UserListPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict={false}>
+                    <PermissionsProtectedRoute permissions={['manageUsers']}>
+                      <UserListPage />
+                    </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },
@@ -184,6 +236,10 @@ export const router = createBrowserRouter([
           {
             path: 'signup',
             element: <SignUpPage />,
+          },
+          {
+            path: 'verify-email',
+            element: <VerifyEmailPage />,
           },
           {
             path: 'google-success',

@@ -15,3 +15,4 @@ export { BucketModule } from './bucket/bucket.module';
 export { PaymentModule } from './payment/payment.module';
 export { StripeModule } from './stripe/stripe.module';
 export { InvoiceModule } from './invoice/invoice.module';
+export { PermissionsModule } from './permissions/permissions.module';

@@ -6,12 +6,21 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const bookings = [];
 
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < 50; i++) {
       let positionsAvailable, startDate, endDate;
 
       const status = faker.helpers.arrayElement(['pending', 'rejected', 'canceled', 'completed']);
       const createdAt = faker.date.past();
       const numberOfPositions = faker.number.int({ min: 1, max: 20 });
+      const availableLanguages = ["english", "french", "arabic", "german", "spanish", "italian", "ukrainian"];
+  
+      const languages = [];
+      while (languages.length < 3) {
+        const language = availableLanguages[Math.floor(Math.random()*availableLanguages.length)];
+        if (!languages.includes(language)) {
+          languages.push(language);
+        }
+      }
 
       if (status === 'completed') {
         positionsAvailable = 0;
@@ -29,7 +38,8 @@ module.exports = {
         facilitiesRate: 1,
         createdBy: faker.number.int({ min: 1, max: 19 }),
         sex: faker.person.sex(),
-        age: faker.number.int({ min: 18, max: 60 }),
+        age: faker.number.int({ min: 16, max: 45 }),
+        languages,
         education: faker.lorem.words(10),
         positionsAvailable,
         workingHours: faker.number.int({ min: 10, max: 20 }),

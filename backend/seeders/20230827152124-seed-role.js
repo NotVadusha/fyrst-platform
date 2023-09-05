@@ -8,7 +8,7 @@ module.exports = {
         label: 'WORKER',
       },
       {
-        label: 'FACILITY_ADMIN',
+        label: 'FACILITY_MANAGER',
       },
       {
         label: 'PLATFORM_ADMIN',

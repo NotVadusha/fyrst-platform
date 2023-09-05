@@ -1,7 +1,8 @@
-import React, { ChangeEvent, MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import ReactSlider from 'react-slider';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
 
 interface InputProps {
   width: number;
@@ -13,6 +14,8 @@ interface InputProps {
   setImage: (imageUrl: string) => void;
 }
 
+const MAX_IMAGE_SIZE = 5e6;
+
 export const AvatarUploader = ({
   width,
   height,
@@ -21,15 +24,14 @@ export const AvatarUploader = ({
   setShown,
   setImage,
 }: InputProps) => {
-  const [tempImage, setTempImage] = useState('');
-  const imageInput = useRef(null);
-  const [rangeValue, setRangeValue] = useState(10);
+  const [tempImage, setTempImage] = useState<string>(defaultAvatar);
+  const imageInput = useRef<HTMLInputElement | null>(null);
+  const [rangeValue, setRangeValue] = useState<number>(10);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newImage = e.target.files[0];
-      console.log(newImage);
-      if (newImage.size >= 5e6) {
+      if (newImage.size >= MAX_IMAGE_SIZE) {
         toast({
           title: 'Image size must be less than 5MB',
           description: 'Please, choose another image less than 5mb size',
@@ -47,17 +49,15 @@ export const AvatarUploader = ({
   };
 
   const handleUploadImage = () => {
-    document.getElementById('avatar-image-upload')?.click();
+    imageInput.current?.click();
   };
 
   const handleSave = async () => {
-    if (tempImage && imageInput.current) {
-      // @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const dataUrl = imageInput.current.getImage().toDataURL();
-      const result = await fetch(dataUrl);
+    if (tempImage) {
+      const result = await fetch(tempImage);
       const blob = await result.blob();
-      setImage(URL.createObjectURL(blob));
+      const image = URL.createObjectURL(blob);
+      setImage(image);
     }
     setShown(false);
   };
@@ -83,10 +83,10 @@ export const AvatarUploader = ({
           id='avatar-image-upload'
           type='file'
           onChange={handleImageChange}
+          ref={imageInput}
         />
 
         <AvatarEditor
-          ref={imageInput}
           image={tempImage}
           width={width}
           height={height}

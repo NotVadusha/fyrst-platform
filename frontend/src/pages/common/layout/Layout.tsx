@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
+import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -31,7 +32,7 @@ const Layout = () => {
     }
   };
 
-  const user = useAppSelector(store => store.user);
+  const user = useAppSelector(selectUser);
 
   React.useEffect(() => {
     if (user?.id) return;
@@ -75,6 +76,15 @@ function NavItem({ item }: { item: INavItem }) {
 
   const location = useLocation();
 
+  const user = useAppSelector(selectUser);
+
+  const canAccess =
+    !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]);
+
+  const canAccessSomeChildren = item.items?.some(
+    item => !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]),
+  );
+
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
 
   React.useEffect(() => {
@@ -88,7 +98,10 @@ function NavItem({ item }: { item: INavItem }) {
     <>
       <Link
         to={item.path}
-        className={'p-2 rounded-md flex  w-full justify-between ' + `${isCurrentPath && 'bg-blue'}`}
+        className={cn('p-2 rounded-md flex  w-full justify-between', {
+          'bg-blue': isCurrentPath,
+          hidden: !canAccess,
+        })}
       >
         <div className='flex gap-2 items-center'>
           {Icon && (
@@ -96,7 +109,7 @@ function NavItem({ item }: { item: INavItem }) {
           )}
           <span className={`${isCurrentPath && 'text-white'}`}>{item.title}</span>
         </div>
-        {item.items?.length ? (
+        {item.items?.length && canAccessSomeChildren ? (
           <button
             className='flex items-center p-0 h-auto'
             onClick={e => {
@@ -117,8 +130,16 @@ function NavItem({ item }: { item: INavItem }) {
       {isOpen &&
         item.items?.map((child, indx) => {
           const isCurrentPath = location.pathname.includes(child.path);
+          const canAccess =
+            !child.isPrivate ||
+            (child.neededPermission && user.permissions?.[child.neededPermission]);
+
           return (
-            <Link to={child.path} key={indx} className={`ml-6 ${isCurrentPath && 'text-blue'}`}>
+            <Link
+              to={child.path}
+              key={indx}
+              className={cn('ml-6', { 'text-blue': isCurrentPath, hidden: !canAccess })}
+            >
               <span className='ml-6'>{child.title}</span>
             </Link>
           );

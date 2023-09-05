@@ -18,7 +18,6 @@ export class CreateProfileDto {
   education?: string;
 
   @IsString()
-  @IsNotEmpty()
   sex?: string;
 
   @IsString()

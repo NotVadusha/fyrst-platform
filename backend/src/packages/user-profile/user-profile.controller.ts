@@ -1,3 +1,4 @@
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateProfileDto } from './dto/createProfile.dto';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { UserProfileService } from './user-profile.service';
@@ -11,6 +12,8 @@ import {
   Delete,
   ParseIntPipe,
   NotFoundException,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -33,6 +36,18 @@ export class UserProfileController {
   async getAll() {
     return this.profileService.findAll();
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Patch()
+  async updateByToken(
+    @Request() req,
+    @Body()
+    updateProfileInfo: UpdateProfileDto,
+  ) {
+    await this.profileService.update(updateProfileInfo, req.user['id']);
+    return await this.profileService.findOne(req.user['id']);
+  }
+
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) userId: number,
