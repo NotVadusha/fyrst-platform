@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MeetingProvider, MeetingConsumer } from '@videosdk.live/react-sdk';
-import { authToken, createMeeting } from './common/api/meeting-chat.api';
-import { JoinScreen } from './common/components/join-screen/JoinScreen';
-import { MeetingView } from './common/components/meeting-view/MeetingView';
+import { createMeeting } from './common/api/meeting-chat.api';
+import { AUTH_TOKEN } from './common/constants/constants';
+import { JoinScreen, MeetingView } from './common/components/index';
 
 export function MeetingChat() {
   const [meetingId, setMeetingId] = useState<string | null>(null);
@@ -15,7 +15,7 @@ export function MeetingChat() {
   };
 
   const onCreate = async () => {
-    const newMeetingId = await createMeeting({ token: authToken });
+    const newMeetingId = await createMeeting();
     setMeetingId(newMeetingId);
   };
 
@@ -23,7 +23,7 @@ export function MeetingChat() {
     setMeetingId(null);
   };
 
-  return authToken && meetingId ? (
+  return AUTH_TOKEN && meetingId ? (
     <MeetingProvider
       config={{
         meetingId,
@@ -31,7 +31,7 @@ export function MeetingChat() {
         webcamEnabled: true,
         name: '',
       }}
-      token={authToken}
+      token={AUTH_TOKEN}
     >
       <MeetingConsumer>
         {() => <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />}
