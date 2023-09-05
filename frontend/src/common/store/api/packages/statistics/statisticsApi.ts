@@ -8,6 +8,7 @@ import {
   AverageWorkersStatistcsDto,
   AverageWorkersStatistcsResponseDto,
 } from 'src/common/packages/statistics/dto/average-workers-statistcs.dto';
+import { WorkersByMonthStatisticsDto } from 'src/common/packages/statistics/dto/workers-by-month-statistics.dto';
 
 const statisticsApi = apiSlice.injectEndpoints({
   endpoints(builder) {
@@ -44,6 +45,14 @@ const statisticsApi = apiSlice.injectEndpoints({
           return '/statistics/average-workers?' + params;
         },
       }),
+
+      fetchWorkersByMonth: builder.query<WorkersByMonthStatisticsDto[], { facilityId: string }>({
+        query(filters) {
+          const params = new URLSearchParams({ ...filters });
+
+          return '/statistics/workers-by-month?' + params;
+        },
+      }),
     };
   },
 });
@@ -52,4 +61,5 @@ export const {
   useFetchBookingsAmountStatisticsQuery,
   useFetchBookingsByMonthStatisticsQuery,
   useFetchAverageWorkersQuery,
+  useFetchWorkersByMonthQuery,
 } = statisticsApi;

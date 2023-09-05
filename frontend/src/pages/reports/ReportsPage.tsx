@@ -3,6 +3,7 @@ import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { BookingStatistics } from './sections/BookingsStatistics';
 import { BookingsByMonth } from './sections/BookingsByMonth';
 import { AverageWorkers } from './sections/AverageWorkers';
+import { WorkesByMonth } from './sections/WorkersByMonth';
 
 export function ReportsPage() {
   return (
@@ -12,6 +13,7 @@ export function ReportsPage() {
         <BookingStatistics facilityId={1} startDate={new Date('2022-09-04')} />
         <BookingsByMonth facilityId={1} />
         <AverageWorkers facilityId={1} startDate={new Date('2022-09-04')} />
+        <WorkesByMonth facilityId={1} />
       </div>
     </section>
   );
