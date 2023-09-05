@@ -1,7 +1,20 @@
-import { Controller, Get, Query, Post, Body, Param, Patch, HttpCode, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Body,
+  Param,
+  Patch,
+  HttpCode,
+  Delete,
+  Request,
+} from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { Invoice } from './entities/invoice.entity';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
+import { InvoicesFiltersDto } from './dto/invoices-filters.dto';
+import { AllInvoicesDto } from './dto/all-invoices';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -14,11 +27,10 @@ export class InvoiceController {
 
   @Get()
   findAll(
-    @Query('payeeId') userId: number,
-    @Query('minDate') minDate: Date,
-    @Query('maxDate') maxDate: Date,
-  ): Promise<Invoice[]> {
-    return this.invoiceService.findAll(userId, minDate, maxDate);
+    @Query() invoicesFiltersFto: InvoicesFiltersDto,
+    @Request() req,
+  ): Promise<AllInvoicesDto> {
+    return this.invoiceService.findAll(invoicesFiltersFto, req.user['id']);
   }
 
   @Post()

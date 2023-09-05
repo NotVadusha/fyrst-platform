@@ -89,8 +89,6 @@ export class PaymentService {
       }
     }
 
-    console.log(where);
-
     const payments = await this.paymentRepository.findAll({
       where,
       limit: filters.limit,

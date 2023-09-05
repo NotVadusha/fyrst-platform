@@ -6,12 +6,15 @@ import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Booking } from '../booking/entities/booking.entity';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
+import { InvoicesFiltersDto } from './dto/invoices-filters.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class InvoiceService {
   constructor(
     @InjectModel(Invoice)
     private readonly invoiceRepository: typeof Invoice,
+    private userService: UserService,
   ) {}
 
   async findOneById(id: number) {
@@ -39,24 +42,57 @@ export class InvoiceService {
     return invoice;
   }
 
-  async findAll(payeeId?: number, minDate?: Date, maxDate?: Date) {
+  async findAll(filters: InvoicesFiltersDto, id: number) {
+    const user = await this.userService.findOne(id);
+
     const where: any = {};
 
-    if (!!payeeId) where['$timecard.employee.id$'] = payeeId;
+    if (user.role_id === 1) where['$timecard.employee.id$'] = user.id;
+    else if (user.role_id === 2) {
+      where['$timecard.booking.createdBy$'] = user.id;
+      if (!!filters.payee) {
+        where['$timecard.employee.id$'] = filters.payee;
+      }
+    } else if (user.role_id === 3 && !!filters.payee) {
+      where['$timecard.employee.id$'] = filters.payee;
+    }
 
-    if (!!minDate || !!maxDate) {
+    if (!!filters.minDate || !!filters.maxDate) {
       where.createdAt = {};
 
-      if (minDate) {
-        where.createdAt[Op.gte] = minDate;
+      if (filters.minDate) {
+        where.createdAt[Op.gte] = filters.minDate;
       }
 
-      if (maxDate) {
-        where.createdAt[Op.lte] = maxDate;
+      if (filters.maxDate) {
+        where.createdAt[Op.lte] = filters.maxDate;
       }
     }
 
-    return await this.invoiceRepository.findAll({
+    const invoices = await this.invoiceRepository.findAll({
+      where,
+      limit: filters.limit,
+      offset: filters.offset,
+      include: [
+        {
+          model: Timecard,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'first_name', 'last_name'],
+              as: 'employee',
+            },
+            {
+              model: Booking,
+              attributes: ['id', 'startDate', 'endDate'],
+            },
+          ],
+          attributes: ['id'],
+        },
+      ],
+    });
+
+    const total = await this.invoiceRepository.count({
       where,
       include: [
         {
@@ -76,6 +112,11 @@ export class InvoiceService {
         },
       ],
     });
+
+    return {
+      invoices,
+      total,
+    };
   }
 
   async delete(id: number) {
