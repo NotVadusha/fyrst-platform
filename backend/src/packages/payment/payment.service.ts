@@ -73,6 +73,8 @@ export class PaymentService {
       if (!!filters.worker) {
         where['$timecard.employee.id$'] = filters.worker;
       }
+    } else if (user.role_id === 3 && !!filters.worker) {
+      where['$timecard.employee.id$'] = filters.worker;
     }
 
     if (!!filters.minDate || !!filters.maxDate) {
