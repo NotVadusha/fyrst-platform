@@ -59,10 +59,10 @@ export function BookingStatistics({
   };
 
   return (
-    <section className='max-h-[35vh] grid grid-cols-3'>
+    <section className='max-h-[30vh] grid grid-cols-3'>
       <div className='col-span-2'>
         <SectionHeader>Amount of bookings</SectionHeader>
-        <p className='text-h5 font-semibold'>
+        <p className='text-body-large'>
           In last month your company submitted total of{' '}
           <span className='underline'>{stats.total}</span> bookings.{' '}
           <span className='underline'>{stats.completed}</span> of them were completed and{' '}
@@ -70,7 +70,7 @@ export function BookingStatistics({
         </p>
       </div>
       <div className='col-span-1 flex flex-col items-center justify-center'>
-        <div className='max-h-[35vh]'>
+        <div className='max-h-[30vh]'>
           <Pie data={chartData} options={chartOptions} />
         </div>
         <span className='mt-2 text-grey'>Completed to pending ratio</span>

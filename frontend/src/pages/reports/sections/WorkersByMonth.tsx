@@ -36,7 +36,7 @@ export function WorkesByMonth({ facilityId }: { facilityId: number }) {
 
   if (isStatsFetching || !stats) {
     return (
-      <div className='min-h-[35vh] flex items-center justify-center'>
+      <div className='min-h-[30vh] flex items-center justify-center'>
         <Spinner />
       </div>
     );
@@ -61,7 +61,7 @@ export function WorkesByMonth({ facilityId }: { facilityId: number }) {
   };
 
   return (
-    <section className='max-h-[45vh] mb-20'>
+    <section className='max-h-[30vh] mb-20'>
       <SectionHeader>Total workers by month</SectionHeader>
       <Line options={chartOptions} data={chartData} />
     </section>

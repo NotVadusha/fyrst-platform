@@ -33,7 +33,7 @@ export function AverageWorkers({ facilityId, startDate }: { facilityId: number; 
   return (
     <section className='max-h-[35vh]'>
       <SectionHeader>Average workers</SectionHeader>
-      <p className='text-h5 font-semibold'>
+      <p className='text-body-large'>
         During the last month, an average of{' '}
         <span className='underline'>{Math.round(stats.averageWorkers * 100) / 100}</span> workers
         has applied for your company&apos;s bookings
