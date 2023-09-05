@@ -7,4 +7,5 @@ export interface TimecardFiltersDto {
   limit?: string | null;
   offset?: string | null;
   bookingId?: string | null;
+  facilityId?: string | null;
 }

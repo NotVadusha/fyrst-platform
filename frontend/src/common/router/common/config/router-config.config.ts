@@ -20,6 +20,8 @@ export const routerConfig = {
         {
           title: 'Create booking',
           path: '/booking/create',
+          isPrivate: true,
+          neededPermission: 'manageBookings',
         },
       ],
     },
@@ -28,6 +30,8 @@ export const routerConfig = {
       icon: Timecard,
       path: '/timecard',
       mainPath: '/timecard',
+      isPrivate: true,
+      neededPermission: 'manageTimecards',
     },
     {
       title: 'Profile',
@@ -62,6 +66,8 @@ export const routerConfig = {
       mainPath: '/payments',
       path: '/payments',
       items: [],
+      isPrivate: true,
+      neededPermission: 'manageTimecards',
     },
     {
       title: 'Users',
@@ -69,6 +75,8 @@ export const routerConfig = {
       mainPath: '/users',
       path: '/users',
       items: [],
+      isPrivate: true,
+      neededPermission: 'manageUsers',
     },
   ] as NavItem[],
 };

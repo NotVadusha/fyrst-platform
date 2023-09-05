@@ -7,8 +7,8 @@ import {
   IsEmail,
   IsNumber,
 } from 'class-validator';
+import { Permissions } from 'src/packages/permissions/entities/permissions.entity';
 import { Transform } from 'class-transformer';
-import { AllowNull } from 'sequelize-typescript';
 
 export class CreateUserDto {
   @IsString()
@@ -54,4 +54,11 @@ export class CreateUserDto {
   @IsNumber()
   @IsNotEmpty()
   role_id: number;
+
+  @IsOptional()
+  permissions?: Permissions;
+
+  @IsOptional()
+  @IsNumber()
+  facility_id?: number;
 }

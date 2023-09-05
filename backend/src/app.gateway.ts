@@ -1,4 +1,4 @@
-import { Inject, Logger, forwardRef } from '@nestjs/common';
+import { Inject, Logger, UseGuards, forwardRef } from '@nestjs/common';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -8,10 +8,13 @@ import {
   MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { ClientToServerEvents, ServerToClientEvents } from 'shared/socketEvents';
+import { ClientToServerEvents, ServerToClientEvents, TypingUser } from 'shared/socketEvents';
 import { ChatService } from './packages/chat/chat.service';
+import { SocketAuthMiddleware } from './packages/auth/ws.md';
+import { WsJwtGuard } from './packages/auth/guards/ws-jwt.guard';
 
 @WebSocketGateway()
+@UseGuards(WsJwtGuard)
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     @Inject(forwardRef(() => ChatService))
@@ -20,14 +23,24 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
-
   // userId - socketId
   private onlineUsers = new Map<number, string>();
   private logger = new Logger('AppGateway');
 
+  afterInit(client: Socket) {
+    client.use(SocketAuthMiddleware() as any);
+    Logger.log('afterInit');
+  }
+
   handleConnection(client: { emit: (arg0: string, arg1: string) => void }) {
     this.logger.log(`${client} New client connected`);
     client.emit('connection', 'Successfully connected to server');
+  }
+
+  getOnlineMembers(memberIds: number[]) {
+    const sockets = memberIds.map(id => this.onlineUsers.get(id)).filter(val => val);
+    this.logger.log(sockets);
+    return sockets;
   }
 
   @SubscribeMessage('user-join-chat')
@@ -35,7 +48,11 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`${client.id} joined chat ${data.chatId}`);
     client.join(data.chatId);
     const chat = await this.chatService.find(Number(data.chatId));
-    this.wss.to(client.id).emit('chat-joined', chat);
+    const onlineUsers = chat.members
+      .map(member => (this.onlineUsers.get(member.id) ? member.id : undefined))
+      .filter(val => val);
+    this.logger.log('onlineUsers', onlineUsers);
+    this.wss.to(client.id).emit('chat-joined', { chat, onlineUsers });
   }
 
   @SubscribeMessage('get-conversations')
@@ -51,15 +68,44 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('user-online')
-  handleUserOnline(client: Socket, data: { userId: number }) {
+  async handleUserOnline(client: Socket, data: { userId: number }) {
     this.onlineUsers.set(data.userId, client.id);
-    this.logger.log(client.handshake.headers.authorization);
     for (const [key, value] of this.onlineUsers.entries()) {
       this.logger.log(`Key: ${key}, Value: ${value}`);
     }
+    const chatIds = await this.chatService.getAllChatIdsByUserId(data.userId);
+    this.wss.to(chatIds).emit('user-online', { ...data });
+  }
+
+  @SubscribeMessage('user-offline')
+  async handleUserOffline(client: Socket, data: { userId: number }) {
+    this.onlineUsers.delete(data.userId);
+    for (const [key, value] of this.onlineUsers.entries()) {
+      this.logger.log(`Key: ${key}, Value: ${value}`);
+    }
+
+    const chatIds = await this.chatService.getAllChatIdsByUserId(data.userId);
+    this.wss.to(chatIds).emit('user-offline', { ...data });
+  }
+
+  @SubscribeMessage('user-type')
+  handleUserType(client: Socket, data: { user: TypingUser; chatId: string }) {
+    this.logger.log(`${data.user.id} is typing in chat ${data.chatId}`);
+    client.to(data.chatId).emit('user-typing', { user: data.user });
+  }
+
+  @SubscribeMessage('user-stop-type')
+  handleUserStopType(client: Socket, data: { user: TypingUser; chatId: string }) {
+    this.logger.log(`${data.user.id} stopped typing in chat ${data.chatId}`);
+    client.to(data.chatId).emit('user-stop-typing', { user: data.user });
   }
 
   handleDisconnect(client: Socket) {
     this.logger.log('Client disconnected');
+    this.onlineUsers.forEach((socketId, userId) => {
+      if (socketId === client.id) {
+        this.onlineUsers.delete(userId);
+      }
+    });
   }
 }

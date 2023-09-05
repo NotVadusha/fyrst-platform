@@ -29,7 +29,7 @@ export default function ViewTimeCardPage() {
       approvedAt: new Date().toISOString(),
     });
 
-    toast({ title: 'Success', description: 'Successfully submitted timecard' });
+    toast({ title: 'Success', description: 'Successfully approved timecard' });
   }
 
   function handleRejectTimecard() {

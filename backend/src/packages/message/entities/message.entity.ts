@@ -20,14 +20,16 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
   @Column
   id: number;
 
-  @Column
+  @Column({
+    type: DataType.TEXT,
+  })
   messageContent: string;
 
   @AllowNull
   @Column({
-    type: DataType.ARRAY(DataType.TEXT),
+    type: DataType.TEXT,
   })
-  attachments: string[];
+  attachment: string;
 
   @Column
   @ForeignKey(() => Chat)

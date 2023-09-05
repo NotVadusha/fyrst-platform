@@ -76,7 +76,6 @@ export const baseQueryWithReauth: BaseQueryFn<
     }
   } else if (result?.error) {
     const { data } = result.error as { data?: { message?: string } };
-    console.log('here');
 
     toast({
       variant: 'destructive',
