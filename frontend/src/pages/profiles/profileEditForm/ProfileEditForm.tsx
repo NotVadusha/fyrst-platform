@@ -19,14 +19,30 @@ import DateInput from './DateInput';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { Buffer } from 'buffer';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import IdCardParser from './IdCardParser';
 
 type Inputs = y.InferType<typeof profileSchema>;
+export type parseInfo = {
+  first_name: string;
+  last_name: string;
+  birthDate: Date;
+  sex: string;
+  documentNumber: string;
+};
+
+const capitalize = (text: string) => {
+  return `${text[0].toUpperCase()}${text.slice(1).toLowerCase()}`;
+};
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [avatarImage, setAvatarImage] = useState('');
+  const [parsedData, _setParsedData] = useState<parseInfo>();
+  const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
+  const [city, setCity] = useState<string>('');
+  const [updateUser] = useUpdateUserMutation();
 
   const token = localStorage.getItem('accessToken');
   // eslint-disable-next-line
@@ -50,10 +66,25 @@ export function ProfileEditForm() {
     userFetch(userId);
   }, []);
 
-  const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
+  const setParseData = (data: parseInfo) => {
+    _setParsedData(data);
+  };
 
-  const [city, setCity] = useState<string>('');
-  const [updateUser] = useUpdateUserMutation();
+  useEffect(() => {
+    if (parsedData && user) {
+      const infoToUpdate: User = {
+        ...user,
+        first_name: capitalize(parsedData.first_name),
+        last_name: capitalize(parsedData.last_name),
+        email: user.email,
+        city: user?.city,
+        birthdate: parsedData.birthDate.toISOString().split('T')[0],
+        document_number: parsedData.documentNumber,
+      };
+      console.log(infoToUpdate);
+      setUser(infoToUpdate);
+    }
+  }, [parsedData]);
 
   const onSubmit = async (valuesFromForm: Inputs) => {
     let base64;
@@ -75,6 +106,7 @@ export function ProfileEditForm() {
         email: valuesFromForm?.email,
         city: valuesFromForm.city ? valuesFromForm.city : null,
         birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+        document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
       },
     });
 
@@ -82,7 +114,7 @@ export function ProfileEditForm() {
       // eslint-disable-next-line
       // @ts-ignore
       id: user.id,
-      body: { avatar: base64 },
+      body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
     });
 
     toast({
@@ -105,6 +137,7 @@ export function ProfileEditForm() {
       email: user?.email,
       city: user?.city,
       birthdate: user?.birthdate ?? undefined,
+      document_number: user?.document_number,
     },
     shouldFocusError: false,
   });
@@ -216,6 +249,21 @@ export function ProfileEditForm() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name='document_number'
+                render={({ field }) => (
+                  <FormItem>
+                    <TextInput
+                      control={form.control}
+                      label='Document number'
+                      disabled
+                      {...field}
+                      value={field.value ? field.value : ''}
+                    />
+                  </FormItem>
+                )}
+              />
               <div>
                 <Controller
                   name='birthdate'
@@ -230,6 +278,7 @@ export function ProfileEditForm() {
               </Button>
             </form>
           </Form>
+          <IdCardParser setData={setParseData} />
         </div>
       )}
     </>
