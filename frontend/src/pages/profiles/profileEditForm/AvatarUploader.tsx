@@ -2,6 +2,7 @@ import React, { ChangeEvent, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import ReactSlider from 'react-slider';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
 
 interface InputProps {
   width: number;
@@ -23,7 +24,7 @@ export const AvatarUploader = ({
   setShown,
   setImage,
 }: InputProps) => {
-  const [tempImage, setTempImage] = useState<string>('');
+  const [tempImage, setTempImage] = useState<string>(defaultAvatar);
   const imageInput = useRef<HTMLInputElement | null>(null);
   const [rangeValue, setRangeValue] = useState<number>(10);
 

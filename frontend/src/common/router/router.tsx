@@ -35,6 +35,8 @@ import { SearchChatMessagesPage } from 'src/pages/messenger/common/chat/search/S
 import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
+import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
+import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -134,6 +136,10 @@ export const router = createBrowserRouter([
                 element: <ProfilePage />,
               },
               {
+                path: 'portfolio',
+                element: <PortfolioPage />,
+              },
+              {
                 path: 'edit',
                 element: <ProfileEditPage />,
               },
@@ -144,6 +150,10 @@ export const router = createBrowserRouter([
               {
                 path: 'security',
                 element: <ProfileSecurity />,
+              },
+              {
+                path: 'recommendations',
+                element: <JobRecommendations />,
               },
             ],
           },

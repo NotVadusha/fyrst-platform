@@ -15,6 +15,7 @@ export interface UserState {
   role?: Role;
   permissions?: Permissions;
   facility_id?: number;
+  sex?: string;
 }
 
 const initialState: UserState = {

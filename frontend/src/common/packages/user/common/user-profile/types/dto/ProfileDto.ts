@@ -1,8 +1,8 @@
 export type ProfileDto = {
-  userId: number;
+  userId?: number;
   avatar?: string;
-  languages: string[];
+  languages?: string[];
   description?: string;
-  education: string;
-  sex: string;
+  education?: string;
+  sex?: string;
 };

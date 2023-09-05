@@ -41,6 +41,10 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
+  document_number?: string | null;
+
+  @IsString()
+  @IsOptional()
   password?: string;
 
   @IsBoolean()

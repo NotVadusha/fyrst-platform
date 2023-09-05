@@ -14,6 +14,7 @@ import { PermissionsService } from '../permissions/permissions.service';
 import { userRoles } from 'shared/packages/roles/userRoles';
 import { InferAttributes } from 'sequelize';
 import * as Papa from 'papaparse';
+import { flatten } from 'flat';
 
 @Injectable()
 export class UserService {
@@ -121,12 +122,8 @@ export class UserService {
       throw new Error('No users available to generate CSV.');
     }
 
-    const cleanData = users.map(user => user.toJSON());
-    const fieldKeys = Object.keys(cleanData[0]);
-    const csv = Papa.unparse({
-      fields: fieldKeys,
-      data: cleanData,
-    });
+    const cleanData = users.map(user => flatten(user.toJSON(), { delimiter: '_' }));
+    const csv = Papa.unparse(cleanData);
 
     return csv;
   }
@@ -196,6 +193,10 @@ export class UserService {
     role: keyof typeof userRoles,
     permissions: InferAttributes<Permissions>,
   ) {
+    if (!permissions) {
+      return;
+    }
+
     switch (role) {
       case 'PLATFORM_ADMIN':
         permissions.manageBookings = true;

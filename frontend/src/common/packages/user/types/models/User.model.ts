@@ -10,6 +10,7 @@ export interface User {
   city: string;
   birthdate: string;
   password: string;
+  document_number: string;
   is_confirmed: boolean;
   role_id: number;
   role: Role;
