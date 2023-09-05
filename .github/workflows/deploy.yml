@@ -36,8 +36,7 @@ jobs:
 
       - name: Stop old application instance
         run: |
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }}"
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "npm run stop"
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }} && npm run stop"
         continue-on-error: true
 
       - name: Deploy to VM
@@ -47,5 +46,4 @@ jobs:
 
       - name: Run new application instance
         run: |
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }}"
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "npm run start:build"
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }} && npm run start:build"
