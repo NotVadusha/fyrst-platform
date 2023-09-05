@@ -99,11 +99,7 @@ export function ProfileEditForm() {
       await updateUser({
         id: user.id,
         user: {
-          first_name: valuesFromForm?.first_name,
-          last_name: valuesFromForm?.last_name,
-          phone_number: valuesFromForm.phone_number,
-          email: valuesFromForm?.email,
-          city: valuesFromForm.city,
+          ...valuesFromForm,
           birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
           document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
         },
