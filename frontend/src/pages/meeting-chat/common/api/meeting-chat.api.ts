@@ -1,0 +1,17 @@
+import { AUTH_TOKEN } from '../constants/constants';
+
+export const createMeeting = async () => {
+  const res = await fetch(`https://api.videosdk.live/v2/rooms`, {
+    method: 'POST',
+    headers: {
+      authorization: `${AUTH_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({}),
+  });
+
+  const { roomId }: { roomId: string } = await res.json();
+  return roomId;
+};
+
+//TODO: Add redux toolkit query
