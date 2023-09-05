@@ -54,6 +54,11 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
+            path: 'calendar',
+            errorElement: <ErrorPage></ErrorPage>,
+            children: [{ index: true, element: <CalendarPage></CalendarPage> }],
+          },
+          {
             path: 'booking',
             errorElement: <ErrorPage />,
             children: [
@@ -274,11 +279,6 @@ export const router = createBrowserRouter([
             element: <Navigate to='/auth/signup' replace />,
           },
         ],
-      },
-      {
-        path: 'calendar',
-        errorElement: <ErrorPage></ErrorPage>,
-        children: [{ index: true, element: <CalendarPage></CalendarPage> }],
       },
     ],
   },

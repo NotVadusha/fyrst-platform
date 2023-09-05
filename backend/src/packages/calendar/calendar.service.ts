@@ -3,6 +3,8 @@ import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Calendar } from './entities/calendar.entity';
 import { UserService } from '../user/user.service';
+import { Event } from '../calendar-events/entities/event.entity';
+import { Booking } from '../booking/entities/booking.entity';
 
 @Injectable()
 export class CalendarService {
@@ -22,6 +24,14 @@ export class CalendarService {
 
   async findById(id: number) {
     return this.calendarRepository.findByPk(id);
+  }
+
+  async findByUserId(id: number) {
+    await this.validateUserExists(id);
+    return this.calendarRepository.findOne({
+      where: { userId: id },
+      include: [{ model: Event, include: [Booking] }],
+    });
   }
 
   async remove(id: number) {

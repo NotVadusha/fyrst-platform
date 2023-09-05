@@ -12,9 +12,11 @@ import {
   isSameMonth,
 } from 'date-fns';
 import React, { useState } from 'react';
-import { useGetAllEventsQuery } from 'src/common/store/api/packages/calendar/calendarApi';
+import { useGetCalendarQuery } from 'src/common/store/api/packages/calendar/calendarApi';
 import { CalendarCell } from './CalendarCell';
 import { ReactComponent as ArrowRight } from '../../assets/icons/gray-arrow-right.svg';
+import { useAppSelector } from 'src/common/hooks/redux';
+import { selectUserId } from 'src/common/store/slices/packages/user/userSelectors';
 
 const colStart = [
   'col-start-7',
@@ -27,7 +29,9 @@ const colStart = [
 ];
 
 export const CalendarGrid = () => {
-  const { data: events } = useGetAllEventsQuery(1);
+  const userId = useAppSelector(selectUserId);
+  const { data: calendar } = useGetCalendarQuery(userId || 1);
+  console.log(userId);
   const today = startOfToday();
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMMM, yyyy'));
   const firstDayOfCurrentMonth = parse(currentMonth, 'MMMM, yyyy', new Date());
@@ -36,6 +40,8 @@ export const CalendarGrid = () => {
     start: startOfWeek(firstDayOfCurrentMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayOfCurrentMonth), { weekStartsOn: 1 }),
   });
+
+  console.log(calendar);
 
   const prevMonth = () => {
     const firstDayPrevMonth = add(firstDayOfCurrentMonth, { months: -1 });
@@ -46,15 +52,27 @@ export const CalendarGrid = () => {
     const firstDayNextMonth = add(firstDayOfCurrentMonth, { months: 1 });
     setCurrentMonth(format(firstDayNextMonth, 'MMMM, yyyy'));
   };
+
+  const goToCurrentMonth = () => {
+    setCurrentMonth(format(today, 'MMMM, yyyy'));
+  };
   return (
-    <div className='max-w-[955px] mx-auto'>
-      <div className='mb-8 flex gap-2 items-center '>
-        <button onClick={prevMonth}>
-          <ArrowRight className='rotate-[180deg]' />
-        </button>
-        <p className='text-h6 text-dark-grey'>{currentMonth}</p>
-        <button onClick={nextMonth}>
-          <ArrowRight />
+    <div className='w-[955px] mx-auto'>
+      <div className='flex justify-between w-full items-center mb-8'>
+        <div className='flex gap-2 items-center'>
+          <button onClick={prevMonth}>
+            <ArrowRight className='rotate-[180deg]' />
+          </button>
+          <p className='text-h6 text-dark-grey w-40 text-center'>{currentMonth}</p>
+          <button onClick={nextMonth}>
+            <ArrowRight />
+          </button>
+        </div>
+        <button
+          className='border border-[#686565]/[0.15] h-12 px-4 hover:bg-grey/[0.15] rounded-lg text-dark-grey'
+          onClick={goToCurrentMonth}
+        >
+          Today
         </button>
       </div>
       <div className='grid grid-cols-7 text-center text-dark-grey text-body-small '>
@@ -68,8 +86,8 @@ export const CalendarGrid = () => {
       </div>
       <div className='grid grid-cols-7 bg-[#686565]/[0.15]  gap-[1px] p-[1px] h-[620px]'>
         {days.map((day, i) => {
-          if (!events) return;
-          const eventForDate = events.filter(event => {
+          if (!calendar) return;
+          const eventForDate = calendar.events.filter(event => {
             if (!event.booking) return;
             return isWithinInterval(day, {
               start: new Date(event.booking.startDate),

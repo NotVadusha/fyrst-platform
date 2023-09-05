@@ -1,3 +1,4 @@
+import { Calendar } from 'src/common/packages/calendar/types/models/Calendar';
 import { apiSlice } from '../../api';
 import { Event } from 'src/common/packages/event/types/models/Event.model';
 
@@ -13,7 +14,12 @@ export const calendarApi = apiSlice.injectEndpoints({
         return { url: '/calendar-events', method: 'POST', body: newEvent };
       },
     }),
+    getCalendar: builder.query<Calendar, number>({
+      query(userId) {
+        return '/calendar/' + userId + '/user';
+      },
+    }),
   }),
 });
 
-export const { useGetAllEventsQuery, useCreateEventsMutation } = calendarApi;
+export const { useGetAllEventsQuery, useCreateEventsMutation, useGetCalendarQuery } = calendarApi;

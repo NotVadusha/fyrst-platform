@@ -8,32 +8,32 @@ export class CalendarEventsController {
   constructor(private readonly calendarEventsService: CalendarEventsService) {}
 
   @Post()
-  create(@Body() createCalendarEventDto: CreateCalendarEventDto) {
-    return this.calendarEventsService.create(createCalendarEventDto);
+  async create(@Body() createCalendarEventDto: CreateCalendarEventDto) {
+    return await this.calendarEventsService.create(createCalendarEventDto);
   }
 
   @Get()
-  findAll() {
-    return this.calendarEventsService.findAll();
+  async findAll() {
+    return await this.calendarEventsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.calendarEventsService.findById(id);
+  async findOne(@Param('id') id: number) {
+    return await this.calendarEventsService.findById(id);
   }
 
   @Get(':id/calendar')
-  findAllByCalendar(@Param('id') id: number) {
-    return this.calendarEventsService.getAllByCalendarId(id);
+  async findAllByCalendar(@Param('id') id: number) {
+    return await this.calendarEventsService.getAllByCalendarId(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateCalendarEventDto: UpdateCalendarEventDto) {
-    return this.calendarEventsService.update(id, updateCalendarEventDto);
+  async update(@Param('id') id: number, @Body() updateCalendarEventDto: UpdateCalendarEventDto) {
+    return await this.calendarEventsService.update(id, updateCalendarEventDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.calendarEventsService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.calendarEventsService.remove(id);
   }
 }
