@@ -13,6 +13,7 @@ import { Line } from 'react-chartjs-2';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { useFetchWorkersByMonthQuery } from 'src/common/store/api/packages/statistics/statisticsApi';
+import { SectionHeader } from '../common/SectionHeader';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -61,7 +62,7 @@ export function WorkesByMonth({ facilityId }: { facilityId: number }) {
 
   return (
     <section className='max-h-[45vh] mb-20'>
-      <h2 className='text-h2 font-bold'>Total workers by month</h2>
+      <SectionHeader>Total workers by month</SectionHeader>
       <Line options={chartOptions} data={chartData} />
     </section>
   );

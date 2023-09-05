@@ -2,6 +2,7 @@ import React from 'react';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { useFetchAverageWorkersQuery } from 'src/common/store/api/packages/statistics/statisticsApi';
+import { SectionHeader } from '../common/SectionHeader';
 
 export function AverageWorkers({ facilityId, startDate }: { facilityId: number; startDate: Date }) {
   const {
@@ -31,7 +32,7 @@ export function AverageWorkers({ facilityId, startDate }: { facilityId: number; 
 
   return (
     <section className='max-h-[35vh]'>
-      <h2 className='text-h2 font-bold'>Average workers</h2>
+      <SectionHeader>Average workers</SectionHeader>
       <p className='text-h5 font-semibold'>
         During the last month, an average of{' '}
         <span className='underline'>{Math.round(stats.averageWorkers * 100) / 100}</span> workers

@@ -4,6 +4,7 @@ import { Pie } from 'react-chartjs-2';
 import { useFetchBookingsAmountStatisticsQuery } from 'src/common/store/api/packages/statistics/statisticsApi';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { SectionHeader } from '../common/SectionHeader';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -60,7 +61,7 @@ export function BookingStatistics({
   return (
     <section className='max-h-[35vh] grid grid-cols-3'>
       <div className='col-span-2'>
-        <h2 className='text-h2 font-bold'>Amount of bookings</h2>
+        <SectionHeader>Amount of bookings</SectionHeader>
         <p className='text-h5 font-semibold'>
           In last month your company submitted total of{' '}
           <span className='underline'>{stats.total}</span> bookings.{' '}
