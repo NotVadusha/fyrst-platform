@@ -21,8 +21,8 @@ export const bookingSchema = y.object().shape({
     .required('Price per hour is a required field')
     .test('validAmount', 'Should be a valid amount', value => /^\d*.?\d{0,2}$/.test(String(value)))
     .typeError('Should be a number'),
-  notes: y.string().required(`Employer's name is a required field`),
-  facilityId: y.number().min(1).integer().required(),
+  notes: y.string().required(`Job description is required field`),
+  facilityId: y.number().min(1).integer().required('Facility is a required field'),
   startDate: y
     .date()
     .required('Start date is a required field')
@@ -42,11 +42,8 @@ export const bookingSchema = y.object().shape({
     }),
   employersName: y
     .string()
-    .matches(
-      /^[A-Z][a-z ,.'-]*( [A-Z][a-z ,.'-]*)*$/,
-      `Employer's name shouldn't contain numbers and uppercase letters, instead of first letter`,
-    )
-    .min(2, `Employer's name shouldn't contain less than 2 symbols`)
-    .max(50, `Employer's name should contain more than 50 symbols`)
+    .matches(/^[A-Z][a-z ,.'-]*( [A-Z][a-z ,.'-]*)*$/, `Invalid employer's name`)
+    .min(2, `Employer's name is too short`)
+    .max(50, `Employer's name is too long`)
     .required(`Employer's name is a required field`),
 });
