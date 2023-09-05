@@ -1,0 +1,51 @@
+name: 'deploy'
+on:
+  workflow_call:
+    inputs:
+      HOST:
+        type: string
+        required: true
+    secrets:
+      GCP_SSH_PRIVATE_KEY:
+        required: true
+      GCP_SSH_DEPLOY_ENV:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_DIRECTORY: '~/ga-deploy'
+      HOST: ${{ inputs.HOST }}
+    permissions:
+      contents: 'read'
+
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - name: Install runner dependencies
+        run: |
+          sudo apt-get install -y ssh rsync
+          echo "$DEPLOY_SSH_KEY" > deploy_key.pem
+          echo "$ENV_FILE" > .env.dev
+          chmod 600 deploy_key.pem
+          chmod 600 .env.dev
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          ENV_FILE: ${{ secrets.GCP_SSH_DEPLOY_ENV }}
+
+      - name: Stop old application instance
+        run: |
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }}"
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "npm run stop"
+        continue-on-error: true
+
+      - name: Deploy to VM
+        run: |
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
+          rsync -avz -e 'ssh -i deploy_key.pem -o StrictHostKeyChecking=no' --exclude='.git' ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }}
+
+      - name: Run new application instance
+        run: |
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }}"
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "npm run start:build"
