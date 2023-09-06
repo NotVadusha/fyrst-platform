@@ -1,4 +1,4 @@
-import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, Logger, ForbiddenException } from '@nestjs/common';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
@@ -10,11 +10,11 @@ import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { getFilterParams } from 'shared/getFilterParams';
-import { Sequelize } from 'sequelize-typescript';
 import * as Papa from 'papaparse';
 import _ from 'lodash';
 import { flatten } from 'flat';
 import { UserService } from '../user/user.service';
+import { userRoles } from 'shared/packages/roles/userRoles';
 
 @Injectable()
 export class TimecardService {
@@ -118,8 +118,8 @@ export class TimecardService {
     const user = await this.userService.findOne(id);
     const where = {};
 
-    if (user.role_id === 1) throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
-    if (user.role_id === 2) where['$booking.createdBy$'] = id;
+    if (user.role_id === userRoles.WORKER) throw new ForbiddenException('Access denied');
+    if (user.role_id === userRoles.FACILITY_MANAGER) where['$booking.createdBy$'] = id;
 
     return await this.timecardModel.findAll({
       where,

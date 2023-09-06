@@ -16,3 +16,4 @@ export { PaymentModule } from './payment/payment.module';
 export { StripeModule } from './stripe/stripe.module';
 export { InvoiceModule } from './invoice/invoice.module';
 export { PermissionsModule } from './permissions/permissions.module';
+export { StatisticsModule } from './statistics/statistics.module';

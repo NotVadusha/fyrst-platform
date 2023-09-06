@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Invoice } from './entities/invoice.entity';
 import { Timecard } from '../timecard/entities/timecard.entity';
@@ -70,14 +70,14 @@ export class InvoiceService {
 
     if (!!filters.minDate || !!filters.maxDate) {
       where.createdAt = {};
+    }
 
-      if (filters.minDate) {
-        where.createdAt[Op.gte] = filters.minDate;
-      }
+    if (filters.minDate) {
+      where.createdAt[Op.gte] = filters.minDate;
+    }
 
-      if (filters.maxDate) {
-        where.createdAt[Op.lte] = filters.maxDate;
-      }
+    if (filters.maxDate) {
+      where.createdAt[Op.lte] = filters.maxDate;
     }
 
     const invoices = await this.invoiceRepository.findAll({

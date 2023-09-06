@@ -79,18 +79,18 @@ function NavItem({ item }: { item: INavItem }) {
   const user = useAppSelector(selectUser);
 
   const canAccess =
-    !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]);
+    !item.isPrivate ||
+    (item.neededPermission && user.permissions?.[item.neededPermission]) ||
+    (item.neededRoles && item.neededRoles.includes(user.role?.label ?? ''));
 
   const canAccessSomeChildren = item.items?.some(
-    item => !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]),
+    item =>
+      !item.isPrivate ||
+      (item.neededPermission && user.permissions?.[item.neededPermission]) ||
+      (item.neededRoles && item.neededRoles.includes(user.role?.label ?? '')),
   );
 
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
-
-  React.useEffect(() => {
-    if (isCurrentPath && isOpen) return;
-    setIsOpen(false);
-  }, [isCurrentPath]);
 
   const Icon = item.icon;
 
@@ -113,9 +113,7 @@ function NavItem({ item }: { item: INavItem }) {
           <button
             className='flex items-center p-0 h-auto'
             onClick={e => {
-              if (!isCurrentPath) {
-                return setIsOpen(true);
-              }
+              e.preventDefault();
               setIsOpen(prev => !prev);
             }}
           >

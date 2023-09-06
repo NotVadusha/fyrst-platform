@@ -52,6 +52,26 @@ module.exports = {
         updatedAt: new Date(),
         employersName: faker.person.fullName(),
       });
+
+      bookings.push({
+        status,
+        numberOfPositions,
+        facilitiesRate: 1,
+        createdBy: faker.number.int({ min: 1, max: 19 }),
+        sex: faker.person.sex(),
+        age: faker.number.int({ min: 18, max: 60 }),
+        education: faker.lorem.words(10),
+        positionsAvailable,
+        workingHours: faker.number.int({ min: 10, max: 20 }),
+        pricePerHour: faker.number.int({ min: 10, max: 40 }),
+        notes: faker.lorem.paragraphs(3),
+        facilityId: 1,
+        createdAt,
+        startDate,
+        endDate,
+        updatedAt: new Date(),
+        employersName: faker.person.fullName(),
+      });
     }
 
     await queryInterface.bulkInsert('Bookings', bookings);
