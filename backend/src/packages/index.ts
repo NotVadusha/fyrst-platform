@@ -13,3 +13,4 @@ export { MessageModule } from './message/message.module';
 export { NotificationsConfigModule } from './notifications-config/notifications-config.module';
 export { BucketModule } from './bucket/bucket.module';
 export { PermissionsModule } from './permissions/permissions.module';
+export { StatisticsModule } from './statistics/statistics.module';

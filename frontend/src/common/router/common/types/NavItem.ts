@@ -9,4 +9,5 @@ export type NavItem = {
   items?: NavItem[];
   isPrivate?: boolean;
   neededPermission?: keyof Omit<Permissions, 'userId'>;
+  neededRoles?: string[];
 };
