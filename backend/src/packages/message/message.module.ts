@@ -9,9 +9,16 @@ import { ChatGateway } from 'src/packages/websocket/chat.gateway';
 import { BucketModule } from '../bucket/bucket.module';
 import { WebSocketModule } from '../websocket/websocket.module';
 import { User } from '../user/entities/user.entity';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Message, User]), UserModule, ChatModule, BucketModule],
+  imports: [
+    SequelizeModule.forFeature([Message, User]),
+    UserModule,
+    ChatModule,
+    BucketModule,
+    NotificationModule,
+  ],
   controllers: [MessageController],
   providers: [MessageService, Logger, ChatGateway],
   exports: [MessageService, Logger, ChatGateway],

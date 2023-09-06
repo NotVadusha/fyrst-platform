@@ -9,6 +9,9 @@ import { User } from '../user/entities/user.entity';
 import { MessageFiltersDto } from './dto/message-filters.dto';
 import { Op } from 'sequelize';
 import { BucketService } from '../bucket/bucket.service';
+import { NotificationService } from '../notification/notification.service';
+import { NotificationType } from 'shared/packages/notification/types/notification';
+
 @Injectable()
 export class MessageService {
   constructor(
@@ -22,6 +25,7 @@ export class MessageService {
     @Inject(ChatGateway)
     private readonly gateway: ChatGateway,
     private bucketService: BucketService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(chatId: number, data: CreateMessageDto & { chatId: number; userId: number }) {
@@ -46,7 +50,18 @@ export class MessageService {
 
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
     this.gateway.wss.emit('conversation-update', { chatId, message: createdMessage });
-
+    const chat = await this.chatService.find(chatId);
+    const offlineUsers = Array.from(this.gateway.onlineUsers.keys()).filter(
+      async userId => !chat.members.includes(await this.userService.findOne(userId)),
+    );
+    offlineUsers.forEach(userId => {
+      this.notificationService.create({
+        recipientId: userId,
+        content: `New message from ${messageWithUser.user.first_name} ${messageWithUser.user.last_name}`,
+        refId: chatId,
+        type: NotificationType.Messenger,
+      });
+    });
     this.logger.log(`Created message with ID ${messageWithUser.id}`, {
       messageWithUser,
     });

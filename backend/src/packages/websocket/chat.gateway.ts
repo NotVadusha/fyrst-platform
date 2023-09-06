@@ -24,7 +24,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
   // userId - socketId
-  private onlineUsers = new Map<number, string>();
+  public onlineUsers = new Map<number, string>();
   private logger = new Logger('ChatGateway');
 
   afterInit(client: Socket) {

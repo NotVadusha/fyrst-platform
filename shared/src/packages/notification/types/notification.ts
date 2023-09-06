@@ -17,6 +17,14 @@ export enum NotificationType {
   Messenger = 'messenger',
 }
 
+export const NotificationTypeRoutes: Record<NotificationType, string> = {
+  [NotificationType.Bookings]: '/booking/',
+  [NotificationType.Timecards]: '/timecard/',
+  [NotificationType.PaymentSuccess]: '/payment-success/',
+  [NotificationType.MoneySent]: '/money-sent/',
+  [NotificationType.WeeklyReport]: '/weekly-report/',
+  [NotificationType.Messenger]: '/chat/',
+};
 export interface CreateNotificationDto {
   content: string;
   recipientId: number;
