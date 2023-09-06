@@ -51,7 +51,11 @@ export default function PortfolioPage() {
 
   const form = useForm({
     resolver: yupResolver<Inputs>(portfolioSchema),
-    defaultValues: profile,
+    defaultValues: {
+      description: profile?.description ?? '',
+      education: profile?.education ?? '',
+      sex: profile?.sex ?? '',
+    },
   });
 
   const [updateUserProfile] = useUpdateUserProfileMutation();
@@ -59,13 +63,13 @@ export default function PortfolioPage() {
 
   function onSubmit(values: Inputs) {
     updateUserProfile({
-      description: values.description,
-      education: values.education,
-      sex: values.sex as string,
+      description: values.description ?? '',
+      education: values.education ?? '',
+      sex: (values.sex ?? '') as string,
       languages,
     })
       .unwrap()
-      .then(res => toast({ title: 'Portfolio updated' }))
+      .then(res => toast({ title: 'Changes applied', description: 'Your profile updated' }))
       .catch(err => err);
   }
 
@@ -76,7 +80,13 @@ export default function PortfolioPage() {
 
       if (data.statusCode === 404) navigate('/auth/signin');
 
-      const profile = await getProfile(data.id).unwrap();
+      const _profile = await getProfile(data.id).unwrap();
+      const profile = {
+        description: _profile?.description ?? '',
+        education: _profile?.education ?? '',
+        sex: _profile?.sex ?? '',
+        ..._profile,
+      };
       setProfile(profile);
       setSelectedLanguages(profile?.languages ?? []);
       form.reset(profile);
@@ -195,7 +205,7 @@ export default function PortfolioPage() {
                     }}
                   />
                 </div>
-                <Button className='w-full'>Save</Button>
+                <Button className='w-full'>Submit</Button>
               </form>
             </Form>
           </CardContent>
