@@ -9,7 +9,6 @@ import TextInput from 'src/common/components/ui/common/Input/common/TextInput/Te
 import { profileSchema } from 'src/common/packages/user/common/user-profile/types/validation-schemas/user-profile.validation-schema';
 import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { Button } from 'src/common/components/ui/common/Button';
-import { User } from 'src/common/packages/user/types/models/User.model';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import * as y from 'yup';
 import { AvatarUploader } from './AvatarUploader';
@@ -21,6 +20,7 @@ import { Buffer } from 'buffer';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import IdCardParser from './IdCardParser';
 import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
+import { UpdateUserBody } from 'src/common/packages/user/types/dto/UserDto';
 
 type Inputs = y.InferType<typeof profileSchema>;
 export type parseInfo = {
@@ -38,7 +38,7 @@ const capitalize = (text: string) => {
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<UpdateUserBody>();
   const [avatarImage, setAvatarImage] = useState('');
   const [parsedData, _setParsedData] = useState<parseInfo>();
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
@@ -56,8 +56,9 @@ export function ProfileEditForm() {
     const userFetch = async (id: number) => {
       const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
 
-      setUser(data);
       if (data.statusCode === 404) navigate('/auth/signin');
+      const formattedUser = data as UpdateUserBody;
+      setUser(formattedUser);
 
       const profile = await getProfile(data.id).unwrap();
       setAvatarImage(profile.avatar || defaultAvatar);
@@ -72,12 +73,10 @@ export function ProfileEditForm() {
 
   useEffect(() => {
     if (parsedData && user) {
-      const infoToUpdate: User = {
-        ...user,
+      const infoToUpdate: UpdateUserBody = {
         first_name: capitalize(parsedData.first_name),
         last_name: capitalize(parsedData.last_name),
         email: user.email,
-        city: user?.city,
         birthdate: parsedData.birthDate.toISOString().split('T')[0],
         document_number: parsedData.documentNumber,
       };
@@ -93,19 +92,23 @@ export function ProfileEditForm() {
       const arrayBuffer = await blob.arrayBuffer();
       base64 = Buffer.from(arrayBuffer).toString('base64');
     }
-
     if (user) {
-      await updateUser({
-        id: user.id,
+      const updateUserReq = {
+        id: userId,
         user: {
-          ...valuesFromForm,
+          first_name: valuesFromForm.first_name,
+          last_name: valuesFromForm.last_name,
+          phone_number: valuesFromForm.phone_number,
+          email: valuesFromForm.email,
+          city: valuesFromForm.city,
           birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
           document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
         },
-      });
+      };
+      await updateUser(updateUserReq);
 
       updateProfile({
-        id: user.id,
+        id: userId,
         body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
       });
 
