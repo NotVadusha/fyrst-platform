@@ -129,20 +129,16 @@ export class InvoiceService {
 
   async delete(id: number) {
     const invoice = await this.findOneById(id);
-    if (invoice) {
-      await invoice.destroy();
-      return true;
-    }
-    return false;
+    if (!invoice) return false;
+    await invoice.destroy();
+    return true;
   }
 
   async update(id: number, data: Partial<Invoice>) {
     const invoice = await this.findOneById(id);
-    if (invoice) {
-      await invoice.update(data);
-      return await this.findOneById(id);
-    }
-    throw new NotFoundException('Invoice not found');
+    if (!invoice) throw new NotFoundException('Invoice not found');
+    await invoice.update(data);
+    return await this.findOneById(id);
   }
 
   async create(data: CreateInvoiceDto) {

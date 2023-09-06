@@ -7,7 +7,7 @@ interface InvoiceButtonProps {
 }
 
 export const InvoiceButton: React.FC<InvoiceButtonProps> = ({ id }) => {
-  const [getPdf, { data, isFetching }] = invoicesApi.useLazyGetPdfLinkQuery();
+  const [getPdf, { isFetching }] = invoicesApi.useLazyGetPdfLinkQuery();
 
   const handleInvoiceClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
