@@ -8,16 +8,19 @@ export const calendarApi = apiSlice.injectEndpoints({
       query(calendarId) {
         return '/calendar-events/' + calendarId + '/calendar';
       },
+      providesTags: ['Calendar'],
     }),
     createEvents: builder.mutation({
       query(newEvent) {
         return { url: '/calendar-events', method: 'POST', body: newEvent };
       },
+      invalidatesTags: ['Calendar'],
     }),
     getCalendar: builder.query<Calendar, number>({
       query(userId) {
         return '/calendar/' + userId + '/user';
       },
+      providesTags: ['Calendar'],
     }),
   }),
 });

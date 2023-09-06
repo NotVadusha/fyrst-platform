@@ -16,7 +16,7 @@ export const CalendarCell = ({ date, events, isSameMonth }: CalendarCellProps) =
   };
 
   return (
-    <div className='flex flex-col items-center text-center p-1  gap-2 text-black bg-white h-full '>
+    <div className='flex flex-col items-center text-center p-1  gap-2 text-black bg-white h-[124px] '>
       {date && (
         <p
           className={`${isCurrentDate(date) && 'bg-green rounded-[50%] w-6 text-white'} ${
@@ -32,7 +32,7 @@ export const CalendarCell = ({ date, events, isSameMonth }: CalendarCellProps) =
             return (
               <button
                 onClick={() => setSelectedEvent(event)}
-                className='bg-blue text-white text-body-small rounded-lg px-2 py-1  truncate'
+                className='bg-blue text-white text-body-small rounded-lg px-2 py-[1px]  truncate'
                 key={event.name}
               >
                 {event.name}

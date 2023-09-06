@@ -4,6 +4,7 @@ import { ReactComponent as Profile } from 'src/assets/icons/profile.svg';
 import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
 import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
+import { ReactComponent as Calendar } from 'src/assets/icons/calendar-white.svg';
 import { NavItem } from '../types/NavItem';
 import { UserCog, BarChart3, Briefcase } from 'lucide-react';
 
@@ -99,5 +100,6 @@ export const routerConfig = {
       neededRoles: ['FACILITY_MANAGER'],
     },
     { title: 'Calendar', icon: Timecard, mainPath: '/calendar', path: '/calendar', items: [] },
+    { title: 'Calendar', icon: Calendar, mainPath: '/calendar', path: '/calendar', items: [] },
   ] as NavItem[],
 };

@@ -13,6 +13,7 @@ import {
   useCreateEventsMutation,
   useGetCalendarQuery,
 } from 'src/common/store/api/packages/calendar/calendarApi';
+import { format } from 'date-fns';
 
 interface BookingHeaderProps {
   facility: string;
@@ -40,7 +41,10 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users,
         await createEvent({
           eventType: 'Booking',
           name: `Work at ${booking.facility.name}`,
-          description: 'Hello world',
+          description: `You applied for a job from ${format(
+            new Date(booking.startDate),
+            'MMMM, dd',
+          )} to ${format(new Date(booking.endDate), 'MMMM, dd')}`,
           calendarId: calendar.id,
           bookingId: booking.id,
         });
