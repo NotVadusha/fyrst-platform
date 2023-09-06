@@ -34,6 +34,7 @@ const DateInput: React.FC<DateInputProps> = ({ control, label, name, ...props })
               className={`${styles.input} ${useFormField().invalid ? styles.invalid : ''}`}
               type='date'
               placeholder=''
+              min={'1900-01-01'}
               max={maxDateFormatted}
               {...field}
             />

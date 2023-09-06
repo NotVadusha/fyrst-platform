@@ -46,4 +46,5 @@ export const profileSchema = y.object().shape({
       return true;
     })
     .optional(),
+  document_number: y.string().optional().nullable(),
 });

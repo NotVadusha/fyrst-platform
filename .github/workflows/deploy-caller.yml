@@ -1,0 +1,25 @@
+name: 'deploy-caller'
+on:
+  push:
+    branches: ['deploy']
+
+jobs:
+  deploy-instance1:
+    permissions:
+      contents: 'read'
+    uses: Radency/internship-2023-fyrst/.github/workflows/deploy.yml@develop
+    with:
+      HOST: github-actions@34.141.14.150
+    secrets:
+      GCP_SSH_PRIVATE_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY_INSTANCE1 }}
+      GCP_SSH_DEPLOY_ENV: ${{ secrets.GCP_SSH_DEPLOY_ENV }}
+
+  deploy-instance2:
+    permissions:
+      contents: 'read'
+    uses: Radency/internship-2023-fyrst/.github/workflows/deploy.yml@develop
+    with:
+      HOST: github-actions@34.90.22.79
+    secrets:
+      GCP_SSH_PRIVATE_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY_INSTANCE2 }}
+      GCP_SSH_DEPLOY_ENV: ${{ secrets.GCP_SSH_DEPLOY_ENV }}

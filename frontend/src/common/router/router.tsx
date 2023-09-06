@@ -27,6 +27,7 @@ import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
 import { RoleProtectedRoute } from './common/helpers/role-protected-route.helper';
 import { PermissionsProtectedRoute } from './common/helpers/permissions-protected-route.helper';
+import { ReportsPage } from 'src/pages/reports/ReportsPage';
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
@@ -34,6 +35,9 @@ import { SearchChatMessagesPage } from 'src/pages/messenger/common/chat/search/S
 import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
+import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
+import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
+import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -133,6 +137,10 @@ export const router = createBrowserRouter([
                 element: <ProfilePage />,
               },
               {
+                path: 'portfolio',
+                element: <PortfolioPage />,
+              },
+              {
                 path: 'edit',
                 element: <ProfileEditPage />,
               },
@@ -143,6 +151,10 @@ export const router = createBrowserRouter([
               {
                 path: 'security',
                 element: <ProfileSecurity />,
+              },
+              {
+                path: 'recommendations',
+                element: <JobRecommendations />,
               },
             ],
           },
@@ -155,6 +167,11 @@ export const router = createBrowserRouter([
                 element: <MessangerPage />,
               },
             ],
+          },
+          {
+            path: '/meeting-chat',
+            errorElement: <ErrorPage />,
+            element: <MeetingChat />,
           },
           {
             path: 'payments',
@@ -191,6 +208,20 @@ export const router = createBrowserRouter([
                     <PermissionsProtectedRoute permissions={['manageUsers']}>
                       <UserListPage />
                     </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
+              },
+            ],
+          },
+          {
+            path: 'reports',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict>
+                    <ReportsPage />
                   </RoleProtectedRoute>
                 ),
               },

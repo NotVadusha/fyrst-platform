@@ -7,7 +7,10 @@ interface AdditionalDetailsProps {
   createdAt: string;
   startDate: string;
   endDate: string;
+  age: number;
+  sex: string;
   payment: number;
+  languages: string;
   avatar?: string;
 }
 
@@ -21,6 +24,9 @@ const LABELS: {
   startDate: { display: 'Start Date' },
   endDate: { display: 'End Date' },
   payment: { display: 'Payment' },
+  sex: { display: 'Sex' },
+  age: { display: 'Age' },
+  languages: { display: 'Languages' },
 };
 
 const AdditionalDetails: FC<{ data: AdditionalDetailsProps }> = ({ data }) => (

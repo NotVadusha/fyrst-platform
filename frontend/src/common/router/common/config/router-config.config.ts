@@ -3,8 +3,9 @@ import { ReactComponent as Timecard } from 'src/assets/icons/timecard.svg';
 import { ReactComponent as Profile } from 'src/assets/icons/profile.svg';
 import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
+import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
 import { NavItem } from '../types/NavItem';
-import { UserCog } from 'lucide-react';
+import { UserCog, BarChart3 } from 'lucide-react';
 
 export const routerConfig = {
   name: 'Fyrst',
@@ -20,6 +21,8 @@ export const routerConfig = {
         {
           title: 'Create booking',
           path: '/booking/create',
+          isPrivate: true,
+          neededPermission: 'manageBookings',
         },
       ],
     },
@@ -28,6 +31,8 @@ export const routerConfig = {
       icon: Timecard,
       path: '/timecard',
       mainPath: '/timecard',
+      isPrivate: true,
+      neededPermission: 'manageTimecards',
     },
     {
       title: 'Profile',
@@ -40,12 +45,20 @@ export const routerConfig = {
           path: '/profile/edit',
         },
         {
+          title: 'Edit portfolio',
+          path: '/profile/portfolio',
+        },
+        {
           title: 'Notifications',
           path: '/profile/notifications',
         },
         {
           title: 'Security',
           path: '/profile/security',
+        },
+        {
+          title: 'Recommendations',
+          path: '/profile/recommendations',
         },
       ],
     },
@@ -62,6 +75,8 @@ export const routerConfig = {
       mainPath: '/payments',
       path: '/payments',
       items: [],
+      isPrivate: true,
+      neededPermission: 'manageTimecards',
     },
     {
       title: 'Users',
@@ -69,6 +84,17 @@ export const routerConfig = {
       mainPath: '/users',
       path: '/users',
       items: [],
+      isPrivate: true,
+      neededPermission: 'manageUsers',
+    },
+    {
+      title: 'Reports',
+      icon: BarChart3,
+      mainPath: '/reports',
+      path: '/reports',
+      items: [],
+      isPrivate: true,
+      neededRoles: ['FACILITY_MANAGER'],
     },
   ] as NavItem[],
 };

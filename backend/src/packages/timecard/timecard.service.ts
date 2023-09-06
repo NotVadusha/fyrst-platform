@@ -14,7 +14,7 @@ import { NotificationService } from '../notification/notification.service';
 import { notificationTemplateTimecard } from 'shared/packages/notification/types/notificationTemplates';
 import * as Papa from 'papaparse';
 import _ from 'lodash';
-import { prefixKeys } from '../../helpers/prefixKeys';
+import { flatten } from 'flat';
 
 @Injectable()
 export class TimecardService {
@@ -72,22 +72,9 @@ export class TimecardService {
       throw new Error('No timecards available to generate CSV.');
     }
 
-    const cleanData = timecards.map(timecard => {
-      const timecardJSON = timecard.toJSON();
-      const bookingJSON = timecard.booking.toJSON();
-      const facilityJSON = timecard.booking.facility.toJSON();
-
-      const prefixedBookingJSON = prefixKeys('booking', bookingJSON);
-      const prefixedFacilityJSON = prefixKeys('facility', facilityJSON);
-
-      return {
-        ...timecardJSON,
-        ...prefixedBookingJSON,
-        ...prefixedFacilityJSON,
-      };
-    });
+    const cleanData = timecards.map(timecard => flatten(timecard.toJSON(), { delimiter: '_' }));
     const fieldKeys = Object.keys(cleanData[0]).filter(
-      key => key !== 'employee' && key !== 'facilityManager' && key !== 'booking',
+      key => !['employee_password', 'booking_facility_logo'].includes(key),
     );
     const csv = Papa.unparse({
       fields: fieldKeys,

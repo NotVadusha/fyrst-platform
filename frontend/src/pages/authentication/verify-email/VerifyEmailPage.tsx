@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import AuthWrapper from '../AuthWrapper/AuthWrapper';
 import authImage from 'src/assets/authimage.png';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Button } from '../../../common/components/ui/common/Button';
 
 const VerifyEmailPage = () => {
-  const [showTimer, setShowTimer] = useState(false);
-  const [seconds, setSeconds] = useState(7);
+  const navigate = useNavigate();
   const location = useLocation();
+
+  const [showButton, setShowButton] = useState(false);
+  const [domain, setDomain] = useState<string | null>(null);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const domain = queryParams.get('domain');
-    if (domain) {
-      setShowTimer(true);
-
-      const timer = setInterval(() => {
-        setSeconds(prevSeconds => prevSeconds - 1);
-      }, 1000);
-
-      setTimeout(() => {
-        clearInterval(timer);
-        setShowTimer(false);
-
-        window.open(`http://www.${domain}`, '_blank');
-      }, 7000);
+    const foundDomain = queryParams.get('domain');
+    if (foundDomain) {
+      setDomain(foundDomain);
+      setShowButton(true);
     }
   }, []);
+
+  const handleButtonClick = () => {
+    window.open(`http://www.${domain}`, '_blank');
+    navigate('/auth/verify-email');
+  };
 
   return (
     <AuthWrapper image={authImage}>
@@ -35,7 +33,11 @@ const VerifyEmailPage = () => {
           After having verified your email address, you will be returned to Fyrst and will be able
           to log in to your account.
         </p>
-        {showTimer && <p className='text-dark-grey'>Redirecting in {seconds} seconds...</p>}
+        {showButton && (
+          <Button onClick={handleButtonClick} className='w-full'>
+            Verify email address
+          </Button>
+        )}
       </div>
     </AuthWrapper>
   );

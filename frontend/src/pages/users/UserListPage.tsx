@@ -19,6 +19,7 @@ import { hasRole } from 'src/common/helpers/authorization/hasRole';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { useAppDispatch, useAppSelector } from '../../common/hooks/redux';
 import { exportCSV } from '../../common/store/slices/packages/export-csv/exportCSVSlice';
+import { calculateTotalPages } from 'src/common/helpers/helpers';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,7 +54,8 @@ export function UserListPage() {
     currentPage,
     filters,
   });
-  const totalPages = data ? Math.ceil(data.totalCount / 5) : 0;
+
+  const totalPages = calculateTotalPages({ limit: 5, totalCount: data?.totalCount });
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
     setSearchParams(prevParams => {
@@ -132,7 +134,7 @@ export function UserListPage() {
             handleInputChange={handleInputChange}
             setSearchParams={setSearchParams}
           />
-          <div className='flex flex-col items-center gap-4'>
+          <div className='flex flex-col items-center gap-4 w-fit mx-auto'>
             {data?.users?.length === 0 ? (
               <p className='text-body-default font-semibold'>
                 No users to display here. Most probably, nothing matches your search query
@@ -147,14 +149,16 @@ export function UserListPage() {
                 }}
               />
             )}
-            {!!totalPages && (
-              <Pagination
-                onChange={setCurrentPage}
-                value={currentPage}
-                siblingsCount={2}
-                totalCount={totalPages}
-              />
-            )}
+            <div className='self-end'>
+              {!!totalPages && (
+                <Pagination
+                  onChange={setCurrentPage}
+                  value={currentPage}
+                  siblingsCount={2}
+                  totalCount={totalPages}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

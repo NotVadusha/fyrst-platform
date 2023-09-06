@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { development } from 'src/config';
-// import { PermissionsModule } from './packages/permissions/permissions.module';
 
 import {
   EmailConfirmationModule,
@@ -21,6 +20,7 @@ import {
   NotificationModule,
   WebSocketModule,
   PermissionsModule,
+  StatisticsModule,
 } from './packages';
 import { ChatGateway } from './packages/websocket/chat.gateway';
 @Module({
@@ -43,6 +43,7 @@ import { ChatGateway } from './packages/websocket/chat.gateway';
     NotificationModule,
     WebSocketModule,
     PermissionsModule,
+    StatisticsModule,
   ],
   controllers: [],
   providers: [],

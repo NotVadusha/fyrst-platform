@@ -9,6 +9,7 @@ import { NotificationModule } from '../notification/notification.module';
 import { Notification } from '../notification/entities/notification.entity';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationGateway } from '../websocket/notification.gateway';
+import { UserProfileModule } from '../user-profile/user-profile.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { NotificationGateway } from '../websocket/notification.gateway';
     UserModule,
     FacilityModule,
     NotificationModule,
+    UserProfileModule,
   ],
   controllers: [BookingController],
   providers: [BookingService, NotificationService, NotificationGateway, Logger],

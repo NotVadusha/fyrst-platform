@@ -17,3 +17,4 @@ export { BucketModule } from './bucket/bucket.module';
 export { NotificationModule } from './notification/notification.module';
 export { WebSocketModule } from './websocket/websocket.module';
 export { PermissionsModule } from './permissions/permissions.module';
+export { StatisticsModule } from './statistics/statistics.module';
