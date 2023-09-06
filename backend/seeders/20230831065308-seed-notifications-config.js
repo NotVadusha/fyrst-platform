@@ -11,7 +11,7 @@ module.exports = {
         bookings: faker.datatype.boolean(),
         timecards: faker.datatype.boolean(),
         paymentSuccess: faker.datatype.boolean(),
-        passwordChange: faker.datatype.boolean(),
+        messenger: faker.datatype.boolean(),
         weeklyReport: faker.datatype.boolean(),
         moneySent: faker.datatype.boolean(),
       });

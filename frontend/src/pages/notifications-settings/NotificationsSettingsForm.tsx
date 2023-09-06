@@ -60,7 +60,7 @@ const NotificationsForm = () => {
             </div>
 
             <div className={styles.checkboxContainer}>
-              <Checkbox control={form.control} name='passwordChange' label='Password Change' />
+              <Checkbox control={form.control} name='messenger' label='Messenger' />
               <Checkbox control={form.control} name='weeklyReport' label='Weekly report' />
               <Checkbox control={form.control} name='moneySent' label='Sent money success' />
             </div>

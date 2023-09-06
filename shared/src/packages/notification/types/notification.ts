@@ -14,7 +14,7 @@ export enum NotificationType {
   PaymentSuccess = 'paymentSuccess',
   MoneySent = 'moneySent',
   WeeklyReport = 'weeklyReport',
-  PasswordChange = 'passwordChange',
+  Messenger = 'messenger',
 }
 
 export interface CreateNotificationDto {
