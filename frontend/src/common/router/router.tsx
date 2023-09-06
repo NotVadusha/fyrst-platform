@@ -213,7 +213,11 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <ReportsPage />,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict>
+                    <ReportsPage />
+                  </RoleProtectedRoute>
+                ),
               },
             ],
           },
