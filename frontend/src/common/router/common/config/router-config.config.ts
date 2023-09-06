@@ -3,9 +3,9 @@ import { ReactComponent as Timecard } from 'src/assets/icons/timecard.svg';
 import { ReactComponent as Profile } from 'src/assets/icons/profile.svg';
 import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
+import { ReactComponent as Proposal } from 'src/assets/icons/proposal.svg';
 import { NavItem } from '../types/NavItem';
 import { UserCog } from 'lucide-react';
-
 export const routerConfig = {
   name: 'Fyrst',
   description: '',
@@ -85,6 +85,12 @@ export const routerConfig = {
       items: [],
       isPrivate: true,
       neededPermission: 'manageUsers',
+    },
+    {
+      title: 'Interview',
+      icon: Proposal,
+      mainPath: '/meeting-chat',
+      path: '/meeting-chat',
     },
   ] as NavItem[],
 };
