@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
@@ -14,9 +14,13 @@ export function SharedMediaPage() {
 
   if (!chatId) return <>Not found</>;
 
-  const { data, isSuccess } = useGetMessagesWithMediaQuery({
+  const { data, refetch, isSuccess } = useGetMessagesWithMediaQuery({
     chatId,
   });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div className='w-full min-h-[460px]'>

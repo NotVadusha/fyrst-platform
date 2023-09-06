@@ -5,7 +5,7 @@ import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
 import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
 import { NavItem } from '../types/NavItem';
-import { UserCog, BarChart3 } from 'lucide-react';
+import { UserCog, BarChart3, Briefcase } from 'lucide-react';
 
 export const routerConfig = {
   name: 'Fyrst',
@@ -45,7 +45,7 @@ export const routerConfig = {
           path: '/profile/edit',
         },
         {
-          title: 'Edit portfolio',
+          title: 'Portfolio',
           path: '/profile/portfolio',
         },
         {
@@ -55,10 +55,6 @@ export const routerConfig = {
         {
           title: 'Security',
           path: '/profile/security',
-        },
-        {
-          title: 'Recommendations',
-          path: '/profile/recommendations',
         },
       ],
     },
@@ -86,6 +82,12 @@ export const routerConfig = {
       items: [],
       isPrivate: true,
       neededPermission: 'manageUsers',
+    },
+    {
+      title: 'Recommendations',
+      icon: Briefcase,
+      mainPath: '/recommendations',
+      path: '/recommendations',
     },
     {
       title: 'Reports',
