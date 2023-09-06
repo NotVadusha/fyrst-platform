@@ -87,11 +87,6 @@ function NavItem({ item }: { item: INavItem }) {
 
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
 
-  React.useEffect(() => {
-    if (isCurrentPath && isOpen) return;
-    setIsOpen(false);
-  }, [isCurrentPath]);
-
   const Icon = item.icon;
 
   return (
@@ -113,9 +108,7 @@ function NavItem({ item }: { item: INavItem }) {
           <button
             className='flex items-center p-0 h-auto'
             onClick={e => {
-              if (!isCurrentPath) {
-                return setIsOpen(true);
-              }
+              e.preventDefault();
               setIsOpen(prev => !prev);
             }}
           >
