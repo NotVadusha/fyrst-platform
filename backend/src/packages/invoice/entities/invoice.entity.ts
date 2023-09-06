@@ -8,6 +8,8 @@ import {
   ForeignKey,
   BelongsTo,
   AllowNull,
+  Index,
+  Default,
 } from 'sequelize-typescript';
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
 import { Timecard } from 'src/packages/timecard/entities/timecard.entity';
@@ -40,6 +42,12 @@ class Invoice extends Model<InferAttributes<Invoice>, InferCreationAttributes<In
 
   @BelongsTo(() => Timecard, 'timecardId')
   timecard: Timecard;
+
+  @Index
+  @AllowNull(false)
+  @Default(new Date())
+  @Column
+  createdAt: Date;
 }
 
 export { Invoice };
