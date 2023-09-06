@@ -36,7 +36,7 @@ export function WorkerStats({ facilityId, startDate }: { facilityId: number; sta
       <ul className='list-disc mx-10'>
         <li>
           <p className='text-body-large'>
-            During the last month, a total of of{' '}
+            During the last year, a total of of{' '}
             <span className='underline'>{stats.totalWorkers}</span> workers has applied for your
             company&apos;s bookings
           </p>

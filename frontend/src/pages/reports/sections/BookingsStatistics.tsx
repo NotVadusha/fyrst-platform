@@ -63,7 +63,7 @@ export function BookingStatistics({
       <div className='col-span-2'>
         <SectionHeader>Amount of bookings</SectionHeader>
         <p className='text-body-large'>
-          During the last, month your company submitted total of{' '}
+          During the last year, your company submitted total of{' '}
           <span className='underline'>{stats.total}</span> bookings.{' '}
           <span className='underline'>{stats.completed}</span> of them were completed,{' '}
           <span className='underline'>{stats.rejected}</span> of them were rejected and{' '}

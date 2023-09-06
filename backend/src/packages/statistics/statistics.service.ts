@@ -70,16 +70,20 @@ export class StatisticsService {
   }
 
   async getBookingsByMonth(facilityId: number): Promise<BookingsByMonthResponseDto[]> {
-    const startDate = moment(new Date()).subtract(1, 'year');
+    const startDate = moment(new Date()).subtract(1, 'year').startOf('month');
+    this.logger.debug(startDate.format('DD-MM-YYYY'));
 
     const result: BookingsByMonthResponseDto[] = [];
 
     while (startDate.add(1, 'M') <= moment()) {
+      const nextMonth = moment(startDate).add(1, 'M');
+
       const numberOfBookings = await this.bookingModel.count({
         where: {
           facilityId,
           createdAt: {
             [Op.gte]: startDate,
+            [Op.lte]: nextMonth,
           },
         },
       });
@@ -137,11 +141,12 @@ export class StatisticsService {
 
   async getWorkersByMonth(facilityId: number) {
     const Sequelize = this.bookingModel.sequelize.Sequelize;
-    const startDate = moment(new Date()).subtract(1, 'year');
+    const startDate = moment(new Date()).subtract(1, 'year').startOf('month');
 
     const result: WorkersByMonthResponseDto[] = [];
 
     while (startDate.add(1, 'M') <= moment()) {
+      const nextMonth = moment(startDate).add(1, 'M');
       const workersByMonth = (await this.bookingModel.findOne({
         raw: true,
         attributes: [
@@ -154,13 +159,14 @@ export class StatisticsService {
           facilityId,
           createdAt: {
             [Op.gte]: startDate,
+            [Op.lte]: nextMonth,
           },
         },
       })) as unknown as { numberOfWorkers: number };
 
       result.push({
         month: startDate.format('MMMM'),
-        numberOfWorkers: Number(workersByMonth.numberOfWorkers),
+        numberOfWorkers: Math.max(Number(workersByMonth.numberOfWorkers), 0),
       });
     }
 
