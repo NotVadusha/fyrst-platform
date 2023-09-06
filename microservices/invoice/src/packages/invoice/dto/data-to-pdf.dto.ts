@@ -1,6 +1,7 @@
-import { Booking, Facility, Timecard, User } from 'src/types';
+import { Booking, Facility, Invoice, Timecard, User } from 'src/types';
 
 export class DataToPdfDto {
+  invoice: Invoice;
   timecard: Timecard;
   user: User;
   booking: Booking;

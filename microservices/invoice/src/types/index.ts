@@ -1,4 +1,5 @@
 import { TimecardStatus } from 'shared/timecard-status';
+import { PaymentStatus } from 'shared/payment-status';
 
 export interface Role {
   id: number;
@@ -58,4 +59,12 @@ export interface Timecard {
   status: TimecardStatus;
   bookingId: number;
   booking: Booking;
+}
+
+export interface Invoice {
+  id: number;
+  amountPaid: number;
+  status: PaymentStatus;
+  path?: string;
+  timecardId: number;
 }

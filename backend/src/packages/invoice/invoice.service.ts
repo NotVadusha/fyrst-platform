@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Inject } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Invoice } from './entities/invoice.entity';
 import { Timecard } from '../timecard/entities/timecard.entity';
@@ -13,6 +13,7 @@ import { BookingService } from '../booking/booking.service';
 import { FacilityService } from '../facility/facility.service';
 import { TimecardService } from '../timecard/timecard.service';
 import { firstValueFrom } from 'rxjs';
+import { userRoles } from 'shared/packages/roles/userRoles';
 
 @Injectable()
 export class InvoiceService {
@@ -27,7 +28,7 @@ export class InvoiceService {
     private readonly invoiceRepository: typeof Invoice,
   ) {}
 
-  async findOneById(id: number) {
+  async findOneById(id: number): Promise<Invoice> {
     const invoice = await this.invoiceRepository.findOne({
       where: { id },
       include: [
@@ -48,7 +49,7 @@ export class InvoiceService {
         },
       ],
     });
-    if (!invoice) throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
+    if (!invoice) throw new NotFoundException('Invoice not found');
     return invoice;
   }
 
@@ -57,13 +58,13 @@ export class InvoiceService {
 
     const where: any = {};
 
-    if (user.role_id === 1) where['$timecard.employee.id$'] = user.id;
-    else if (user.role_id === 2) {
+    if (user.role_id === userRoles.WORKER) where['$timecard.employee.id$'] = user.id;
+    else if (user.role_id === userRoles.FACILITY_MANAGER) {
       where['$timecard.booking.createdBy$'] = user.id;
       if (!!filters.payee) {
         where['$timecard.employee.id$'] = filters.payee;
       }
-    } else if (user.role_id === 3 && !!filters.payee) {
+    } else if (user.role_id === userRoles.PLATFORM_ADMIN && !!filters.payee) {
       where['$timecard.employee.id$'] = filters.payee;
     }
 
@@ -144,21 +145,23 @@ export class InvoiceService {
       await invoice.update(data);
       return await this.findOneById(id);
     }
-    throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException('Invoice not found');
   }
 
   async create(data: CreateInvoiceDto) {
     return await this.invoiceRepository.create(data);
   }
 
-  async getInvoice(timecardId: number) {
-    const timecard = await this.timecardService.getById(timecardId);
+  async getInvoice(invoiceId: number) {
+    const invoice = await this.findOneById(invoiceId);
+    const timecard = await this.timecardService.getById(invoice.timecardId);
     const user = await this.userService.findOne(timecard.createdBy);
     const booking = await this.bookingService.find(timecard.bookingId);
     const facility = await this.facilityService.findById(booking.facilityId);
 
     return await firstValueFrom(
       this.invoiceService.send('get_invoice_pdf_link', {
+        invoice,
         timecard,
         user,
         booking,

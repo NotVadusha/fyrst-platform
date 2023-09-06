@@ -1,3 +1,3 @@
 export class InvoicePdfDto {
-  link: string;
+  pdf: string;
 }

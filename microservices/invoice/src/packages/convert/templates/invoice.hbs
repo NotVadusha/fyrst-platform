@@ -132,7 +132,9 @@
   <div class="wrapper">
     <section class="header">
       <div class="logo">
-        <img src="{{facility.logo}}"/>
+        {{#if facility.logo}}
+          <img src="{{facility.logo}}"/>
+        {{/if}}
         <p>{{facility.name}}</p>
       </div>
       <div class="header-info">
