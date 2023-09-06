@@ -37,7 +37,7 @@ const PaymentsList = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchParams(prevParams => {
-      if (e.target.value === '') {
+      if (!e.target.value) {
         prevParams.delete(e.target.name);
       } else {
         prevParams.set(e.target.name, e.target.value);
@@ -50,7 +50,7 @@ const PaymentsList = () => {
 
   const handleSelectChange = (value: string, param: string) => {
     setSearchParams(prevParams => {
-      if (value.length === 0) {
+      if (!value.length) {
         prevParams.delete(param);
       } else {
         prevParams.set(param, value);

@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, RawBodyRequest } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  RawBodyRequest,
+} from '@nestjs/common';
 import Stripe from 'stripe';
 import { PaymentService } from '../payment/payment.service';
 import { PaymentStatus } from 'shared/payment-status';
@@ -43,36 +48,28 @@ export class StripeService {
     try {
       event = this.stripe.webhooks.constructEvent(req.rawBody, sig, key);
     } catch (err) {
-      throw new HttpException(`Webhook Error: ${err.message}`, HttpStatus.BAD_REQUEST);
+      throw new BadRequestException(`Webhook Error: ${err.message}`);
     }
 
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        try {
-          const paymentIntentSucceeded = event.data.object;
+    if (event.type === 'payment_intent.succeeded') {
+      try {
+        const paymentIntentSucceeded = event.data.object;
 
-          const payment = await this.paymentService.findOneByPaymentId(paymentIntentSucceeded.id);
-          const profile = await this.userProfileService.findOne(payment.timecard.employee.id);
+        const payment = await this.paymentService.findOneByPaymentId(paymentIntentSucceeded.id);
+        const profile = await this.userProfileService.findOne(payment.timecard.employee.id);
 
-          await this.stripe.transfers.create({
-            amount: payment.amountPaid - payment.amountPaid * 0.3,
-            currency: 'usd',
-            destination: profile.stripeAccountId,
-          });
+        await this.stripe.transfers.create({
+          amount: payment.amountPaid - payment.amountPaid * 0.3,
+          currency: 'usd',
+          destination: profile.stripeAccountId,
+        });
 
-          this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
-            status: PaymentStatus.Completed,
-          });
-        } catch (err) {
-          console.log(err);
-          throw new HttpException(
-            `Payment Error: ${err.message}`,
-            HttpStatus.INTERNAL_SERVER_ERROR,
-          );
-        }
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
+        this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
+          status: PaymentStatus.Completed,
+        });
+      } catch (err) {
+        throw new InternalServerErrorException(`Payment Error: ${err.message}`);
+      }
     }
   }
 
@@ -99,8 +96,7 @@ export class StripeService {
       const accountLink = await this.getAccountLink(account.id, userId);
       return accountLink;
     } catch (err) {
-      console.log(err);
-      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new InternalServerErrorException('Something went wrong');
     }
   }
 }
