@@ -129,10 +129,12 @@ export class UserService {
   }
 
   async findOne(userId: number) {
-    return await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: { id: userId },
       include: [Roles, Permissions],
     });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
   async findOneByEmail(email: string) {

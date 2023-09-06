@@ -149,7 +149,7 @@ export function UserListPage() {
                 }}
               />
             )}
-            <div className='self-end'>
+            <div className='justify-end self-end float-right'>
               {!!totalPages && (
                 <Pagination
                   onChange={setCurrentPage}

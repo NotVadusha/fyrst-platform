@@ -12,6 +12,7 @@ import {
   userServiceMock,
   usersMock,
   userProfileServiceMock,
+  calendarServiceMock,
 } from './auth.mocks';
 import { UserService } from 'src/packages/user/user.service';
 import { RedisService } from 'src/packages/redis/redis.service';
@@ -21,6 +22,7 @@ import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { UserProfileService } from 'src/packages/user-profile/user-profile.service';
+import { CalendarService } from 'src/packages/calendar/calendar.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -56,6 +58,7 @@ describe('AuthService', () => {
           provide: UserProfileService,
           useValue: userProfileServiceMock,
         },
+        { provide: CalendarService, useValue: calendarServiceMock },
       ],
     }).compile();
 
