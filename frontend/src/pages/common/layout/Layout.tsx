@@ -92,6 +92,8 @@ function NavItem({ item }: { item: INavItem }) {
 
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
 
+  console.log(item);
+
   const Icon = item.icon;
 
   return (
