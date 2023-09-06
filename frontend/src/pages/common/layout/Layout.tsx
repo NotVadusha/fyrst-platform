@@ -79,10 +79,15 @@ function NavItem({ item }: { item: INavItem }) {
   const user = useAppSelector(selectUser);
 
   const canAccess =
-    !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]);
+    !item.isPrivate ||
+    (item.neededPermission && user.permissions?.[item.neededPermission]) ||
+    (item.neededRoles && item.neededRoles.includes(user.role?.label ?? ''));
 
   const canAccessSomeChildren = item.items?.some(
-    item => !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]),
+    item =>
+      !item.isPrivate ||
+      (item.neededPermission && user.permissions?.[item.neededPermission]) ||
+      (item.neededRoles && item.neededRoles.includes(user.role?.label ?? '')),
   );
 
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
