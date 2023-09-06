@@ -142,3 +142,7 @@ export const userServiceMock = {
 export const userProfileServiceMock = {
   create: jest.fn().mockImplementation((data: any) => Promise.resolve(null)),
 };
+
+export const calendarServiceMock = {
+  create: jest.fn().mockImplementation((data: any) => Promise.resolve(null)),
+};

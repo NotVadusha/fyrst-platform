@@ -9,6 +9,11 @@ import { Timecard } from 'src/common/packages/timecard/types/models/Timecard.mod
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { Link } from 'react-router-dom';
 import { selectUserId } from '../../../common/store/slices/packages/user/userSelectors';
+import {
+  useCreateEventsMutation,
+  useGetCalendarQuery,
+} from 'src/common/store/api/packages/calendar/calendarApi';
+import { format } from 'date-fns';
 
 interface BookingHeaderProps {
   facility: string;
@@ -23,12 +28,27 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users,
 
   const [addUserToBooking, { isLoading }] = useAddUserToBookingMutation();
 
+  const { data: calendar } = useGetCalendarQuery(userId || 1);
+
+  const [createEvent] = useCreateEventsMutation();
+
   const userExists = users.some((user: { id: number }) => user.id === userId);
 
   const handleApplyClick = async () => {
     try {
       await addUserToBooking({ bookingId: booking.id, userId });
-
+      if (calendar) {
+        await createEvent({
+          eventType: 'Booking',
+          name: `Work at ${booking.facility.name}`,
+          description: `You applied for a job from ${format(
+            new Date(booking.startDate),
+            'MMMM, dd',
+          )} to ${format(new Date(booking.endDate), 'MMMM, dd')}`,
+          calendarId: calendar.id,
+          bookingId: booking.id,
+        });
+      }
       toast({
         variant: 'default',
         title: 'Success',
