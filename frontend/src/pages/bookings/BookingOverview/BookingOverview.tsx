@@ -86,7 +86,7 @@ const BookingOverview = () => {
                 payment: booking.pricePerHour,
                 sex: booking.sex,
                 age: booking.age,
-                languages: booking.languages.join(', '),
+                languages: booking.languages ? booking.languages.join(', ') : '',
               }}
             />
             <StatusCard applicantsCount={numOfPeopleReceived} />
