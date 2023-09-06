@@ -17,7 +17,7 @@ export const updatePasswordSchema = y.object().shape({
       }
       return false;
     })
-    .required('Passoword is a required field'),
+    .required('Password is a required field'),
   confirmNewPassword: y
     .string()
     .oneOf([y.ref('newPassword')], 'Passwords must match')
