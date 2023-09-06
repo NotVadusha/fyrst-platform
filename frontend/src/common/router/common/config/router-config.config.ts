@@ -99,7 +99,6 @@ export const routerConfig = {
       isPrivate: true,
       neededRoles: ['FACILITY_MANAGER'],
     },
-    { title: 'Calendar', icon: Timecard, mainPath: '/calendar', path: '/calendar', items: [] },
     { title: 'Calendar', icon: Calendar, mainPath: '/calendar', path: '/calendar', items: [] },
   ] as NavItem[],
 };
