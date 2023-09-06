@@ -14,7 +14,7 @@ export class CreateProfileDto {
   description?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   education?: string;
 
   @IsString()
