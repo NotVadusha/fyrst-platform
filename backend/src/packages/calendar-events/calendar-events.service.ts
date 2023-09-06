@@ -18,9 +18,9 @@ export class CalendarEventsService {
     private readonly bookingService: BookingService,
   ) {}
   async create(createCalendarEventDto: CreateCalendarEventDto) {
-    await this.validateCalendarExists(createCalendarEventDto.calendarId);
+    await this.calendarService.findById(createCalendarEventDto.calendarId);
     if (createCalendarEventDto && createCalendarEventDto.bookingId)
-      await this.validateBookingExists(createCalendarEventDto.bookingId);
+      await this.bookingService.find(createCalendarEventDto.bookingId);
 
     const calendarEvent = await this.calendarEventRepository.create({ ...createCalendarEventDto });
 
@@ -38,13 +38,13 @@ export class CalendarEventsService {
   async findById(id: number) {
     const calendarEvent = await this.calendarEventRepository.findByPk(id);
 
-    if (!calendarEvent) throw new NotFoundException('Calendar envent not found');
+    if (!calendarEvent) throw new NotFoundException('Calendar event not found');
 
     return calendarEvent;
   }
 
   async getAllByCalendarId(calendarId: number) {
-    await this.validateCalendarExists(calendarId);
+    await this.calendarService.findById(calendarId);
 
     const calendarEvents = await this.calendarEventRepository.findAll({
       where: { calendarId },
@@ -59,10 +59,10 @@ export class CalendarEventsService {
     const calendarEvent = await this.findById(id);
 
     if (updateCalendarEventDto && updateCalendarEventDto.calendarId)
-      await this.validateCalendarExists(updateCalendarEventDto.calendarId);
+      await this.calendarService.findById(updateCalendarEventDto.calendarId);
 
     if (updateCalendarEventDto && updateCalendarEventDto.bookingId)
-      await this.validateBookingExists(updateCalendarEventDto.bookingId);
+      await this.bookingService.find(updateCalendarEventDto.bookingId);
 
     await calendarEvent.update(updateCalendarEventDto);
     this.logger.log(`Updated calendarEvent with ID ${id}`);
@@ -75,15 +75,5 @@ export class CalendarEventsService {
 
     this.logger.log(`Deleted calendar event with ID ${id}`);
     return calendarEvent;
-  }
-
-  private async validateCalendarExists(calendarId: number) {
-    const calendar = await this.calendarService.findById(calendarId);
-    if (!calendar) throw new NotFoundException('Calendar not found');
-  }
-
-  private async validateBookingExists(bookingId: number) {
-    const booking = await this.bookingService.find(bookingId);
-    if (!booking) throw new NotFoundException('Booking not found');
   }
 }
