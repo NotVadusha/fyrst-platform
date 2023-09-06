@@ -29,7 +29,7 @@ export const Conversations = ({ onSelect }: { onSelect?: () => void }) => {
   return (
     <div className='relative'>
       <SearchInput value={searchQuery} onChange={handleChange} />
-      <ScrollArea className='lg:h-[120px] xl:h-[400px] w-full p-2'>
+      <ScrollArea className='h-[400px] w-full p-2'>
         <div className='grid gap-4'>
           {chatsToShow?.length > 0 ? (
             chatsToShow?.map((chat: Chat) => {

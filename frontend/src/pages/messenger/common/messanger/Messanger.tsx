@@ -59,10 +59,10 @@ const Messanger: React.FC = () => {
         {!!conversations.length && (
           <div className='w-full h-full bg-white shadow-md rounded-2xl'>
             <div className='flex flex-col xl:flex-row gap-2 xl:gap-4 p-6'>
-              <div className='hidden lg:block'>
+              <div className='hidden xl:block'>
                 <Conversations />
               </div>
-              <div className='lg:hidden inline-block'>
+              <div className='xl:hidden inline-block'>
                 <Sheet modal={false} open={open} onOpenChange={setIsOpen}>
                   <SheetTrigger className='w-full'>
                     <div className='flex w-full justify-center items-center gap-2'>
