@@ -23,4 +23,8 @@ export class CreateProfileDto {
   @IsString()
   @IsOptional()
   avatar?: string;
+
+  @IsString()
+  @IsOptional()
+  stripeAccountId?: string;
 }

@@ -5,7 +5,7 @@ import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
 import MessangerPage from '../../pages/messenger/MessangerPage';
-import PaymentsPage from '../../pages/payments/PaymentsPage';
+import PaymentsPage from '../../pages/payments/PaymentsList/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
 import ErrorPage from '../../pages/common/error/ErrorPage';
