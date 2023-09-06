@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, ForbiddenException } from '@nestjs/common';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
@@ -13,11 +13,16 @@ import { getFilterParams } from 'shared/getFilterParams';
 import * as Papa from 'papaparse';
 import _ from 'lodash';
 import { flatten } from 'flat';
+import { UserService } from '../user/user.service';
+import { userRoles } from 'shared/packages/roles/userRoles';
 
 @Injectable()
 export class TimecardService {
   private logger = new Logger(TimecardService.name);
-  constructor(@InjectModel(Timecard) private readonly timecardModel: typeof Timecard) {}
+  constructor(
+    @InjectModel(Timecard) private readonly timecardModel: typeof Timecard,
+    private userService: UserService,
+  ) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
     this.logger.log(createTimecardDto);
@@ -107,5 +112,30 @@ export class TimecardService {
     await timecard.destroy();
 
     return timecard;
+  }
+
+  async getWorkersByUserId(id: number) {
+    const user = await this.userService.findOne(id);
+    const where = {};
+
+    if (user.role_id === userRoles.WORKER) throw new ForbiddenException('Access denied');
+    if (user.role_id === userRoles.FACILITY_MANAGER) where['$booking.createdBy$'] = id;
+
+    return await this.timecardModel.findAll({
+      where,
+      attributes: ['employee.id', 'employee.first_name', 'employee.last_name'],
+      include: [
+        {
+          model: Booking,
+          attributes: [],
+        },
+        {
+          model: User,
+          as: 'employee',
+          attributes: ['id', 'first_name', 'last_name'],
+        },
+      ],
+      group: ['employee.id'],
+    });
   }
 }

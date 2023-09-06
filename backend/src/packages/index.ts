@@ -12,4 +12,8 @@ export { ChatModule } from './chat/chat.module';
 export { MessageModule } from './message/message.module';
 export { NotificationsConfigModule } from './notifications-config/notifications-config.module';
 export { BucketModule } from './bucket/bucket.module';
+export { PaymentModule } from './payment/payment.module';
+export { StripeModule } from './stripe/stripe.module';
+export { InvoiceModule } from './invoice/invoice.module';
 export { PermissionsModule } from './permissions/permissions.module';
+export { StatisticsModule } from './statistics/statistics.module';

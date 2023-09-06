@@ -5,7 +5,9 @@ import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
 import { ReactComponent as Proposal } from 'src/assets/icons/proposal.svg';
 import { NavItem } from '../types/NavItem';
-import { UserCog } from 'lucide-react';
+import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
+import { UserCog, BarChart3, Briefcase } from 'lucide-react';
+
 export const routerConfig = {
   name: 'Fyrst',
   description: '',
@@ -44,7 +46,7 @@ export const routerConfig = {
           path: '/profile/edit',
         },
         {
-          title: 'Edit portfolio',
+          title: 'Portfolio',
           path: '/profile/portfolio',
         },
         {
@@ -54,10 +56,6 @@ export const routerConfig = {
         {
           title: 'Security',
           path: '/profile/security',
-        },
-        {
-          title: 'Recommendations',
-          path: '/profile/recommendations',
         },
       ],
     },
@@ -85,6 +83,21 @@ export const routerConfig = {
       items: [],
       isPrivate: true,
       neededPermission: 'manageUsers',
+    },
+    {
+      title: 'Recommendations',
+      icon: Briefcase,
+      mainPath: '/recommendations',
+      path: '/recommendations',
+    },
+    {
+      title: 'Reports',
+      icon: BarChart3,
+      mainPath: '/reports',
+      path: '/reports',
+      items: [],
+      isPrivate: true,
+      neededRoles: ['FACILITY_MANAGER'],
     },
     {
       title: 'Interview',

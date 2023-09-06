@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { development } from 'src/config';
-// import { PermissionsModule } from './packages/permissions/permissions.module';
 
 import {
   EmailConfirmationModule,
@@ -18,7 +17,11 @@ import {
   MessageModule,
   NotificationsConfigModule,
   BucketModule,
+  PaymentModule,
+  StripeModule,
+  InvoiceModule,
   PermissionsModule,
+  StatisticsModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
 @Module({
@@ -38,7 +41,11 @@ import { AppGateway } from './app.gateway';
     MessageModule,
     NotificationsConfigModule,
     BucketModule,
+    PaymentModule,
+    StripeModule,
+    InvoiceModule,
     PermissionsModule,
+    StatisticsModule,
   ],
   controllers: [],
   providers: [AppGateway],

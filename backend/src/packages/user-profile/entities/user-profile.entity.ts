@@ -1,6 +1,14 @@
 import { DATE } from 'sequelize';
 import { Sequelize } from 'sequelize';
-import { Column, Model, Table, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  AllowNull,
+} from 'sequelize-typescript';
 import { User } from 'src/packages/user/entities/user.entity';
 
 @Table({ tableName: 'User-profile', timestamps: false })
@@ -48,4 +56,8 @@ export class UserProfile extends Model {
     type: DataType.TEXT,
   })
   avatar: string;
+
+  @AllowNull
+  @Column
+  stripeAccountId: string;
 }

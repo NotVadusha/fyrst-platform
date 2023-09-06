@@ -5,7 +5,7 @@ import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
 import MessangerPage from '../../pages/messenger/MessangerPage';
-import PaymentsPage from '../../pages/payments/PaymentsPage';
+import PaymentsPage from '../../pages/payments/PaymentsList/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
 import ErrorPage from '../../pages/common/error/ErrorPage';
@@ -27,6 +27,7 @@ import { App } from 'src/pages/App';
 import { ConfigurateProtectedRoute } from './common/helpers/configurate-protected-route.helper';
 import { RoleProtectedRoute } from './common/helpers/role-protected-route.helper';
 import { PermissionsProtectedRoute } from './common/helpers/permissions-protected-route.helper';
+import { ReportsPage } from 'src/pages/reports/ReportsPage';
 
 //TODO: Add one component for all pages
 import { ChatPage } from 'src/pages/messenger/common/chat/Chat';
@@ -128,6 +129,11 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: 'recommendations',
+            errorElement: <ErrorPage />,
+            element: <JobRecommendations />,
+          },
+          {
             path: 'profile',
             errorElement: <ErrorPage />,
             children: [
@@ -150,10 +156,6 @@ export const router = createBrowserRouter([
               {
                 path: 'security',
                 element: <ProfileSecurity />,
-              },
-              {
-                path: 'recommendations',
-                element: <JobRecommendations />,
               },
             ],
           },
@@ -207,6 +209,20 @@ export const router = createBrowserRouter([
                     <PermissionsProtectedRoute permissions={['manageUsers']}>
                       <UserListPage />
                     </PermissionsProtectedRoute>
+                  </RoleProtectedRoute>
+                ),
+              },
+            ],
+          },
+          {
+            path: 'reports',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: (
+                  <RoleProtectedRoute role='FACILITY_MANAGER' strict>
+                    <ReportsPage />
                   </RoleProtectedRoute>
                 ),
               },
