@@ -36,23 +36,11 @@ export class ChatService {
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
-    let membersWithoutOwner = createdData.members;
+    const members = await this.userRepository.findAll({ where: { id: createdData.members } });
 
-    if (createdData.members.length >= 2) {
-      membersWithoutOwner = createdData.members.filter(
-        memberId => memberId !== createdData.ownerId,
-      );
-    } else if (
-      createdData.members.length === 1 &&
-      createdData.members.includes(createdData.ownerId)
-    ) {
-      throw new HttpException(
-        'You cannot create a conversation with yourself',
-        HttpStatus.BAD_REQUEST,
-      );
+    if (members.find(({ id }) => id === createdData.ownerId)) {
+      throw new HttpException('You cannot add yourself to a conversation', HttpStatus.BAD_REQUEST);
     }
-
-    const members = await this.userRepository.findAll({ where: { id: membersWithoutOwner } });
 
     if (!members.length) {
       const plural = createdData.members.length > 1;
