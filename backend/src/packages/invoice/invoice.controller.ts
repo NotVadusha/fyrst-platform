@@ -61,7 +61,6 @@ export class InvoiceController {
     return this.invoiceService.delete(id);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Get(':id/pdf')
   async getInvoicePdfLink(@Param('id', ParseIntPipe) invoiceId: number) {
     return await this.invoiceService.getInvoice(invoiceId);

@@ -19,9 +19,16 @@ export class BucketService {
   }
 
   async save(path: string, media: Buffer) {
-    const file = this.storage.bucket(this.bucket).file(path);
-    const stream = file.createWriteStream();
-    stream.end(media);
+    const uploadImage = new Promise((resolve, reject) => {
+      try {
+        const file = this.storage.bucket(this.bucket).file(path);
+        const stream = file.createWriteStream();
+        stream.end(media, () => resolve(true));
+      } catch (err) {
+        reject(err);
+      }
+    });
+    await uploadImage;
     return await this.getFileLink(path, 'read', Date.now() + 1000 * 60 * 60 * 24 * 7);
   }
 
@@ -48,5 +55,10 @@ export class BucketService {
       expires,
     });
     return url;
+  }
+
+  async fileExists(path: string) {
+    const result = await this.storage.bucket(this.bucket).file(path).exists();
+    return result[0];
   }
 }

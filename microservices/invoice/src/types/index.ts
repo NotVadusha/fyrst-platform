@@ -67,4 +67,6 @@ export interface Invoice {
   status: PaymentStatus;
   path?: string;
   timecardId: number;
+  createdAt: Date;
+  timecard: Timecard;
 }

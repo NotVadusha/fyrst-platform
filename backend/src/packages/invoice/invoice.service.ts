@@ -9,23 +9,20 @@ import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { InvoicesFiltersDto } from './dto/invoices-filters.dto';
 import { UserService } from '../user/user.service';
 import { ClientProxy } from '@nestjs/microservices';
-import { BookingService } from '../booking/booking.service';
-import { FacilityService } from '../facility/facility.service';
-import { TimecardService } from '../timecard/timecard.service';
 import { firstValueFrom } from 'rxjs';
 import { userRoles } from 'shared/packages/roles/userRoles';
+import { BucketService } from '../bucket/bucket.service';
+import { Facility } from '../facility/entities/facility.entity';
 
 @Injectable()
 export class InvoiceService {
   constructor(
-    @InjectModel(Invoice)
     @Inject('INVOICE_SERVICE')
     private invoiceService: ClientProxy,
-    private userService: UserService,
-    private bookingService: BookingService,
-    private facilityService: FacilityService,
-    private timecardService: TimecardService,
+    @InjectModel(Invoice)
     private readonly invoiceRepository: typeof Invoice,
+    private userService: UserService,
+    private bucketService: BucketService,
   ) {}
 
   async findOneById(id: number): Promise<Invoice> {
@@ -153,20 +150,66 @@ export class InvoiceService {
   }
 
   async getInvoice(invoiceId: number) {
-    const invoice = await this.findOneById(invoiceId);
-    const timecard = await this.timecardService.getById(invoice.timecardId);
-    const user = await this.userService.findOne(timecard.createdBy);
-    const booking = await this.bookingService.find(timecard.bookingId);
-    const facility = await this.facilityService.findById(booking.facilityId);
+    if (await this.bucketService.fileExists(`pdf-files/invoice_${invoiceId}.pdf`))
+      return {
+        link: await this.bucketService.getFileLink(
+          `pdf-files/invoice_${invoiceId}.pdf`,
+          'read',
+          Date.now() + 1000 * 60 * 60 * 24 * 7,
+        ),
+      };
 
-    return await firstValueFrom(
+    const invoice = await this.invoiceRepository.findOne({
+      where: {
+        id: invoiceId,
+      },
+      include: [
+        {
+          model: Timecard,
+          include: [
+            {
+              model: User,
+              as: 'employee',
+            },
+            {
+              model: Booking,
+              include: [Facility],
+            },
+          ],
+        },
+      ],
+    });
+
+    let facilityLogo = null;
+
+    if (
+      invoice.timecard.booking.facility.logo &&
+      (await this.bucketService.fileExists(invoice.timecard.booking.facility.logo))
+    )
+      facilityLogo = await this.bucketService.getFileLink(
+        invoice.timecard.booking.facility.logo,
+        'read',
+        Date.now() + 1000 * 60 * 60 * 24 * 7,
+      );
+
+    const pdfResponse = await firstValueFrom(
       this.invoiceService.send('get_invoice_pdf_link', {
         invoice,
-        timecard,
-        user,
-        booking,
-        facility,
+        facilityLogo,
       }),
     );
+
+    const pdfBuffer = Buffer.from(pdfResponse.pdf, 'base64');
+    const fileName = `invoice_${invoiceId}.pdf`;
+
+    const link = await this.bucketService.save(`pdf-files/${fileName}`, pdfBuffer);
+
+    this.update(invoiceId, {
+      path: `pdf-files/${fileName}`,
+    });
+
+    return {
+      link,
+    };
   }
 }

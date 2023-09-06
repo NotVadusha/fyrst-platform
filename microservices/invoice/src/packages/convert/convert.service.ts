@@ -2,6 +2,8 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
 import { GotenbergClientService } from '../gotenberg-client/gotenberg-client.service';
+import { DataToPdfDto } from '../invoice/dto/data-to-pdf.dto';
+import { streamToBase64 } from 'src/helpers/streamToBase64';
 
 @Injectable()
 export class ConvertService implements OnModuleInit {
@@ -10,10 +12,14 @@ export class ConvertService implements OnModuleInit {
   private readonly templateFile = 'src/packages/convert/templates/invoice.hbs';
   private hbsTemplate: HandlebarsTemplateDelegate;
 
-  async toPdfInvoice<T>(data: T) {
-    const invoiceHTML = this.hbsTemplate({ ...data, date: new Date().toLocaleDateString() });
+  async toPdfInvoice(data: DataToPdfDto) {
+    const invoiceHTML = this.hbsTemplate({
+      ...data,
+      date: new Date(data.invoice.createdAt).toLocaleDateString(),
+    });
     const pdfStream = await this.gotenbergClientService.createPdfFromHtml(invoiceHTML);
-    pdfStream.pipe(fs.createWriteStream('src/packages/convert/pdfs/1.pdf'));
+    const pdfBase64: string = await streamToBase64(pdfStream);
+    return pdfBase64;
   }
 
   async onModuleInit(): Promise<void> {
@@ -28,12 +34,9 @@ export class ConvertService implements OnModuleInit {
   }
 
   private async registerHelpers(): Promise<void> {
-    Handlebars.registerHelper('countAmount', (hours, price) => (hours * price).toFixed(2));
-    Handlebars.registerHelper('countTax', (hours, price, tax) =>
-      (((hours * price) / 100) * tax).toFixed(2),
-    );
-    Handlebars.registerHelper('countAmountTotal', (hours, price, tax) =>
-      (hours * price + ((hours * price) / 100) * tax).toFixed(2),
+    Handlebars.registerHelper('countTax', (amount, tax) => ((amount / 100) * tax).toFixed(2));
+    Handlebars.registerHelper('countAmountTotal', (amount, tax) =>
+      (amount + (amount / 100) * tax).toFixed(2),
     );
   }
 }

@@ -4,6 +4,7 @@ import { ReactComponent as Profile } from 'src/assets/icons/profile.svg';
 import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
 import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
+import { ReactComponent as Invoice } from 'src/assets/icons/invoice.svg';
 import { NavItem } from '../types/NavItem';
 import { UserCog, BarChart3 } from 'lucide-react';
 
@@ -74,6 +75,15 @@ export const routerConfig = {
       icon: Payment,
       mainPath: '/payments',
       path: '/payments',
+      items: [],
+      isPrivate: true,
+      neededPermission: 'manageTimecards',
+    },
+    {
+      title: 'Invoices',
+      icon: Invoice,
+      mainPath: '/invoices',
+      path: '/invoices',
       items: [],
       isPrivate: true,
       neededPermission: 'manageTimecards',

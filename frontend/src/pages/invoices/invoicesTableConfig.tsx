@@ -1,6 +1,8 @@
 import React from 'react';
 import { Invoice } from 'src/common/packages/invoices/types/models/Invoice.model';
 import { ColumnInfo } from '../../common/components/ui/common/Table/Table';
+import { capitalizeFirstLetter } from 'src/common/helpers/capitalizeFirstLetter';
+import { InvoiceButton } from './InvoiceButton';
 
 const statusColors = [
   { status: 'Completed', color: 'text-green-2' },
@@ -11,15 +13,15 @@ const statusColors = [
 export const invoicesColumns: ColumnInfo<Invoice>[] = [
   {
     columnName: 'Invoice date',
-    renderCell: item => item.createdAt.toLocaleDateString(),
+    renderCell: item => new Date(item.createdAt).toLocaleDateString(),
   },
   {
     columnName: 'Start date',
-    renderCell: item => item.timecard.booking.startDate.toLocaleDateString(),
+    renderCell: item => new Date(item.timecard.booking.startDate).toLocaleDateString(),
   },
   {
     columnName: 'End date',
-    renderCell: item => item.timecard.booking.endDate.toLocaleDateString(),
+    renderCell: item => new Date(item.timecard.booking.endDate).toLocaleDateString(),
   },
   {
     columnName: 'Payee',
@@ -32,10 +34,16 @@ export const invoicesColumns: ColumnInfo<Invoice>[] = [
   {
     columnName: 'Status',
     renderCell: item => {
-      const foundStatus = statusColors.find(s => s.status === item.status);
+      const foundStatus = statusColors.find(s => s.status === capitalizeFirstLetter(item.status));
       const statusColor = foundStatus ? foundStatus.color : '';
 
-      return <span className={statusColor}>{item.status}</span>;
+      return <span className={statusColor}>{capitalizeFirstLetter(item.status)}</span>;
+    },
+  },
+  {
+    columnName: '',
+    renderCell: item => {
+      return <InvoiceButton id={item.id} />;
     },
   },
 ];

@@ -38,6 +38,7 @@ import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmail
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
 import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
 import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
+import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -184,6 +185,16 @@ export const router = createBrowserRouter([
               {
                 path: ':id',
                 element: <TestPage />,
+              },
+            ],
+          },
+          {
+            path: 'invoices',
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                index: true,
+                element: <InvoicesPage />,
               },
             ],
           },

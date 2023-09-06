@@ -132,16 +132,16 @@
   <div class="wrapper">
     <section class="header">
       <div class="logo">
-        {{#if facility.logo}}
-          <img src="{{facility.logo}}"/>
+        {{#if facilityLogo}}
+          <img src="{{facilityLogo}}"/>
         {{/if}}
-        <p>{{facility.name}}</p>
+        <p>{{invoice.timecard.booking.facility.name}}</p>
       </div>
       <div class="header-info">
         <p class="header-text">INVOICE</p>
         <div class="company-info">
-          <p style="font-weight: 600;">{{facility.name}}</p>
-          <p>{{facility.address}}, {{facility.city}}</p>
+          <p style="font-weight: 600;">{{invoice.timecard.booking.facility.name}}</p>
+          <p>{{invoice.timecard.booking.facility.address}}, {{invoice.timecard.booking.facility.city}}</p>
         </div>
       </div>
     </section>
@@ -149,26 +149,22 @@
     <section class="bill-to">
       <div class="receiver">
         <p style="color: darkgray; font-weight: 600;">BILL TO</p>
-        <p style="font-weight: 600;">{{user.first_name}} {{user.last_name}}</p>
-        <p>{{user.city}}</p>
-        <p style="margin-top: 15px;">{{user.email}}</p>
-        <p>{{user.phone}}</p>
+        <p style="font-weight: 600;">{{invoice.timecard.employee.first_name}} {{invoice.timecard.employee.last_name}}</p>
+        <p>{{invoice.timecard.employee.city}}</p>
+        <p style="margin-top: 15px;">{{invoice.timecard.employee.email}}</p>
+        <p>{{invoice.timecard.employee.phone}}</p>
       </div>
       <div class="invoice-info">
         <div class="info-table">
           <div class="info-headers">
             <p style="padding-right: 6px; font-weight: 600;">Invoice Number:</p>
-            <p style="padding-right: 6px; font-weight: 600;">P.O./S.O. Number:</p>
             <p style="padding-right: 6px; font-weight: 600;">Invoice Date:</p>
-            <p style="padding-right: 6px; font-weight: 600;">Payment Due:</p>
             <p style="padding: 4px; padding-right: 6px; background-color: lightgray; margin-top: 6px; font-weight: 600;">Amount Due(USD):</p>
           </div>
           <div class="info-content">
-            <p>14</p>
-            <p>da241wr224</p>
+            <p>{{invoice.id}}</p>
             <p>{{date}}</p>
-            <p>Upon receipt</p>
-            <p style="padding: 4px; padding-left: 0; width: 100%; background-color: lightgray; margin-top: 6px;">$322</p>
+            <p style="padding: 4px; padding-left: 0; width: 100%; background-color: lightgray; margin-top: 6px;">${{countAmountTotal invoice.amountPaid 8}}</p>
           </div>
         </div>
       </div>
@@ -181,21 +177,20 @@
       <p style="font-weight: 600; justify-self: end;">Amount</p>
       <div style="display: flex; flex-direction: column; margin-top: 10px;">
         <p style="font-weight: 600;">Healthcare worker</p>
-        <p>{{booking.note}}</p>
       </div>
-      <p style="margin-top: 10px; justify-self: end;">${{booking.pricePerHour}}</p>
-      <p style="margin-top: 10px; justify-self: end;">{{booking.workingHours}}</p>
-      <p style="margin-top: 10px; justify-self: end;">${{countAmount booking.workingHours booking.pricePerHour}}</p>
+      <p style="margin-top: 10px; justify-self: end;">${{invoice.timecard.booking.pricePerHour}}</p>
+      <p style="margin-top: 10px; justify-self: end;">{{invoice.timecard.booking.workingHours}}</p>
+      <p style="margin-top: 10px; justify-self: end;">${{invoice.amountPaid}}</p>
     </section>
     <hr/>
     <section style="display: flex; flex-direction: row-reverse;">
       <div style="width: 35%;; display: grid; grid-template-columns: 1fr 1fr;">
         <p style="font-weight: 600; justify-self: end;">Subtotal:</p>
-        <p style="justify-self: end;">${{countAmount booking.workingHours booking.pricePerHour}}</p>
+        <p style="justify-self: end;">${{invoice.amountPaid}}</p>
         <p style="font-weight: 600; justify-self: end;">Tax 8%:</p>
-        <p style="justify-self: end;">${{countTax booking.workingHours booking.pricePerHour 8}}</p>
+        <p style="justify-self: end;">${{countTax invoice.amountPaid 8}}</p>
         <p style="font-weight: 600; justify-self: end; margin-top: 15px;">Total:</p>
-        <p style="justify-self: end; margin-top: 15px;">${{countAmountTotal booking.workingHours booking.pricePerHour 8}}</p>
+        <p style="justify-self: end; margin-top: 15px;">${{countAmountTotal invoice.amountPaid 8}}</p>
       </div>
     </section>
   </div>

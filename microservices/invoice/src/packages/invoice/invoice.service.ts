@@ -8,9 +8,8 @@ export class InvoiceService {
   constructor(private convertService: ConvertService) {}
 
   async getInvoicePdfLink(data: DataToPdfDto): Promise<InvoicePdfDto> {
-    this.convertService.toPdfInvoice(data);
     return {
-      link: 'L',
+      pdf: await this.convertService.toPdfInvoice(data),
     };
   }
 }
