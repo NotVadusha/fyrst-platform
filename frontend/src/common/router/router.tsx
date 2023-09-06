@@ -137,7 +137,7 @@ export const router = createBrowserRouter([
                 element: <ProfileEditPage />,
               },
               {
-                path: 'notifications-settings',
+                path: 'notifications',
                 element: <NotificationsSettings />,
               },
               {
