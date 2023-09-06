@@ -31,7 +31,7 @@ const colStart = [
 export const CalendarGrid = () => {
   const userId = useAppSelector(selectUserId);
   const { data: calendar } = useGetCalendarQuery(userId || 1);
-  console.log(userId);
+
   const today = startOfToday();
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMMM, yyyy'));
   const firstDayOfCurrentMonth = parse(currentMonth, 'MMMM, yyyy', new Date());
@@ -40,8 +40,6 @@ export const CalendarGrid = () => {
     start: startOfWeek(firstDayOfCurrentMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayOfCurrentMonth), { weekStartsOn: 1 }),
   });
-
-  console.log(calendar);
 
   const prevMonth = () => {
     const firstDayPrevMonth = add(firstDayOfCurrentMonth, { months: -1 });
