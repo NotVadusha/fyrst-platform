@@ -129,6 +129,11 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: 'recommendations',
+            errorElement: <ErrorPage />,
+            element: <JobRecommendations />,
+          },
+          {
             path: 'profile',
             errorElement: <ErrorPage />,
             children: [
@@ -151,10 +156,6 @@ export const router = createBrowserRouter([
               {
                 path: 'security',
                 element: <ProfileSecurity />,
-              },
-              {
-                path: 'recommendations',
-                element: <JobRecommendations />,
               },
             ],
           },
