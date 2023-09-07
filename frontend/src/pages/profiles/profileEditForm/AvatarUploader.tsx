@@ -53,7 +53,7 @@ export const AvatarUploader = ({
   };
 
   const handleSave = async () => {
-    if (tempImage) {
+    if (tempImage && tempImage !== defaultAvatar) {
       const result = await fetch(tempImage);
       const blob = await result.blob();
       const image = URL.createObjectURL(blob);

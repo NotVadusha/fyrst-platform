@@ -70,7 +70,6 @@ export function CreateBookingForm({
           type='text'
         />
         <Dropdown
-          className='z-[99999]'
           name='facilityId'
           control={form.control}
           label='Facility'
@@ -96,14 +95,14 @@ export function CreateBookingForm({
           name='startDate'
           control={form.control}
           min={new Date().toISOString().split('T')[0]}
-          label=' '
+          label='Start date'
           type='date'
         />
         <TextInput
           name='endDate'
           control={form.control}
           min={new Date().toISOString().split('T')[0]}
-          label=''
+          label='End date'
           type='date'
         />
         <FormField
