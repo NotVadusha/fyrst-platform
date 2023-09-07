@@ -3,6 +3,7 @@ import { UserProfile } from 'src/common/packages/user/common/user-profile/types/
 import { UserFilters } from 'src/common/packages/user/common/user-filters/types/models/UserFilters.model';
 import { apiSlice } from '../../api';
 import { User } from 'src/common/packages/user/types/models/User.model';
+import { ProfileDto } from 'src/common/packages/user/common/user-profile/types/dto/ProfileDto';
 
 export interface getUsersQueryParams {
   currentPage: number;
@@ -51,9 +52,10 @@ export const userApi = apiSlice.injectEndpoints({
       },
     }),
     getUser: build.query<User, number>({
-      query(id) {
-        return `/user/${id}`;
-      },
+      query: id => ({
+        url: `/user/${id}`,
+        method: 'GET',
+      }),
     }),
     updateUser: build.mutation<User, { id: number; user: UpdateUserBody }>({
       query: args => ({
@@ -62,14 +64,13 @@ export const userApi = apiSlice.injectEndpoints({
         body: args.user,
       }),
     }),
-    getUserProfile: build.mutation<User, { id: number }>({
+    getUserProfile: build.query<ProfileDto, { id: number }>({
       query: body => ({
         url: `/profile/${body.id}`,
         method: 'GET',
-        body,
       }),
     }),
-    updateUserProfile: build.mutation<User, Omit<UserProfile, 'id'>>({
+    updateUserProfile: build.mutation<ProfileDto, Omit<UserProfile, 'id'>>({
       query: body => ({
         url: `/profile`,
         method: 'PATCH',
@@ -98,7 +99,7 @@ export const {
   useGetUserQuery,
   useAddUsersMutation,
   useAddUserMutation,
-  useGetUserProfileMutation,
+  useGetUserProfileQuery,
   useLazyGetUserQuery,
   useUpdateUserMutation,
   useUpdateUserProfileMutation,

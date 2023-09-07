@@ -15,6 +15,7 @@ export interface UserState {
   role?: Role;
   permissions?: Permissions;
   facility_id?: number;
+  document_number?: string;
   sex?: string;
 }
 
@@ -43,6 +44,7 @@ const userSlice = createSlice({
       state.city = action.payload?.city;
       state.phone_number = action.payload?.phone_number;
       state.birthdate = action.payload?.birthdate;
+      state.document_number = action.payload?.document_number;
       state.email = action.payload?.email;
       state.role_id = action.payload?.role_id;
       state.role = action.payload?.role;
@@ -56,6 +58,7 @@ const userSlice = createSlice({
       state.city = undefined;
       state.phone_number = undefined;
       state.birthdate = undefined;
+      state.document_number = undefined;
       state.email = undefined;
       state.role_id = undefined;
       state.role = undefined;

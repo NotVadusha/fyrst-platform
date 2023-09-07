@@ -37,10 +37,12 @@ const capitalize = (text: string) => {
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const navigate = useNavigate();
   const [user, setUser] = useState<UpdateUserBody>();
   const [avatarImage, setAvatarImage] = useState('');
   const [parsedData, _setParsedData] = useState<parseInfo>();
+  const setParsedData = (data: parseInfo) => {
+    _setParsedData(data);
+  };
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
   const [city, setCity] = useState<string>('');
   const [updateUser] = useUpdateUserMutation();
@@ -54,22 +56,15 @@ export function ProfileEditForm() {
 
   useEffect(() => {
     const userFetch = async (id: number) => {
-      const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
+      const data: UpdateUserBody = await (await fetch(`${apiUrl}/user/${id}`)).json();
+      setUser(data);
 
-      if (data.statusCode === 404) navigate('/auth/signin');
-      const formattedUser = data as UpdateUserBody;
-      setUser(formattedUser);
-
-      const profile = await getProfile(data.id).unwrap();
-      setAvatarImage(profile.avatar || defaultAvatar);
+      const profile = await getProfile(userId).unwrap();
+      profile.avatar && setAvatarImage(profile.avatar);
     };
 
     userFetch(userId);
   }, []);
-
-  const setParseData = (data: parseInfo) => {
-    _setParsedData(data);
-  };
 
   useEffect(() => {
     if (parsedData && user) {
@@ -77,6 +72,8 @@ export function ProfileEditForm() {
         first_name: capitalize(parsedData.first_name),
         last_name: capitalize(parsedData.last_name),
         email: user.email,
+        phone_number: user.phone_number,
+        city: user.city,
         birthdate: parsedData.birthDate.toISOString().split('T')[0],
         document_number: parsedData.documentNumber,
       };
@@ -85,32 +82,26 @@ export function ProfileEditForm() {
   }, [parsedData]);
 
   const onSubmit = async (valuesFromForm: Inputs) => {
-    let base64;
-
     if (!!avatarImage && avatarImage.includes('blob:')) {
       const blob = await (await fetch(avatarImage)).blob();
       const arrayBuffer = await blob.arrayBuffer();
-      base64 = Buffer.from(arrayBuffer).toString('base64');
-    }
-    if (user) {
-      const updateUserReq = {
-        id: userId,
-        user: {
-          first_name: valuesFromForm.first_name,
-          last_name: valuesFromForm.last_name,
-          phone_number: valuesFromForm.phone_number,
-          email: valuesFromForm.email,
-          city: valuesFromForm.city,
-          birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
-          document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
-        },
-      };
-      await updateUser(updateUserReq);
+      const base64 = Buffer.from(arrayBuffer).toString('base64');
 
       updateProfile({
         id: userId,
         body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
       });
+    }
+    if (user) {
+      const updateUserReq = {
+        id: userId,
+        user: {
+          ...valuesFromForm,
+          birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
+          document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
+        },
+      };
+      updateUser(updateUserReq);
 
       toast({
         title: 'Changes applied',
@@ -157,7 +148,7 @@ export function ProfileEditForm() {
         <div className='w-128 p-8 bg-white mx-20 shadow-xl'>
           <div className='pb-8'>
             <img
-              src={avatarImage}
+              src={avatarImage ? avatarImage : defaultAvatar}
               className='w-32 h-32 rounded-full mx-auto border border-placeholder'
             />
             <p
@@ -273,7 +264,7 @@ export function ProfileEditForm() {
               </Button>
             </form>
           </Form>
-          <IdCardParser setData={setParseData} />
+          <IdCardParser setData={setParsedData} />
         </div>
       )}
     </>

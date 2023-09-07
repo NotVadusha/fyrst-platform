@@ -1,7 +1,7 @@
 import { Role } from '../../../roles/types/models/Role.model';
 import { Permissions } from 'src/common/packages/permissions/types/Permissions';
 
-export interface User {
+export type User = {
   id: number;
   first_name: string;
   last_name: string;
@@ -16,7 +16,7 @@ export interface User {
   role: Role;
   permissions: Permissions;
   facility_id: number;
-}
+};
 
 export interface DecodedUser {
   id: number;
