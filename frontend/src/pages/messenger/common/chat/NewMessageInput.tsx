@@ -66,7 +66,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
   });
 
   function onSubmit(val: Inputs) {
-    if (!val.messageContent) return;
+    if (!val.messageContent || !val.messageContent?.replaceAll(' ', '')) return;
     handleNewMessage({ messageContent: val.messageContent, attachment });
   }
 
