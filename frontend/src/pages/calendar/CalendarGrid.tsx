@@ -55,7 +55,7 @@ export const CalendarGrid = () => {
     setCurrentMonth(format(today, 'MMMM, yyyy'));
   };
   return (
-    <div className='w-[955px] mx-auto pb-11'>
+    <div className='xl:w-[955px] md:w-full md:px-6 sm:px-2 xl:mx-auto py-10 '>
       <div className='flex justify-between w-full items-center mb-8'>
         <div className='flex gap-2 items-center'>
           <button onClick={prevMonth}>
@@ -82,7 +82,7 @@ export const CalendarGrid = () => {
         <div>Sat</div>
         <div>Sun</div>
       </div>
-      <div className='grid grid-cols-7 bg-[#686565]/[0.15]  gap-[1px] p-[1px] h-full'>
+      <div className='flex-1 grid grid-cols-7 auto-rows-fr bg-[#686565]/[0.15]  gap-px p-px h-full '>
         {days.map((day, i) => {
           if (!calendar) return;
           const eventForDate = calendar.events.filter(event => {

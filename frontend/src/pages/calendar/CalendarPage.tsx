@@ -6,7 +6,7 @@ import { Header } from 'src/common/components/ui/layout/Header/Header';
 export const CalendarPage = () => {
   return (
     <>
-      <Header title='Calendar' className='mb-10'></Header>
+      <Header title='Calendar'></Header>
       <CalendarGrid></CalendarGrid>
     </>
   );

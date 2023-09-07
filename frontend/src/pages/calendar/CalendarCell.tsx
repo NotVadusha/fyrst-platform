@@ -1,5 +1,5 @@
 import { isSameDay } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Event } from 'src/common/packages/event/types/models/Event.model';
 import { EventModal } from './EventModal';
 
@@ -11,12 +11,13 @@ interface CalendarCellProps {
 
 export const CalendarCell = ({ date, events, isSameMonth }: CalendarCellProps) => {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
   const isCurrentDate = (date: Date) => {
     return isSameDay(new Date(), date);
   };
 
   return (
-    <div className='flex flex-col items-center text-center p-1  gap-2 text-black bg-white h-[124px] '>
+    <div className='flex flex-col items-center text-center p-1  gap-2 text-black bg-white min-h-[124px] h-full'>
       {date && (
         <p
           className={`${isCurrentDate(date) && 'bg-green rounded-[50%] w-6 text-white'} ${
