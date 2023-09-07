@@ -21,6 +21,8 @@ import { FilterBookingDto } from './dto/filter-booking.dto';
 import { Readable } from 'stream';
 import { Response } from 'express';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
+import { RoleGuard } from '../roles/guards/roles.guard';
+import { PermissionsGuard } from '../permissions/guards/permissions.guard';
 
 @ApiTags('Booking endpoints')
 @Controller('booking')
@@ -54,6 +56,7 @@ export class BookingController {
     }
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageBookings']))
   @Get('export-csv')
   async exportAllBookingsToCSV(
     @Res() response: Response,
@@ -92,6 +95,7 @@ export class BookingController {
     return this.bookingService.find(id);
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageBookings']))
   @Patch(':id')
   async updateBooking(
     @Param('id', ParseIntPipe) id: number,
@@ -100,6 +104,7 @@ export class BookingController {
     return this.bookingService.update(id, updatedData);
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageBookings']))
   @Delete(':id')
   async deleteBooking(@Param('id', ParseIntPipe) id: number) {
     return this.bookingService.delete(id);

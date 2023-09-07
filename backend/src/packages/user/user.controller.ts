@@ -12,6 +12,7 @@ import {
   Res,
   InternalServerErrorException,
   Logger,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,6 +22,8 @@ import { User } from './entities/user.entity';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Response as ExpressResponse } from 'express';
 import { Readable } from 'stream';
+import { RoleGuard } from '../roles/guards/roles.guard';
+import { PermissionsGuard } from '../permissions/guards/permissions.guard';
 
 @ApiTags('User endpoints')
 @Controller('user')
@@ -37,6 +40,7 @@ export class UserController {
     return await this.userService.createMany(userInfo);
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageUsers']))
   @Get('export-csv')
   async exportAllUsersToCSV(
     @Res() response: ExpressResponse,
@@ -112,6 +116,8 @@ export class UserController {
       passwords.newPassword,
     );
   }
+
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageUsers']))
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) userId: number) {
     const deleteStatus = await this.userService.delete(userId);
