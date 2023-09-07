@@ -3,8 +3,6 @@ import { Card, CardContent, CardTitle } from 'src/common/components/ui/common/Ca
 import { Timecard } from 'src/common/packages/timecard/types/models/Timecard.model';
 import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
 import { useGetUserProfileQuery } from 'src/common/store/api/packages/user/userApi';
-import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
-import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type AdditionalInfoInputProps = {
   timecard: Timecard;
@@ -18,14 +16,10 @@ export const AdditionalTimeCardInfo = ({ timecard }: AdditionalInfoInputProps) =
     });
 
   let employeeProfile;
-  if (timecard.employee) {
-    employeeProfile = useGetUserProfileQuery({
-      id: timecard.employee.id,
-    });
-    if (employeeProfile.isError) {
-      console.log(employeeProfile.error);
-    }
-  }
+
+  employeeProfile = useGetUserProfileQuery({
+    id: timecard.employee.id,
+  });
 
   const facilityManagerFullName = timecard.facilityManager
     ? `${timecard.facilityManager.first_name} ${timecard.facilityManager.last_name}`

@@ -22,7 +22,6 @@ const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
   const user = useAppSelector(state => state.user);
-  console.log(user);
 
   const dispatch = useAppDispatch();
   const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
