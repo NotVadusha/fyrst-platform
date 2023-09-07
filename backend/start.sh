@@ -1,4 +1,4 @@
 npm run start:dev &
-sleep 180
+sleep 60
 npm run db:seed
 tail -f /dev/null
