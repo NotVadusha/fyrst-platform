@@ -186,7 +186,6 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
                 name='role_id'
                 render={({ field }) => (
                   <FormItem className='flex flex-col'>
-                    <FormLabel>Role</FormLabel>
                     <FormControl>
                       <Dropdown
                         control={form.control}
@@ -210,7 +209,6 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
                 <>
                   <div className='col-span-3 space-y-4'>
                     <div>
-                      <FormLabel>Facility</FormLabel>
                       <Dropdown
                         className='z-10'
                         name='facility_id'

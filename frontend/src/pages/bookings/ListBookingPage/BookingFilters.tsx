@@ -15,12 +15,7 @@ export const BookingFilters = ({
 }: {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
-  const form = useForm<FormValues>({
-    resolver: yupResolver<FormValues>(bookingFiltersSchema),
-  });
-
   const { data: facilities } = useFetchFacilitiesQuery({});
-
   const options = facilities
     ? facilities.map(facility => ({
         label: facility.name,
@@ -29,6 +24,12 @@ export const BookingFilters = ({
     : [];
 
   options.unshift({ label: 'All', value: 0 });
+
+  const form = useForm<FormValues>({
+    resolver: yupResolver<FormValues>(bookingFiltersSchema),
+    defaultValues: { status: '', facility: 0 },
+  });
+
   return (
     <Form {...form}>
       <form className='w-full'>

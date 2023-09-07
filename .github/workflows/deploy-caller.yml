@@ -1,7 +1,7 @@
 name: 'deploy-caller'
 on:
   push:
-    branches: ['develop']
+    branches: ['deploy']
 
 jobs:
   deploy-instance1:

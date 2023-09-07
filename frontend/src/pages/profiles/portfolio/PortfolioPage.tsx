@@ -28,6 +28,7 @@ import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { useNavigate } from 'react-router-dom';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 import { ProfileDto } from 'src/common/packages/user/common/user-profile/types/dto/ProfileDto';
+import { X } from 'lucide-react';
 
 const portfolioSchema = yup.object().shape({
   sex: yup.mixed().oneOf(['male', 'female', '']),
@@ -44,10 +45,17 @@ export default function PortfolioPage() {
   const navigate = useNavigate();
 
   const [profile, setProfile] = useState<ProfileDto>();
+  const [languages, setSelectedLanguages] = useState<string[]>([]);
+
+  const [langValue, setLangValue] = useState<string>('');
 
   const form = useForm({
     resolver: yupResolver<Inputs>(portfolioSchema),
-    defaultValues: profile,
+    defaultValues: {
+      description: profile?.description ?? '',
+      education: profile?.education ?? '',
+      sex: profile?.sex ?? '',
+    },
   });
 
   const [updateUserProfile] = useUpdateUserProfileMutation();
@@ -55,12 +63,13 @@ export default function PortfolioPage() {
 
   function onSubmit(values: Inputs) {
     updateUserProfile({
-      description: values.description,
-      education: values.education,
-      sex: values.sex as string,
+      description: values.description ?? '',
+      education: values.education ?? '',
+      sex: (values.sex ?? '') as string,
+      languages,
     })
       .unwrap()
-      .then(res => toast({ title: 'Portfolio updated' }))
+      .then(res => toast({ title: 'Changes applied', description: 'Your profile updated' }))
       .catch(err => err);
   }
 
@@ -71,8 +80,15 @@ export default function PortfolioPage() {
 
       if (data.statusCode === 404) navigate('/auth/signin');
 
-      const profile = await getProfile(data.id).unwrap();
+      const _profile = await getProfile(data.id).unwrap();
+      const profile = {
+        description: _profile?.description ?? '',
+        education: _profile?.education ?? '',
+        sex: _profile?.sex ?? '',
+        ..._profile,
+      };
       setProfile(profile);
+      setSelectedLanguages(profile?.languages ?? []);
       form.reset(profile);
     };
 
@@ -82,7 +98,7 @@ export default function PortfolioPage() {
   return (
     <div>
       <Header title='Profile' />
-      <div className='px-12'>
+      <div className='px-12 w-full'>
         <Card className='max-w-[450px] mt-8'>
           <CardTitle>
             <h5 className='text-dark-grey text-xl font-semibold'>Edit your Portfolio</h5>
@@ -145,7 +161,51 @@ export default function PortfolioPage() {
                     </FormItem>
                   )}
                 />
-                <Button className='w-full'>Save</Button>
+                <div>
+                  <label className='text-blue font-medium'>Languages</label>
+                  <div className='flex gap-2 my-2'>
+                    {languages?.map((lang, i) => (
+                      <div
+                        key={`${i}-${lang}`}
+                        className='px-2 py-1 flex items-center gap-2 border border-grey rounded-md w-fit'
+                      >
+                        {lang}
+                        <Button
+                          className='p-0 w-fit h-fit bg-transparent hover:bg-transparent active:bg-transparent'
+                          type='button'
+                          onClick={e => {
+                            e.preventDefault();
+                            setSelectedLanguages(prev => [...prev.filter(l => l !== lang)]);
+                          }}
+                        >
+                          <X className='w-4 h-4 text-grey hover:text-blue' />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <TextInput
+                    label='language'
+                    control={undefined}
+                    name='language'
+                    value={langValue}
+                    onChange={e => setLangValue(e.target.value)}
+                    onKeyDown={e => {
+                      console.log(e);
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedLanguages(prev => {
+                          if (prev.length >= 3 || prev.includes(langValue)) return prev;
+                          else {
+                            setLangValue('');
+                            return [...prev, langValue];
+                          }
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <Button className='w-full'>Submit</Button>
               </form>
             </Form>
           </CardContent>

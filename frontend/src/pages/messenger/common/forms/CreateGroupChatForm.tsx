@@ -11,6 +11,7 @@ import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Skeleton } from 'src/common/components/ui/common/Skeleton/Skeleton';
 import Button from 'src/common/components/ui/common/Button/Button';
 import { Loader2, X } from 'lucide-react';
+import { useAppSelector } from 'src/common/hooks/redux';
 
 export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
   const [createChat, result] = useCreateChatMutation();
@@ -20,6 +21,8 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
   const [isCreating, setIsCreating] = React.useState(false);
 
   const [selectedUsers, setSelectedUsers] = React.useState<User[]>([]);
+
+  const currentUser = useAppSelector(state => state.user);
 
   const filters: UserFilters = {
     first_name: debouncedSearchQuery.split(' ')[0] ?? null,
@@ -98,7 +101,8 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
                 key={user.id}
                 className='w-full flex items-center px-1 py-2 gap-2  rounded-md cursor-pointer hover:bg-grey mt-2'
                 onClick={() => {
-                  if (selectedUsers.some(u => u.id === user.id)) return;
+                  if (selectedUsers.some(u => u.id === user.id) || user.id === currentUser?.id)
+                    return;
                   setSelectedUsers(prev => [...prev, user as unknown as User]);
                 }}
               >

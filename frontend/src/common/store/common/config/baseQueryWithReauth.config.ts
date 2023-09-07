@@ -60,7 +60,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           }
         }
 
-        return refreshResult;
+        return result;
       } catch (err) {
         toast({
           variant: 'destructive',
@@ -76,6 +76,8 @@ export const baseQueryWithReauth: BaseQueryFn<
     }
   } else if (result?.error) {
     const { data } = result.error as { data?: { message?: string } };
+
+    console.log(result);
 
     toast({
       variant: 'destructive',

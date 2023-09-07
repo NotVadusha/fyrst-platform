@@ -23,11 +23,17 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @UseGuards(AccessTokenGuard)
-  @Post('upload')
+  @Post('attachment/upload')
   async uploadAttachment(@Request() req, @Body() data: { attachment: string }) {
     return await this.chatService.uploadAttachment(req.user['id'], data.attachment);
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Delete('attachment')
+  async deleteAttachment(@Request() req, @Query('path') path: string) {
+    return await this.chatService.deleteAttachment(req.user['id'], path);
+  }
+  і;
   @UseGuards(AccessTokenGuard)
   @Post()
   async createChat(@Request() req, @Body() createdData: CreateChatDto) {

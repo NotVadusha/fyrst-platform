@@ -8,6 +8,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { RedisModule } from 'src/packages/redis/redis.module';
 import { EmailConfirmationModule } from 'src/packages/email-confirmation/emailConfirmation.module';
 import { UserProfileModule } from '../user-profile/user-profile.module';
+import { CalendarModule } from '../calendar/calendar.module';
 
 @Module({
   controllers: [AuthController],
@@ -17,6 +18,7 @@ import { UserProfileModule } from '../user-profile/user-profile.module';
     RedisModule,
     EmailConfirmationModule,
     UserProfileModule,
+    CalendarModule,
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET || 'JWT_ACCESS_SECRET',
       signOptions: {
