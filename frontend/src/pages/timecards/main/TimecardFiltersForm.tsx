@@ -64,6 +64,7 @@ export function TimecardFiltersForm({
                       label=''
                       {...field}
                       onChange={handleInputChange}
+                      styleVariant='shadows'
                     />
                   </FormItem>
                 )}
@@ -88,6 +89,7 @@ export function TimecardFiltersForm({
                       label=''
                       {...field}
                       onChange={handleInputChange}
+                      styleVariant='shadows'
                     />
                   </FormItem>
                 )}
