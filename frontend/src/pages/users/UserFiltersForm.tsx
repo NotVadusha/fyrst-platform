@@ -127,7 +127,7 @@ export function UserFiltersForm({
                       <FormControl>
                         {/*eslint-disable-next-line */}
                         {/*@ts-ignore*/}
-                        <Select onValueChange={handleInputChange}>
+                        <Select onValueChange={handleInputChange} defaultValue={'all'}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
@@ -136,10 +136,10 @@ export function UserFiltersForm({
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <SelectContent defaultValue={'all'}>
                             <SelectItem value={'true'}>true</SelectItem>
                             <SelectItem value={'false'}>false</SelectItem>
-                            <SelectItem value={'any'}>any</SelectItem>
+                            <SelectItem value={'all'}>all</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>

@@ -33,7 +33,7 @@ export class ChatController {
   async deleteAttachment(@Request() req, @Query('path') path: string) {
     return await this.chatService.deleteAttachment(req.user['id'], path);
   }
-  і;
+
   @UseGuards(AccessTokenGuard)
   @Post()
   async createChat(@Request() req, @Body() createdData: CreateChatDto) {

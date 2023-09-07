@@ -15,6 +15,8 @@ import { userRoles } from 'shared/packages/roles/userRoles';
 import { InferAttributes } from 'sequelize';
 import * as Papa from 'papaparse';
 import { flatten } from 'flat';
+import { UserProfile } from '../user-profile/entities/user-profile.entity';
+import { BucketService } from '../bucket/bucket.service';
 
 @Injectable()
 export class UserService {
@@ -22,6 +24,7 @@ export class UserService {
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
     private permissionsService: PermissionsService,
+    private bucketService: BucketService,
   ) {}
 
   private logger = new Logger(UserService.name);
@@ -102,10 +105,12 @@ export class UserService {
         ...filters,
         ...opiLikeFilters,
       },
-      include: [Roles, Permissions],
+      include: [Roles, Permissions, { model: UserProfile, as: 'profile' }],
       limit,
       offset,
     });
+
+    this.logger.log('Look at what users we received', users);
 
     const totalCount = await this.userRepository.count({
       where: {
@@ -113,6 +118,26 @@ export class UserService {
         ...opiLikeFilters,
       },
     });
+
+    if (users) {
+      const usersWithAvatars = await Promise.all(
+        users.map(async user => {
+          if (user.profile?.avatar) {
+            const avatarLink = await this.bucketService.getFileLink(
+              user.profile.avatar,
+              'read',
+              Date.now() + 1000 * 60 * 60 * 24 * 7,
+            );
+
+            user.profile.avatar = avatarLink;
+          }
+
+          return user;
+        }),
+      );
+
+      return { users: usersWithAvatars, totalCount };
+    }
 
     return { users, totalCount };
   }
@@ -131,7 +156,7 @@ export class UserService {
   async findOne(userId: number) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      include: [Roles, Permissions],
+      include: [Roles, Permissions, UserProfile],
     });
     if (!user) throw new NotFoundException('User not found');
     return user;
