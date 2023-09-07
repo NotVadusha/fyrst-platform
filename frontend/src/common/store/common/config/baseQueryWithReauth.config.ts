@@ -13,11 +13,17 @@ import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 const mutex = new Mutex();
 
+type ExtraOptions = { disableToastMessage?: boolean };
+
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
-> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: Record<string, never>) => {
+> = async (
+  args: string | FetchArgs,
+  api: BaseQueryApi,
+  extraOptions: ExtraOptions = { disableToastMessage: false },
+) => {
   await mutex.waitForUnlock();
 
   let result = await baseQuery(args, api, extraOptions);
@@ -77,11 +83,12 @@ export const baseQueryWithReauth: BaseQueryFn<
   } else if (result?.error) {
     const { data } = result.error as { data?: { message?: string } };
 
-    toast({
-      variant: 'destructive',
-      title: 'Something went wrong',
-      description: data?.message ?? 'Please, try again later.',
-    });
+    if (!extraOptions.disableToastMessage)
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong',
+        description: data?.message ?? 'Please, try again later.',
+      });
 
     throw new Error('Something went wrong');
   }
