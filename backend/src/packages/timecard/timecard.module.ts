@@ -9,8 +9,8 @@ import { NotificationService } from '../notification/notification.service';
 import { NotificationGateway } from '../websocket/notification.gateway';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Timecard, Notification]), NotificationModule],
-  providers: [TimecardService, NotificationService, NotificationGateway],
+  imports: [SequelizeModule.forFeature([Timecard]), NotificationModule],
+  providers: [TimecardService],
   controllers: [TimecardController],
 })
 export class TimecardModule {}

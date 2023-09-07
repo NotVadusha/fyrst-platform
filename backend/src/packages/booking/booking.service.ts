@@ -25,7 +25,8 @@ export class BookingService {
     private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly facilityService: FacilityService,
-    private readonly notificationService: NotificationService,
+    /*  @Inject(NotificationService)
+    private readonly notificationService: NotificationService, */
     @Inject(UserProfileService)
     private readonly userProfile: UserProfileService,
   ) {}
@@ -136,7 +137,7 @@ export class BookingService {
     await booking.update(updatedData);
     this.logger.log(`Updated booking with ID ${id}`, { booking });
     const updatedBooking = await this.find(id);
-    if (updatedData?.status) {
+    /* if (updatedData?.status) {
       updatedBooking.users.forEach(user => {
         this.notificationService.create({
           recipientId: user.id,
@@ -151,7 +152,7 @@ export class BookingService {
         refId: updatedBooking.id,
         type: 'booking',
       });
-    }
+    } */
     return booking;
   }
 

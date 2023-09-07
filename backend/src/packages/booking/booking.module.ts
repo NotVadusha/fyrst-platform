@@ -13,14 +13,14 @@ import { UserProfileModule } from '../user-profile/user-profile.module';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Booking, Notification]),
+    SequelizeModule.forFeature([Booking]),
     UserModule,
     FacilityModule,
-    NotificationModule,
     UserProfileModule,
+    NotificationModule,
   ],
   controllers: [BookingController],
-  providers: [BookingService, NotificationService, NotificationGateway, Logger],
+  providers: [BookingService, Logger],
   exports: [BookingService, Logger],
 })
 export class BookingModule {}

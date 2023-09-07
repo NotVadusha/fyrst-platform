@@ -20,8 +20,10 @@ import { flatten } from 'flat';
 export class TimecardService {
   private logger = new Logger(TimecardService.name);
   constructor(
-    @InjectModel(Timecard) private readonly timecardModel: typeof Timecard,
-    private readonly notificationService: NotificationService,
+    /* @Inject(NotificationService)
+    private readonly notificationService: NotificationService, */
+    @InjectModel(Timecard)
+    private readonly timecardModel: typeof Timecard,
   ) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
@@ -103,14 +105,14 @@ export class TimecardService {
 
     await timecard.save();
     const updatedTimecard = await this.getById(id);
-    if (updateTimecardDto?.status) {
+    /* if (updateTimecardDto?.status) {
       this.notificationService.create({
         recipientId: updatedTimecard.createdBy,
         content: notificationTemplateTimecard(updatedTimecard.id, updateTimecardDto.status),
         type: 'timecard',
         refId: updatedTimecard.id,
       });
-    }
+    } */
     return updatedTimecard;
   }
 
