@@ -39,8 +39,6 @@ export function TimecardFiltersForm({
     value: status,
   }));
 
-  console.log(statusOptions);
-
   return (
     <div className='flex gap-2'>
       <Form {...form}>
@@ -103,11 +101,7 @@ export function TimecardFiltersForm({
                 name='status'
                 render={({ field }) => (
                   <FormItem>
-                    {/*eslint-disable-next-line */}
-                    {/*@ts-ignore*/}
                     <FormControl>
-                      {/*eslint-disable-next-line */}
-                      {/*@ts-ignore*/}
                       <Select onValueChange={value => handleSelectChange(value, 'status')}>
                         <FormControl>
                           <SelectTrigger>

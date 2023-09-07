@@ -22,6 +22,7 @@ const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
   const user = useAppSelector(state => state.user);
+  console.log(user);
 
   const dispatch = useAppDispatch();
   const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
@@ -44,8 +45,6 @@ const TimeCardPage = () => {
     filters[key as keyof TimecardFiltersDto] === null &&
       delete filters[key as keyof TimecardFiltersDto];
   });
-
-  console.log(filters);
 
   const { data, isFetching } = useFetchTimecardsQuery(filters);
 
