@@ -32,6 +32,7 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
           Picture
         </label>
         <input
+          accept='image/*'
           id='picture'
           type='file'
           onChange={event => {
