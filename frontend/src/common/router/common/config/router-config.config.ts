@@ -5,7 +5,7 @@ import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
 import { ReactComponent as Invoice } from 'src/assets/icons/invoice.svg';
 import { ReactComponent as Proposal } from 'src/assets/icons/proposal.svg';
-import { ReactComponent as Calendar } from 'src/assets/icons/calendar-white.svg';
+import { ReactComponent as Calendar } from 'src/assets/icons/calendar.svg';
 import { NavItem } from '../types/NavItem';
 import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
 import { UserCog, BarChart3, Briefcase } from 'lucide-react';
