@@ -15,12 +15,14 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
   const uploadFile = async () => {
     if (!base64String) return;
 
-    await uploadAttachment({ attachment: base64String }).then(res => {
-      // @ts-expect-error we will set either string or undefined
-      dispatch(setAttachment(res?.data as string | undefined));
-    });
-
-    onUpload();
+    await uploadAttachment({ attachment: base64String })
+      .unwrap()
+      .then(res => {
+        toast({ title: 'Image successfully uploaded' });
+        dispatch(setAttachment(res));
+        onUpload();
+      })
+      .catch(err => err);
   };
 
   return (

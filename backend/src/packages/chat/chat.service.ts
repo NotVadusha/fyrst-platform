@@ -20,6 +20,8 @@ import { BucketService } from '../bucket/bucket.service';
 import * as crypto from 'crypto';
 @Injectable()
 export class ChatService {
+  MAX_IMAGE_SIZE = 100 * 1024;
+
   constructor(
     @InjectModel(Chat)
     private readonly chatRepository: typeof Chat,
@@ -167,12 +169,29 @@ export class ChatService {
 
     const imgBuffer = Buffer.from(attachment, 'base64');
     const fileType = await fileTypeFromBuffer(imgBuffer);
+    this.logger.log('Buffer byte length ', Buffer.byteLength(imgBuffer));
+    if (Buffer.byteLength(imgBuffer) > this.MAX_IMAGE_SIZE) {
+      throw new HttpException(
+        'Image is too large. Maximum allowed size is 100KB.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const fileName = `${userId}_${crypto.randomUUID()}.${fileType.ext}`;
 
     const attachmentPath = `attachment/${fileName}`;
     await this.bucketService.save(attachmentPath, imgBuffer);
 
     return attachmentPath;
+  }
+
+  async deleteAttachment(userId: number, path: string) {
+    const isAuthor = path.split('/')?.[1]?.split('_')?.[0] === String(userId);
+
+    if (!isAuthor) {
+      throw new HttpException('You cannot delete this image', HttpStatus.FORBIDDEN);
+    }
+
+    return await this.bucketService.delete(path);
   }
 
   async find(id: number) {

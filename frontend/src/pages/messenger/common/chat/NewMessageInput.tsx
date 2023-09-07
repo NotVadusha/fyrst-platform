@@ -2,7 +2,10 @@ import { MoreHorizontal, Paperclip, Trash2, X } from 'lucide-react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
-import { useSendNewMessageMutation } from 'src/common/store/api/packages/chat/chatApi';
+import {
+  useDeleteAttachmentMutation,
+  useSendNewMessageMutation,
+} from 'src/common/store/api/packages/chat/chatApi';
 import { FileUploadForm } from './FileUploadForm';
 import { Form, FormField, FormItem, FormMessage } from 'src/common/components/ui/common/Form/Form';
 import { useForm } from 'react-hook-form';
@@ -29,6 +32,8 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
   const [sendNewMessage, result] = useSendNewMessageMutation();
 
   const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
+
+  const [deleteAttachment] = useDeleteAttachmentMutation();
 
   const attachment = useAppSelector(state => state.messanger.attachment);
   const dispatch = useAppDispatch();
@@ -110,6 +115,14 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
     };
   }, [form, onSubmit, socket, user.id, user.first_name, chatId]);
 
+  const handleDeleteAttachment = () => {
+    if (!attachment) return;
+    deleteAttachment({ path: attachment })
+      .unwrap()
+      .then(res => dispatch(setAttachment(undefined)))
+      .catch(err => err);
+  };
+
   return (
     <>
       <div className='relative h-full'>
@@ -154,7 +167,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
             <Button
               variant={'tertiary'}
               className='absolute top-4 right-4 w-fit h-fit p-0 text-dark-grey'
-              onClick={() => dispatch(setAttachment(undefined))}
+              onClick={handleDeleteAttachment}
             >
               <Trash2 className='w-6 h-6' />
             </Button>

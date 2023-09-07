@@ -67,9 +67,20 @@ export const chatApi = apiSlice.injectEndpoints({
       query: ({ attachment }) => {
         return {
           method: 'POST',
-          url: `/chat/upload`,
+          url: `/chat/attachment/upload`,
           body: { attachment },
-          responseHandler: response => response.text(),
+          responseHandler: response => {
+            if (!response?.ok) return response.json();
+            return response.text();
+          },
+        };
+      },
+    }),
+    deleteAttachment: build.mutation<string, { path: string }>({
+      query: ({ path }) => {
+        return {
+          method: 'DELETE',
+          url: `/chat/attachment?path=${path}`,
         };
       },
     }),
@@ -86,4 +97,5 @@ export const {
   useGetMessagesByParamsQuery,
   useUploadAttachmentMutation,
   useGetMessagesWithMediaQuery,
+  useDeleteAttachmentMutation,
 } = chatApi;
