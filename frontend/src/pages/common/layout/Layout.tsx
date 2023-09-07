@@ -53,7 +53,7 @@ const Layout = () => {
 
   return (
     <div className='flex'>
-      <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[280px]'>
+      <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[300px]'>
         <h2 className='font-bold text-lg'>{routerConfig.name}</h2>
         <div className='flex flex-col gap-4'>
           {routerConfig.mainNav.map((item, index) => (
@@ -64,7 +64,7 @@ const Layout = () => {
           </Button>
         </div>
       </nav>
-      <main className='w-full bg-background'>
+      <main className='w-[calc(100%-300px)] bg-background'>
         <Outlet />
       </main>
     </div>

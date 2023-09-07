@@ -106,50 +106,54 @@ const TimeCardPage = () => {
           </div>
         </div>
       </Header>
-
-      <div className='px-20 py-10 flex flex-col gap-y-6'>
-        <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
-        <TimecardFiltersForm
-          handleInputChange={handleInputChange}
-          handleSelectChange={handleSelectChange}
-        />
-        {isFetching ? (
-          <div className='flex justify-center min-h-[8rem]'>
-            <Spinner size='lg' />
-          </div>
-        ) : data?.items.length === 0 ? (
-          <p className='text-body-default font-semibold'>
-            No timecards to display here. Most probably, nothing matches your search query
-          </p>
-        ) : (
-          <>
-            <Table
-              columns={timecardsTableColumns}
-              items={data ? data.items : []}
-              getRowId={item => item.id}
-            />
-
-            <div className='flex justify-end'>
-              {totalPages > 1 && (
-                <Pagination
-                  totalCount={totalPages}
-                  siblingsCount={2}
-                  value={page}
-                  onChange={currentPage => {
-                    setPage(currentPage);
-
-                    const nextOffset = (currentPage - 1) * LIMIT;
-                    setSearchParams(prevParams => {
-                      prevParams.set('limit', String(LIMIT));
-                      prevParams.set('offset', String(nextOffset));
-                      return prevParams;
-                    });
-                  }}
-                />
+      <div className='container mx-auto max-w-[1000px] px-6'>
+        <div className='flex flex-col space-y-6 mt-6'>
+          <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
+          <TimecardFiltersForm
+            handleInputChange={handleInputChange}
+            handleSelectChange={handleSelectChange}
+          />
+          {isFetching ? (
+            <div className='flex justify-center min-h-[8rem]'>
+              <Spinner size='lg' />
+            </div>
+          ) : (
+            <div className='flex flex-col items-center gap-4 w-full max-w-[100%] mx-auto'>
+              {data?.items.length === 0 ? (
+                <p className='text-body-default font-semibold'>
+                  No timecards to display here. Most probably, nothing matches your search query
+                </p>
+              ) : (
+                <>
+                  <Table
+                    className='w-full'
+                    columns={timecardsTableColumns}
+                    items={data ? data.items : []}
+                    getRowId={item => item.id}
+                  />
+                  <div className='flex self-end'>
+                    {totalPages > 1 && (
+                      <Pagination
+                        totalCount={totalPages}
+                        siblingsCount={2}
+                        value={page}
+                        onChange={currentPage => {
+                          setPage(currentPage);
+                          const nextOffset = (currentPage - 1) * LIMIT;
+                          setSearchParams(prevParams => {
+                            prevParams.set('limit', String(LIMIT));
+                            prevParams.set('offset', String(nextOffset));
+                            return prevParams;
+                          });
+                        }}
+                      />
+                    )}
+                  </div>
+                </>
               )}
             </div>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </section>
   );

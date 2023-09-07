@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { TableHeading } from './TableHeading';
 import { TableBody } from './TableBody';
 import { Key } from 'react';
+import { cn } from 'src/common/helpers/helpers';
 
 export interface ColumnInfo<T> {
   columnName: string;
@@ -20,10 +21,10 @@ interface TableProps<T> extends React.HTMLAttributes<HTMLTableElement> {
   getRowId: (item: T) => Key;
 }
 
-export default function Table<T>({ items, columns, getRowId, ...props }: TableProps<T>) {
+export default function Table<T>({ items, columns, getRowId, className, ...props }: TableProps<T>) {
   return (
-    <div className='overflow-auto shadow-xl rounded-lg p-10'>
-      <table className='w-full' {...props}>
+    <div className='w-full overflow-auto whitespace-nowrap shadow-xl rounded-lg p-10'>
+      <table className={cn('w-full overflow-x-auto whitespace-nowrap', className)} {...props}>
         <TableHeading<T> columns={columns} />
         <TableBody<T> items={items} columns={columns} getRowId={getRowId} />
       </table>
