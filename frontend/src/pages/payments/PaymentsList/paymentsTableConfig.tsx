@@ -1,6 +1,7 @@
 import React from 'react';
 import { Payment } from 'src/common/packages/payments/types/models/Payment.model';
 import { ColumnInfo } from '../../../common/components/ui/common/Table/Table';
+import { capitalizeFirstLetter } from 'src/common/helpers/capitalizeFirstLetter';
 
 const statusColors = [
   { status: 'Completed', color: 'text-green-2' },
@@ -33,10 +34,11 @@ export const paymentsColumns: ColumnInfo<Payment>[] = [
   {
     columnName: 'Status',
     renderCell: item => {
-      const foundStatus = statusColors.find(s => s.status === item.status);
+      const formattedStatus = capitalizeFirstLetter(item.status);
+      const foundStatus = statusColors.find(s => s.status === formattedStatus);
       const statusColor = foundStatus ? foundStatus.color : '';
 
-      return <span className={statusColor}>{item.status}</span>;
+      return <span className={statusColor}>{formattedStatus}</span>;
     },
   },
 ];

@@ -45,8 +45,6 @@ const TimeCardPage = () => {
       delete filters[key as keyof TimecardFiltersDto];
   });
 
-  console.log(filters);
-
   const { data, isFetching } = useFetchTimecardsQuery(filters);
 
   let totalPages = 0;
