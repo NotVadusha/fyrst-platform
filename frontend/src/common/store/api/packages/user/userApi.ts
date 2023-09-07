@@ -69,6 +69,9 @@ export const userApi = apiSlice.injectEndpoints({
         url: `/profile/${body.id}`,
         method: 'GET',
       }),
+      extraOptions: {
+        disableToastMessage: true,
+      },
     }),
     updateUserProfile: build.mutation<ProfileDto, Omit<UserProfile, 'id'>>({
       query: body => ({
