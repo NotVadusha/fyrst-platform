@@ -80,13 +80,13 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
                           <FormControl>
                             <SelectTrigger>
                               <span className='font-semibold'>
-                                <SelectValue placeholder='no option selected' />
+                                <SelectValue placeholder='All' />
                               </span>
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             <span className='font-semibold text-dark-blue'>
-                              <SelectItem value=''>no option selected</SelectItem>
+                              <SelectItem value=''>All</SelectItem>
                             </span>
                             {payeeOptions.map(option => (
                               <span className='font-semibold text-dark-blue' key={status}>

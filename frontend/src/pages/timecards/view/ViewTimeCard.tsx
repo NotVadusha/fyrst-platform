@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import React from 'react';
 import { Card, CardContent, CardTitle } from 'src/common/components/ui/common/Card/Card';
 import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { useParams } from 'react-router-dom';
@@ -14,12 +13,30 @@ import { TimecardStatus } from 'shared/timecard-status';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
+import { AdditionalTimeCardInfo } from './AdditionalTimeCardInfo';
 
 export default function ViewTimeCardPage() {
   const { id } = useParams();
-  const { data: timecard, isFetching } = useFetchTimecardQuery(Number(id));
+  const timecardQuery = useFetchTimecardQuery(Number(id));
   const [updateTimecard] = useUpdateTimecardMutation();
   const user = useAppSelector(selectUser);
+
+  if (!timecardQuery.data && !timecardQuery.isFetching) {
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: 'Timecard not found',
+    });
+  }
+
+  if (timecardQuery.isFetching || !timecardQuery.data) {
+    return (
+      <div className='min-h-full flex items-center justify-center'>
+        <Spinner />
+      </div>
+    );
+  }
+  const timecard = timecardQuery.data;
 
   function handleSubmitTimecard(facilityManagerId: number) {
     updateTimecard({
@@ -41,22 +58,6 @@ export default function ViewTimeCardPage() {
     });
 
     toast({ title: 'Success', description: 'Successfully rejected timecard' });
-  }
-
-  if (!timecard && !isFetching) {
-    toast({
-      variant: 'destructive',
-      title: 'Error',
-      description: 'Timecard not found',
-    });
-  }
-
-  if (isFetching || !timecard) {
-    return (
-      <div className='min-h-full flex items-center justify-center'>
-        <Spinner />
-      </div>
-    );
   }
 
   return (
@@ -95,39 +96,7 @@ export default function ViewTimeCardPage() {
                 <CardTitle>Job description</CardTitle>
                 <CardContent className='text-black'>{timecard.booking.notes}</CardContent>
               </Card>
-              <Card className='col-span-3'>
-                <CardTitle>Additional details</CardTitle>
-                <CardContent className='flex flex-col space-y-4 items-start text-dark-grey'>
-                  <div className='flex justify-between gap-2 w-full'>
-                    <span>Employee</span>
-                    <span>{`${timecard.employee.first_name} ${timecard.employee.last_name}`}</span>
-                  </div>
-
-                  <div className='flex justify-between gap-2 w-full'>
-                    <span>Facility</span>
-                    <span>{timecard.booking.facility.name}</span>
-                  </div>
-
-                  <div className='flex justify-between gap-2 w-full'>
-                    <span>Facility manager</span>
-                    <span>
-                      {timecard.facilityManager
-                        ? `${timecard.facilityManager.first_name} ${timecard.facilityManager.last_name}`
-                        : 'Not yet approved'}
-                    </span>
-                  </div>
-
-                  <div className='flex justify-between gap-2 w-full'>
-                    <span>Hours worked</span>
-                    <span>{`${timecard.hoursWorked} hours`}</span>
-                  </div>
-
-                  <div className='flex justify-between gap-2 w-full'>
-                    <span>Lunch hours</span>
-                    <span>{`${timecard.lunchHours} hours`}</span>
-                  </div>
-                </CardContent>
-              </Card>
+              <AdditionalTimeCardInfo timecard={timecard} />
             </div>
           </>
         </div>
