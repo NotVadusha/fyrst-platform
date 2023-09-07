@@ -1,13 +1,11 @@
-import { Global, Module } from '@nestjs/common';
-import { RolesController } from './roles.controller';
-import { RolesService } from './roles.service';
+import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Roles } from './entities/roles.entity';
-import { User } from '../user/entities/user.entity';
+import { RolesController } from './roles.controller';
+import { RolesService } from './roles.service';
 
-@Global()
 @Module({
-  imports: [SequelizeModule.forFeature([Roles, User])],
+  imports: [SequelizeModule.forFeature([Roles])],
   controllers: [RolesController],
   providers: [RolesService],
   exports: [RolesService],
