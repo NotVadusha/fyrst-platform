@@ -34,10 +34,11 @@ export const invoicesColumns: ColumnInfo<Invoice>[] = [
   {
     columnName: 'Status',
     renderCell: item => {
-      const foundStatus = statusColors.find(s => s.status === capitalizeFirstLetter(item.status));
+      const formattedStatus = capitalizeFirstLetter(item.status);
+      const foundStatus = statusColors.find(s => s.status === formattedStatus);
       const statusColor = foundStatus ? foundStatus.color : '';
 
-      return <span className={statusColor}>{capitalizeFirstLetter(item.status)}</span>;
+      return <span className={statusColor}>{formattedStatus}</span>;
     },
   },
   {

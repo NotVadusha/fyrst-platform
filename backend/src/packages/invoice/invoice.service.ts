@@ -146,15 +146,6 @@ export class InvoiceService {
   }
 
   async getInvoice(invoiceId: number) {
-    if (await this.bucketService.fileExists(`pdf-files/invoice_${invoiceId}.pdf`))
-      return {
-        link: await this.bucketService.getFileLink(
-          `pdf-files/invoice_${invoiceId}.pdf`,
-          'read',
-          Date.now() + 1000 * 60 * 60 * 24 * 7,
-        ),
-      };
-
     const invoice = await this.invoiceRepository.findOne({
       where: {
         id: invoiceId,
@@ -176,22 +167,18 @@ export class InvoiceService {
       ],
     });
 
-    let facilityLogo = null;
-
-    if (
-      invoice.timecard.booking.facility.logo &&
-      (await this.bucketService.fileExists(invoice.timecard.booking.facility.logo))
-    )
-      facilityLogo = await this.bucketService.getFileLink(
-        invoice.timecard.booking.facility.logo,
-        'read',
-        Date.now() + 1000 * 60 * 60 * 24 * 7,
-      );
+    if (invoice.path)
+      return {
+        link: await this.bucketService.getFileLink(
+          invoice.path,
+          'read',
+          Date.now() + 1000 * 60 * 60 * 24 * 7,
+        ),
+      };
 
     const pdfResponse = await firstValueFrom(
       this.invoiceService.send('get_invoice_pdf_link', {
         invoice,
-        facilityLogo,
       }),
     );
 

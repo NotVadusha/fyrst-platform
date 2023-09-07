@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConvertService } from './convert.service';
-import { GotenbergClientModule } from '../gotenberg-client/gotenberg-client.module';
+import { GotenbergClientModule } from '..';
 
 @Module({
   providers: [ConvertService],
