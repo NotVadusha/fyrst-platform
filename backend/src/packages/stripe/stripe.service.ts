@@ -40,9 +40,7 @@ export class StripeService {
 
   async webhook(req: RawBodyRequest<Request>) {
     const sig = req.headers['stripe-signature'];
-    const key =
-      process.env.STRIPE_WEBHOOK_KEY ||
-      'whsec_dd3abc4bd471a78a64d2b64843ea15f338f0a0c68a4ec72bb483a078c513e5fe';
+    const key = process.env.STRIPE_WEBHOOK_KEY;
     let event;
 
     try {
@@ -58,8 +56,10 @@ export class StripeService {
         const payment = await this.paymentService.findOneByPaymentId(paymentIntentSucceeded.id);
         const profile = await this.userProfileService.findOne(payment.timecard.employee.id);
 
+        const payoutAmount = payment.amountPaid - payment.amountPaid * 0.3;
+
         await this.stripe.transfers.create({
-          amount: payment.amountPaid - payment.amountPaid * 0.3,
+          amount: payoutAmount,
           currency: 'usd',
           destination: profile.stripeAccountId,
         });
@@ -67,6 +67,16 @@ export class StripeService {
         this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
           status: PaymentStatus.Completed,
         });
+
+        await this.stripe.payouts.create(
+          {
+            amount: payoutAmount,
+            currency: 'usd',
+          },
+          {
+            stripeAccount: profile.stripeAccountId,
+          },
+        );
       } catch (err) {
         throw new InternalServerErrorException(`Payment Error: ${err.message}`);
       }
