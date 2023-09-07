@@ -31,19 +31,21 @@ export function MultiTabForm<T extends FieldValues>({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-4'>
-          <div className='flex gap-2'>
-            {tabCaptions.map((caption, index) => (
-              <TabButton
-                type='button'
-                variant={index === tab ? 'active' : 'default'}
-                tab={index}
-                setTab={setTab}
-                key={caption}
-              >
-                {caption}
-              </TabButton>
-            ))}
-          </div>
+          {tabComponents.length > 1 && (
+            <div className='flex gap-2'>
+              {tabCaptions.map((caption, index) => (
+                <TabButton
+                  type='button'
+                  variant={index === tab ? 'active' : 'default'}
+                  tab={index}
+                  setTab={setTab}
+                  key={caption}
+                >
+                  {caption}
+                </TabButton>
+              ))}
+            </div>
+          )}
 
           <StepFields form={form} />
 
