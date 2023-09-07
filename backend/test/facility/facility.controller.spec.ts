@@ -2,6 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FacilityController } from 'src/packages/facility/facility.controller';
 import { FacilityService } from 'src/packages/facility/facility.service';
 import { existingId, mockedFacility, mockedFacilityService } from './facility.mock';
+import { UserService } from 'src/packages/user/user.service';
+import { RoleGuard } from 'src/packages/roles/guards/roles.guard';
+import { RoleGuardMock } from 'test/common/guards/RoleGuardMock';
+import { PermissionsGuard } from 'src/packages/permissions/guards/permissions.guard';
+import { PermissionsGuardMock } from 'test/common/guards/PermissionsGuardMock';
 
 describe('FacilityController', () => {
   let controller: FacilityController;
@@ -10,8 +15,19 @@ describe('FacilityController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FacilityController],
-      providers: [{ provide: FacilityService, useValue: mockedFacilityService }],
-    }).compile();
+      providers: [
+        { provide: FacilityService, useValue: mockedFacilityService },
+        {
+          provide: UserService,
+          useValue: {},
+        },
+      ],
+    })
+      .overrideGuard(RoleGuard)
+      .useValue(RoleGuardMock)
+      .overrideGuard(PermissionsGuard)
+      .useValue(PermissionsGuardMock)
+      .compile();
 
     controller = module.get<FacilityController>(FacilityController);
     service = module.get<FacilityService>(FacilityService);

@@ -13,6 +13,12 @@ import {
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
+import { UserService } from '../../src/packages/user/user.service';
+import { RoleGuard } from 'src/packages/roles/guards/roles.guard';
+import { RoleGuardMock } from '../common/guards/RoleGuardMock';
+import { PermissionsGuard } from 'src/packages/permissions/guards/permissions.guard';
+import { PermissionsGuardMock } from 'test/common/guards/PermissionsGuardMock';
+import { AppModule } from 'src/app.module';
 
 const timecardApiPrefix = '/timecard';
 
@@ -22,7 +28,17 @@ describe('TimecardModule', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TimecardModule],
+      providers: [
+        {
+          provide: UserService,
+          useValue: {},
+        },
+      ],
     })
+      .overrideGuard(RoleGuard)
+      .useValue(RoleGuardMock)
+      .overrideGuard(PermissionsGuard)
+      .useValue(PermissionsGuardMock)
       .overrideProvider(getModelToken(Timecard))
       .useValue(mockTimecardModel)
       .compile();

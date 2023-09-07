@@ -2,6 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { existingId, mockedBooking, mockedBookingService } from './booking.mock';
 import { BookingController } from 'src/packages/booking/booking.controller';
 import { BookingService } from 'src/packages/booking/booking.service';
+import { UserService } from 'src/packages/user/user.service';
+import { RoleGuard } from 'src/packages/roles/guards/roles.guard';
+import { RoleGuardMock } from 'test/common/guards/RoleGuardMock';
+import { PermissionsGuard } from 'src/packages/permissions/guards/permissions.guard';
+import { PermissionsGuardMock } from 'test/common/guards/PermissionsGuardMock';
 
 describe('BookingController', () => {
   let controller: BookingController;
@@ -15,8 +20,17 @@ describe('BookingController', () => {
           provide: BookingService,
           useValue: mockedBookingService,
         },
+        {
+          provide: UserService,
+          useValue: {},
+        },
       ],
-    }).compile();
+    })
+      .overrideGuard(RoleGuard)
+      .useValue(RoleGuardMock)
+      .overrideGuard(PermissionsGuard)
+      .useValue(PermissionsGuardMock)
+      .compile();
 
     controller = module.get<BookingController>(BookingController);
     service = module.get<BookingService>(BookingService);
