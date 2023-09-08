@@ -113,7 +113,8 @@ export function ProfileEditForm() {
   const openAvatarEditor = () => {
     setAvatarEditorShown(true);
   };
-  const form = useForm<any>({
+  const form = useForm<Inputs>({
+    //@ts-ignore
     resolver: yupResolver(profileSchema),
     defaultValues: {
       first_name: user?.first_name,

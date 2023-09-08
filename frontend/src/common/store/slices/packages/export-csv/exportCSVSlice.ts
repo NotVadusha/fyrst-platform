@@ -5,7 +5,7 @@ const initialState: CSVState = {
   isLoading: false,
 };
 
-export const exportCSV = createAsyncThunk<void, ExportCSVPayload, any>(
+export const exportCSV = createAsyncThunk<void, ExportCSVPayload, {}>(
   'exportCSV',
   async ({ feature, filters }) => {
     const params = new URLSearchParams();

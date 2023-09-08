@@ -86,7 +86,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const handleTyping = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const data = { user: { id: user.id!, first_name: user.first_name! }, chatId };
+    const data = { user: { id: user.id, first_name: user.first_name }, chatId };
     if (!event.target.value) {
       setIsTyping(false);
       socket.emit('user-stop-type', data);
