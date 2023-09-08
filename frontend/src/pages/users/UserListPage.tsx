@@ -60,7 +60,7 @@ export function UserListPage() {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
     setSearchParams(prevParams => {
       if (typeof e === 'string') {
-        if (e === '' || e === 'any') {
+        if (e === '' || e === 'all') {
           prevParams.delete('emailConfirmed');
         } else {
           prevParams.set('emailConfirmed', e);
