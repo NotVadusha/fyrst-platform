@@ -1,9 +1,16 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { getModelToken } from '@nestjs/sequelize';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PermissionsGuard } from '../../src/packages/permissions/guards/permissions.guard';
+import { RoleGuard } from '../../src/packages/roles/guards/roles.guard';
 import * as request from 'supertest';
-import { TimecardModule } from '../../src/packages/timecard/timecard.module';
+import { UserModuleMock } from '../common/UserModuleMock';
+import { PermissionsGuardMock } from '../common/guards/PermissionsGuardMock';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
+import { TimecardModule } from '../../src/packages/timecard/timecard.module';
+import { UserModule } from '../../src/packages/user/user.module';
+import { UserService } from '../../src/packages/user/user.service';
+import { RoleGuardMock } from '../common/guards/RoleGuardMock';
 import {
   createTimecardDtoMock,
   existingId,
@@ -13,12 +20,6 @@ import {
   timecardsMock,
   updateTimecardDtoMock,
 } from './timecard.mock';
-import { UserService } from '../../src/packages/user/user.service';
-import { RoleGuard } from 'src/packages/roles/guards/roles.guard';
-import { RoleGuardMock } from '../common/guards/RoleGuardMock';
-import { PermissionsGuard } from 'src/packages/permissions/guards/permissions.guard';
-import { PermissionsGuardMock } from 'test/common/guards/PermissionsGuardMock';
-import { AppModule } from 'src/app.module';
 
 const timecardApiPrefix = '/timecard';
 
@@ -28,17 +29,16 @@ describe('TimecardModule', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TimecardModule],
-      providers: [
-        {
-          provide: UserService,
-          useValue: {},
-        },
-      ],
+      providers: [],
     })
-      .overrideGuard(RoleGuard)
-      .useValue(RoleGuardMock)
-      .overrideGuard(PermissionsGuard)
-      .useValue(PermissionsGuardMock)
+      // .overrideProvider(UserService)
+      // .useValue({})
+      .overrideModule(UserModule)
+      .useModule(UserModuleMock)
+      // .overrideGuard(RoleGuard)
+      // .useValue(RoleGuardMock)
+      // .overrideGuard(PermissionsGuard)
+      // .useValue(PermissionsGuardMock)
       .overrideProvider(getModelToken(Timecard))
       .useValue(mockTimecardModel)
       .compile();
