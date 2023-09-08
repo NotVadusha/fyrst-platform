@@ -1,4 +1,7 @@
-import React from 'react';
+import jwtDecode from 'jwt-decode';
+import React, { useEffect } from 'react';
+import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
+import { TokenResponseDto } from 'src/common/packages/authentication/login/types/dto/TokenResponseDto';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -7,6 +10,47 @@ interface AuthWrapperProps {
 }
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children, image, text }) => {
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) return;
+
+    const payload = jwtDecode<JWTPayload>(accessToken ?? '');
+
+    const refreshUserTokens = async () => {
+      const refreshResult = await (
+        await fetch(`${process.env.REACT_APP_API_URL!}/auth/refresh`, {
+          body: JSON.stringify({
+            refresh_token: localStorage.getItem('refreshToken'),
+            id: payload.id,
+          }),
+          method: 'POST',
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        })
+      ).json();
+
+      if (refreshResult?.error) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      } else {
+        const tokens = refreshResult as TokenResponseDto;
+
+        if (tokens) {
+          localStorage.setItem('accessToken', tokens?.accessToken);
+          localStorage.setItem('refreshToken', tokens?.refreshToken);
+
+          window.location.href = '/';
+        }
+      }
+    };
+
+    refreshUserTokens();
+  }, []);
+
   return (
     <div className='h-screen w-screen flex flex-row'>
       <section className='flex items-center justify-center w-full md:w-1/2 bg-white'>
