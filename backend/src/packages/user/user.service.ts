@@ -20,7 +20,7 @@ import { BucketService } from '../bucket/bucket.service';
 
 @Injectable()
 export class UserService {
-  SEVEN_DAYS_IN_MILLISECONDS = 604800000;
+  WEEK_IN_MILLISECONDS = 604800000;
 
   constructor(
     @InjectModel(User) private userRepository: typeof User,
@@ -128,7 +128,7 @@ export class UserService {
             const avatarLink = await this.bucketService.getFileLink(
               user.profile.avatar,
               'read',
-              Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
+              Date.now() + this.WEEK_IN_MILLISECONDS,
             );
 
             user.profile.avatar = avatarLink;

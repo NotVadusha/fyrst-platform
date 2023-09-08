@@ -22,7 +22,7 @@ import { UserProfile } from '../user-profile/entities/user-profile.entity';
 @Injectable()
 export class ChatService {
   MAX_IMAGE_SIZE = 100 * 1024;
-  SEVEN_DAYS_IN_MILLISECONDS = 604800000;
+  WEEK_IN_MILLISECONDS = 604800000;
 
   constructor(
     @InjectModel(Chat)
@@ -70,7 +70,7 @@ export class ChatService {
           const avatarLink = await this.bucketService.getFileLink(
             member.profile.avatar,
             'read',
-            Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
+            Date.now() + this.WEEK_IN_MILLISECONDS,
           );
 
           member.profile.avatar = avatarLink;
@@ -188,7 +188,7 @@ export class ChatService {
                 const avatarLink = await this.bucketService.getFileLink(
                   member.profile.avatar,
                   'read',
-                  Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
+                  Date.now() + this.WEEK_IN_MILLISECONDS,
                 );
 
                 member.profile.avatar = avatarLink;
@@ -256,7 +256,7 @@ export class ChatService {
             const attachmentLink = await this.bucketService.getFileLink(
               message.attachment,
               'read',
-              Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
+              Date.now() + this.WEEK_IN_MILLISECONDS,
             );
 
             message.attachment = attachmentLink;
@@ -266,7 +266,7 @@ export class ChatService {
             const avatarLink = await this.bucketService.getFileLink(
               message.user.profile.avatar,
               'read',
-              Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
+              Date.now() + this.WEEK_IN_MILLISECONDS,
             );
 
             message.user.profile.avatar = avatarLink;
