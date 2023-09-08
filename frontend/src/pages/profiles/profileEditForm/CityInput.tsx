@@ -32,13 +32,14 @@ const CityInput: React.FC<CityInputProps> = ({ control, setCity }) => {
             {...field}
             id='cityInput'
             onPlaceSelected={e => {
-              const input = document.getElementById('cityInput');
-              // @ts-ignore
-              if (field.onChange) field.onChange(e.address_components[0].long_name);
-              // @ts-ignore
-              setCity(e.address_components[0].long_name);
-              // @ts-ignore
-              if (input) input.value = e.address_components[0].long_name;
+              const input = document.getElementById('cityInput') as HTMLInputElement;
+
+              if (e.address_components && e.address_components[0]) {
+                const cityName = e.address_components[0].long_name;
+                if (field.onChange) field.onChange(cityName);
+                setCity(cityName);
+                if (input) input.value = cityName;
+              }
             }}
           />
           <FormMessage className={styles.error} />

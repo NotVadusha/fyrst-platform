@@ -18,6 +18,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/common/Avatar/Avatar';
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
+import { selectUser } from '../../../../common/store/slices/packages/user/userSelectors';
+
+type SimpleUser = Pick<User, 'first_name' | 'last_name'>;
 
 export const ChatPage: React.FC = () => {
   const { chatId } = useParams();
@@ -27,7 +30,7 @@ export const ChatPage: React.FC = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector(selectUser);
 
   // const { data } = useGetChatByIdQuery(chatId);
 
@@ -93,7 +96,7 @@ export const ChatPage: React.FC = () => {
         <div className='grid gap-2'>
           <p className='text-2xl/[24px] font-semibold text-black'>
             {otherMembers
-              ?.map(({ first_name, last_name }: User) => `${first_name} ${last_name ?? ''}`)
+              ?.map(({ first_name, last_name }: SimpleUser) => `${first_name} ${last_name ?? ''}`)
               .join(', ')}
           </p>
         </div>
@@ -172,7 +175,7 @@ const MessageElement = ({
       {!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
-          path={message.user.profile.avatar}
+          path={(message.user as any)?.profile?.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
@@ -192,7 +195,7 @@ const MessageElement = ({
       {!!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
-          path={message.user.profile.avatar}
+          path={(message.user as any)?.profile?.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
