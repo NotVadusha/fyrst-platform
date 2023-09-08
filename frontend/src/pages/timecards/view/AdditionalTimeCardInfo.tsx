@@ -15,7 +15,9 @@ export const AdditionalTimeCardInfo = ({ timecard }: AdditionalInfoInputProps) =
       id: timecard.facilityManager.id,
     });
 
-  const employeeProfile = useGetUserProfileQuery({
+  let employeeProfile;
+
+  employeeProfile = useGetUserProfileQuery({
     id: timecard.employee.id,
   });
 
