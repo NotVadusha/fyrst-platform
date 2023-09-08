@@ -13,6 +13,7 @@ import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 import { ReactComponent as BurgerIcon } from 'src/assets/icons/burger.svg';
+import { ScrollArea } from '../../../common/components/ui/common/ScrollArea/ScrollArea';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -98,16 +99,23 @@ const Layout = () => {
         } lg:static lg:block z-20 mt-[8px] mb-10`}
       >
         <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>{routerConfig.name}</h2>
-        <div className='flex flex-col gap-4'>
-          {routerConfig.mainNav.map((item, index) => (
-            <NavItem key={index} item={item} closeNav={() => setIsNavOpen(prev => !prev)} />
-          ))}
-          <Button variant='secondary' className='w-full' type='button' onClick={handleButtonClick}>
-            Logout
-          </Button>
-        </div>
+        <ScrollArea className='h-[100vh]'>
+          <div className='flex flex-col gap-4 pr-4'>
+            {routerConfig.mainNav.map((item, index) => (
+              <NavItem key={index} item={item} closeNav={() => setIsNavOpen(prev => !prev)} />
+            ))}
+            <Button
+              variant='secondary'
+              className='w-full'
+              type='button'
+              onClick={handleButtonClick}
+            >
+              Logout
+            </Button>
+          </div>
+        </ScrollArea>
       </nav>
-      <main className='w-full bg-background'>
+      <main className='w-full lg:w-[calc(100%-300px)]  bg-background'>
         <Outlet />
       </main>
     </div>
