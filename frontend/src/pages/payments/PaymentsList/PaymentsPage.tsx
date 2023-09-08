@@ -1,11 +1,11 @@
 import React from 'react';
-import { Header } from '../../../common/components/ui/layout/Header/Header';
 import PaymentsList from './PaymentsList';
+import { PaymentHeader } from '../common/PaymentHeader';
 
 const PaymentsPage = () => {
   return (
     <div>
-      <Header title='Payments' />
+      <PaymentHeader />
       <div>
         <PaymentsList />
       </div>
