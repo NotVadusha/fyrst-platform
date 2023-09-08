@@ -43,6 +43,7 @@ export function EditUserForm({ user, isLoading, onSubmit }: EditUserFormProps) {
         manageUsers: user?.permissions ? user.permissions.manageUsers : false,
       },
     },
+    shouldFocusError: false,
   });
 
   if (!currentUser.role) {

@@ -11,6 +11,7 @@ import { TabComponentProps } from 'src/common/components/ui/common/MultiTabForm/
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import CityInput from 'src/pages/profiles/profileEditForm/CityInput';
 import { EditUserFormValues } from './EditUserForm';
+import CustomPhoneInput from 'src/pages/profiles/profileEditForm/CustomPhoneInput';
 
 export function PersonalInfoTab({ form }: TabComponentProps<EditUserFormValues>) {
   const [_, setCity] = useState<string>('');
@@ -84,19 +85,19 @@ export function PersonalInfoTab({ form }: TabComponentProps<EditUserFormValues>)
           </FormItem>
         )}
       />
-
       <FormField
         control={form.control}
         name='phone_number'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Phone number</FormLabel>
-            <TextInput
+            <CustomPhoneInput
               control={form.control}
               type='tel'
               id='phone_number'
               label='Phone'
               {...field}
+              value={field.value ? field.value : ''}
             />
           </FormItem>
         )}
