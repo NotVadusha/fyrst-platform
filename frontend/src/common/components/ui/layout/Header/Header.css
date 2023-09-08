@@ -1,0 +1,12 @@
+.sticky-header {
+  position: static; 
+}
+
+@media (max-width: 1024px) {
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+  }
+}
