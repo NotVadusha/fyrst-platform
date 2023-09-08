@@ -92,14 +92,13 @@ const Layout = () => {
       </button>
       <nav
         ref={navRef}
-        className={`${
-          isNavOpen ? 'fixed top-20' : ''
-        } w-[300px] min-h-screen flex flex-col gap-8 p-8 bg-white ${
-          isNavOpen ? 'block' : 'hidden'
-        } lg:static lg:block z-20 mt-[8px] mb-10`}
+        className={cn(
+          'w-[300px] flex flex-col gap-8 p-8 pb-0   bg-white lg:static lg:block z-20 mt-[8px]',
+          { 'fixed top-20 block': isNavOpen, hidden: !isNavOpen },
+        )}
       >
         <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>{routerConfig.name}</h2>
-        <ScrollArea className='h-[100vh]'>
+        <ScrollArea className='h-[calc(100vh-88px-4rem)] h-[calc(100vh-88px-2rem)]'>
           <div className='flex flex-col gap-4 pr-4'>
             {routerConfig.mainNav.map((item, index) => (
               <NavItem key={index} item={item} closeNav={() => setIsNavOpen(prev => !prev)} />
