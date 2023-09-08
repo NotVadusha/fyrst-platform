@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player';
 
 const ParticipantView = ({ participantId }: { participantId: string }) => {
   const micRef = useRef<HTMLAudioElement>(null);
-  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName, setQuality } =
+  const { webcamStream, micStream, webcamOn, micOn, isLocal, setQuality } =
     useParticipant(participantId);
 
   const videoStream = useMemo(() => {
@@ -37,22 +37,27 @@ const ParticipantView = ({ participantId }: { participantId: string }) => {
 
   return (
     <div key={participantId}>
-      <p>Participant: {displayName}</p>
       <audio ref={micRef} autoPlay muted={isLocal} />
-      <ReactPlayer
-        playsinline
-        pip={false}
-        light={false}
-        controls={false}
-        muted={true}
-        playing={true}
-        url={videoStream}
-        width={560}
-        height={360}
-        onError={error => {
-          console.log(error, 'participant video error');
-        }}
-      />
+      {webcamOn ? (
+        <ReactPlayer
+          playsinline
+          pip={false}
+          light={false}
+          controls={false}
+          muted={true}
+          playing={true}
+          url={videoStream}
+          width={692}
+          height={496}
+          onError={error => {
+            console.log(error, 'participant video error');
+          }}
+        />
+      ) : (
+        <div className='w-[692px] h-[496px] bg-grey flex items-center	 justify-center'>
+          <div className='bg-red rounded-full w-[184px] h-[184px]'></div>
+        </div>
+      )}
     </div>
   );
 };

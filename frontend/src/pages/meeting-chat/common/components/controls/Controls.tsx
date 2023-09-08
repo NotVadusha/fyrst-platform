@@ -1,19 +1,24 @@
 import React from 'react';
 import { useMeeting } from '@videosdk.live/react-sdk';
 import { Button } from 'src/common/components/ui/common/Button';
+import { ReactComponent as MicOnIcon } from 'src/assets/icons/mic-on.svg';
+import { ReactComponent as MicOffIcon } from 'src/assets/icons/mic-off.svg';
+import { ReactComponent as CameraOnIcon } from 'src/assets/icons/camera-on.svg';
+import { ReactComponent as CameraOffIcon } from 'src/assets/icons/camera-off.svg';
+import { ReactComponent as LeaveCallIcon } from 'src/assets/icons/leave-call.svg';
 
 const Controls = () => {
   const { toggleMic, toggleWebcam, leave, localMicOn, localWebcamOn } = useMeeting();
   return (
-    <div>
-      <Button variant='primary' className='rounded-full mr-2' onClick={() => toggleMic()}>
-        {localMicOn ? 'Volume On' : 'Volume Off'}
+    <div className='flex align-center items-center'>
+      <Button variant='controls' size='controls' className='mr-6' onClick={() => toggleMic()}>
+        {localMicOn ? <MicOnIcon /> : <MicOffIcon />}
       </Button>
-      <Button variant='primary' className='rounded-full mr-2' onClick={() => toggleWebcam()}>
-        {localWebcamOn ? 'Webcam On' : 'Webcam Off'}
+      <Button variant='controls' size='controls' className='mr-6' onClick={() => toggleWebcam()}>
+        {localWebcamOn ? <CameraOnIcon /> : <CameraOffIcon />}
       </Button>
-      <Button className='rounded-full bg-red hover:bg-red active:bg-red' onClick={() => leave()}>
-        Leave
+      <Button variant='controls' size='controls' onClick={() => leave()}>
+        <LeaveCallIcon />
       </Button>
     </div>
   );
