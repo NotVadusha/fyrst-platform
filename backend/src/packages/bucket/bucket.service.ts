@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DownloadResponse, Storage } from '@google-cloud/storage';
+import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 
 @Injectable()
 export class BucketService {
@@ -29,7 +30,7 @@ export class BucketService {
       }
     });
     await uploadImage;
-    return await this.getFileLink(path, 'read', Date.now() + 1000 * 60 * 60 * 24 * 7);
+    return await this.getFileLink(path, 'read', Date.now() + WEEK_IN_MILLISECONDS);
   }
 
   async delete(path: string) {
@@ -55,10 +56,5 @@ export class BucketService {
       expires,
     });
     return url;
-  }
-
-  async fileExists(path: string) {
-    const result = await this.storage.bucket(this.bucket).file(path).exists();
-    return result[0];
   }
 }
