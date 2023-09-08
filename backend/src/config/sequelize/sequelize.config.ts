@@ -6,6 +6,7 @@ import { Message } from 'src/packages/message/entities/message.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { User, UserChat } from 'src/packages/user/entities/user.entity';
 import { Permissions } from 'src/packages/permissions/entities/permissions.entity';
+import { UserProfile } from 'src/packages/user-profile/entities/user-profile.entity';
 
 export const development: SequelizeModuleOptions = {
   username: process.env.POSTGRES_USER,
@@ -15,5 +16,5 @@ export const development: SequelizeModuleOptions = {
   host: 'db',
   dialect: 'postgres',
   autoLoadModels: true,
-  models: [User, Roles, Facility, Booking, UserChat, Chat, Message, Permissions],
+  models: [User, Roles, Facility, Booking, UserChat, Chat, Message, Permissions, UserProfile],
 };

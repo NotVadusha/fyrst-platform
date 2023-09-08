@@ -13,6 +13,8 @@ import { firstValueFrom } from 'rxjs';
 import { userRoles } from 'shared/packages/roles/userRoles';
 import { BucketService } from '../bucket/bucket.service';
 import { Facility } from '../facility/entities/facility.entity';
+import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
+import { PdfResponseDto } from 'shared/packages/invoice/PdfResponseDto';
 
 @Injectable()
 export class InvoiceService {
@@ -128,17 +130,18 @@ export class InvoiceService {
   }
 
   async delete(id: number) {
-    const invoice = await this.findOneById(id);
-    if (!invoice) return false;
-    await invoice.destroy();
-    return true;
+    try {
+      const invoice = await this.findOneById(id);
+      await invoice.destroy();
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async update(id: number, data: Partial<Invoice>) {
     const invoice = await this.findOneById(id);
-    if (!invoice) throw new NotFoundException('Invoice not found');
-    await invoice.update(data);
-    return await this.findOneById(id);
+    return await invoice.update(data);
   }
 
   async create(data: CreateInvoiceDto) {
@@ -172,11 +175,11 @@ export class InvoiceService {
         link: await this.bucketService.getFileLink(
           invoice.path,
           'read',
-          Date.now() + 1000 * 60 * 60 * 24 * 7,
+          Date.now() + WEEK_IN_MILLISECONDS,
         ),
       };
 
-    const pdfResponse = await firstValueFrom(
+    const pdfResponse: PdfResponseDto = await firstValueFrom(
       this.invoiceService.send('get_invoice_pdf_link', {
         invoice,
       }),

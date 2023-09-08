@@ -61,9 +61,7 @@ export function CreateConversationForm({ onCreate }: { onCreate: () => void }) {
             onClick={() => createConversation(user as unknown as User)}
           >
             <Avatar className='w-6 h-6'>
-              <AvatarImage
-              //   src={message.user.profile.avatar}
-              />
+              <AvatarImage src={user.profile?.avatar || ''} />
               <AvatarFallback>{`${user.first_name?.[0]}${
                 user.last_name?.[0] ?? ''
               }`}</AvatarFallback>
