@@ -11,7 +11,6 @@ import {
   Query,
   Res,
   InternalServerErrorException,
-  Logger,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -71,6 +70,11 @@ export class UserController {
     const user = await this.userService.findOne(userId);
     if (!user) throw new NotFoundException();
     return user;
+  }
+
+  @Get(':id/events')
+  async getWithEvents(@Param('id') userId: number) {
+    return this.userService.getUserWithEvents(userId);
   }
 
   @Get()
