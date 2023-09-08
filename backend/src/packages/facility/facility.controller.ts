@@ -15,8 +15,10 @@ import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { RoleGuard } from '../roles/guards/roles.guard';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @ApiTags('Facility endpoints')
+@UseGuards(AccessTokenGuard)
 @Controller('facility')
 export class FacilityController {
   private readonly logger = new Logger(FacilityController.name);

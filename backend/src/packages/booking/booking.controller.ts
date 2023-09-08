@@ -25,10 +25,12 @@ import { RoleGuard } from '../roles/guards/roles.guard';
 import { PermissionsGuard } from '../permissions/guards/permissions.guard';
 
 @ApiTags('Booking endpoints')
+@UseGuards(AccessTokenGuard)
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageBookings']))
   @Post()
   async createBooking(@Body() createdData: CreateBookingDto) {
     return this.bookingService.create(createdData);
@@ -83,7 +85,6 @@ export class BookingController {
     }
   }
 
-  @UseGuards(AccessTokenGuard)
   @Get('recommendations')
   async getBookingRecommendations(@Request() req, @Query('currentPage', ParseIntPipe) currentPage) {
     Logger.log('this user wants to get booking reccomendations', req.user);

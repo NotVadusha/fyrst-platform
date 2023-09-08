@@ -24,6 +24,7 @@ import { Response as ExpressResponse } from 'express';
 import { Readable } from 'stream';
 import { RoleGuard } from '../roles/guards/roles.guard';
 import { PermissionsGuard } from '../permissions/guards/permissions.guard';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @ApiTags('User endpoints')
 @Controller('user')
@@ -35,6 +36,7 @@ export class UserController {
     return await this.userService.create(userInfo);
   }
 
+  @UseGuards(RoleGuard('PLATFORM_ADMIN'))
   @Post('/many')
   async createMany(@Body() userInfo: CreateUserDto[]) {
     return await this.userService.createMany(userInfo);
@@ -77,6 +79,7 @@ export class UserController {
     return user;
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageUsers']))
   @Get()
   async getAllByParams(@Query() query: UserFiltersDto): Promise<{
     users: User[];
@@ -95,6 +98,7 @@ export class UserController {
     });
   }
 
+  @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) userId: number,
@@ -105,6 +109,8 @@ export class UserController {
     if (!updatedUser) throw new NotFoundException();
     return this.userService.findOne(userId);
   }
+
+  @UseGuards(AccessTokenGuard)
   @Patch('change-password/:id')
   async changePassword(
     @Param('id', ParseIntPipe) userId: number,
