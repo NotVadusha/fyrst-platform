@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from 'src/common/components/ui/common/Button/Button';
@@ -14,9 +14,13 @@ export function SharedMediaPage() {
 
   if (!chatId) return <>Not found</>;
 
-  const { data, isSuccess } = useGetMessagesWithMediaQuery({
+  const { data, refetch, isSuccess } = useGetMessagesWithMediaQuery({
     chatId,
   });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div className='w-full min-h-[460px]'>
@@ -51,9 +55,7 @@ function UserMessageItem({ message }: { message: Message }) {
     <div className='flex justify-between p-2 truncate w-full whitespace-nowrap overflow-hidden'>
       <div className='flex gap-2 items-center'>
         <Avatar className='self-start'>
-          <AvatarImage
-          //   src={message.user.profile.avatar}
-          />
+          <AvatarImage src={message.user.profile?.avatar || ''} />
           <AvatarFallback>{`${message.user?.first_name?.[0]}${
             message.user?.last_name?.[0] ?? ''
           }`}</AvatarFallback>

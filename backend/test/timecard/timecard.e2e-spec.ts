@@ -40,6 +40,8 @@ describe('TimecardModule', () => {
       .useValue({})
       .overrideProvider(getModelToken(Timecard))
       .useValue(mockTimecardModel)
+      .overrideProvider(UserService)
+      .useValue({})
       .compile();
 
     app = moduleFixture.createNestApplication();

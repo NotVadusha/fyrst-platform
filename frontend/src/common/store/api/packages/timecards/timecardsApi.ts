@@ -3,6 +3,7 @@ import { Timecard } from '../../../../packages/timecard/types/models/Timecard.mo
 import { TimecardFiltersDto } from '../../../../packages/timecard/types/dto/TimecardFiltersDto';
 import { GetAllTimecardsDto } from '../../../../packages/timecard/types/dto/GetAllTimecardsDto';
 import { CreateTimecardDto } from '../../../../packages/timecard/types/dto/CreateTimecardDto';
+import { WorkerDto } from 'src/common/packages/timecard/types/dto/WorkerDto';
 
 const timecardsApi = apiSlice.injectEndpoints({
   endpoints(builder) {
@@ -45,6 +46,9 @@ const timecardsApi = apiSlice.injectEndpoints({
         },
         invalidatesTags: ['Timecards'],
       }),
+      fetchWorkersByFacilityAdminId: builder.query<WorkerDto[], number>({
+        query: id => `/timecard/${id}/workers`,
+      }),
     };
   },
 });
@@ -54,4 +58,6 @@ export const {
   useFetchTimecardQuery,
   useUpdateTimecardMutation,
   useCreateTimecardMutation,
+  useFetchWorkersByFacilityAdminIdQuery,
+  useLazyFetchWorkersByFacilityAdminIdQuery,
 } = timecardsApi;

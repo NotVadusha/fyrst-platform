@@ -24,8 +24,8 @@ export default function JobRecommendations() {
         <div className='flex items-center justify-between'>
           <h1 className='text-black text-2xl my-6'>
             Job recommendations based on your{' '}
-            <Link className='underline' to='/profile/edit'>
-              profile
+            <Link className='underline' to='/profile/portfolio'>
+              portfolio
             </Link>
           </h1>
           <RefreshButton onClick={refetch} className='self-center' />

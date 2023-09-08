@@ -6,6 +6,7 @@ import {
   DataType,
   Default,
   ForeignKey,
+  Index,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -20,6 +21,7 @@ export class Timecard extends Model {
   @Column(DataType.DATEONLY)
   createdAt: Date;
 
+  @Index
   @AllowNull(false)
   @ForeignKey(() => User)
   @Column

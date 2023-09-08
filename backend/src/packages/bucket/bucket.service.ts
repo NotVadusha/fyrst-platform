@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DownloadResponse, Storage } from '@google-cloud/storage';
+import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 
 @Injectable()
 export class BucketService {
@@ -19,10 +20,17 @@ export class BucketService {
   }
 
   async save(path: string, media: Buffer) {
-    const file = this.storage.bucket(this.bucket).file(path);
-    const stream = file.createWriteStream();
-    stream.end(media);
-    return await this.getFileLink(path, 'read', Date.now() + 1000 * 60 * 60 * 24 * 7);
+    const uploadImage = new Promise((resolve, reject) => {
+      try {
+        const file = this.storage.bucket(this.bucket).file(path);
+        const stream = file.createWriteStream();
+        stream.end(media, () => resolve(true));
+      } catch (err) {
+        reject(err);
+      }
+    });
+    await uploadImage;
+    return await this.getFileLink(path, 'read', Date.now() + WEEK_IN_MILLISECONDS);
   }
 
   async delete(path: string) {

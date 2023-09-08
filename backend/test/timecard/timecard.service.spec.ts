@@ -12,6 +12,8 @@ import {
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 import { getModelToken } from '@nestjs/sequelize';
 import { GetAllTimecardsDto } from 'src/packages/timecard/dto/get-all-timecards.dto';
+import { UserService } from 'src/packages/user/user.service';
+import { userServiceMock } from 'test/auth/auth.mocks';
 
 describe('TimecardService', () => {
   let timecardService: TimecardService;
@@ -26,6 +28,10 @@ describe('TimecardService', () => {
         {
           provide: getModelToken(Timecard),
           useValue: mockTimecardModel,
+        },
+        {
+          provide: UserService,
+          useValue: userServiceMock,
         },
       ],
     }).compile();

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'src/common/router/common/config/router-config.config';
 import { ReactComponent as ArrowDown } from 'src/assets/icons/arrow-down.svg';
@@ -12,6 +12,8 @@ import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
+import { ReactComponent as BurgerIcon } from 'src/assets/icons/burger.svg';
+import { ScrollArea } from '../../../common/components/ui/common/ScrollArea/ScrollArea';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -19,6 +21,10 @@ const Layout = () => {
   const [logout] = authApi.useLogoutMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const [isNavOpen, setIsNavOpen] = React.useState(false);
+  const navRef = useRef<HTMLDivElement | null>(null);
+  const burgerButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const handleButtonClick = async () => {
     try {
@@ -34,7 +40,17 @@ const Layout = () => {
 
   const user = useAppSelector(selectUser);
 
-  React.useEffect(() => {
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (burgerButtonRef.current && burgerButtonRef.current.contains(event.target as Node)) {
+      return;
+    }
+
+    if (isNavOpen && navRef.current && !navRef.current.contains(event.target as Node)) {
+      setIsNavOpen(false);
+    }
+  };
+
+  useEffect(() => {
     if (user?.id) return;
 
     const getUser = async () => {
@@ -51,46 +67,85 @@ const Layout = () => {
     getUser();
   }, []);
 
+  useEffect(() => {
+    if (isNavOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [isNavOpen]);
+
+  const handleMenuBurgerClick = async () => {
+    setIsNavOpen(prev => !prev);
+  };
+
   return (
-    <div className='flex'>
-      <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[280px]'>
-        <h2 className='font-bold text-lg'>{routerConfig.name}</h2>
-        <div className='flex flex-col gap-4'>
-          {routerConfig.mainNav.map((item, index) => (
-            <NavItem key={index} item={item} />
-          ))}
-          <Button variant='secondary' className='w-full' type='button' onClick={handleButtonClick}>
-            Logout
-          </Button>
-        </div>
+    <div className='flex flex-col lg:flex-row'>
+      <button
+        className='fixed lg:hidden top-4 left-4 lg:left-auto z-50 p-4 h-[55px] w-[70px] flex justify-center items-center'
+        ref={burgerButtonRef}
+        onClick={handleMenuBurgerClick}
+      >
+        <BurgerIcon className='w-[20px] h-[20px]' />
+      </button>
+      <nav
+        ref={navRef}
+        className={`${
+          isNavOpen ? 'fixed top-20' : ''
+        } w-[300px] min-h-screen flex flex-col gap-8 p-8 bg-white ${
+          isNavOpen ? 'block' : 'hidden'
+        } lg:static lg:block z-20 mt-[8px] mb-10`}
+      >
+        <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>{routerConfig.name}</h2>
+        <ScrollArea className='h-[100vh]'>
+          <div className='flex flex-col gap-4 pr-4'>
+            {routerConfig.mainNav.map((item, index) => (
+              <NavItem key={index} item={item} closeNav={() => setIsNavOpen(prev => !prev)} />
+            ))}
+            <Button
+              variant='secondary'
+              className='w-full'
+              type='button'
+              onClick={handleButtonClick}
+            >
+              Logout
+            </Button>
+          </div>
+        </ScrollArea>
       </nav>
-      <main className='w-full bg-background'>
+      <main className='w-full lg:w-[calc(100%-300px)]  bg-background'>
         <Outlet />
       </main>
     </div>
   );
 };
 
-function NavItem({ item }: { item: INavItem }) {
+function NavItem({ item, closeNav }: { item: INavItem; closeNav: () => void }) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
+  const handleClick = () => {
+    if (closeNav) closeNav();
+  };
 
   const location = useLocation();
 
   const user = useAppSelector(selectUser);
 
   const canAccess =
-    !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]);
+    !item.isPrivate ||
+    (item.neededPermission && user.permissions?.[item.neededPermission]) ||
+    (item.neededRoles && item.neededRoles.includes(user.role?.label ?? ''));
 
   const canAccessSomeChildren = item.items?.some(
-    item => !item.isPrivate || (item.neededPermission && user.permissions?.[item.neededPermission]),
+    item =>
+      !item.isPrivate ||
+      (item.neededPermission && user.permissions?.[item.neededPermission]) ||
+      (item.neededRoles && item.neededRoles.includes(user.role?.label ?? '')),
   );
 
   const isCurrentPath = location.pathname.startsWith(item.mainPath);
-
-  React.useEffect(() => {
-    if (isCurrentPath && isOpen) return;
-    setIsOpen(false);
-  }, [isCurrentPath]);
 
   const Icon = item.icon;
 
@@ -98,6 +153,7 @@ function NavItem({ item }: { item: INavItem }) {
     <>
       <Link
         to={item.path}
+        onClick={handleClick}
         className={cn('p-2 rounded-md flex  w-full justify-between', {
           'bg-blue': isCurrentPath,
           hidden: !canAccess,
@@ -113,9 +169,8 @@ function NavItem({ item }: { item: INavItem }) {
           <button
             className='flex items-center p-0 h-auto'
             onClick={e => {
-              if (!isCurrentPath) {
-                return setIsOpen(true);
-              }
+              e.stopPropagation();
+              e.preventDefault();
               setIsOpen(prev => !prev);
             }}
           >
@@ -138,6 +193,7 @@ function NavItem({ item }: { item: INavItem }) {
             <Link
               to={child.path}
               key={indx}
+              onClick={closeNav}
               className={cn('ml-6', { 'text-blue': isCurrentPath, hidden: !canAccess })}
             >
               <span className='ml-6'>{child.title}</span>

@@ -39,7 +39,7 @@ export function Modal({
               'justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'
             }
           >
-            <div className={cn('relative p-6 mx-auto min-w-[400px]', className)}>
+            <div className={cn('relative p-6 mx-auto', className)}>
               <div className='rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none'>
                 <div className='flex p-6 items-center justify-between gap-2 rounded-t'>
                   <h3 className='text-xl text-blue font-bold'>{title}</h3>

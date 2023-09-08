@@ -9,7 +9,6 @@ import TextInput from 'src/common/components/ui/common/Input/common/TextInput/Te
 import { profileSchema } from 'src/common/packages/user/common/user-profile/types/validation-schemas/user-profile.validation-schema';
 import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { Button } from 'src/common/components/ui/common/Button';
-import { User } from 'src/common/packages/user/types/models/User.model';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import * as y from 'yup';
 import { AvatarUploader } from './AvatarUploader';
@@ -21,6 +20,7 @@ import { Buffer } from 'buffer';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import IdCardParser from './IdCardParser';
 import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
+import { UpdateUserBody } from 'src/common/packages/user/types/dto/UserDto';
 
 type Inputs = y.InferType<typeof profileSchema>;
 export type parseInfo = {
@@ -37,10 +37,12 @@ const capitalize = (text: string) => {
 
 export function ProfileEditForm() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const navigate = useNavigate();
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<UpdateUserBody>();
   const [avatarImage, setAvatarImage] = useState('');
   const [parsedData, _setParsedData] = useState<parseInfo>();
+  const setParsedData = (data: parseInfo) => {
+    _setParsedData(data);
+  };
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
   const [city, setCity] = useState<string>('');
   const [updateUser] = useUpdateUserMutation();
@@ -54,30 +56,24 @@ export function ProfileEditForm() {
 
   useEffect(() => {
     const userFetch = async (id: number) => {
-      const data = await (await fetch(`${apiUrl}/user/${id}`)).json();
-
+      const data: UpdateUserBody = await (await fetch(`${apiUrl}/user/${id}`)).json();
       setUser(data);
-      if (data.statusCode === 404) navigate('/auth/signin');
 
-      const profile = await getProfile(data.id).unwrap();
-      setAvatarImage(profile.avatar || defaultAvatar);
+      const profile = await getProfile(userId).unwrap();
+      profile.avatar && setAvatarImage(profile.avatar);
     };
 
     userFetch(userId);
   }, []);
 
-  const setParseData = (data: parseInfo) => {
-    _setParsedData(data);
-  };
-
   useEffect(() => {
     if (parsedData && user) {
-      const infoToUpdate: User = {
-        ...user,
+      const infoToUpdate: UpdateUserBody = {
         first_name: capitalize(parsedData.first_name),
         last_name: capitalize(parsedData.last_name),
         email: user.email,
-        city: user?.city,
+        phone_number: user.phone_number,
+        city: user.city,
         birthdate: parsedData.birthDate.toISOString().split('T')[0],
         document_number: parsedData.documentNumber,
       };
@@ -86,28 +82,26 @@ export function ProfileEditForm() {
   }, [parsedData]);
 
   const onSubmit = async (valuesFromForm: Inputs) => {
-    let base64;
-
     if (!!avatarImage && avatarImage.includes('blob:')) {
       const blob = await (await fetch(avatarImage)).blob();
       const arrayBuffer = await blob.arrayBuffer();
-      base64 = Buffer.from(arrayBuffer).toString('base64');
-    }
+      const base64 = Buffer.from(arrayBuffer).toString('base64');
 
+      updateProfile({
+        id: userId,
+        body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
+      });
+    }
     if (user) {
-      await updateUser({
-        id: user.id,
+      const updateUserReq = {
+        id: userId,
         user: {
           ...valuesFromForm,
           birthdate: valuesFromForm.birthdate ? valuesFromForm.birthdate : null,
           document_number: valuesFromForm.document_number ? valuesFromForm.document_number : null,
         },
-      });
-
-      updateProfile({
-        id: user.id,
-        body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
-      });
+      };
+      updateUser(updateUserReq);
 
       toast({
         title: 'Changes applied',
@@ -154,7 +148,7 @@ export function ProfileEditForm() {
         <div className='w-128 p-8 bg-white mx-20 shadow-xl'>
           <div className='pb-8'>
             <img
-              src={avatarImage}
+              src={avatarImage ? avatarImage : defaultAvatar}
               className='w-32 h-32 rounded-full mx-auto border border-placeholder'
             />
             <p
@@ -270,7 +264,7 @@ export function ProfileEditForm() {
               </Button>
             </form>
           </Form>
-          <IdCardParser setData={setParseData} />
+          <IdCardParser setData={setParsedData} />
         </div>
       )}
     </>

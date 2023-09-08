@@ -5,6 +5,6 @@ export const userFiltersSchema = yup.object({
   email: yup.string().email(),
   phone: yup.string(),
   city: yup.string(),
-  emailConfirmed: yup.mixed().oneOf(['true', 'false', 'any']),
+  emailConfirmed: yup.mixed().oneOf(['true', 'false', 'all']),
   birthDate: yup.date(),
 });

@@ -16,6 +16,7 @@ export function RefreshButton({
 
   return (
     <Button
+      type='button'
       className={cn('flex self-end', className)}
       onClick={() => {
         if (!onClick) navigate(0);

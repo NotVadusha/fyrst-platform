@@ -60,7 +60,7 @@ export function UserListPage() {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement> | string) {
     setSearchParams(prevParams => {
       if (typeof e === 'string') {
-        if (e === '' || e === 'any') {
+        if (e === '' || e === 'all') {
           prevParams.delete('emailConfirmed');
         } else {
           prevParams.set('emailConfirmed', e);
@@ -99,42 +99,43 @@ export function UserListPage() {
 
   return (
     <>
-      <Header title='Users' />
-      <div className='mx-16 pb-4'>
-        <div className='flex flex-col space-y-6 mt-6'>
-          <div className='flex items-center justify-between'>
-            <h2 className='text-4xl font-bold'>Users</h2>
-            <div className='flex items-center gap-2'>
-              <Button
-                variant='secondary'
-                onClick={handleExportCSV}
-                disabled={data?.totalCount === 0 || isCSVLoading}
-              >
-                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
-              </Button>
-              {hasRole('PLATFORM_ADMIN', user as User, false) && (
-                <>
-                  <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
-                    Import Users
-                  </label>
-                  <input
-                    id='files'
-                    className='hidden'
-                    type='file'
-                    name='file'
-                    accept='.csv'
-                    onChange={handleImport}
-                  />
-                  <AddUserButton />
-                </>
-              )}
-            </div>
+      <Header>
+        <div className='flex w-full  items-center justify-between'>
+          <h2 className='text-2xl font-semibold text-dark-grey'>Users</h2>
+          <div className='flex items-center gap-2'>
+            <Button
+              variant='secondary'
+              onClick={handleExportCSV}
+              disabled={data?.totalCount === 0 || isCSVLoading}
+            >
+              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+            </Button>
+            {hasRole('PLATFORM_ADMIN', user as User, false) && (
+              <>
+                <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
+                  Import Users
+                </label>
+                <input
+                  id='files'
+                  className='hidden'
+                  type='file'
+                  name='file'
+                  accept='.csv'
+                  onChange={handleImport}
+                />
+                <AddUserButton />
+              </>
+            )}
           </div>
+        </div>
+      </Header>
+      <div className='container mx-auto max-w-[1200px] px-6'>
+        <div className='flex flex-col space-y-6 mt-6'>
           <UserFiltersForm
             handleInputChange={handleInputChange}
             setSearchParams={setSearchParams}
           />
-          <div className='flex flex-col items-center gap-4'>
+          <div className='flex flex-col items-center gap-4 max-w-[100%] mx-auto overflow-x-auto '>
             {data?.users?.length === 0 ? (
               <p className='text-body-default font-semibold'>
                 No users to display here. Most probably, nothing matches your search query
@@ -149,14 +150,16 @@ export function UserListPage() {
                 }}
               />
             )}
-            {!!totalPages && (
-              <Pagination
-                onChange={setCurrentPage}
-                value={currentPage}
-                siblingsCount={2}
-                totalCount={totalPages}
-              />
-            )}
+            <div className='justify-end self-end float-right'>
+              {!!totalPages && (
+                <Pagination
+                  onChange={setCurrentPage}
+                  value={currentPage}
+                  siblingsCount={2}
+                  totalCount={totalPages}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

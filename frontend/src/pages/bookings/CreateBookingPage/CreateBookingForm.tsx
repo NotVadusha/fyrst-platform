@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as y from 'yup';
 import { Button } from 'src/common/components/ui/common/Button';
 import { bookingSchema } from 'src/common/packages/booking/types/validation-schemas/booking.validation-schema';
 import { useFetchFacilitiesQuery } from 'src/common/store/api/packages/facility/facilityApi';
-import { Form } from 'src/common/components/ui/common/Form/Form';
+import {
+  Form,
+  FormField,
+  FormMessage,
+  FormItem,
+  FormLabel,
+  FormControl,
+} from 'src/common/components/ui/common/Form/Form';
 import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import { Dropdown } from 'src/common/components/ui/common/Dropdown/Dropdown';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/common/store';
+import { Textarea } from 'src/common/components/ui/common/Textarea/Textarea';
 
 export type CreateBookingFormValues = y.InferType<typeof bookingSchema>;
 
@@ -31,13 +39,14 @@ export function CreateBookingForm({
       age: 18,
       education: 'School',
       workingHours: 1,
+      notes: '',
     },
   });
   const onSubmit = (values: CreateBookingFormValues) => {
     const trimmedValues = {
       ...values,
       employersName: values.employersName.trim(),
-      notes: values.notes.trim(),
+      notes: values.notes ? values.notes.trim() : ' ',
     };
 
     handleSubmit(trimmedValues);
@@ -61,7 +70,6 @@ export function CreateBookingForm({
           type='text'
         />
         <Dropdown
-          className='z-[99999]'
           name='facilityId'
           control={form.control}
           label='Facility'
@@ -83,10 +91,36 @@ export function CreateBookingForm({
           type='number'
           min={1}
         />
-        <TextInput name='startDate' control={form.control} label='' type='date' />
-        <TextInput name='endDate' control={form.control} label='' type='date' />
-        <TextInput name='notes' control={form.control} label='Job description' type='text' />
-
+        <TextInput
+          name='startDate'
+          control={form.control}
+          min={new Date().toISOString().split('T')[0]}
+          label='Start date'
+          type='date'
+        />
+        <TextInput
+          name='endDate'
+          control={form.control}
+          min={new Date().toISOString().split('T')[0]}
+          label='End date'
+          type='date'
+        />
+        <FormField
+          control={form.control}
+          name='notes'
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  className={form.formState.errors.notes ? 'border-red' : ' '}
+                  {...field}
+                  placeholder='Job description'
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type='submit' variant='primary'>
           Submit
         </Button>

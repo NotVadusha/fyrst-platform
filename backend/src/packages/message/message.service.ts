@@ -9,8 +9,11 @@ import { User } from '../user/entities/user.entity';
 import { MessageFiltersDto } from './dto/message-filters.dto';
 import { Op } from 'sequelize';
 import { BucketService } from '../bucket/bucket.service';
+import { UserProfile } from '../user-profile/entities/user-profile.entity';
 @Injectable()
 export class MessageService {
+  WEEK_IN_MILLISECONDS = 604800000;
+
   constructor(
     @InjectModel(Message)
     private readonly messageRepository: typeof Message,
@@ -31,14 +34,21 @@ export class MessageService {
     });
 
     const messageWithUser = await createdMessage.reload({
-      include: [User],
+      include: [{ model: User, as: 'user', include: [{ model: UserProfile, as: 'profile' }] }],
     });
 
     if (!!messageWithUser.attachment)
       messageWithUser.attachment = await this.bucketService.getFileLink(
         messageWithUser.attachment,
         'read',
-        Date.now() + 1000 * 60 * 60 * 24 * 7,
+        Date.now() + this.WEEK_IN_MILLISECONDS,
+      );
+
+    if (!!messageWithUser.user.profile?.avatar)
+      messageWithUser.user.profile.avatar = await this.bucketService.getFileLink(
+        messageWithUser.user.profile.avatar,
+        'read',
+        Date.now() + this.WEEK_IN_MILLISECONDS,
       );
 
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
@@ -61,12 +71,27 @@ export class MessageService {
       },
       limit: 5,
       order: [['createdAt', 'DESC']],
-      include: [{ model: User, as: 'user' }],
+      include: [{ model: User, as: 'user', include: [{ model: UserProfile, as: 'profile' }] }],
     });
 
-    this.gateway.wss.emit('onFindAll', messages);
+    if (messages) {
+      const messagesWithProfileAvatars = await Promise.all(
+        messages.map(async message => {
+          if (message.user.profile?.avatar) {
+            const avatarLink = await this.bucketService.getFileLink(
+              message.user.profile.avatar,
+              'read',
+              Date.now() + this.WEEK_IN_MILLISECONDS,
+            );
 
-    this.logger.log(`Retrieved ${messages.length} messages`, { messages });
+            message.user.profile.avatar = avatarLink;
+          }
+          return message;
+        }),
+      );
+      return messagesWithProfileAvatars;
+    }
+
     return messages;
   }
 
@@ -81,7 +106,7 @@ export class MessageService {
       },
       limit: 5,
       order: [['createdAt', 'DESC']],
-      include: [{ model: User, as: 'user' }],
+      include: [{ model: User, as: 'user', include: [{ model: UserProfile, as: 'profile' }] }],
     });
 
     this.logger.log('just messages without link', messages);
@@ -93,10 +118,20 @@ export class MessageService {
             const attachment = await this.bucketService.getFileLink(
               message.attachment,
               'read',
-              Date.now() + 1000 * 60 * 60 * 24 * 7,
+              Date.now() + this.WEEK_IN_MILLISECONDS,
             );
 
             message.attachment = attachment;
+          }
+
+          if (message.user.profile?.avatar) {
+            const avatarLink = await this.bucketService.getFileLink(
+              message.user.profile.avatar,
+              'read',
+              Date.now() + this.WEEK_IN_MILLISECONDS,
+            );
+
+            message.user.profile.avatar = avatarLink;
           }
           return message;
         }),
