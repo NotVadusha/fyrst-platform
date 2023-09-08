@@ -58,6 +58,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                   type: styleVariant,
                 })} ${className}`}
                 disabled={disabled}
+                lang='en'
                 {...field}
                 onChange={e => {
                   onChangeProp?.(e);

@@ -9,5 +9,6 @@ import { UserModule } from '../user/user.module';
   imports: [SequelizeModule.forFeature([Timecard]), UserModule],
   providers: [TimecardService],
   controllers: [TimecardController],
+  exports: [TimecardService],
 })
 export class TimecardModule {}
