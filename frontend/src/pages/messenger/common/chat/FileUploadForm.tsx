@@ -35,7 +35,7 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
     if (file.size >= MAX_IMAGE_SIZE) {
       toast({
         title: 'Image is too large.',
-        description: 'Please, choose another image less than 100mb size',
+        description: 'Please, choose another image less than 100kb size',
         variant: 'destructive',
       });
       return;

@@ -12,6 +12,8 @@ import { BucketService } from '../bucket/bucket.service';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
 @Injectable()
 export class MessageService {
+  SEVEN_DAYS_IN_MILLISECONDS = 604800000;
+
   constructor(
     @InjectModel(Message)
     private readonly messageRepository: typeof Message,
@@ -39,14 +41,14 @@ export class MessageService {
       messageWithUser.attachment = await this.bucketService.getFileLink(
         messageWithUser.attachment,
         'read',
-        Date.now() + 1000 * 60 * 60 * 24 * 7,
+        Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
       );
 
     if (!!messageWithUser.user.profile?.avatar)
       messageWithUser.user.profile.avatar = await this.bucketService.getFileLink(
         messageWithUser.user.profile.avatar,
         'read',
-        Date.now() + 1000 * 60 * 60 * 24 * 7,
+        Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
       );
 
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
@@ -79,7 +81,7 @@ export class MessageService {
             const avatarLink = await this.bucketService.getFileLink(
               message.user.profile.avatar,
               'read',
-              Date.now() + 1000 * 60 * 60 * 24 * 7,
+              Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
             );
 
             message.user.profile.avatar = avatarLink;
@@ -116,7 +118,7 @@ export class MessageService {
             const attachment = await this.bucketService.getFileLink(
               message.attachment,
               'read',
-              Date.now() + 1000 * 60 * 60 * 24 * 7,
+              Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
             );
 
             message.attachment = attachment;
@@ -126,7 +128,7 @@ export class MessageService {
             const avatarLink = await this.bucketService.getFileLink(
               message.user.profile.avatar,
               'read',
-              Date.now() + 1000 * 60 * 60 * 24 * 7,
+              Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS,
             );
 
             message.user.profile.avatar = avatarLink;
