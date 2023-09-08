@@ -136,7 +136,7 @@ export function UserFiltersForm({
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <SelectContent defaultValue={'all'}>
                             <SelectItem value={'true'}>true</SelectItem>
                             <SelectItem value={'false'}>false</SelectItem>
                             <SelectItem value={'all'}>all</SelectItem>

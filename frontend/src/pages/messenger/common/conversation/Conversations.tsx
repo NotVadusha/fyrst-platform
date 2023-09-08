@@ -60,6 +60,8 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
 
   const isAuthor = lastMessage?.userId === user.id;
 
+  console.log(otherMember);
+
   return (
     <Link
       to={`/chat/${chat.id}`}
@@ -79,9 +81,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage
-            //   src={message.user.profile.avatar}
-            />
+            <AvatarImage src={otherMember.profile.avatar} />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}

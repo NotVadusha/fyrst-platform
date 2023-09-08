@@ -71,9 +71,7 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
                 key={`selected--${user.id}`}
               >
                 <Avatar className='w-6 h-6'>
-                  <AvatarImage
-                  // src={user?.profile?.avatar}
-                  />
+                  <AvatarImage src={user.profile?.avatar || ''} />
                   <AvatarFallback>{`${user.first_name?.[0]}${
                     user.last_name?.[0] ?? ''
                   }`}</AvatarFallback>
@@ -107,7 +105,7 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
                 }}
               >
                 <Avatar className='w-6 h-6'>
-                  <AvatarImage src='https://github.com/shadcn.png2' />
+                  <AvatarImage src={user.profile?.avatar || ''} />
                   <AvatarFallback>{`${user.first_name?.[0]}${
                     user.last_name?.[0] ?? ''
                   }`}</AvatarFallback>

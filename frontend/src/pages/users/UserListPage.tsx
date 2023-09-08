@@ -129,13 +129,13 @@ export function UserListPage() {
           </div>
         </div>
       </Header>
-      <div className='container mx-auto max-w-[1040px] px-6'>
+      <div className='container mx-auto max-w-[1200px] px-6'>
         <div className='flex flex-col space-y-6 mt-6'>
           <UserFiltersForm
             handleInputChange={handleInputChange}
             setSearchParams={setSearchParams}
           />
-          <div className='flex flex-col items-center gap-4 max-w-[100%] mx-auto overflow-x-auto bg-white'>
+          <div className='flex flex-col items-center gap-4 max-w-[100%] mx-auto overflow-x-auto '>
             {data?.users?.length === 0 ? (
               <p className='text-body-default font-semibold'>
                 No users to display here. Most probably, nothing matches your search query
