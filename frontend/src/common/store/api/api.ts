@@ -4,6 +4,6 @@ import { baseQueryWithReauth } from '../common/config/baseQueryWithReauth.config
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Timecards', 'Bookings', 'Notification config', 'Calendar'],
+  tagTypes: ['Timecards', 'Bookings', 'Notification config', 'Calendar', 'Events'],
   endpoints: () => ({}),
 });

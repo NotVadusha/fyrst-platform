@@ -1,3 +1,4 @@
+import { Event } from 'src/common/packages/event/types/models/Event.model';
 import { Role } from '../../../roles/types/models/Role.model';
 import { Permissions } from 'src/common/packages/permissions/types/Permissions';
 
@@ -17,6 +18,7 @@ export type User = {
   permissions: Permissions;
   facility_id: number;
   profile: Profile;
+  events: Event[];
 };
 
 interface Profile {
