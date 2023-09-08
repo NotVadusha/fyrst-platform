@@ -229,7 +229,7 @@ export class BookingService {
       }
 
       const languageCompatibility = userData.profile.languages?.some(lang =>
-        booking.languages.includes(lang),
+        booking.languages?.some(l => l.toLowerCase() === lang.toLowerCase()),
       );
 
       rating += Number(!!languageCompatibility);

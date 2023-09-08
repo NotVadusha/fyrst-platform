@@ -10,7 +10,7 @@ import { Chat } from 'shared/socketEvents';
 import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/common/Avatar/Avatar';
 import { getConversationsByUserNames } from 'src/common/store/slices/packages/messenger/messangerSlice';
 
-export const Conversations: React.FC = () => {
+export const Conversations = ({ onSelect }: { onSelect?: () => void }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -29,14 +29,14 @@ export const Conversations: React.FC = () => {
   return (
     <div className='relative'>
       <SearchInput value={searchQuery} onChange={handleChange} />
-      <ScrollArea className='h-[120px] xl:h-[400px] w-full p-2'>
+      <ScrollArea className='h-[400px] w-full p-2'>
         <div className='grid gap-4'>
           {chatsToShow?.length > 0 ? (
             chatsToShow?.map((chat: Chat) => {
               if (chat.members.length > 2) {
-                return <GroupChatLink chat={chat} key={chat.id} />;
+                return <GroupChatLink chat={chat} key={chat.id} onSelect={onSelect} />;
               }
-              return <ConversationLink chat={chat} key={chat.id} />;
+              return <ConversationLink chat={chat} key={chat.id} onSelect={onSelect} />;
             })
           ) : (
             <div className='flex items-center gap-2 xl:w-[300px]'>Nothing matches your search.</div>
@@ -47,7 +47,7 @@ export const Conversations: React.FC = () => {
   );
 };
 
-function ConversationLink({ chat }: { chat: Chat }) {
+function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }) {
   const user = useAppSelector(state => state.user);
 
   const lastMessage = chat.messages ? chat.messages[0] : null;
@@ -60,8 +60,17 @@ function ConversationLink({ chat }: { chat: Chat }) {
 
   const isAuthor = lastMessage?.userId === user.id;
 
+  console.log(otherMember);
+
   return (
-    <Link to={`/chat/${chat.id}`} key={chat.id}>
+    <Link
+      to={`/chat/${chat.id}`}
+      key={chat.id}
+      onClick={() => {
+        console.log('here');
+        onSelect?.();
+      }}
+    >
       <div
         className={cn(
           'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 truncate xl:w-[300px]',
@@ -72,9 +81,7 @@ function ConversationLink({ chat }: { chat: Chat }) {
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage
-            //   src={message.user.profile.avatar}
-            />
+            <AvatarImage src={otherMember.profile.avatar} />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}
@@ -110,7 +117,7 @@ function ConversationLink({ chat }: { chat: Chat }) {
   );
 }
 
-function GroupChatLink({ chat }: { chat: Chat }) {
+function GroupChatLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }) {
   const user = useAppSelector(state => state.user);
 
   const lastMessage = chat.messages ? chat.messages[0] : null;
@@ -123,7 +130,7 @@ function GroupChatLink({ chat }: { chat: Chat }) {
 
   const isAuthor = lastMessage?.userId === user.id;
   return (
-    <Link to={`/chat/${chat.id}`} key={chat.id}>
+    <Link to={`/chat/${chat.id}`} key={chat.id} onClick={() => onSelect?.()}>
       <div
         className={cn(
           'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 xl:w-[300px]',

@@ -13,6 +13,7 @@ import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
 import Notifications from '../../../common/components/ui/layout/notifications/Notifications';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
+import { ScrollArea } from 'src/common/components/ui/common/ScrollArea/ScrollArea';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -54,18 +55,25 @@ const Layout = () => {
 
   return (
     <div className='flex'>
-      <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[280px]'>
-        <h2 className='font-bold text-4xl'>{routerConfig.name}</h2>
-        <div className='flex flex-col gap-4'>
-          {routerConfig.mainNav.map((item, index) => (
-            <NavItem key={index} item={item} />
-          ))}
-          <Button variant='secondary' className='w-full' type='button' onClick={handleButtonClick}>
-            Logout
-          </Button>
-        </div>
+      <nav className='min-h-screen flex flex-col gap-8 p-8 bg-white w-[300px]'>
+        <h2 className='font-bold text-lg'>{routerConfig.name}</h2>
+        <ScrollArea className='h-[100vh]'>
+          <div className='flex flex-col gap-4 pr-4'>
+            {routerConfig.mainNav.map((item, index) => (
+              <NavItem key={index} item={item} />
+            ))}
+            <Button
+              variant='secondary'
+              className='w-full'
+              type='button'
+              onClick={handleButtonClick}
+            >
+              Logout
+            </Button>
+          </div>
+        </ScrollArea>
       </nav>
-      <main className='w-full bg-background'>
+      <main className='w-[calc(100%-300px)] bg-background'>
         <Outlet />
       </main>
     </div>

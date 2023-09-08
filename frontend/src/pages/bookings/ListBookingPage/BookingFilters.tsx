@@ -33,8 +33,8 @@ export const BookingFilters = ({
   return (
     <Form {...form}>
       <form className='w-full'>
-        <div className='flex gap-x-4'>
-          <div className='flex flex-col w-full'>
+        <div className='flex gap-x-4 align-baseline '>
+          <div className='w-full '>
             <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
               Status
             </label>
@@ -55,8 +55,8 @@ export const BookingFilters = ({
               onChange={handleInputChange}
             />
           </div>
-          <div className='flex flex-col w-full '>
-            <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
+          <div className='w-full '>
+            <label className='text-body-default text-blue font-medium' htmlFor='facility'>
               Facility
             </label>
             <Dropdown
@@ -69,22 +69,22 @@ export const BookingFilters = ({
               onChange={handleInputChange}
             />
           </div>
-          <div className='flex flex-col  w-full'>
+          <div className='w-full'>
             <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
               Start date
             </label>
             <TextInput
-              className='gap-y-0'
               name='startDate'
               control={form.control}
               type='date'
               id='startDate'
               label=''
               onChange={handleInputChange}
+              styleVariant='shadows'
             />
           </div>
 
-          <div className='flex flex-col w-full'>
+          <div className='w-full'>
             <label className='text-body-default text-blue font-medium' htmlFor='endDate'>
               End date
             </label>
@@ -95,6 +95,7 @@ export const BookingFilters = ({
               id='endDate'
               label=''
               onChange={handleInputChange}
+              styleVariant='shadows'
             />
           </div>
         </div>

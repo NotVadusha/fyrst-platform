@@ -3,9 +3,11 @@ import { ReactComponent as Timecard } from 'src/assets/icons/timecard.svg';
 import { ReactComponent as Profile } from 'src/assets/icons/profile.svg';
 import { ReactComponent as Message } from 'src/assets/icons/message.svg';
 import { ReactComponent as Payment } from 'src/assets/icons/payment.svg';
-import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
+import { ReactComponent as Proposal } from 'src/assets/icons/proposal.svg';
+import { ReactComponent as Calendar } from 'src/assets/icons/calendar.svg';
 import { NavItem } from '../types/NavItem';
-import { UserCog, BarChart3 } from 'lucide-react';
+import { ReactComponent as Chart } from 'src/assets/icons/chart.svg';
+import { UserCog, BarChart3, Briefcase } from 'lucide-react';
 
 export const routerConfig = {
   name: 'Fyrst',
@@ -45,7 +47,7 @@ export const routerConfig = {
           path: '/profile/edit',
         },
         {
-          title: 'Edit portfolio',
+          title: 'Portfolio',
           path: '/profile/portfolio',
         },
         {
@@ -55,10 +57,6 @@ export const routerConfig = {
         {
           title: 'Security',
           path: '/profile/security',
-        },
-        {
-          title: 'Recommendations',
-          path: '/profile/recommendations',
         },
       ],
     },
@@ -88,6 +86,12 @@ export const routerConfig = {
       neededPermission: 'manageUsers',
     },
     {
+      title: 'Recommendations',
+      icon: Briefcase,
+      mainPath: '/recommendations',
+      path: '/recommendations',
+    },
+    {
       title: 'Reports',
       icon: BarChart3,
       mainPath: '/reports',
@@ -96,5 +100,12 @@ export const routerConfig = {
       isPrivate: true,
       neededRoles: ['FACILITY_MANAGER'],
     },
+    {
+      title: 'Interview',
+      icon: Proposal,
+      mainPath: '/meeting-chat',
+      path: '/meeting-chat',
+    },
+    { title: 'Calendar', icon: Calendar, mainPath: '/calendar', path: '/calendar', items: [] },
   ] as NavItem[],
 };

@@ -66,7 +66,7 @@ const NotificationsForm = () => {
             </div>
           </div>
           <Button type='submit' className='w-full' disabled={isLoading}>
-            Publish
+            Submit
           </Button>
         </form>
       </Form>

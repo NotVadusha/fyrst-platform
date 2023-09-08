@@ -5,7 +5,7 @@ import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
 import MessangerPage from '../../pages/messenger/MessangerPage';
-import PaymentsPage from '../../pages/payments/PaymentsPage';
+import PaymentsPage from '../../pages/payments/PaymentsList/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
 import ErrorPage from '../../pages/common/error/ErrorPage';
@@ -38,6 +38,7 @@ import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmail
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
 import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
 import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
+import { CalendarPage } from 'src/pages/calendar/CalendarPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -52,6 +53,11 @@ export const router = createBrowserRouter([
           </ConfigurateProtectedRoute>
         ),
         children: [
+          {
+            path: 'calendar',
+            errorElement: <ErrorPage></ErrorPage>,
+            children: [{ index: true, element: <CalendarPage></CalendarPage> }],
+          },
           {
             path: 'booking',
             errorElement: <ErrorPage />,
@@ -129,6 +135,11 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: 'recommendations',
+            errorElement: <ErrorPage />,
+            element: <JobRecommendations />,
+          },
+          {
             path: 'profile',
             errorElement: <ErrorPage />,
             children: [
@@ -151,10 +162,6 @@ export const router = createBrowserRouter([
               {
                 path: 'security',
                 element: <ProfileSecurity />,
-              },
-              {
-                path: 'recommendations',
-                element: <JobRecommendations />,
               },
             ],
           },

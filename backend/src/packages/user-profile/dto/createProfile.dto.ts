@@ -14,7 +14,7 @@ export class CreateProfileDto {
   description?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   education?: string;
 
   @IsString()
@@ -23,4 +23,8 @@ export class CreateProfileDto {
   @IsString()
   @IsOptional()
   avatar?: string;
+
+  @IsString()
+  @IsOptional()
+  stripeAccountId?: string;
 }

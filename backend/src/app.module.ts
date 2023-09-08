@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { development } from 'src/config';
+import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
 
 import {
   EmailConfirmationModule,
@@ -17,12 +18,15 @@ import {
   MessageModule,
   NotificationsConfigModule,
   BucketModule,
-  NotificationModule,
-  WebSocketModule,
   PermissionsModule,
   StatisticsModule,
+  PaymentModule,
+  StripeModule,
+  InvoiceModule,
+  NotificationModule,
+  WebSocketModule,
 } from './packages';
-import { ChatGateway } from './packages/websocket/chat.gateway';
+
 @Module({
   imports: [
     SequelizeModule.forRoot(development),
@@ -40,10 +44,14 @@ import { ChatGateway } from './packages/websocket/chat.gateway';
     MessageModule,
     NotificationsConfigModule,
     BucketModule,
-    NotificationModule,
-    WebSocketModule,
     PermissionsModule,
     StatisticsModule,
+    CalendarEventsModule,
+    PaymentModule,
+    StripeModule,
+    InvoiceModule,
+    NotificationModule,
+    WebSocketModule,
   ],
   controllers: [],
   providers: [],

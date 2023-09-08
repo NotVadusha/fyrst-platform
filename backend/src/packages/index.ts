@@ -16,5 +16,10 @@ export { NotificationsConfigModule } from './notifications-config/notifications-
 export { BucketModule } from './bucket/bucket.module';
 export { NotificationModule } from './notification/notification.module';
 export { WebSocketModule } from './websocket/websocket.module';
+export { PaymentModule } from './payment/payment.module';
+export { StripeModule } from './stripe/stripe.module';
+export { InvoiceModule } from './invoice/invoice.module';
 export { PermissionsModule } from './permissions/permissions.module';
 export { StatisticsModule } from './statistics/statistics.module';
+export { CalendarEventsModule } from './calendar-events/calendar-events.module';
+export { CalendarModule } from './calendar/calendar.module';
