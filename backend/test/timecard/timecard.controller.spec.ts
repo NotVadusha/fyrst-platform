@@ -13,10 +13,6 @@ import {
 import { GetAllTimecardsDto } from '../../src/packages/timecard/dto/get-all-timecards.dto';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 import { UserService } from 'src/packages/user/user.service';
-import { RoleGuard } from 'src/packages/roles/guards/roles.guard';
-import { RoleGuardMock } from '../common/guards/RoleGuardMock';
-import { PermissionsGuard } from 'src/packages/permissions/guards/permissions.guard';
-import { PermissionsGuardMock } from 'test/common/guards/PermissionsGuardMock';
 
 describe('TimecardController', () => {
   let timecardController: TimecardController;
@@ -37,12 +33,7 @@ describe('TimecardController', () => {
           useValue: {},
         },
       ],
-    })
-      .overrideGuard(RoleGuard)
-      .useValue(RoleGuardMock)
-      .overrideGuard(PermissionsGuard)
-      .useValue(PermissionsGuardMock)
-      .compile();
+    }).compile();
 
     timecardController = moduleRef.get<TimecardController>(TimecardController);
     timecardService = moduleRef.get<TimecardService>(TimecardService);
