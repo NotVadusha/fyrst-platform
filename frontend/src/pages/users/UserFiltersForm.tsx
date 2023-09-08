@@ -127,7 +127,7 @@ export function UserFiltersForm({
                       <FormControl>
                         {/*eslint-disable-next-line */}
                         {/*@ts-ignore*/}
-                        <Select onValueChange={handleInputChange} defaultValue={'all'}>
+                        <Select onValueChange={handleInputChange} defaultValue='all'>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
