@@ -15,7 +15,15 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children, image, text }) => {
 
     if (!accessToken) return;
 
-    const payload = jwtDecode<JWTPayload>(accessToken ?? '');
+    let payload: JWTPayload;
+
+    try {
+      payload = jwtDecode<JWTPayload>(accessToken ?? '');
+    } catch (err) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      return;
+    }
 
     const refreshUserTokens = async () => {
       const refreshResult = await (
