@@ -18,9 +18,11 @@ import { AppGateway } from 'src/app.gateway';
 import sequelize from 'sequelize';
 import { BucketService } from '../bucket/bucket.service';
 import * as crypto from 'crypto';
+import { UserProfile } from '../user-profile/entities/user-profile.entity';
 @Injectable()
 export class ChatService {
   MAX_IMAGE_SIZE = 100 * 1024;
+  WEEK_IN_MILLISECONDS = 604800000;
 
   constructor(
     @InjectModel(Chat)
@@ -38,7 +40,10 @@ export class ChatService {
   ) {}
 
   async create(createdData: CreateChatDto & { ownerId: number }) {
-    const members = await this.userRepository.findAll({ where: { id: createdData.members } });
+    const members = await this.userRepository.findAll({
+      where: { id: createdData.members },
+      include: [{ model: UserProfile, as: 'profile' }],
+    });
 
     if (members.find(({ id }) => id === createdData.ownerId)) {
       throw new HttpException('You cannot add yourself to a conversation', HttpStatus.BAD_REQUEST);
@@ -54,9 +59,26 @@ export class ChatService {
       );
     }
 
-    const owner = await this.userRepository.findOne({ where: { id: createdData.ownerId } });
+    const owner = await this.userRepository.findOne({
+      where: { id: createdData.ownerId },
+      include: [{ model: UserProfile, as: 'profile' }],
+    });
 
-    const allMembers = [...members, owner];
+    const allMembers = await Promise.all(
+      [...members, owner].map(async member => {
+        if (member.profile?.avatar) {
+          const avatarLink = await this.bucketService.getFileLink(
+            member.profile.avatar,
+            'read',
+            Date.now() + this.WEEK_IN_MILLISECONDS,
+          );
+
+          member.profile.avatar = avatarLink;
+        }
+
+        return member;
+      }),
+    );
 
     if (allMembers.length === 2) {
       const conv = await this.findUserConversations(allMembers.map(({ id }) => id));
@@ -142,7 +164,7 @@ export class ChatService {
                 separate: true,
                 include: [{ model: User, as: 'user' }],
               },
-              { model: User, as: 'members' },
+              { model: User, as: 'members', include: [{ model: UserProfile, as: 'profile' }] },
             ],
           },
         ],
@@ -156,6 +178,28 @@ export class ChatService {
         ({ messages: messagesA }, { messages: messagesB }) =>
           messagesB?.[0]?.createdAt - messagesA?.[0]?.createdAt,
       );
+
+    if (chats) {
+      return await Promise.all(
+        chats.map(async chat => {
+          chat.members = await Promise.all(
+            chat.members.map(async member => {
+              if (member.profile?.avatar) {
+                const avatarLink = await this.bucketService.getFileLink(
+                  member.profile.avatar,
+                  'read',
+                  Date.now() + this.WEEK_IN_MILLISECONDS,
+                );
+
+                member.profile.avatar = avatarLink;
+              }
+              return member;
+            }),
+          );
+          return chat;
+        }),
+      );
+    }
 
     this.logger.log('chats: ', chats);
 
@@ -197,24 +241,40 @@ export class ChatService {
   async find(id: number) {
     const chat = await this.chatRepository.findByPk(id, {
       include: [
-        { model: Message, include: [{ model: User, as: 'user' }] },
+        {
+          model: Message,
+          include: [{ model: User, as: 'user', include: [{ model: UserProfile, as: 'profile' }] }],
+        },
         { model: User, as: 'members' },
       ],
     });
 
     if (chat && chat.messages) {
       chat.messages = await Promise.all(
-        chat.messages.map(async m => {
-          if (m.attachment) {
+        chat.messages.map(async message => {
+          if (message.attachment) {
             const attachmentLink = await this.bucketService.getFileLink(
-              m.attachment,
+              message.attachment,
               'read',
-              Date.now() + 1000 * 60 * 60 * 24 * 7,
+              Date.now() + this.WEEK_IN_MILLISECONDS,
             );
 
-            m.attachment = attachmentLink;
+            message.attachment = attachmentLink;
           }
-          return m;
+
+          if (message.user.profile?.avatar) {
+            const avatarLink = await this.bucketService.getFileLink(
+              message.user.profile.avatar,
+              'read',
+              Date.now() + this.WEEK_IN_MILLISECONDS,
+            );
+
+            message.user.profile.avatar = avatarLink;
+          }
+
+          this.logger.log('chat message', message.dataValues);
+
+          return message;
         }),
       );
     }

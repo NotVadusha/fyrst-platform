@@ -13,6 +13,7 @@ import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { Chat } from 'src/packages/chat/entities/chat.entity';
 import { Permissions } from 'src/packages/permissions/entities/permissions.entity';
 import { Facility } from 'src/packages/facility/entities/facility.entity';
+import { UserProfile } from 'src/packages/user-profile/entities/user-profile.entity';
 
 @Table({ tableName: 'Users' })
 export class User extends Model {
@@ -103,6 +104,10 @@ export class User extends Model {
   @ForeignKey(() => Facility)
   @Column
   facility_id: number;
+
+  // Define the association to UserProfile using @HasOne
+  @HasOne(() => UserProfile)
+  profile: UserProfile;
 }
 
 @Table
