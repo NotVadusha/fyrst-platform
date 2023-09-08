@@ -172,6 +172,7 @@ const MessageElement = ({
       {!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
+          path={message.user.profile.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
@@ -191,6 +192,7 @@ const MessageElement = ({
       {!!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
+          path={message.user.profile.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
@@ -200,20 +202,19 @@ const MessageElement = ({
 };
 
 function UserAvatar({
+  path,
   isOnline,
   className,
   fallback,
 }: {
+  path: string;
   isOnline: boolean;
   className?: string;
   fallback: string;
 }) {
   return (
     <Avatar className={cn('relative overflow-visible', className)}>
-      <AvatarImage
-        //   src={message.user.profile.avatar}
-        className='rounded-full'
-      />
+      <AvatarImage src={path} className='rounded-full' />
       <AvatarFallback>{fallback}</AvatarFallback>
       <span
         className={cn('absolute right-0 bottom-0 w-3 h-3 border border-black rounded-full', {

@@ -26,6 +26,10 @@ const inputVariants = cva(styles.input, {
       true: styles.invalid,
       false: '',
     },
+    type: {
+      shadows: styles.shadows,
+      borders: styles.borders,
+    },
   },
 });
 
@@ -34,10 +38,11 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
   name: string;
   label: string;
   disabled?: boolean;
+  styleVariant?: 'shadows' | 'borders';
 }
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({ control, name, label, type, disabled, className, ...props }, ref) => {
+  ({ control, name, label, type, disabled, className, styleVariant, ...props }, ref) => {
     const { onChange: onChangeProp } = props;
     return (
       <FormField
@@ -48,7 +53,10 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             <FormControl>
               <input
                 type={type}
-                className={`${inputVariants({ invalid: !!useFormField().error })} ${className}`}
+                className={`${inputVariants({
+                  invalid: !!useFormField().error,
+                  type: styleVariant,
+                })} ${className}`}
                 disabled={disabled}
                 {...field}
                 onChange={e => {

@@ -3,11 +3,16 @@
 }
 
 .label {
-  @apply text-placeholder absolute text-sm font-medium left-3 top-3.5 m-0 pointer-events-none transition-all;
+  @apply text-placeholder absolute text-sm font-medium left-3 top-4 m-0 pointer-events-none transition-all;
 }
 
 .input {
-  @apply px-2.5 py-2 pt-4 outline-none border-solid rounded-lg border-grey border text-sm font-medium text-blue leading-none w-full;
+  @apply px-2.5 pb-2 pt-5 rounded-lg outline-none border-grey border text-sm leading-4 font-medium text-blue w-full;
+}
+
+.input[type='date'] ~ .label,
+.label.active {
+  @apply text-xs -translate-y-3;
 }
 
 .input:focus-within ~ .label,
@@ -27,6 +32,9 @@
   @apply border-transparent bg-input-disabled;
 }
 
+.input.shadows {
+  @apply border-transparent shadow-dropdown;
+}
 .error {
   @apply m-0 mt-1 pl-3 text-xs text-red;
 }
