@@ -81,10 +81,10 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src={otherMember.profile.avatar} />
+            <AvatarImage src={(otherMember as any)?.profile?.avatar} />
             <AvatarFallback>
-              {otherMember.first_name?.[0]}
-              {otherMember.last_name?.[0] ?? ''}
+              {otherMember?.first_name?.[0]}
+              {otherMember?.last_name?.[0] ?? ''}
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col max-w-[200px]'>
@@ -162,7 +162,7 @@ function GroupChatLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }
                 >
                   {isAuthor
                     ? 'You,'
-                    : `${lastMessage.user?.first_name} ${lastMessage?.user.last_name ?? ''},`}
+                    : `${lastMessage.user?.first_name} ${lastMessage?.user?.last_name ?? ''},`}
                 </span>
                 {lastMessage && lastMessage.messageContent}
               </p>
