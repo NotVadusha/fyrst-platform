@@ -39,7 +39,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children, image, text }) => {
       } else {
         const tokens = refreshResult as TokenResponseDto;
 
-        if (tokens) {
+        if (tokens?.accessToken && tokens?.refreshToken) {
           localStorage.setItem('accessToken', tokens?.accessToken);
           localStorage.setItem('refreshToken', tokens?.refreshToken);
 
