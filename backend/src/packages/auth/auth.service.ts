@@ -132,6 +132,12 @@ export class AuthService {
     await this.redisService.set(id.toString(), refreshToken, 7 * 24 * 60 * 60);
   }
 
+  private async setGoogleAccessToken(id: number, accessToken: string) {
+    console.log('id: ', id);
+    console.log('access_token: ', accessToken);
+    await this.redisService.set(`google_access_token_${id}`, accessToken, 7 * 24 * 60 * 60);
+  }
+
   async googleAuthentication(googleDto: GoogleDto) {
     try {
       let user = await this.userService.findOneByEmail(googleDto.email);
@@ -155,6 +161,7 @@ export class AuthService {
 
       const tokens = await this.getTokens({ id: userInfo.id });
       this.updateRefreshToken(userInfo.id, tokens.refreshToken);
+      await this.setGoogleAccessToken(userInfo.id, googleDto.accessToken);
       return {
         tokens,
         user: userInfo,
