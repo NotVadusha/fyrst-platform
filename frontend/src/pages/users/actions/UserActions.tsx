@@ -3,7 +3,7 @@ import { Button } from 'src/common/components/ui/common/Button';
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { ReactComponent as Settings } from 'src/assets/icons/settings.svg';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
-import { EditUserForm, EditUserFormInputs } from './EditUserForm';
+import { EditUserForm, EditUserFormValues } from './EditUserForm/EditUserForm';
 import { useUpdateUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ export function UserActions({ user }: { user: User }) {
   const [editUser, { isLoading: isEditUsersLoading }] = useUpdateUserMutation();
   const navigate = useNavigate();
 
-  function handleSubitEditUser(values: EditUserFormInputs) {
+  function handleSubitEditUser(values: EditUserFormValues) {
     editUser({
       id: user.id,
       user: { ...values },
