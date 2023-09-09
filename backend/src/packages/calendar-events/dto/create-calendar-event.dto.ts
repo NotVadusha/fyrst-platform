@@ -1,15 +1,6 @@
-import { IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateCalendarEventDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsIn(['Booking', 'Interview'])
-  eventType: string;
-
-  @IsNumber()
-  @IsOptional()
-  bookingId?: number;
-
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -17,7 +8,15 @@ export class CreateCalendarEventDto {
   @IsNotEmpty()
   description: string;
 
+  @IsDate()
   @IsNotEmpty()
+  startDate: Date;
+
+  @IsDate()
+  @IsNotEmpty()
+  endDate: Date;
+
   @IsNumber()
-  calendarId: number;
+  @IsNotEmpty()
+  user_id: number;
 }

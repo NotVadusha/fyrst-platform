@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'src/common/router/common/config/router-config.config';
 import { ReactComponent as ArrowDown } from 'src/assets/icons/arrow-down.svg';
@@ -14,41 +14,24 @@ import { cn } from 'src/common/helpers/helpers';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 import { ReactComponent as BurgerIcon } from 'src/assets/icons/burger.svg';
 import { ScrollArea } from '../../../common/components/ui/common/ScrollArea/ScrollArea';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from 'src/common/components/ui/common/Sheet/Sheet';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Layout = () => {
-  const [logout] = authApi.useLogoutMutation();
+  const [open, setIsOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
-  const burgerButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  const handleButtonClick = async () => {
-    try {
-      await logout().unwrap();
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      dispatch(clearUser());
-      navigate('/auth/signin');
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const user = useAppSelector(selectUser);
-
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (burgerButtonRef.current && burgerButtonRef.current.contains(event.target as Node)) {
-      return;
-    }
-
-    if (isNavOpen && navRef.current && !navRef.current.contains(event.target as Node)) {
-      setIsNavOpen(false);
-    }
-  };
 
   useEffect(() => {
     if (user?.id) return;
@@ -67,67 +50,71 @@ const Layout = () => {
     getUser();
   }, []);
 
-  useEffect(() => {
-    if (isNavOpen) {
-      document.addEventListener('mousedown', handleOutsideClick);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [isNavOpen]);
-
-  const handleMenuBurgerClick = async () => {
-    setIsNavOpen(prev => !prev);
-  };
-
   return (
-    <div className='flex flex-col lg:flex-row'>
-      <button
-        className='fixed lg:hidden top-4 left-4 lg:left-auto z-50 p-4 h-[55px] w-[70px] flex justify-center items-center'
-        ref={burgerButtonRef}
-        onClick={handleMenuBurgerClick}
-      >
-        <BurgerIcon className='w-[20px] h-[20px]' />
-      </button>
+    <div className='flex flex-col lg:flex-row relative'>
+      <Sheet open={open} onOpenChange={setIsOpen}>
+        <SheetTrigger>
+          <button className='fixed lg:hidden top-4 left-4 lg:left-auto z-50 p-4 h-[55px] w-[70px] flex justify-center items-center'>
+            <BurgerIcon className='w-[20px] h-[20px]' />
+          </button>
+        </SheetTrigger>
+        <SheetContent side={'left'}>
+          <SheetHeader>
+            <SheetTitle>Fyrst</SheetTitle>
+            <MainNav onSelect={() => setIsOpen(false)} />
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
       <nav
         ref={navRef}
-        className={`${
-          isNavOpen ? 'fixed top-20' : ''
-        } w-[300px] min-h-screen flex flex-col gap-8 p-8 bg-white ${
-          isNavOpen ? 'block' : 'hidden'
-        } lg:static lg:block z-20 mt-[8px] mb-10`}
+        className={cn(
+          'w-[300px] top-0 left-0 flex flex-col gap-8 p-8 pb-0  h-screen bg-white fixed lg:block z-20 mt-[8px]',
+          { 'fixed top-20 block': isNavOpen, hidden: !isNavOpen },
+        )}
       >
         <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>{routerConfig.name}</h2>
-        <ScrollArea className='h-[100vh]'>
-          <div className='flex flex-col gap-4 pr-4'>
-            {routerConfig.mainNav.map((item, index) => (
-              <NavItem key={index} item={item} closeNav={() => setIsNavOpen(prev => !prev)} />
-            ))}
-            <Button
-              variant='secondary'
-              className='w-full'
-              type='button'
-              onClick={handleButtonClick}
-            >
-              Logout
-            </Button>
-          </div>
-        </ScrollArea>
+        <MainNav />
       </nav>
-      <main className='w-full lg:w-[calc(100%-300px)]  bg-background'>
+      <main className='w-full lg:w-[calc(100%-300px)] lg:ml-[300px]  bg-background'>
         <Outlet />
       </main>
     </div>
   );
 };
 
-function NavItem({ item, closeNav }: { item: INavItem; closeNav: () => void }) {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+function MainNav({ onSelect }: { onSelect?: () => void }) {
+  const [logout] = authApi.useLogoutMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    if (closeNav) closeNav();
+  const handleButtonClick = async () => {
+    try {
+      await logout().unwrap();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      dispatch(clearUser());
+      navigate('/auth/signin');
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  return (
+    <ScrollArea className='h-[calc(100vh-88px-4rem)] h-[calc(100vh-88px-2rem)]'>
+      <div className='flex flex-col gap-4 pr-4'>
+        {routerConfig.mainNav.map((item, index) => (
+          <NavItem key={index} item={item} onSelect={onSelect} />
+        ))}
+        <Button variant='secondary' className='w-full' type='button' onClick={handleButtonClick}>
+          Logout
+        </Button>
+      </div>
+    </ScrollArea>
+  );
+}
+
+function NavItem({ item, onSelect }: { item: INavItem; onSelect?: () => void }) {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   const location = useLocation();
 
@@ -153,7 +140,7 @@ function NavItem({ item, closeNav }: { item: INavItem; closeNav: () => void }) {
     <>
       <Link
         to={item.path}
-        onClick={handleClick}
+        onClick={() => onSelect?.()}
         className={cn('p-2 rounded-md flex  w-full justify-between', {
           'bg-blue': isCurrentPath,
           hidden: !canAccess,
@@ -193,7 +180,7 @@ function NavItem({ item, closeNav }: { item: INavItem; closeNav: () => void }) {
             <Link
               to={child.path}
               key={indx}
-              onClick={closeNav}
+              onClick={() => onSelect?.()}
               className={cn('ml-6', { 'text-blue': isCurrentPath, hidden: !canAccess })}
             >
               <span className='ml-6'>{child.title}</span>

@@ -11,7 +11,7 @@ import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import { RegistrationDto } from './dto/registration.dto';
 import { UserProfileService } from '../user-profile/user-profile.service';
-import { CalendarService } from '../calendar/calendar.service';
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -22,7 +22,6 @@ export class AuthService {
     private redisService: RedisService,
     private emailConfirmationService: EmailConfirmationService,
     private userProfileService: UserProfileService,
-    private calendarService: CalendarService,
   ) {}
 
   async getTokens(payload: JWTPayload) {
@@ -53,7 +52,6 @@ export class AuthService {
       this.userProfileService.create({
         user_id: createdUser.id,
       });
-      this.calendarService.create({ userId: createdUser.id });
       await this.emailConfirmationService.sendVerificationLink(createdUser.email);
       return {
         message: 'Email was sended',
@@ -149,7 +147,6 @@ export class AuthService {
         this.userProfileService.create({
           user_id: user.id,
         });
-        this.calendarService.create({ userId: user.id });
       }
 
       const userInfo = { ...user.dataValues };
