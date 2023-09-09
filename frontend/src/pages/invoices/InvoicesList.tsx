@@ -8,6 +8,7 @@ import { InvoicesFilters } from './InvoicesFilters';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { invoicesApi } from 'src/common/store/api/packages/invoices/invoicesApi';
+import { RefreshButton } from '../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 const LIMIT = 5;
 
@@ -66,8 +67,11 @@ const InvoicesList = () => {
   }, []);
 
   return (
-    <div className={styles.invoicesContainer}>
-      <div className={styles.invoicesHeader}>Invoices</div>
+    <div className='container lg:max-w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10 space-y-6'>
+      <div className='flex items-center justify-between'>
+        <h5 className='text-h5 text-dark-grey font-semibold'>Invoices</h5>
+        <RefreshButton />
+      </div>
       <InvoicesFilters
         handleInputChange={handleInputChange}
         handleSelectChange={handleSelectChange}
@@ -88,7 +92,7 @@ const InvoicesList = () => {
               columns={invoicesColumns}
               getRowId={item => item.id}
             />
-            <div className='flex justify-end my-6'>
+            <div className='md:flex md:justify-end my-6'>
               {totalPages > 1 && (
                 <Pagination
                   totalCount={totalPages}

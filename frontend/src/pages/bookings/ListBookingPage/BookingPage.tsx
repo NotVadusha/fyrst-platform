@@ -12,7 +12,8 @@ import { hasPermissions } from 'src/common/helpers/authorization/hasPermissions'
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
 import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
-
+import { ReactComponent as ExportIcon } from 'src/assets/icons/export.svg';
+import { RefreshButton } from '../../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
 const LIMIT = 6;
 
 const BookingPage = () => {
@@ -74,22 +75,27 @@ const BookingPage = () => {
                 variant='secondary'
                 onClick={handleExportCSV}
                 disabled={data?.total === 0 || isCSVLoading}
+                className='text-sm md:text-base'
               >
                 {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </Button>
               <Link to='create'>
-                <Button variant='primary'>Create new booking</Button>
+                <Button variant='primary' className='text-sm md:text-base'>
+                  Create booking
+                </Button>
               </Link>
             </div>
           </div>
         )}
       </Header>
       <div className='container lg:w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10'>
-        <h5 className='text-2xl leading-6 font-semibold text-dark-grey mb-6'>Bookings</h5>
+        <div className='flex items-center justify-between mb-6'>
+          <h5 className='text-2xl leading-6 font-semibold text-dark-grey'>Bookings</h5>
+          <RefreshButton />
+        </div>
         <div className='flex justify-between gap-2'>
           <BookingFilters handleInputChange={handleInputChange}></BookingFilters>
         </div>
-
         {isFetching ? (
           <div className='flex justify-center min-h-[8rem]'>
             <Spinner size='lg' />
@@ -101,7 +107,7 @@ const BookingPage = () => {
         ) : (
           <div className='mt-6'>
             <BookingGrid bookings={data?.bookings ? data.bookings : []}></BookingGrid>
-            <div className=' float-right'>
+            <div className=' md:float-right'>
               <Pagination
                 value={currentPage}
                 totalCount={totalPages}

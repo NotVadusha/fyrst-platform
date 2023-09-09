@@ -57,12 +57,12 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
     })) || [];
 
   return (
-    <div className={styles.invoicesFilters}>
+    <>
       <Form {...form}>
         <form>
-          <div className='flex gap-x-4'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-6 w-full'>
             {userRoleId !== 1 ? (
-              <div className='flex flex-col gap-y-2 w-[250px]'>
+              <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
                 <label className='text-body-default text-blue font-medium' htmlFor='payee'>
                   Payee
                 </label>
@@ -103,7 +103,7 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
                 />
               </div>
             ) : null}
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
                 Start date
               </label>
@@ -126,7 +126,7 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
                 )}
               />
             </div>
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='endDate'>
                 End date
               </label>
@@ -152,7 +152,6 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
           </div>
         </form>
       </Form>
-      <RefreshButton />
-    </div>
+    </>
   );
 };

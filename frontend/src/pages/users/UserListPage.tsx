@@ -20,6 +20,7 @@ import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { useAppDispatch, useAppSelector } from '../../common/hooks/redux';
 import { exportCSV } from '../../common/store/slices/packages/export-csv/exportCSVSlice';
 import { calculateTotalPages } from 'src/common/helpers/helpers';
+import { RefreshButton } from '../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -129,37 +130,41 @@ export function UserListPage() {
           </div>
         </div>
       </Header>
-      <div className='container mx-auto max-w-[1200px] px-6'>
-        <div className='flex flex-col space-y-6 mt-6'>
+      <div className='container lg:max-w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10 space-y-6 xl:max-w-[1150px]'>
+        <div className='flex items-center justify-between mb-6'>
+          <h5 className='text-2xl leading-6 font-semibold text-dark-grey'>Users</h5>
+          <RefreshButton />
+        </div>
+        <div className='flex justify-between gap-2'>
           <UserFiltersForm
             handleInputChange={handleInputChange}
             setSearchParams={setSearchParams}
           />
-          <div className='flex flex-col items-center gap-4 max-w-[100%] mx-auto overflow-x-auto '>
-            {data?.users?.length === 0 ? (
-              <p className='text-body-default font-semibold'>
-                No users to display here. Most probably, nothing matches your search query
-              </p>
-            ) : (
-              <Table
-                className='w-full'
-                columns={columns}
-                items={data?.users ?? []}
-                getRowId={item => {
-                  return item.id;
-                }}
+        </div>
+        <div className='flex flex-col items-center gap-4 overflow-x-auto '>
+          {data?.users?.length === 0 ? (
+            <p className='text-body-default font-semibold'>
+              No users to display here. Most probably, nothing matches your search query
+            </p>
+          ) : (
+            <Table
+              className='w-full'
+              columns={columns}
+              items={data?.users ?? []}
+              getRowId={item => {
+                return item.id;
+              }}
+            />
+          )}
+          <div className='self-center md:justify-end md:self-end md:float-right'>
+            {!!totalPages && (
+              <Pagination
+                onChange={setCurrentPage}
+                value={currentPage}
+                siblingsCount={2}
+                totalCount={totalPages}
               />
             )}
-            <div className='justify-end self-end float-right'>
-              {!!totalPages && (
-                <Pagination
-                  onChange={setCurrentPage}
-                  value={currentPage}
-                  siblingsCount={2}
-                  totalCount={totalPages}
-                />
-              )}
-            </div>
           </div>
         </div>
       </div>

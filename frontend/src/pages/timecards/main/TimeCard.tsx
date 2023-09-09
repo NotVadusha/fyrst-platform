@@ -15,6 +15,7 @@ import { User } from 'src/common/packages/user/types/models/User.model';
 import { hasRole } from 'src/common/helpers/authorization/hasRole';
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
 import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
+import { RefreshButton } from '../../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 const LIMIT = 5;
 
@@ -92,6 +93,7 @@ const TimeCardPage = () => {
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
             <Button
+              className='text-sm md:text-base'
               variant='secondary'
               onClick={handleExportCSV}
               disabled={data?.total === 0 || isCSVLoading}
@@ -100,15 +102,20 @@ const TimeCardPage = () => {
             </Button>
             {hasPermissions(['manageBookings'], user as User) && (
               <Link to='/booking/create'>
-                <Button variant='primary'>Create new booking</Button>
+                <Button variant='primary' className='text-sm md:text-base'>
+                  Create booking
+                </Button>
               </Link>
             )}
           </div>
         </div>
       </Header>
-      <div className='container mx-auto max-w-[1000px] px-6'>
-        <div className='flex flex-col space-y-6 mt-6'>
-          <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
+      <div className='container lg:max-w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10'>
+        <div className='flex flex-col space-y-6'>
+          <div className='flex items-center justify-between'>
+            <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
+            <RefreshButton />
+          </div>
           <TimecardFiltersForm
             handleInputChange={handleInputChange}
             handleSelectChange={handleSelectChange}
@@ -131,7 +138,7 @@ const TimeCardPage = () => {
                     items={data ? data.items : []}
                     getRowId={item => item.id}
                   />
-                  <div className='flex self-end'>
+                  <div className='md:flex md:self-end'>
                     {totalPages > 1 && (
                       <Pagination
                         totalCount={totalPages}

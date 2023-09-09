@@ -66,7 +66,7 @@ export const AvatarUploader = ({
   return (
     <div
       className='absolute w-full h-max py-8 2xl:h-full
-       bg-grey/50 left-0 top-0'
+       bg-grey/50 left-0 top-0 z-[9999]'
       onClick={() => setShown(false)}
     >
       <div
