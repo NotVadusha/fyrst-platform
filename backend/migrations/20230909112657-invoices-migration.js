@@ -20,7 +20,7 @@ module.exports = {
       timecardId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Timecards', // Make sure to match the actual table name
+          model: 'Timecards',
           key: 'id',
         },
       },

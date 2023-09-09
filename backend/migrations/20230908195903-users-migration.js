@@ -48,7 +48,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Roles', // Make sure to match the actual table name
+          model: 'Roles',
           key: 'id',
         },
       },
@@ -56,7 +56,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'Chats', // Make sure to match the actual table name
+          model: 'Chats',
           key: 'id',
         },
       },
@@ -64,7 +64,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'Facility', // Make sure to match the actual table name
+          model: 'Facility',
           key: 'id',
         },
       },
