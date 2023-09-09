@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
 import { Button } from 'src/common/components/ui/common/Button';
-import { EditUserFormInputs, EditUserForm } from './EditUserForm';
+import { EditUserFormValues, EditUserForm } from './EditUserForm/EditUserForm';
 import { useAddUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
@@ -11,7 +11,7 @@ export function AddUserButton() {
   const [addUser, { isLoading: isAddUserLoading }] = useAddUserMutation();
   const navigate = useNavigate();
 
-  function handleSubmitAddUser(values: EditUserFormInputs) {
+  function handleSubmitAddUser(values: EditUserFormValues) {
     addUser({ ...values })
       .unwrap()
       .then(() => {

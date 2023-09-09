@@ -13,5 +13,6 @@ import { NotificationGateway } from '../websocket/notification.gateway';
   imports: [SequelizeModule.forFeature([Timecard]), NotificationModule],
   providers: [TimecardService],
   controllers: [TimecardController],
+  exports: [TimecardService],
 })
 export class TimecardModule {}

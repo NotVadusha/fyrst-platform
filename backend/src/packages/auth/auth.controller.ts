@@ -9,6 +9,7 @@ import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessageResponse, SignInResponse, TokenResponse } from 'src/helpers/responceClasses';
 import { RegistrationDto } from './dto/registration.dto';
 const cookie = require('cookie');
+
 @ApiTags('Authorization and authentication endpoints')
 @Controller('auth')
 export class AuthController {

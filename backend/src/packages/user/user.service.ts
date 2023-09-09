@@ -19,6 +19,7 @@ import * as Papa from 'papaparse';
 import { flatten } from 'flat';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
 import { BucketService } from '../bucket/bucket.service';
+import { Event } from '../calendar-events/entities/event.entity';
 
 @Injectable()
 export class UserService {
@@ -248,5 +249,11 @@ export class UserService {
       createInfo.facility_id = null;
       this.logger.log(JSON.stringify(createInfo));
     }
+  }
+
+  async getUserWithEvents(id: number) {
+    const user = this.userRepository.findOne({ where: { id }, include: [Event] });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 }
