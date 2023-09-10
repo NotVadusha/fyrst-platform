@@ -133,8 +133,6 @@ export class AuthService {
   }
 
   private async setGoogleAccessToken(id: number, accessToken: string) {
-    console.log('id: ', id);
-    console.log('access_token: ', accessToken);
     await this.redisService.set(`google_access_token_${id}`, accessToken, 7 * 24 * 60 * 60);
   }
 

@@ -39,6 +39,8 @@ export const googleDtoMock: GoogleDto = {
   first_name: 'string',
   last_name: 'string',
   email: 'string@gmail.com',
+  accessToken: 'ya312oi31231opqwie',
+  refreshToken: 'yasda231231231231',
 };
 
 export const registrationMock: RegistrationDto = {
