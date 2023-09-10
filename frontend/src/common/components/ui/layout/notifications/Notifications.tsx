@@ -11,7 +11,7 @@ import { cva } from 'class-variance-authority';
 import { read } from 'fs';
 
 const panelVariants = cva(
-  'fixed left-full top-0 bottom-0 w-[420px] p-6 pt-28 bg-white shadow-lg -z-[1] transition-transform',
+  'fixed left-full top-0 bottom-0 w-[420px] p-6 pt-28 bg-white shadow-lg -z-[10] transition-transform',
   {
     variants: {
       open: {
@@ -82,7 +82,7 @@ function Notifications() {
           <div className='absolute right-1 top-1 h-2 aspect-square bg-green-2 rounded-full'></div>
         )}
       </button>
-      <div className={panelVariants({ open: isOpen })}>
+      <div className={`${panelVariants({ open: isOpen })}`}>
         <div className='flex justify-center items-center relative pb-8'>
           <button className='absolute left-0 cursor-pointer'>
             <Arrow onClick={() => setIsOpen(false)} />
