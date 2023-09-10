@@ -4,7 +4,7 @@ import { BookingFilters } from './BookingFilters';
 import { useGetAllBookingsQuery } from 'src/common/store/api/packages/bookings/bookingApi';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { BookingFiltersDto } from 'src/common/packages/booking/types/dto/BookingFiltersDto';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button';
@@ -14,12 +14,15 @@ import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
 import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
 import { ReactComponent as ExportIcon } from 'src/assets/icons/export.svg';
 import { RefreshButton } from '../../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
+import { ReactComponent as AddIcon } from 'src/assets/icons/add.svg';
+
 const LIMIT = 6;
 
 const BookingPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const user = useAppSelector(state => state.user);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
@@ -70,20 +73,27 @@ const BookingPage = () => {
       <Header title='Bookings'>
         {user.permissions && hasPermissions(['manageBookings'], user as User) && (
           <div className='flex flex-1 justify-end'>
-            <div className='flex gap-x-4'>
+            <div className='flex gap-x-4 '>
               <Button
                 variant='secondary'
                 onClick={handleExportCSV}
                 disabled={data?.total === 0 || isCSVLoading}
-                className='text-sm md:text-base'
+                className='px-[16px] md:px-[32px]'
               >
-                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+                <span className='hidden md:inline'>
+                  {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+                </span>
+                <ExportIcon className='md:hidden w-[20px]' />
               </Button>
-              <Link to='create'>
-                <Button variant='primary' className='text-sm md:text-base'>
-                  Create booking
-                </Button>
-              </Link>
+
+              <Button
+                variant='primary'
+                className='text-sm md:text-base px-[16px] md:px-[32px]'
+                onClick={() => navigate('/booking/create')}
+              >
+                <span className='hidden md:inline'>Create booking</span>
+                <AddIcon className='md:hidden w-[27px]' />
+              </Button>
             </div>
           </div>
         )}

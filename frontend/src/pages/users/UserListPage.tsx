@@ -21,6 +21,8 @@ import { useAppDispatch, useAppSelector } from '../../common/hooks/redux';
 import { exportCSV } from '../../common/store/slices/packages/export-csv/exportCSVSlice';
 import { calculateTotalPages } from 'src/common/helpers/helpers';
 import { RefreshButton } from '../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
+import { ReactComponent as ExportIcon } from 'src/assets/icons/export.svg';
+import { ReactComponent as ImportIcon } from 'src/assets/icons/import.svg';
 
 export function UserListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -105,16 +107,24 @@ export function UserListPage() {
           <h2 className='text-2xl font-semibold text-dark-grey'>Users</h2>
           <div className='flex items-center gap-2'>
             <Button
+              className='px-[16px] md:px-[32px]'
               variant='secondary'
               onClick={handleExportCSV}
               disabled={data?.totalCount === 0 || isCSVLoading}
             >
-              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+              <span className='hidden md:inline'>
+                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+              </span>
+              <ExportIcon className='md:hidden w-[20px]' />
             </Button>
             {hasRole('PLATFORM_ADMIN', user as User, false) && (
               <>
-                <label className={buttonVariants({ variant: 'secondary' })} htmlFor='files'>
-                  Import Users
+                <label
+                  className={`${buttonVariants({ variant: 'secondary' })} px-[16px] md:px-[32px]`}
+                  htmlFor='files'
+                >
+                  <span className='hidden md:inline'>Import Users</span>
+                  <ImportIcon className='md:hidden w-[20px]' />
                 </label>
                 <input
                   id='files'
