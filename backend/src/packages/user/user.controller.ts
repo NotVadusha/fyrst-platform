@@ -79,7 +79,11 @@ export class UserController {
     return user;
   }
 
-  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageUsers']))
+  @Get(':id/events')
+  async getWithEvents(@Param('id') userId: number) {
+    return this.userService.getUserWithEvents(userId);
+  }
+
   @Get()
   async getAllByParams(@Query() query: UserFiltersDto): Promise<{
     users: User[];

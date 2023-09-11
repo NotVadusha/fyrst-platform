@@ -46,4 +46,4 @@ jobs:
 
       - name: Run new application instance
         run: |
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }} && sudo npm run init && sudo npm run start:build"
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "cd ${{ env.DEPLOY_DIRECTORY }} && sudo npm run init && sudo bash -c "sudo nohup sudo npm run start:build &""
