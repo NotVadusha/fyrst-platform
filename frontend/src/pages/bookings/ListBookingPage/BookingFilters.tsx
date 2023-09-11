@@ -33,7 +33,7 @@ export const BookingFilters = ({
   return (
     <Form {...form}>
       <form className='w-full'>
-        <div className='flex gap-x-4 align-baseline '>
+        <div className='flex flex-col sm:flex-row gap-4 align-baseline '>
           <div className='w-full '>
             <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
               Status

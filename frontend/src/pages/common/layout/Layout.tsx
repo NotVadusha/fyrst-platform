@@ -60,7 +60,7 @@ const Layout = () => {
         </SheetTrigger>
         <SheetContent side={'left'}>
           <SheetHeader>
-            <SheetTitle>Fyrst</SheetTitle>
+            <SheetTitle>{routerConfig.name}</SheetTitle>
             <MainNav onSelect={() => setIsOpen(false)} />
           </SheetHeader>
         </SheetContent>
@@ -72,10 +72,14 @@ const Layout = () => {
           { 'fixed top-20 block': isNavOpen, hidden: !isNavOpen },
         )}
       >
-        <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>{routerConfig.name}</h2>
+        <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>
+          <Link relative={'path'} to='/'>
+            {routerConfig.name}
+          </Link>
+        </h2>
         <MainNav />
       </nav>
-      <main className='w-full lg:w-[calc(100%-300px)] lg:ml-[300px]  bg-background'>
+      <main className='w-full lg:w-[calc(100%-300px)] lg:ml-[300px] min-h-screen  bg-background'>
         <Outlet />
       </main>
     </div>
