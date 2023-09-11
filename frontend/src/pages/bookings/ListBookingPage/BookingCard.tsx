@@ -49,54 +49,56 @@ export const BookingCard = ({ booking }: BookingCardProps) => {
   const fullNames = booking.users.map(user => `${user.first_name} ${user.last_name}`).join(', ');
 
   return (
-    <Link to={`/booking/${booking.id}`}>
-      <Card className='px-4 py-4 h-full flex flex-col gap-4'>
-        <div className='flex justify-between items-center'>
-          <div
-            className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}
-          >
-            {booking.status}
-          </div>
-          <p className='h-5 leading-5 font-semibold text-sm text-dark-grey'>
-            ${booking.pricePerHour}/hr
-          </p>
-        </div>
-        <div className='flex flex-col gap-2'>
-          <h5 className='text-2xl leading-6 font-semibold text-black truncate'>
-            {booking.facility.name}
-          </h5>
-          {fullNames.length > 0 && (
-            <p className='text-body-small w-64 text-black truncate'>Accepted by {fullNames}</p>
-          )}
-          <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
-        </div>
-        <div className='flex flex-col gap-4 h-full justify-end'>
-          <div className='flex justify-between '>
-            <p className='flex items-center text-sm text-dark-grey'>
-              <ClockIcon className='mr-1' />
-              {createdAt}
+    <Card className='px-4 py-4 flex-1'>
+      <Link to={`/booking/${booking.id}`}>
+        <div className='w-full flex flex-col gap-4 '>
+          <div className='flex justify-between items-center'>
+            <div
+              className={`h-7 leading-5 px-2 py-1 rounded-lg font-semibold text-sm  ${statusClass}`}
+            >
+              {booking.status}
+            </div>
+            <p className='h-5 leading-5 font-semibold text-sm text-dark-grey'>
+              ${booking.pricePerHour}/hr
             </p>
-            <div className='flex items-center  w-32 justify-end'>
-              <ProfileIcon></ProfileIcon>
-              <p className='text-sm text-dark-grey truncate'>{booking.employersName}</p>
+          </div>
+          <div className='flex flex-col gap-2'>
+            <h5 className='text-2xl leading-6 font-semibold text-black truncate'>
+              {booking.facility.name}
+            </h5>
+            {fullNames.length > 0 && (
+              <p className='text-body-small w-64 text-black truncate'>Accepted by {fullNames}</p>
+            )}
+            <p className='text-sm text-dark-grey'>{booking.positionsAvailable} positions</p>
+          </div>
+          <div className='flex flex-col gap-4 h-full justify-end'>
+            <div className='flex justify-between '>
+              <p className='flex items-center text-sm text-dark-grey'>
+                <ClockIcon className='mr-1' />
+                {createdAt}
+              </p>
+              <div className='flex items-center  w-32 justify-end'>
+                <ProfileIcon></ProfileIcon>
+                <p className='text-sm text-dark-grey truncate'>{booking.employersName}</p>
+              </div>
+            </div>
+            <div className='flex justify-between '>
+              <p className='flex items-center text-sm text-dark-grey'>
+                <CalendrIcon className='mr-1'></CalendrIcon>
+                Start date
+              </p>
+              <p className='text-sm text-dark-grey'>{startDate}</p>
+            </div>
+            <div className='flex justify-between'>
+              <p className='flex items-center text-sm text-dark-grey'>
+                <CalendrIcon className='mr-1'></CalendrIcon>
+                End date
+              </p>
+              <p className='text-sm text-dark-grey'>{endDate}</p>
             </div>
           </div>
-          <div className='flex justify-between '>
-            <p className='flex items-center text-sm text-dark-grey'>
-              <CalendrIcon className='mr-1'></CalendrIcon>
-              Start date
-            </p>
-            <p className='text-sm text-dark-grey'>{startDate}</p>
-          </div>
-          <div className='flex justify-between'>
-            <p className='flex items-center text-sm text-dark-grey'>
-              <CalendrIcon className='mr-1'></CalendrIcon>
-              End date
-            </p>
-            <p className='text-sm text-dark-grey'>{endDate}</p>
-          </div>
         </div>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };

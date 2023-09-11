@@ -17,7 +17,7 @@ export function RefreshButton({
   return (
     <Button
       type='button'
-      className={cn('flex self-end', className)}
+      className={cn('flex self-end max-h-[46px]', className)}
       onClick={() => {
         if (!onClick) navigate(0);
         onClick?.();

@@ -52,13 +52,13 @@ export default function CreateTimeCardPage() {
   return (
     <>
       <Header title='Create timecard' />
-      <div className='mx-16'>
+      <div className='mx-4 md:mx-16'>
         <div className='flex flex-col space-y-6 py-6'>
           <GoBackButton path={`/booking/${bookingId}`} className='text-dark-grey'>
             Back to booking
           </GoBackButton>
           <h2 className='text-4xl font-bold'>Create timecard</h2>
-          <Card className='max-w-[640px]'>
+          <Card className='max-w-[625px]'>
             <CreateTimeCardForm
               handleSubmit={handleCreteTimecardFormSubmit}
               user={user as User}

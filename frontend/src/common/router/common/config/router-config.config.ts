@@ -96,12 +96,6 @@ export const routerConfig = {
       neededPermission: 'manageUsers',
     },
     {
-      title: 'Recommendations',
-      icon: Briefcase,
-      mainPath: '/recommendations',
-      path: '/recommendations',
-    },
-    {
       title: 'Reports',
       icon: BarChart3,
       mainPath: '/reports',
