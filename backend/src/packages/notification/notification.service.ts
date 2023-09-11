@@ -20,13 +20,39 @@ export class NotificationService {
       createNotificationDto.recipientId,
     );
 
-    if (settingsState[createNotificationDto.type]) {
+    if (createNotificationDto.type && settingsState[createNotificationDto.type]) {
+      const notificationsCount = await this.notificationRepository.count({
+        where: { recipientId: createNotificationDto.recipientId },
+      });
+
+      console.log(notificationsCount);
+      if (notificationsCount >= 100) {
+        const oldestUserNotification = await this.notificationRepository.findOne({
+          where: { recipientId: createNotificationDto.recipientId },
+          order: [['createdAt', 'ASC']],
+        });
+
+        await this.notificationRepository.update(
+          { ...createNotificationDto },
+          { where: { id: oldestUserNotification.id } },
+        );
+
+        const notification = await this.notificationRepository.findOne({
+          where: { id: oldestUserNotification.id },
+        });
+
+        this.notificationGateway.create(notification);
+        return notification;
+      }
+
       const notification = await this.notificationRepository.create({
         ...createNotificationDto,
       });
       this.notificationGateway.create(notification);
+
       return notification;
     }
+
     return;
   }
 
