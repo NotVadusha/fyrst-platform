@@ -12,7 +12,7 @@ export const StripeConnection = () => {
 
   const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
     const linkResponse = await getLink(userId!).unwrap();
-    window.location.assign(linkResponse.link);
+    window.open(linkResponse.link, '_blank', 'noreferrer')?.focus();
   };
 
   useEffect(() => {
