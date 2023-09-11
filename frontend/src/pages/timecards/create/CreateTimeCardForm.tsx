@@ -106,7 +106,7 @@ export function CreateTimeCardForm({
           )}
         />
 
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' className='w-full'>
           Submit
         </Button>
       </form>

@@ -33,13 +33,13 @@ export const CreateBookingPage = () => {
   return (
     <>
       <Header title='Create booking' />
-      <div className='mx-16'>
+      <div className='mx-4 md:mx-16 mb-8'>
         <div className='flex flex-col space-y-6 mt-6'>
           <GoBackButton path='/booking' className='text-dark-grey'>
             All bookings
           </GoBackButton>
           <h2 className='text-4xl font-bold'>Create booking</h2>
-          <Card className='lg:w-[640px] md:max-w-full mx-auto'>
+          <Card className='max-w-[625px]'>
             <CreateBookingForm handleSubmit={handleSubmit} />
           </Card>
         </div>
