@@ -5,6 +5,7 @@ import { EditUserFormValues, EditUserForm } from './EditUserForm/EditUserForm';
 import { useAddUserMutation } from 'src/common/store/api/packages/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { ReactComponent as AddIcon } from 'src/assets/icons/add.svg';
 
 export function AddUserButton() {
   const [open, setIsOpen] = useState(false);
@@ -23,11 +24,21 @@ export function AddUserButton() {
 
   return (
     <>
-      <Button variant='primary' onClick={() => setIsOpen(true)}>
-        Add User
+      <Button
+        variant='primary'
+        className='text-sm md:text-base px-[16px] md:px-[32px]'
+        onClick={() => setIsOpen(true)}
+      >
+        <span className='hidden md:inline'>Add user</span>
+        <AddIcon className='md:hidden w-[27px]' />
       </Button>
       <div>
-        <Modal title='Add user' open={open} onOpenChange={setIsOpen}>
+        <Modal
+          title='Add user'
+          open={open}
+          onOpenChange={setIsOpen}
+          className='w-full md:max-w-[593px]'
+        >
           <EditUserForm isLoading={isAddUserLoading} onSubmit={handleSubmitAddUser} />
         </Modal>
       </div>

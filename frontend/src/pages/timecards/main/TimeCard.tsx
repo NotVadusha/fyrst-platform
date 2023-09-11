@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
@@ -15,6 +15,9 @@ import { User } from 'src/common/packages/user/types/models/User.model';
 import { hasRole } from 'src/common/helpers/authorization/hasRole';
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
 import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
+import { RefreshButton } from '../../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
+import { ReactComponent as ExportIcon } from 'src/assets/icons/export.svg';
+import { ReactComponent as AddIcon } from 'src/assets/icons/add.svg';
 
 const LIMIT = 5;
 
@@ -22,6 +25,7 @@ const TimeCardPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
   const user = useAppSelector(state => state.user);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const isCSVLoading = useAppSelector(state => state.exportCSV.isLoading);
@@ -92,23 +96,35 @@ const TimeCardPage = () => {
         <div className='flex flex-1 justify-end'>
           <div className='flex gap-x-4'>
             <Button
+              className='px-[16px] md:px-[32px]'
               variant='secondary'
               onClick={handleExportCSV}
               disabled={data?.total === 0 || isCSVLoading}
             >
-              {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+              <span className='hidden md:inline'>
+                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+              </span>
+              <ExportIcon className='md:hidden w-[20px]' />
             </Button>
             {hasPermissions(['manageBookings'], user as User) && (
-              <Link to='/booking/create'>
-                <Button variant='primary'>Create new booking</Button>
-              </Link>
+              <Button
+                variant='primary'
+                className='text-sm md:text-base px-[16px] md:px-[32px]'
+                onClick={() => navigate('/booking/create')}
+              >
+                <span className='hidden md:inline'>Create booking</span>
+                <AddIcon className='md:hidden w-[27px]' />
+              </Button>
             )}
           </div>
         </div>
       </Header>
-      <div className='container mx-auto max-w-[1000px] px-6'>
-        <div className='flex flex-col space-y-6 mt-6'>
-          <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
+      <div className='container lg:max-w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10'>
+        <div className='flex flex-col space-y-6'>
+          <div className='flex items-center justify-between'>
+            <h5 className='text-h5 text-dark-grey font-semibold'>Timecards</h5>
+            <RefreshButton />
+          </div>
           <TimecardFiltersForm
             handleInputChange={handleInputChange}
             handleSelectChange={handleSelectChange}
@@ -131,7 +147,7 @@ const TimeCardPage = () => {
                     items={data ? data.items : []}
                     getRowId={item => item.id}
                   />
-                  <div className='flex self-end'>
+                  <div className='md:flex md:self-end'>
                     {totalPages > 1 && (
                       <Pagination
                         totalCount={totalPages}
