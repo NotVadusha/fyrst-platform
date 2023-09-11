@@ -12,4 +12,8 @@ export class GoogleDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  accessToken: string;
+
+  refreshToken: string;
 }

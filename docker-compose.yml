@@ -29,6 +29,7 @@ services:
       - ./shared/dist:/app/node_modules/shared
     depends_on:
       - backend
+    command: ${FRONTEND_START_CMD:-npm run start:docker}
 
   db:
     image: postgres:14.2-alpine

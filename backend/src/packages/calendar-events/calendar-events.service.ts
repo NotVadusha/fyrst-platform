@@ -7,6 +7,7 @@ import { BookingService } from '../booking/booking.service';
 import { format } from 'date-fns';
 import { UserService } from '../user/user.service';
 import { CreateBookingEventDto } from './dto/create-booking-event.dto';
+import { GoogleCalendarService } from '../google-calendar/google-calendar.service';
 
 @Injectable()
 export class CalendarEventsService {
@@ -16,6 +17,7 @@ export class CalendarEventsService {
     private readonly logger: Logger,
     private readonly bookingService: BookingService,
     private readonly userService: UserService,
+    private readonly googleCalendarService: GoogleCalendarService,
   ) {}
 
   async create(createCalendarEventDto: CreateCalendarEventDto) {
@@ -73,6 +75,14 @@ export class CalendarEventsService {
       dateFormat,
     )} to ${format(endDate, dateFormat)}`;
 
-    return await this.create({ name, description, startDate, endDate, user_id: userId });
+    const event = {
+      name,
+      description,
+      startDate,
+      endDate,
+      user_id: userId,
+    };
+    await this.googleCalendarService.createEvent(event, userId);
+    return await this.create(event);
   }
 }
