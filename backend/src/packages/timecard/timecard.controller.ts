@@ -45,7 +45,7 @@ export class TimecardController {
     }
   }
 
-  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageTimecards']))
+  @UseGuards(RoleGuard('WORKER'))
   @Get()
   async getAllFiltered(@Query() query: TimecardFiltersDto) {
     try {
