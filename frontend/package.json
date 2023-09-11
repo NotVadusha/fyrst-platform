@@ -77,7 +77,7 @@
     "start:docker": "CHOKIDAR_USEPOLLING=true PORT=$FRONTEND_PORT react-scripts start",
     "start:docker:sw": "CHOKIDAR_USEPOLLING=true PORT=$FRONTEND_PORT craco start",
     "build": "react-scripts build",
-    "test": "craco test",
+    "test": "react-scripts test",
     "test:all": "react-scripts test --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006 public",
