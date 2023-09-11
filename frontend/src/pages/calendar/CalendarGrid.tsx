@@ -12,11 +12,10 @@ import {
   isSameMonth,
 } from 'date-fns';
 import React, { useState } from 'react';
-import { useGetCalendarQuery } from 'src/common/store/api/packages/calendar/calendarApi';
+
 import { CalendarCell } from './CalendarCell';
 import { ReactComponent as ArrowRight } from '../../assets/icons/gray-arrow-right.svg';
-import { useAppSelector } from 'src/common/hooks/redux';
-import { selectUserId } from 'src/common/store/slices/packages/user/userSelectors';
+import { useGetUserWithEventsQuery } from 'src/common/store/api/packages/user/userApi';
 
 const colStart = [
   'col-start-7',
@@ -28,9 +27,12 @@ const colStart = [
   'col-start-6',
 ];
 
-export const CalendarGrid = () => {
-  const userId = useAppSelector(selectUserId);
-  const { data: calendar } = useGetCalendarQuery(userId || 1);
+interface CalendarGridProps {
+  userId: number;
+}
+export const CalendarGrid = ({ userId }: CalendarGridProps) => {
+  const { data } = useGetUserWithEventsQuery(userId || 1);
+  const events = data?.events;
 
   const today = startOfToday();
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMMM, yyyy'));
@@ -84,12 +86,11 @@ export const CalendarGrid = () => {
       </div>
       <div className='grid grid-cols-7 bg-[#686565]/[0.15]  gap-[1px] p-[1px] h-full'>
         {days.map((day, i) => {
-          if (!calendar) return;
-          const eventForDate = calendar.events.filter(event => {
-            if (!event.booking) return;
+          if (!events) return;
+          const eventForDate = events.filter(event => {
             return isWithinInterval(day, {
-              start: new Date(event.booking.startDate),
-              end: new Date(event.booking.endDate),
+              start: new Date(event.startDate),
+              end: new Date(event.endDate),
             });
           });
           return (

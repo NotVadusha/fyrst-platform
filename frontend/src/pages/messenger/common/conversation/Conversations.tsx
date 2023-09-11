@@ -81,7 +81,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src={otherMember.profile.avatar} />
+            <AvatarImage src={otherMember.profile?.avatar} />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}
@@ -141,9 +141,7 @@ function GroupChatLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage
-            //   src={message.user.profile.avatar}
-            />
+            <AvatarImage src={otherMembers?.[0]?.profile?.avatar} />
             <AvatarFallback>
               {otherMembers?.[0].first_name?.[0]}
               {otherMembers?.[0].last_name?.[0] ?? ''}

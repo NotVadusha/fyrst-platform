@@ -13,7 +13,12 @@ export function NewConversationBlueButton({ className }: { className?: string })
       <Button onClick={() => setIsOpen(true)} className={className}>
         New Conversation
       </Button>
-      <Modal open={open} onOpenChange={setIsOpen} title='New Message'>
+      <Modal
+        open={open}
+        onOpenChange={setIsOpen}
+        title='New Message'
+        className='w-full md:max-w-[450px]'
+      >
         <CreateConversationForm onCreate={() => setIsOpen(false)} />
       </Modal>
     </>

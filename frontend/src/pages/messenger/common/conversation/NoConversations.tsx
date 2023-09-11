@@ -19,7 +19,12 @@ export function NoConversations() {
           <Button onClick={() => setIsOpen(true)}>New Conversation</Button>
         </div>
       </div>
-      <Modal open={open} onOpenChange={setIsOpen} title='New Message'>
+      <Modal
+        open={open}
+        onOpenChange={setIsOpen}
+        title='New Message'
+        className='max-w-[600px] w-full'
+      >
         <CreateConversationForm onCreate={() => setIsOpen(false)} />
       </Modal>
     </>

@@ -1,16 +1,12 @@
 import React from 'react';
+import { Header } from '../../../common/components/ui/layout/Header/Header';
 import PaymentsList from './PaymentsList';
-import { PaymentHeader } from '../common/PaymentHeader';
 
-const PaymentsPage = () => {
+export const PaymentsPage = () => {
   return (
-    <div>
-      <PaymentHeader />
-      <div>
-        <PaymentsList />
-      </div>
-    </div>
+    <>
+      <Header title='Payments' />
+      <PaymentsList />
+    </>
   );
 };
-
-export default PaymentsPage;

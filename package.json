@@ -18,6 +18,7 @@
     "seed:dev": "docker compose --env-file=.env.dev exec backend npx sequelize-cli db:seed:all",
     "start": "docker compose --env-file=.env.dev up -d",
     "start:build": "docker compose --env-file=.env.dev up --build -d",
+    "start:build:sw": "FRONTEND_START_CMD='npm run start:docker:sw' docker compose --env-file=.env.dev up --build -d",
     "stop": "docker compose --env-file=.env.dev down",
     "test": "npm run test --prefix backend && npm run test:all --prefix frontend",
     "lint:format": "npm run lint:format --prefix backend && npm run lint:format --prefix frontend"

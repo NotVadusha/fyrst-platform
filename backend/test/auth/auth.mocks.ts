@@ -39,6 +39,8 @@ export const googleDtoMock: GoogleDto = {
   first_name: 'string',
   last_name: 'string',
   email: 'string@gmail.com',
+  accessToken: 'ya312oi31231opqwie',
+  refreshToken: 'yasda231231231231',
 };
 
 export const registrationMock: RegistrationDto = {
@@ -140,9 +142,5 @@ export const userServiceMock = {
 };
 
 export const userProfileServiceMock = {
-  create: jest.fn().mockImplementation((data: any) => Promise.resolve(null)),
-};
-
-export const calendarServiceMock = {
   create: jest.fn().mockImplementation((data: any) => Promise.resolve(null)),
 };

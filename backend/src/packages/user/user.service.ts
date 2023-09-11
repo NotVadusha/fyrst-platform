@@ -1,5 +1,11 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,6 +23,9 @@ import * as Papa from 'papaparse';
 import { flatten } from 'flat';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
 import { BucketService } from '../bucket/bucket.service';
+import { Event } from '../calendar-events/entities/event.entity';
+import { createEvents, EventAttributes, DateArray } from 'ics';
+import { format } from 'date-fns';
 
 @Injectable()
 export class UserService {
@@ -245,5 +254,35 @@ export class UserService {
       createInfo.facility_id = null;
       this.logger.log(JSON.stringify(createInfo));
     }
+  }
+
+  async getUserWithEvents(id: number) {
+    const user = await this.userRepository.findOne({ where: { id }, include: [Event] });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  async exportEvents(userId: number) {
+    const user = await this.getUserWithEvents(userId);
+    const events = user.events;
+
+    const icsEvents = events.map(event => {
+      const startDateArr = format(event.startDate, 'yyyy-M-d').split('-').map(Number) as DateArray;
+      const endDateArr = format(event.endDate, 'yyyy-M-d').split('-').map(Number) as DateArray;
+
+      const eventObj: EventAttributes = {
+        start: startDateArr,
+        end: endDateArr,
+        title: event.name,
+        description: event.description,
+      };
+      return eventObj;
+    });
+
+    const { error, value } = createEvents(icsEvents);
+
+    if (error) throw new InternalServerErrorException('Error exporting calendar');
+
+    return value;
   }
 }

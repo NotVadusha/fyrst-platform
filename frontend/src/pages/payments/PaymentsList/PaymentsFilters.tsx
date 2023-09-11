@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { useLazyFetchWorkersByFacilityAdminIdQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 import * as yup from 'yup';
-import styles from './PaymentsList.module.css';
 import {
   Form,
   FormField,
@@ -18,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
-import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 import TextInput from '../../../common/components/ui/common/Input/common/TextInput/TextInput';
 import { userRoles } from 'shared/packages/roles/userRoles';
 
@@ -58,12 +56,12 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
     })) || [];
 
   return (
-    <div className={styles.paymentsFilters}>
+    <>
       <Form {...form}>
         <form>
-          <div className='flex gap-x-4'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-6 w-full'>
             {userRoleId !== 1 ? (
-              <div className='flex flex-col gap-y-2 w-[250px]'>
+              <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
                 <label className='text-body-default text-blue font-medium' htmlFor='worker'>
                   Worker
                 </label>
@@ -104,7 +102,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
                 />
               </div>
             ) : null}
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='startDate'>
                 Start date
               </label>
@@ -127,7 +125,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
                 )}
               />
             </div>
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='endDate'>
                 End date
               </label>
@@ -153,7 +151,6 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
           </div>
         </form>
       </Form>
-      <RefreshButton />
-    </div>
+    </>
   );
 };

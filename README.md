@@ -96,6 +96,18 @@ ENVIRONMENT=develop
 
 REACT_APP_AUTH_TOKEN=
 
+INVOICE_SERVICE_PORT=4000
+GOTENBERG_PORT=4001
+GOTENBERG_URL=http://gotenberg:${GOTENBERG_PORT}
+
+RABBITMQ_PORT=5672
+RABBITMQ_DEFAULT_USER=user
+RABBITMQ_DEFAULT_PASS=user
+RABBITMQ_HOST=rabbitmq:${RABBITMQ_PORT}
+RABBITMQ_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
+
+PUBLIC_URL=
+
 ---
 
 #### 2. Bootstrap project using Docker Compose
@@ -121,3 +133,4 @@ REACT_APP_AUTH_TOKEN=
 - It's a good thing to keep your branch in sync with develop, so once in a while you should merge
   develop into your branch
 - Prefer small but frequent pull requests over infrequent and huge ones
+```

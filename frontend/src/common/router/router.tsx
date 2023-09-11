@@ -5,7 +5,7 @@ import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
 import MessangerPage from '../../pages/messenger/MessangerPage';
-import PaymentsPage from '../../pages/payments/PaymentsList/PaymentsPage';
+import { PaymentsPage } from '../../pages/payments/PaymentsList/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
 import ErrorPage from '../../pages/common/error/ErrorPage';
@@ -36,11 +36,14 @@ import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
-import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
+
 import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
 import { Payment } from 'src/pages/payments/Payment/Payment';
+import BookingPageLayout from '../../pages/bookings/ListBookingPage/BookingPageLayout';
+import JobRecommendations from 'src/pages/bookings/recommendations/JobRecommendations';
+import InterviewPage from 'src/pages/bookings/inverview/InterviewPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -65,8 +68,22 @@ export const router = createBrowserRouter([
             errorElement: <ErrorPage />,
             children: [
               {
-                index: true,
-                element: <BookingPage />,
+                path: '',
+                element: <BookingPageLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <BookingPage />,
+                  },
+                  {
+                    path: 'interview',
+                    element: <InterviewPage />,
+                  },
+                  {
+                    path: 'recommendation',
+                    element: <JobRecommendations />,
+                  },
+                ],
               },
               {
                 path: ':id',
@@ -135,11 +152,6 @@ export const router = createBrowserRouter([
                 element: <SharedMediaPage />,
               },
             ],
-          },
-          {
-            path: 'recommendations',
-            errorElement: <ErrorPage />,
-            element: <JobRecommendations />,
           },
           {
             path: 'profile',

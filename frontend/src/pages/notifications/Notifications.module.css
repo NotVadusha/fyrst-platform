@@ -1,18 +1,18 @@
-.notificationsContainer{
-	@apply max-w-[515px] ml-[80px] mr-[77px] mb-[80px] mt-[25px] ;
+.notificationsContainer {
+  @apply max-w-[515px] md:mx-16 mb-[80px] mt-[40px] mx-4;
 }
-.notificationsTitle{
-	@apply text-dark-grey text-[20px] mb-[20px]
-}
-
-.notificationsText{
-	@apply text-dark-grey text-[16px] mb-[24px]
+.notificationsTitle {
+  @apply text-dark-grey text-h6 mb-[20px] font-semibold;
 }
 
-.notificationsCard{
-	 @apply bg-white rounded-lg shadow-lg;
+.notificationsText {
+  @apply text-dark-grey text-[16px] mb-[24px];
+}
+
+.notificationsCard {
+  @apply bg-white rounded-lg shadow-lg;
 }
 
 .checkboxContainer > * {
-    @apply mb-8
+  @apply mb-8;
 }

@@ -7,7 +7,7 @@ import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { calculateTotalPages } from 'src/common/helpers/helpers';
 
 import { useGetBookingRecommendationsQuery } from 'src/common/store/api/packages/bookings/bookingApi';
-import BookingGrid from 'src/pages/bookings/ListBookingPage/BookingsGrid';
+import { BookingCard } from 'src/pages/bookings/ListBookingPage/BookingCard';
 
 export default function JobRecommendations() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,24 +18,21 @@ export default function JobRecommendations() {
 
   return (
     <div>
-      {' '}
-      <Header title='Job Recommendations' />
-      <div className='container mx-auto items-center lg:w-[955px] px-4 pb-4'>
-        <div className='flex items-center justify-between'>
-          <h1 className='text-black text-2xl my-6'>
-            Job recommendations based on your{' '}
-            <Link className='underline' to='/profile/portfolio'>
-              portfolio
-            </Link>
-          </h1>
-          <RefreshButton onClick={refetch} className='self-center' />
-        </div>
-        {!!data?.bookings && !isFetching && <BookingGrid bookings={data.bookings} />}
-        {isFetching && (
-          <div className='flex items-center justify-center min-h-[500px]'>
-            <Spinner size='lg' />{' '}
+      <div className='h-full'>
+        {!!data?.bookings && !isFetching && (
+          <div className='flex gap-9 mb-8 flex-wrap items-stretch'>
+            {data?.bookings?.map(booking => (
+              <BookingCard key={booking.id} booking={booking} />
+            ))}
           </div>
         )}
+      </div>
+      {isFetching && (
+        <div className='flex items-center justify-center min-h-[500px]'>
+          <Spinner size='lg' />{' '}
+        </div>
+      )}
+      <div className='md:float-right '>
         <Pagination
           value={currentPage}
           totalCount={totalPages}

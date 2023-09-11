@@ -172,7 +172,7 @@ const MessageElement = ({
       {!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
-          path={message.user.profile.avatar}
+          path={message.user.profile?.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
@@ -192,7 +192,7 @@ const MessageElement = ({
       {!!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
-          path={message.user.profile.avatar}
+          path={message.user.profile?.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
