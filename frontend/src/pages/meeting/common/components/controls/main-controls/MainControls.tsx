@@ -7,7 +7,7 @@ import { ReactComponent as CameraOnIcon } from 'src/assets/icons/camera-on.svg';
 import { ReactComponent as CameraOffIcon } from 'src/assets/icons/camera-off.svg';
 import { ReactComponent as LeaveCallIcon } from 'src/assets/icons/leave-call.svg';
 
-const Controls = () => {
+const MainControls = () => {
   const { toggleMic, toggleWebcam, leave, localMicOn, localWebcamOn } = useMeeting();
   return (
     <div className='flex align-center items-center'>
@@ -24,4 +24,4 @@ const Controls = () => {
   );
 };
 
-export { Controls };
+export { MainControls };

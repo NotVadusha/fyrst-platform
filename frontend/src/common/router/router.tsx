@@ -37,7 +37,7 @@ import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMed
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
 import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
-import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
+import { Meeting } from 'src/pages/meeting/Meeting';
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
 
@@ -179,7 +179,7 @@ export const router = createBrowserRouter([
           {
             path: '/meeting-chat',
             errorElement: <ErrorPage />,
-            element: <MeetingChat />,
+            element: <Meeting />,
           },
           {
             path: 'payments',

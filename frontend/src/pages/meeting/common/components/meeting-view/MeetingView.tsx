@@ -3,9 +3,11 @@ import { useMeeting } from '@videosdk.live/react-sdk';
 import { ParticipantView } from '../participant-view/ParticipantView';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
-import { Controls } from '../controls/Controls';
+import { MainControls } from '../controls/main-controls/MainControls';
 import { useAppSelector } from 'src/common/hooks/redux';
-import { VideoChat } from '../video-chat/VideoChat';
+import { ReactComponent as VideoParticipantsIcon } from 'src/assets/icons/video-participants.svg';
+import { ReactComponent as VideoChatIcon } from 'src/assets/icons/video-chat.svg';
+import { MeetingChat } from '../meeting-chat/MeetingChat';
 
 const MeetingView = ({
   onMeetingLeave,
@@ -35,6 +37,12 @@ const MeetingView = ({
   const user = useAppSelector(state => state.user);
   console.log(meetingId);
 
+  const [showMeetingChat, setShowMeetingChat] = useState(false);
+
+  const toggleMeetingChat = () => {
+    setShowMeetingChat(!showMeetingChat);
+  };
+
   return (
     <div className='flex justify-center items-center h-screen bg-black'>
       {joined && joined === 'JOINED' ? (
@@ -46,13 +54,31 @@ const MeetingView = ({
                   <ParticipantView participantId={participantId} />
                 </div>
               ))}
+              {showMeetingChat && <MeetingChat />}
             </div>
             <div className='flex justify-between items-center pb-6'>
               <p className='text-center text-white'>
                 {user.first_name} {user.last_name}
               </p>
-              <Controls />
-              <VideoChat />
+              <MainControls />
+              <div className='flex align-center items-center'>
+                <Button
+                  variant='controls'
+                  size='controls'
+                  className='mr-6'
+                  onClick={() => console.log('mock')}
+                >
+                  <VideoParticipantsIcon />
+                </Button>
+                <Button
+                  variant='controls'
+                  size='controls'
+                  className='mr-6'
+                  onClick={toggleMeetingChat}
+                >
+                  <VideoChatIcon />
+                </Button>
+              </div>
             </div>
           </div>
         </>
