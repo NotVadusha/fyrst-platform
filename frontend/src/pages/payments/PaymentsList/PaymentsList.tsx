@@ -8,6 +8,7 @@ import { PaymentsFiltersDto } from 'src/common/packages/payments/types/dto/Payme
 import { PaymentsFilters } from './PaymentsFilters';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';
+import { RefreshButton } from '../../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 const LIMIT = 5;
 
@@ -66,8 +67,12 @@ const PaymentsList = () => {
   }, []);
 
   return (
-    <div className={styles.paymentsContainer}>
-      <div className={styles.paymentsHeader}>Payments</div>
+    <div className='container lg:max-w-[955px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10 space-y-6'>
+      <div className='flex items-center justify-between'>
+        <h5 className='text-h5 text-dark-grey font-semibold'>Payments</h5>
+        <RefreshButton />
+      </div>
+
       <PaymentsFilters
         handleInputChange={handleInputChange}
         handleSelectChange={handleSelectChange}
@@ -88,7 +93,7 @@ const PaymentsList = () => {
               columns={paymentsColumns}
               getRowId={item => item.id}
             />
-            <div className='flex justify-end my-6'>
+            <div className='md:flex md:justify-end my-6'>
               {totalPages > 1 && (
                 <Pagination
                   totalCount={totalPages}

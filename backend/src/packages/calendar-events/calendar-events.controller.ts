@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CalendarEventsService } from './calendar-events.service';
 import { CreateCalendarEventDto } from './dto/create-calendar-event.dto';
 import { UpdateCalendarEventDto } from './dto/update-calendar-event.dto';
+import { CreateBookingEventDto } from './dto/create-booking-event.dto';
 
 @Controller('calendar-events')
 export class CalendarEventsController {
@@ -12,6 +13,10 @@ export class CalendarEventsController {
     return await this.calendarEventsService.create(createCalendarEventDto);
   }
 
+  @Post('/booking-event')
+  async createBookingEvent(@Body() createBookingEventDto: CreateBookingEventDto) {
+    return await this.calendarEventsService.createBookingEvent(createBookingEventDto);
+  }
   @Get()
   async findAll() {
     return await this.calendarEventsService.findAll();
@@ -20,11 +25,6 @@ export class CalendarEventsController {
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.calendarEventsService.findById(id);
-  }
-
-  @Get(':id/calendar')
-  async findAllByCalendar(@Param('id') id: number) {
-    return await this.calendarEventsService.getAllByCalendarId(id);
   }
 
   @Patch(':id')

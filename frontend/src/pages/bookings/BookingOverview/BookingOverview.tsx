@@ -61,6 +61,8 @@ const BookingOverview = () => {
     return null;
   }
 
+  console.log(booking);
+
   return (
     <>
       <Header title='Bookings overview' />

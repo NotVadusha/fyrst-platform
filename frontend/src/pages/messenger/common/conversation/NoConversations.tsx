@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
 import emptyMessanger from 'src/assets/empty-messanger.png';
 import { Modal } from 'src/common/components/ui/common/Modal/Modal';
-import { CreateConversationForm } from '../forms/CreateConversationForm';
+import { SearchUserForm } from '../forms/SearchUserForm';
 
 export function NoConversations() {
   const [open, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export function NoConversations() {
         </div>
       </div>
       <Modal open={open} onOpenChange={setIsOpen} title='New Message'>
-        <CreateConversationForm onCreate={() => setIsOpen(false)} />
+        <SearchUserForm onSelect={() => setIsOpen(false)} />
       </Modal>
     </>
   );

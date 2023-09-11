@@ -57,6 +57,13 @@ export const userApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getUserWithEvents: build.query<User, number>({
+      query: id => ({
+        url: `/user/${id}/events`,
+        method: 'GET',
+      }),
+      providesTags: ['Events'],
+    }),
     updateUser: build.mutation<User, { id: number; user: UpdateUserBody }>({
       query: args => ({
         url: `/user/${args.id}`,
@@ -107,4 +114,5 @@ export const {
   useUpdateUserMutation,
   useUpdateUserProfileMutation,
   useChangePasswordMutation,
+  useGetUserWithEventsQuery,
 } = userApi;

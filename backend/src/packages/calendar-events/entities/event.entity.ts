@@ -1,34 +1,13 @@
-import {
-  Table,
-  Model,
-  Column,
-  PrimaryKey,
-  AutoIncrement,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-} from 'sequelize-typescript';
-import { Booking } from 'src/packages/booking/entities/booking.entity';
-import { Calendar } from 'src/packages/calendar/entities/calendar.entity';
+import { Table, Model, Column, PrimaryKey, AutoIncrement, ForeignKey } from 'sequelize-typescript';
 
-const eventTypes = ['Booking', 'Interview'];
+import { User } from 'src/packages/user/entities/user.entity';
 
-@Table({ tableName: 'Events', createdAt: false, updatedAt: false, deletedAt: false })
+@Table({ tableName: 'Event', createdAt: false, updatedAt: false, deletedAt: false })
 export class Event extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
   id: number;
-
-  @Column(DataType.ENUM({ values: eventTypes }))
-  eventType: string;
-
-  @ForeignKey(() => Booking)
-  @Column
-  bookingId: number;
-
-  @BelongsTo(() => Booking)
-  booking: Booking;
 
   @Column
   name: string;
@@ -36,7 +15,13 @@ export class Event extends Model {
   @Column
   description: string;
 
-  @ForeignKey(() => Calendar)
   @Column
-  calendarId: number;
+  startDate: Date;
+
+  @Column
+  endDate: Date;
+
+  @ForeignKey(() => User)
+  @Column
+  user_id: number;
 }

@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
-import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 import { timecardFiltersSchema } from '../../../common/packages/timecard/types/validation-schemas/timecard-filters.validation-schema';
 
 type FormValues = yup.InferType<typeof timecardFiltersSchema>;
@@ -40,11 +39,11 @@ export function TimecardFiltersForm({
   }));
 
   return (
-    <div className='flex gap-2'>
+    <>
       <Form {...form}>
         <form>
-          <div className='flex gap-x-4'>
-            <div className='flex flex-col gap-y-2 min-w-[171px]'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-6 w-full'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='createdAt'>
                 Created at
               </label>
@@ -69,7 +68,7 @@ export function TimecardFiltersForm({
               />
             </div>
 
-            <div className='flex flex-col gap-y-2 min-w-[171px]'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
                 Approved at
               </label>
@@ -94,7 +93,7 @@ export function TimecardFiltersForm({
               />
             </div>
 
-            <div className='flex flex-col gap-y-2 min-w-[171px]'>
+            <div className='flex flex-col gap-y-2 w-full md:max-w-[204px]'>
               <label className='text-body-default text-blue font-medium' htmlFor='approvedAt'>
                 Status
               </label>
@@ -131,7 +130,6 @@ export function TimecardFiltersForm({
           </div>
         </form>
       </Form>
-      <RefreshButton />
-    </div>
+    </>
   );
 }

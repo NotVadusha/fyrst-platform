@@ -7,13 +7,12 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
-  AllowNull,
   Default,
 } from 'sequelize-typescript';
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
-import { Chat } from 'src/packages/chat/entities/chat.entity';
 import { User } from 'src/packages/user/entities/user.entity';
 import { InvitationStatus } from 'shared/invitation-status';
+import { Booking } from 'src/packages/booking/entities/booking.entity';
 
 @Table({ timestamps: true })
 class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Message>> {
@@ -24,10 +23,10 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
 
   @ForeignKey(() => User)
   @Column
-  userId: number;
+  employeeId: number;
 
-  @BelongsTo(() => User, 'userId')
-  user: User;
+  @BelongsTo(() => User, 'employeeId')
+  employee: User;
 
   @Column
   @ForeignKey(() => User)
@@ -36,8 +35,18 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
   @BelongsTo(() => User, 'organizerId')
   organizer: User;
 
+  @Column
+  @ForeignKey(() => Booking)
+  bookingId: number;
+
+  @BelongsTo(() => Booking, 'bookingId')
+  booking: Booking;
+
   @Column(DataType.DATEONLY)
   date: Date;
+
+  @Column(DataType.STRING)
+  time: string;
 
   @Default(InvitationStatus.Pending)
   @Column(DataType.ENUM(...Object.values(InvitationStatus)))

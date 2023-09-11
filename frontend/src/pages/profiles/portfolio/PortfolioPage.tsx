@@ -98,11 +98,9 @@ export default function PortfolioPage() {
   return (
     <div>
       <Header title='Profile' />
-      <div className='px-12 w-full'>
+      <div className='mx-4 md:mx-16'>
+        <h6 className='text-dark-grey text-h6 font-semibold mt-[40px]'>Edit your Portfolio</h6>
         <Card className='max-w-[450px] mt-8'>
-          <CardTitle>
-            <h5 className='text-dark-grey text-xl font-semibold'>Edit your Portfolio</h5>
-          </CardTitle>
           <CardContent>
             <Form {...form}>
               <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>

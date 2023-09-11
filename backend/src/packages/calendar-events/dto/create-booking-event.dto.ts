@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateCalendarDto {
+export class CreateBookingEventDto {
+  @IsNumber()
+  @IsNotEmpty()
+  bookingId: number;
+
   @IsNumber()
   @IsNotEmpty()
   userId: number;
