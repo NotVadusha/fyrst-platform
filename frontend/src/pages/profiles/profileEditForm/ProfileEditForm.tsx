@@ -60,7 +60,7 @@ export function ProfileEditForm() {
       setUser(data);
 
       const profile = await getProfile(userId).unwrap();
-      profile.avatar && setAvatarImage(profile.avatar);
+      profile?.avatar && setAvatarImage(profile.avatar);
     };
 
     userFetch(userId);
