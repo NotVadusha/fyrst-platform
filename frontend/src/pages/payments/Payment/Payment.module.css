@@ -22,14 +22,10 @@
   @apply border-blue
 }
 
-.cardInputErrorText  {
-  @apply text-placeholder text-red  text-[14px] font-medium ml-2 transition-all
-}
-
 .cardInputElement {
-  @apply px-2.5 py-2 rounded-lg outline-none border-grey border text-sm leading-4 font-medium text-blue
+  @apply px-2.5 pb-2 pt-6 rounded-lg outline-none border-grey border text-sm leading-4 font-medium text-blue
 }
 
 .cardInputText {
-  @apply text-[14px] font-medium ml-2 transition-all text-dark-grey
+  @apply text-placeholder absolute text-sm font-medium left-2.5 top-2 pointer-events-none transition-all;
 }

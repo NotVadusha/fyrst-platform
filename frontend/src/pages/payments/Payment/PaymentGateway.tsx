@@ -16,15 +16,14 @@ import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 type PaymentProps = {
   paymentId: number;
-  paid: boolean;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const PaymentComponent: React.FC<PaymentProps> = ({ paymentId, paid }) => {
+const PaymentComponent: React.FC<PaymentProps> = ({ paymentId, onOpenChange }) => {
   const stripe = useStripe();
   const elements = useElements();
 
   const [isProceeding, setIsProceeding] = useState<boolean>(false);
-  const [isPaid, setIsPaid] = useState<boolean>(paid);
 
   const [initIntent] = stripeApi.useLazyInitializeIntentQuery();
 
@@ -58,7 +57,7 @@ const PaymentComponent: React.FC<PaymentProps> = ({ paymentId, paid }) => {
           title: 'Payment',
           description: 'Payment was successful',
         });
-        setIsPaid(true);
+        onOpenChange(false);
       } else {
         throw new Error();
       }
@@ -80,8 +79,8 @@ const PaymentComponent: React.FC<PaymentProps> = ({ paymentId, paid }) => {
 
   const inputStyle = {
     base: {
-      iconColor: '#4C5767',
-      color: '#4C5767',
+      iconColor: '#083D77',
+      color: '#083D77',
       fontWeight: 500,
       fontFamily: "'Mukta', sans-serif",
       fontSize: '14px',
@@ -105,13 +104,6 @@ const PaymentComponent: React.FC<PaymentProps> = ({ paymentId, paid }) => {
     onBlur: () => setFocusState(false),
   });
 
-  if (isPaid)
-    return (
-      <p className='text-body-large text-black font-semibold'>
-        This payment has been completed already
-      </p>
-    );
-
   return (
     <div className='w-[400px]'>
       <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4'>
@@ -128,20 +120,20 @@ const PaymentComponent: React.FC<PaymentProps> = ({ paymentId, paid }) => {
             </CardElementWrapper>
           </div>
         </div>
-        <Button variant='primary' type='submit' disabled={isProceeding}>
-          Make a payment
+        <Button variant='primary' type='submit' disabled={isProceeding} className='mt-4 w-fit'>
+          Approve
         </Button>
       </form>
     </div>
   );
 };
 
-export const PaymentGateway: React.FC<PaymentProps> = ({ paymentId, paid }) => {
+export const PaymentGateway: React.FC<PaymentProps> = ({ paymentId, onOpenChange }) => {
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY!);
 
   return (
     <Elements stripe={stripePromise}>
-      <PaymentComponent paymentId={paymentId} paid={paid} />
+      <PaymentComponent paymentId={paymentId} onOpenChange={onOpenChange} />
     </Elements>
   );
 };

@@ -14,11 +14,14 @@ import { taxApi } from 'src/common/store/api/packages/tax/taxApi';
 import { TaxCell } from 'src/common/packages/payments/types/models/TaxCell.model';
 import { getTableCells } from './helpers/getTableCells';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
+import { CardModal } from './CardModal';
+import { Button } from 'src/common/components/ui/common/Button';
 
 export const Payment = () => {
   const { id: paramsId } = useParams<{ id: string }>();
   const [taxesCells, setTaxesCells] = useState<TaxCell[]>([]);
   const [total, setTotal] = useState<number>(0);
+  const [cardModalVisibility, setCardModalVisibility] = useState<boolean>(false);
 
   const roleId = useAppSelector(state => state.user.role_id);
 
@@ -52,9 +55,39 @@ export const Payment = () => {
     <>
       <Header title='Payments' />
       <div className={styles.paymentContainer}>
-        <GoBackButton path='/payments' className='text-dark-grey'>
-          All payments
-        </GoBackButton>
+        <div className='flex flex-row justify-between'>
+          <GoBackButton path='/payments' className='text-dark-grey'>
+            All payments
+          </GoBackButton>
+          {payment?.status === 'completed' ? (
+            <p className='text-body-large text-black font-semibold'>
+              This payment has been completed already
+            </p>
+          ) : null}
+
+          {payment?.status !== 'completed' &&
+          roleId === userRoles.FACILITY_MANAGER &&
+          !payment?.approved &&
+          !isPaymentFetching ? (
+            <p className='text-body-large text-black font-semibold'>
+              This payment hasn&apos;t been approved by the employee yet
+            </p>
+          ) : null}
+
+          {payment?.status !== 'completed' &&
+          roleId === userRoles.FACILITY_MANAGER &&
+          payment?.approved &&
+          !isPaymentFetching ? (
+            <Button
+              variant='primary'
+              type='submit'
+              className='w-fit'
+              onClick={() => setCardModalVisibility(true)}
+            >
+              Approve
+            </Button>
+          ) : null}
+        </div>
         <h3 className='text-h3 text-black font-bold mt-5'>Taxes overview</h3>
         <p className='text-body-large text-black font-normal mt-[18px]'>
           The payment before tax collection is $
@@ -68,13 +101,13 @@ export const Payment = () => {
           <Table items={taxesCells} columns={taxesColumns} getRowId={item => item.id} />
         </div>
         <PaymentApproval payment={payment!} roleId={roleId!} />
-        {roleId === userRoles.FACILITY_MANAGER && !payment?.approved && !isPaymentFetching ? (
-          <p className='text-body-large text-black font-semibold'>
-            This payment hasn&apos;t been approved by the employee yet
-          </p>
-        ) : null}
+
         {roleId === userRoles.FACILITY_MANAGER && payment?.approved && !isPaymentFetching ? (
-          <PaymentGateway paymentId={payment.id} paid={payment.status === 'completed'} />
+          <CardModal
+            onOpenChange={setCardModalVisibility}
+            open={cardModalVisibility}
+            paymentId={payment.id}
+          />
         ) : null}
       </div>
     </>

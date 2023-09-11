@@ -15,7 +15,7 @@ export const CardElementWrapper: React.FC<CardElementWrapperProps> = ({
   error,
   focus,
 }) => {
-  let className = classNames('w-full flex flex-col gap-2');
+  let className = classNames('w-full flex flex-col gap-2 relative');
 
   if (focus && !error) className = classNames(className, styles.cardInputFocus);
   if (error) className = classNames(className, styles.cardInputError);
@@ -24,7 +24,6 @@ export const CardElementWrapper: React.FC<CardElementWrapperProps> = ({
     <div className={className}>
       <p className={styles.cardInputText}>{label}</p>
       {children}
-      {error ? <p className={styles.cardInputErrorText}>{error}</p> : null}
     </div>
   );
 };
