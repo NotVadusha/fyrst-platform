@@ -115,7 +115,7 @@ export function UserListPage() {
               <span className='hidden md:inline'>
                 {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </span>
-              <ExportIcon className='md:hidden w-[20px]' />
+              <ExportIcon className='md:hidden w-6 h-6' />
             </Button>
             {hasRole('PLATFORM_ADMIN', user as User, false) && (
               <>
@@ -124,7 +124,7 @@ export function UserListPage() {
                   htmlFor='files'
                 >
                   <span className='hidden md:inline'>Import Users</span>
-                  <ImportIcon className='md:hidden w-[20px]' />
+                  <ImportIcon className='md:hidden w-6 h-6' />
                 </label>
                 <input
                   id='files'

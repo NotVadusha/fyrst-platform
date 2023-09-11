@@ -21,6 +21,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from 'src/common/components/ui/common/Sheet/Sheet';
+import { useGetUserQuery } from 'src/common/store/api/packages/user/userApi';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -33,22 +35,20 @@ const Layout = () => {
 
   const user = useAppSelector(selectUser);
 
+  const token = localStorage.getItem('accessToken');
+  let decode: DecodedUser | undefined;
+
+  if (token) {
+    decode = jwtDecode(token);
+  }
+
+  const { data } = useGetUserQuery(decode?.id ?? skipToken);
+
   useEffect(() => {
-    if (user?.id) return;
+    if (user) return;
 
-    const getUser = async () => {
-      const token = localStorage.getItem('accessToken');
-
-      if (!token) return;
-      const decode: DecodedUser = jwtDecode(token);
-
-      const data = await (await fetch(`${apiUrl}/user/${decode.id}`)).json();
-
-      dispatch(setUser(data));
-    };
-
-    getUser();
-  }, []);
+    dispatch(setUser(data));
+  }, [data]);
 
   return (
     <div className='flex flex-col lg:flex-row relative'>
@@ -60,7 +60,7 @@ const Layout = () => {
         </SheetTrigger>
         <SheetContent side={'left'}>
           <SheetHeader>
-            <SheetTitle>Fyrst</SheetTitle>
+            <SheetTitle>{routerConfig.name}</SheetTitle>
             <MainNav onSelect={() => setIsOpen(false)} />
           </SheetHeader>
         </SheetContent>
@@ -72,10 +72,14 @@ const Layout = () => {
           { 'fixed top-20 block': isNavOpen, hidden: !isNavOpen },
         )}
       >
-        <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>{routerConfig.name}</h2>
+        <h2 className='font-bold  hidden lg:block text-lg mb-[30px]'>
+          <Link relative={'path'} to='/'>
+            {routerConfig.name}
+          </Link>
+        </h2>
         <MainNav />
       </nav>
-      <main className='w-full lg:w-[calc(100%-300px)] lg:ml-[300px]  bg-background'>
+      <main className='w-full lg:w-[calc(100%-300px)] lg:ml-[300px] min-h-screen  bg-background'>
         <Outlet />
       </main>
     </div>

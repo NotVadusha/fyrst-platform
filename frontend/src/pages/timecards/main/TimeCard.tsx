@@ -104,7 +104,7 @@ const TimeCardPage = () => {
               <span className='hidden md:inline'>
                 {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </span>
-              <ExportIcon className='md:hidden w-[20px]' />
+              <ExportIcon className='md:hidden w-6 h-6' />
             </Button>
             {hasPermissions(['manageBookings'], user as User) && (
               <Button
@@ -113,7 +113,7 @@ const TimeCardPage = () => {
                 onClick={() => navigate('/booking/create')}
               >
                 <span className='hidden md:inline'>Create booking</span>
-                <AddIcon className='md:hidden w-[27px]' />
+                <AddIcon className='md:hidden w-8 h-8' />
               </Button>
             )}
           </div>
