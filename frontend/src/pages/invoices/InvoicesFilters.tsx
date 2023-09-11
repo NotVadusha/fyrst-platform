@@ -44,7 +44,7 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
   const [getPayees, { data: payees }] = useLazyFetchWorkersByFacilityAdminIdQuery();
 
   useEffect(() => {
-    if (!!user && user.role_id !== userRoles.WORKER) getPayees(user.id!);
+    if (user.id && user.role_id !== userRoles.WORKER) getPayees(user.id!);
   }, [user]);
 
   const form = useForm<FormValues>({

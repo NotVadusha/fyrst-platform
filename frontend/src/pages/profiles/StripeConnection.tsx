@@ -1,11 +1,10 @@
 import React, { MouseEvent, useEffect } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
-import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { stripeApi } from 'src/common/store/api/packages/stripe/stripeApi';
 import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
 
-export const PaymentHeader = () => {
+export const StripeConnection = () => {
   const userId = useAppSelector(state => state.user.id);
 
   const [getLink, { isFetching }] = stripeApi.useLazyGetAccountRegistrationLinkQuery();
@@ -21,15 +20,15 @@ export const PaymentHeader = () => {
   }, [userId]);
 
   return (
-    <Header title='Payments'>
-      <div className='flex flex-1 justify-end gap-4 items-center'>
-        {data?.stripeAccount ? (
-          <p className='text-body-large text-black font-normal'>You already have Stripe account</p>
-        ) : null}
-        <Button variant='primary' onClick={handleClick} disabled={isFetching}>
-          {data?.stripeAccount ? 'Reconnect Stripe Account' : 'Connect Stripe Account'}
-        </Button>
-      </div>
-    </Header>
+    <div className='max-w-[512px] p-8 bg-white shadow-xl flex flex-col gap-4'>
+      <p className='text-body-large text-blue font-semibold'>
+        {data?.stripeAccount
+          ? 'You already have connected Stripe account'
+          : 'Connect stripe account to receive payouts'}
+      </p>
+      <Button variant='primary' onClick={handleClick} disabled={isFetching}>
+        {data?.stripeAccount ? 'Reconnect Stripe Account' : 'Connect Stripe Account'}
+      </Button>
+    </div>
   );
 };

@@ -42,7 +42,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
   const [getWorkers, { data: workers }] = useLazyFetchWorkersByFacilityAdminIdQuery();
 
   useEffect(() => {
-    if (!!user && user.role_id !== userRoles.WORKER) getWorkers(user.id!);
+    if (user.id && user.role_id !== userRoles.WORKER) getWorkers(user.id!);
   }, [user]);
 
   const form = useForm<FormValues>({

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { PaymentHeader } from '../common/PaymentHeader';
 import styles from './Payment.module.css';
 import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import Table from 'src/common/components/ui/common/Table/Table';
@@ -14,6 +13,7 @@ import { PaymentGateway } from './PaymentGateway';
 import { taxApi } from 'src/common/store/api/packages/tax/taxApi';
 import { TaxCell } from 'src/common/packages/payments/types/models/TaxCell.model';
 import { getTableCells } from './helpers/getTableCells';
+import { Header } from 'src/common/components/ui/layout/Header/Header';
 
 export const Payment = () => {
   const { id: paramsId } = useParams<{ id: string }>();
@@ -50,7 +50,7 @@ export const Payment = () => {
 
   return (
     <>
-      <PaymentHeader />
+      <Header title='Payments' />
       <div className={styles.paymentContainer}>
         <GoBackButton path='/payments' className='text-dark-grey'>
           All payments
