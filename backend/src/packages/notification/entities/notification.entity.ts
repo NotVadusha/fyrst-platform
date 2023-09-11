@@ -1,8 +1,8 @@
 import {
   AutoIncrement,
   BelongsTo,
-  Column,
   CreatedAt,
+  Column,
   DataType,
   ForeignKey,
   Model,
@@ -20,7 +20,7 @@ export class Notification extends Model {
   id: number;
 
   @CreatedAt
-  @Column
+  @Column({ defaultValue: new Date() })
   createdAt: Date;
 
   @Column

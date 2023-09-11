@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { Notification } from './entities/notification.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { NotificationGateway } from '../websocket/notification.gateway';
-
 @Injectable()
 export class NotificationService {
   constructor(
@@ -11,14 +11,23 @@ export class NotificationService {
     private notificationRepository: typeof Notification,
     @Inject(NotificationGateway)
     private notificationGateway: NotificationGateway,
+    @Inject(NotificationsConfigService)
+    private NotificationsConfigService: NotificationsConfigService,
   ) {}
 
   async create(createNotificationDto: CreateNotificationDto): Promise<Notification> {
-    const notification = await this.notificationRepository.create(
-      createNotificationDto as Partial<Notification>,
+    const settingsState = await this.NotificationsConfigService.getByUserId(
+      createNotificationDto.recipientId,
     );
-    this.notificationGateway.create(notification);
-    return notification;
+
+    if (settingsState[createNotificationDto.type]) {
+      const notification = await this.notificationRepository.create({
+        ...createNotificationDto,
+      });
+      this.notificationGateway.create(notification);
+      return notification;
+    }
+    return;
   }
 
   async findAllByRecipient(recipientId: number): Promise<Notification[]> {
