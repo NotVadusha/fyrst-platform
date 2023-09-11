@@ -32,7 +32,7 @@ export default function JobRecommendations() {
           <Spinner size='lg' />{' '}
         </div>
       )}
-      <div className='justify-end self-end float-right'>
+      <div className='md:float-right '>
         <Pagination
           value={currentPage}
           totalCount={totalPages}

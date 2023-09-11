@@ -72,7 +72,7 @@ export default function BookingPage() {
               <BookingCard key={booking.id} booking={booking} />
             ))}
           </div>
-          <div className='float-right'>
+          <div className='md:float-right'>
             <Pagination
               value={currentPage}
               totalCount={totalPages}
