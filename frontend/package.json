@@ -73,11 +73,12 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start": "CHOKIDAR_USEPOLLING=true craco start",
-    "start:docker": "CHOKIDAR_USEPOLLING=true PORT=$FRONTEND_PORT craco start",
+    "start": "CHOKIDAR_USEPOLLING=true react-scripts start",
+    "start:docker": "CHOKIDAR_USEPOLLING=true PORT=$FRONTEND_PORT react-scripts start",
+    "start:docker:sw": "CHOKIDAR_USEPOLLING=true PORT=$FRONTEND_PORT craco start",
     "build": "react-scripts build",
     "test": "craco test",
-    "test:all": "craco test --watchAll=false --passWithNoTests",
+    "test:all": "react-scripts test --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006 public",
     "build-storybook": "storybook build public",

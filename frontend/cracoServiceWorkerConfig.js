@@ -2,12 +2,7 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  overrideWebpackConfig: ({
-    webpackConfig,
-    cracoConfig,
-    pluginOptions,
-    context: { env, paths },
-  }) => {
+  overrideWebpackConfig: ({ webpackConfig, context: { env } }) => {
     const isEnvDevelopment = env === 'development';
     if (isEnvDevelopment) {
       const newConfig = {
@@ -27,6 +22,5 @@ module.exports = {
     } else {
       return webpackConfig;
     }
-    // Always return the config object.
   },
 };
