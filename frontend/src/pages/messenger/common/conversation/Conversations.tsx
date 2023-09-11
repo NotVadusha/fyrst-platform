@@ -81,7 +81,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src={otherMember.profile.avatar} />
+            <AvatarImage src={otherMember?.profile?.avatar} />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}
