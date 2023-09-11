@@ -61,7 +61,7 @@ export function BookingsByMonth({ facilityId }: { facilityId: number }) {
   };
 
   return (
-    <section className='max-h-[30vh] mb-20'>
+    <section className='max-h-[30vh] mb-6'>
       <SectionHeader>Total bookings by month</SectionHeader>
       <Line options={chartOptions} data={chartData} />
     </section>
