@@ -30,7 +30,12 @@ export function UserActions({ user }: { user: User }) {
       >
         <Settings className='w-8 h-8 text-dark-grey' />
       </Button>
-      <Modal open={open} onOpenChange={setIsOpen} title={`${user.first_name} ${user.last_name}`}>
+      <Modal
+        open={open}
+        onOpenChange={setIsOpen}
+        title={`${user.first_name} ${user.last_name}`}
+        className='w-full md:max-w-[593px]'
+      >
         <EditUserForm user={user} isLoading={isEditUsersLoading} onSubmit={handleSubitEditUser} />
       </Modal>
     </div>

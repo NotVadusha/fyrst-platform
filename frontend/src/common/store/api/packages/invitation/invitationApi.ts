@@ -14,7 +14,10 @@ export const invitationApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    getInvitations: build.query({
+      query: () => '/invitation',
+    }),
   }),
 });
 
-export const { useCreateInvitationMutation } = invitationApi;
+export const { useCreateInvitationMutation, useGetInvitationsQuery } = invitationApi;

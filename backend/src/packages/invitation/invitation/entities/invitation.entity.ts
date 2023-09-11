@@ -15,7 +15,7 @@ import { InvitationStatus } from 'shared/invitation-status';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 
 @Table({ timestamps: true })
-class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Message>> {
+class Invitation extends Model<InferAttributes<Invitation>, InferCreationAttributes<Invitation>> {
   @PrimaryKey
   @AutoIncrement
   @Column
@@ -53,4 +53,4 @@ class Message extends Model<InferAttributes<Message>, InferCreationAttributes<Me
   status: InvitationStatus;
 }
 
-export { Message };
+export { Invitation };

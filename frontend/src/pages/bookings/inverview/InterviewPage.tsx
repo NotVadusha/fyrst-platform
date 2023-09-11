@@ -6,8 +6,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from 'src/common/components/ui/common/Accordion/Accordion';
+import { useGetInvitationsQuery } from 'src/common/store/api/packages/invitation/invitationApi';
 
 export default function InverviewPage() {
+  const { data } = useGetInvitationsQuery('');
+
+  console.log(data);
+
   return (
     <Accordion type='single' collapsible>
       <AccordionItem value='item-1'>

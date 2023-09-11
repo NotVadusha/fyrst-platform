@@ -11,6 +11,7 @@ import { exportCSV } from '../../../common/store/slices/packages/export-csv/expo
 import { cn } from 'src/common/helpers/helpers';
 import { ReactComponent as ExportIcon } from 'src/assets/icons/export.svg';
 import { ReactComponent as AddIcon } from 'src/assets/icons/add.svg';
+import { RefreshButton } from '../../../common/components/ui/common/Button/common/refresh-button/RefreshButton';
 
 const LIMIT = 6;
 
@@ -76,7 +77,10 @@ const BookingPageLayout = () => {
         )}
       </Header>
       <div className='container max-w-[1080px] px-4 sm:px-6 lg:px-8 flex justify-center flex-col mx-auto mt-10 mb-10'>
-        <h5 className='text-2xl leading-6 font-semibold text-dark-grey'>Bookings</h5>
+        <div className='flex items-center justify-between'>
+          <h5 className='text-2xl leading-6 font-semibold text-dark-grey'>Bookings</h5>
+          <RefreshButton />
+        </div>
         <div className='flex gap-4 text-dark-grey font-medium my-6'>
           <Link
             to='/booking'

@@ -1,20 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Logger,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { InvitationService } from './invitation.service';
 import { CreateInvitationDto } from './dto/create-invitation.dto';
 import { UpdateInvitationDto } from './dto/update-invitation.dto';
+import { AccessTokenGuard } from 'src/packages/auth/guards/access-token.guard';
 @Controller('invitation')
 export class InvitationController {
   constructor(private readonly invitationService: InvitationService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Post()
-  create(@Body() createInvitationDto: CreateInvitationDto) {
-    Logger.log('invitation', createInvitationDto);
-    return this.invitationService.create(createInvitationDto);
+  create(@Request() req, @Body() createInvitationDto: CreateInvitationDto) {
+    Logger.log('invitation', createInvitationDto, req.user['id']);
+    return this.invitationService.create(createInvitationDto, req.user['id']);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get()
-  findAll() {
-    return this.invitationService.findAll();
+  findAllByUserId(@Request() req) {
+    return this.invitationService.findAll(req.user['id']);
   }
 
   @Get(':id')

@@ -72,7 +72,7 @@ function UserMessageItem({ message }: { message: Message }) {
     <div className='flex justify-between p-2 truncate w-full whitespace-nowrap overflow-hidden'>
       <div className='flex gap-2 items-center'>
         <Avatar>
-          <AvatarImage src={message.user.profile.avatar} />
+          <AvatarImage src={message.user.profile?.avatar} />
           <AvatarFallback>{`${message.user?.first_name?.[0]}${
             message.user?.last_name?.[0] ?? ''
           }`}</AvatarFallback>
