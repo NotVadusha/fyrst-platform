@@ -74,9 +74,27 @@ export class UserController {
 
   @Get(':id/events')
   async getWithEvents(@Param('id') userId: number) {
-    return this.userService.getUserWithEvents(userId);
+    return await this.userService.getUserWithEvents(userId);
   }
 
+  @Get('export-events/:id')
+  async exportEvents(@Param('id') userId: number, @Res() response: ExpressResponse) {
+    try {
+      const ics = await this.userService.exportEvents(userId);
+      const stream = new Readable();
+      stream.push(ics);
+      stream.push(null);
+
+      response.set({
+        'Content-Type': 'text/calendar',
+        'Content-Disposition': 'attachment; filename=Fyrst.ics',
+      });
+
+      stream.pipe(response);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to export events');
+    }
+  }
   @Get()
   async getAllByParams(@Query() query: UserFiltersDto): Promise<{
     users: User[];
