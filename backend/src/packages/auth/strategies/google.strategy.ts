@@ -9,7 +9,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      scope: ['profile', 'email', 'https://www.googleapis.com/auth/user.birthday.read'],
+      scope: [
+        'profile',
+        'email',
+        'https://www.googleapis.com/auth/user.birthday.read',
+        'https://www.googleapis.com/auth/calendar',
+      ],
+      access_type: 'offline',
     });
   }
 
@@ -23,6 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       first_name: profile.given_name,
       last_name: profile.family_name,
       email: profile.email.toLowerCase(),
+      accessToken,
     });
   }
 }

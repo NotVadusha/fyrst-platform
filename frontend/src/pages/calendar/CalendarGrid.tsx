@@ -15,8 +15,6 @@ import React, { useState } from 'react';
 
 import { CalendarCell } from './CalendarCell';
 import { ReactComponent as ArrowRight } from '../../assets/icons/gray-arrow-right.svg';
-import { useAppSelector } from 'src/common/hooks/redux';
-import { selectUserId } from 'src/common/store/slices/packages/user/userSelectors';
 import { useGetUserWithEventsQuery } from 'src/common/store/api/packages/user/userApi';
 
 const colStart = [
@@ -29,9 +27,10 @@ const colStart = [
   'col-start-6',
 ];
 
-export const CalendarGrid = () => {
-  const userId = useAppSelector(selectUserId);
-
+interface CalendarGridProps {
+  userId: number;
+}
+export const CalendarGrid = ({ userId }: CalendarGridProps) => {
   const { data } = useGetUserWithEventsQuery(userId || 1);
   const events = data?.events;
 
