@@ -8,6 +8,11 @@ import Stripe from 'stripe';
 import { PaymentService } from '../payment/payment.service';
 import { PaymentStatus } from 'shared/payment-status';
 import { UserProfileService } from '../user-profile/user-profile.service';
+import { TimecardService } from '../timecard/timecard.service';
+import { InvoiceService } from '../invoice/invoice.service';
+import { TimecardStatus } from 'shared/timecard-status';
+import { TaxService } from '../tax/tax.service';
+import { getTotal } from 'shared/getTotal';
 
 @Injectable()
 export class StripeService {
@@ -16,6 +21,9 @@ export class StripeService {
   constructor(
     private paymentService: PaymentService,
     private userProfileService: UserProfileService,
+    private timecardService: TimecardService,
+    private invoiceService: InvoiceService,
+    private taxService: TaxService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2023-08-16',
@@ -24,9 +32,16 @@ export class StripeService {
 
   async initializeIntent(id: number, userId: number) {
     const payment = await this.paymentService.findOneById(id, userId);
+    const taxes = await this.taxService.findAllTaxesByPaymentId(payment.id);
+
+    const stripeTax = taxes.find(tax => tax.name === 'Stripe fee');
+    const total = getTotal(
+      { percentage: stripeTax.percentage, additionalAmount: stripeTax.additionalAmount },
+      payment.amountPaid,
+    );
 
     const intent = await this.stripe.paymentIntents.create({
-      amount: +payment.amountPaid.toFixed(2) * 100,
+      amount: Math.round(total * 100),
       currency: 'usd',
       payment_method_types: ['card'],
     });
@@ -55,37 +70,66 @@ export class StripeService {
       throw new BadRequestException(`Webhook Error: ${err.message}`);
     }
 
-    if (event.type === 'payment_intent.succeeded') {
-      try {
-        const paymentIntentSucceeded = event.data.object;
+    switch (event.type) {
+      case 'payment_intent.succeeded':
+        try {
+          const paymentIntentSucceeded = event.data.object;
 
-        const payment = await this.paymentService.findOneByPaymentId(paymentIntentSucceeded.id);
-        const profile = await this.userProfileService.findOne(payment.timecard.employee.id);
+          const payment = await this.paymentService.findOneByPaymentId(paymentIntentSucceeded.id);
+          const profile = await this.userProfileService.findOne(payment.timecard.employee.id);
 
-        const payoutAmount = (payment.amountPaid - payment.amountPaid * 0.3) * 100;
-
-        await this.stripe.transfers.create({
-          amount: payoutAmount,
-          currency: 'usd',
-          destination: profile.stripeAccountId,
-        });
-
-        this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
-          status: PaymentStatus.Completed,
-        });
-
-        await this.stripe.payouts.create(
-          {
-            amount: payoutAmount,
+          await this.stripe.transfers.create({
+            amount: Math.round(payment.amountPaid * 100),
             currency: 'usd',
-          },
-          {
-            stripeAccount: profile.stripeAccountId,
-          },
-        );
-      } catch (err) {
-        throw new InternalServerErrorException(`Payment Error: ${err.message}`);
-      }
+            destination: profile.stripeAccountId,
+          });
+
+          await this.stripe.payouts.create(
+            {
+              amount: Math.round(payment.amountPaid * 100),
+              currency: 'usd',
+            },
+            {
+              stripeAccount: profile.stripeAccountId,
+            },
+          );
+
+          this.invoiceService.updateByTimecardId(payment.timecardId, {
+            status: PaymentStatus.Completed,
+          });
+
+          this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
+            status: PaymentStatus.Completed,
+          });
+
+          this.timecardService.update(payment.timecardId, {
+            status: TimecardStatus.Paid,
+          });
+        } catch (err) {
+          throw new InternalServerErrorException(`Payment Error: ${err.message}`);
+        }
+        break;
+      case 'payment_intent.payment_failed':
+        try {
+          const paymentIntentFailed = event.data.object;
+
+          const payment = await this.paymentService.findOneByPaymentId(paymentIntentFailed.id);
+
+          this.invoiceService.updateByTimecardId(payment.timecardId, {
+            status: PaymentStatus.Failed,
+          });
+
+          this.paymentService.updateByPaymentId(paymentIntentFailed.id, {
+            status: PaymentStatus.Failed,
+          });
+        } catch (err) {
+          throw new InternalServerErrorException(`Payment Error: ${err.message}`);
+        }
+        break;
+      default:
+        break;
+    }
+    if (event.type === 'payment_intent.succeeded') {
     }
   }
 
