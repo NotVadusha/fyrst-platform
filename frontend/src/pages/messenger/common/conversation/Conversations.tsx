@@ -9,6 +9,7 @@ import { useDebounce } from 'src/common/hooks/use-debounce/useDebounce.hook';
 import { Chat } from 'shared/socketEvents';
 import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/common/Avatar/Avatar';
 import { getConversationsByUserNames } from 'src/common/store/slices/packages/messenger/messangerSlice';
+import defaultAvatar from 'src/assets/icons/default-profile-avatar.svg';
 
 export const Conversations = ({ onSelect }: { onSelect?: () => void }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -81,7 +82,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src={otherMember.profile.avatar} />
+            <AvatarImage src={otherMember?.profile?.avatar || defaultAvatar} />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}
