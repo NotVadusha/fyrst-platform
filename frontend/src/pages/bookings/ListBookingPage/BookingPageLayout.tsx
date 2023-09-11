@@ -9,6 +9,8 @@ import { User } from 'src/common/packages/user/types/models/User.model';
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/redux';
 import { exportCSV } from '../../../common/store/slices/packages/export-csv/exportCSVSlice';
 import { cn } from 'src/common/helpers/helpers';
+import { ReactComponent as ExportIcon } from 'src/assets/icons/export.svg';
+import { ReactComponent as AddIcon } from 'src/assets/icons/add.svg';
 
 const LIMIT = 6;
 
@@ -52,11 +54,22 @@ const BookingPageLayout = () => {
         {user.permissions && hasPermissions(['manageBookings'], user as User) && (
           <div className='flex flex-1 justify-end'>
             <div className='flex gap-x-4'>
-              <Button variant='secondary' onClick={handleExportCSV} disabled={isCSVLoading}>
-                {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+              <Button
+                variant='secondary'
+                onClick={handleExportCSV}
+                disabled={isCSVLoading}
+                className='px-[16px] md:px-[32px]'
+              >
+                <span className='hidden md:inline'>
+                  {isCSVLoading ? 'Exporting...' : 'Export CSV'}
+                </span>
+                <ExportIcon className='md:hidden w-6 h-6' />
               </Button>
               <Link to='create'>
-                <Button variant='primary'>Create new booking</Button>
+                <Button variant='primary' className='px-[16px] md:px-[32px]'>
+                  <span className='hidden md:inline'>Create new booking</span>
+                  <AddIcon className='md:hidden w-8 h-8' />
+                </Button>
               </Link>
             </div>
           </div>
