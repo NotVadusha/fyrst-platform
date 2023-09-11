@@ -40,7 +40,7 @@ import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommenda
 import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
-import { PaymentGateway } from 'src/pages/payments/Payment/Payments';
+import { Payment } from 'src/pages/payments/Payment/Payment';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -192,7 +192,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: ':id',
-                element: <PaymentGateway />,
+                element: <Payment />,
               },
             ],
           },

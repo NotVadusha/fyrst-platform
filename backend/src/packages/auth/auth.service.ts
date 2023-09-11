@@ -12,6 +12,7 @@ import { EmailConfirmationService } from 'src/packages/email-confirmation/emailC
 import { RegistrationDto } from './dto/registration.dto';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { CalendarService } from '../calendar/calendar.service';
+import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -131,7 +132,7 @@ export class AuthService {
   }
 
   async updateRefreshToken(id: number, refreshToken: string): Promise<void> {
-    await this.redisService.set(id.toString(), refreshToken, 7 * 24 * 60 * 60);
+    await this.redisService.set(id.toString(), refreshToken, WEEK_IN_MILLISECONDS);
   }
 
   async googleAuthentication(googleDto: GoogleDto) {

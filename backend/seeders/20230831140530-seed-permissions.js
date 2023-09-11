@@ -31,7 +31,21 @@ module.exports = {
       manageUsers: false,
     };
 
-    permissions.push(platformAdmin, facilityManager, worker);
+    const paymentWorker = {
+      userId: 24,
+      manageBookings: false,
+      manageTimecards: true,
+      manageUsers: false,
+    };
+
+    const paymentManager = {
+      userId: 23,
+      manageBookings: false,
+      manageTimecards: true,
+      manageUsers: false,
+    };
+
+    permissions.push(platformAdmin, facilityManager, worker, paymentWorker, paymentManager);
 
     await queryInterface.bulkInsert('Permissions', permissions);
   },

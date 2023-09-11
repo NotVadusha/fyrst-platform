@@ -32,7 +32,25 @@ module.exports = {
       sex: 'female',
     };
 
-    profiles.push(platformAdmin, facilityManager, worker);
+    const paymentWorker = {
+      user_id: 24,
+      languages: ['English B2'],
+      description:
+        "im worker",
+      education: 'Bachelor of Science in Nursing',
+      sex: 'female',
+    };
+
+    const paymentManager = {
+      user_id: 23,
+      languages: ['English B2'],
+      description:
+        "im manager",
+      education: 'Bachelor of Science in Nursing',
+      sex: 'female',
+    };
+
+    profiles.push(platformAdmin, facilityManager, worker, paymentWorker, paymentManager);
 
     await queryInterface.bulkInsert('User-profile', profiles);
   },

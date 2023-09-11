@@ -23,6 +23,18 @@ module.exports = {
         stripePaymentId: null
       });
     }
+
+    payments.push({
+      amountPaid: 900,
+      type: "Stripe",
+      instapay: 100,
+      status: 'pending',
+      approved: false,
+      timecardId: 150,
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+      stripePaymentId: null
+    });
     
     await queryInterface.bulkInsert('Payments', payments);
   },

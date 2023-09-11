@@ -74,6 +74,26 @@ module.exports = {
       });
     }
 
+    bookings.push({
+      status: 'completed',
+      numberOfPositions: 5,
+      facilitiesRate: 1,
+      createdBy: 23,
+      sex: faker.person.sex(),
+      age: faker.number.int({ min: 18, max: 60 }),
+      education: faker.lorem.words(10),
+      positionsAvailable: 4,
+      workingHours: 40,
+      pricePerHour: 20,
+      notes: faker.lorem.paragraphs(3),
+      facilityId: 1,
+      createdAt: faker.date.past(),
+      startDate: faker.date.past(),
+      endDate: faker.date.past(),
+      updatedAt: new Date(),
+      employersName: faker.person.fullName(),
+    });
+
     await queryInterface.bulkInsert('Bookings', bookings);
   },
 

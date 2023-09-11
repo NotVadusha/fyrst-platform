@@ -62,7 +62,33 @@ module.exports = {
       is_confirmed: true,
     };
 
-    users.push(platformAdmin, facilityManager, worker);
+    const paymentTestManager = {
+      first_name: 'Garry',
+      last_name: 'Miller',
+      email: 'paymentmanager@fyrst.site',
+      city: 'Kyiv',
+      birthdate: faker.date.birthdate(),
+      password: '$2a$12$BfwCC5c4ZBHTPrbH/XHAg.UCLNMbcNJoXdV5OgdPw5iQ1GP6FoPvW',
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+      role_id: 2,
+      is_confirmed: true,
+    };
+
+    const paymentTestWorker = {
+      first_name: 'Ivan',
+      last_name: 'Ivanov',
+      email: 'paymentworker@fyrst.site',
+      city: 'Kyiv',
+      birthdate: faker.date.birthdate(),
+      password: '$2a$12$BfwCC5c4ZBHTPrbH/XHAg.UCLNMbcNJoXdV5OgdPw5iQ1GP6FoPvW',
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+      role_id: 1,
+      is_confirmed: true,
+    };
+  
+    users.push(platformAdmin, facilityManager, worker, paymentTestManager, paymentTestWorker);
 
     await queryInterface.bulkInsert('Users', users);
   },

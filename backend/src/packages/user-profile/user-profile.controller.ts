@@ -62,4 +62,9 @@ export class UserProfileController {
     const deleteStatus = await this.profileService.delete(userId);
     return Boolean(deleteStatus);
   }
+
+  @Get(':id/stripe-account')
+  async haveStripeAccount(@Param('id', ParseIntPipe) userId: number) {
+    return this.profileService.haveStripeAccount(userId);
+  }
 }

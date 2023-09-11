@@ -20,6 +20,7 @@ import {
 } from 'src/common/components/ui/common/Select/Select';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 import TextInput from '../../common/components/ui/common/Input/common/TextInput/TextInput';
+import { userRoles } from 'shared/packages/roles/userRoles';
 
 type InvoicesFiltersProps = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -38,13 +39,13 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
   handleInputChange,
   handleSelectChange,
 }): React.ReactElement => {
-  const userId = useAppSelector(state => state.user.id);
+  const user = useAppSelector(state => state.user);
   const userRoleId = useAppSelector(state => state.user.role_id);
   const [getPayees, { data: payees }] = useLazyFetchWorkersByFacilityAdminIdQuery();
 
   useEffect(() => {
-    if (!!userId) getPayees(userId);
-  }, [userId]);
+    if (!!user && user.role_id !== userRoles.WORKER) getPayees(user.id!);
+  }, [user]);
 
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(formSchema),

@@ -22,6 +22,7 @@ import {
   InvoiceModule,
   PermissionsModule,
   StatisticsModule,
+  TaxModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
 import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
@@ -48,6 +49,7 @@ import { CalendarEventsModule } from './packages/calendar-events/calendar-events
     PermissionsModule,
     StatisticsModule,
     CalendarEventsModule,
+    TaxModule,
   ],
   controllers: [],
   providers: [AppGateway],

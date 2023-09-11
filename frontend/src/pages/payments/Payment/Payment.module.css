@@ -1,0 +1,35 @@
+.header {
+  @apply text-3xl pt-8 pb-8 pl-20 bg-white text-dark-grey shadow-lg mb-[40px];
+}
+
+.paymentContainer {
+  @apply max-w-[955px] mb-[80px] mt-[40px] mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.route{
+	@apply text-dark-grey text-[18px] flex items-center;
+}
+
+.route img {
+  @apply mr-4;
+}
+
+.cardInputError .cardInputElement {
+  @apply border-red
+}
+
+.cardInputFocus .cardInputElement {
+  @apply border-blue
+}
+
+.cardInputErrorText  {
+  @apply text-placeholder text-red  text-[14px] font-medium ml-2 transition-all
+}
+
+.cardInputElement {
+  @apply px-2.5 py-2 rounded-lg outline-none border-grey border text-sm leading-4 font-medium text-blue
+}
+
+.cardInputText {
+  @apply text-[14px] font-medium ml-2 transition-all text-dark-grey
+}

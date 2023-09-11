@@ -6,5 +6,8 @@ export const stripeApi = apiSlice.injectEndpoints({
     getAccountRegistrationLink: build.query<RegisterStripeAccountLinkDto, number>({
       query: id => `/stripe/${id}/stripe-link`,
     }),
+    initializeIntent: build.query({
+      query: id => `/stripe/${id}/intent`,
+    }),
   }),
 });

@@ -22,8 +22,8 @@ export class StripeService {
     });
   }
 
-  async initializeIntents(id: number) {
-    const payment = await this.paymentService.findOneById(id);
+  async initializeIntent(id: number, userId: number) {
+    const payment = await this.paymentService.findOneById(id, userId);
 
     const intent = await this.stripe.paymentIntents.create({
       amount: +payment.amountPaid.toFixed(2) * 100,
@@ -31,16 +31,22 @@ export class StripeService {
       payment_method_types: ['card'],
     });
 
-    this.paymentService.update(id, {
-      stripePaymentId: intent.id,
-    });
+    this.paymentService.update(
+      id,
+      {
+        stripePaymentId: intent.id,
+      },
+      userId,
+    );
 
     return intent;
   }
 
   async webhook(req: RawBodyRequest<Request>) {
     const sig = req.headers['stripe-signature'];
-    const key = process.env.STRIPE_WEBHOOK_KEY;
+    const key =
+      'whsec_dd3abc4bd471a78a64d2b64843ea15f338f0a0c68a4ec72bb483a078c513e5fe' ||
+      process.env.STRIPE_WEBHOOK_KEY;
     let event;
 
     try {
@@ -56,7 +62,7 @@ export class StripeService {
         const payment = await this.paymentService.findOneByPaymentId(paymentIntentSucceeded.id);
         const profile = await this.userProfileService.findOne(payment.timecard.employee.id);
 
-        const payoutAmount = payment.amountPaid - payment.amountPaid * 0.3;
+        const payoutAmount = (payment.amountPaid - payment.amountPaid * 0.3) * 100;
 
         await this.stripe.transfers.create({
           amount: payoutAmount,
