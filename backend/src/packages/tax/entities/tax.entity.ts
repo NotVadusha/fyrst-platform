@@ -22,7 +22,9 @@ class Tax extends Model<InferAttributes<Tax>, InferCreationAttributes<Tax>> {
   @Column
   name: string;
 
-  @Column
+  @Column({
+    type: DataType.DOUBLE(3, 2),
+  })
   percentage: number;
 
   @AllowNull

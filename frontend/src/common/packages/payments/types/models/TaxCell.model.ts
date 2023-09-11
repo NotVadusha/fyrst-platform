@@ -1,4 +1,4 @@
-export interface Tax {
+export interface TaxCell {
   id: number;
   type: string;
   rate: string;

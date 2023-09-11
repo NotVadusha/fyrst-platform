@@ -39,6 +39,7 @@ module.exports = {
         "im worker",
       education: 'Bachelor of Science in Nursing',
       sex: 'female',
+      stripeAccountId: 'acct_1NnmvERlKrzwKKgY',
     };
 
     const paymentManager = {
