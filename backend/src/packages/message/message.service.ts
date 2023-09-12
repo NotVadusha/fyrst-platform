@@ -69,7 +69,7 @@ export class MessageService {
         recipientId: userId,
         content: messageNewNotification(chat.name),
         refId: chat.id,
-        type: 'bookings',
+        type: 'messenger',
       });
     });
     this.logger.log(`Created message with ID ${messageWithUser.id}`, {
