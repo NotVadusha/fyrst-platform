@@ -60,7 +60,7 @@ export function ProfileEditForm() {
       setUser(data);
 
       const profile = await getProfile(userId).unwrap();
-      profile.avatar && setAvatarImage(profile.avatar);
+      profile?.avatar && setAvatarImage(profile.avatar);
     };
 
     userFetch(userId);
@@ -145,7 +145,7 @@ export function ProfileEditForm() {
           setImage={setAvatarImage}
         />
       ) : (
-        <div className='w-128 p-8 bg-white mx-20 shadow-xl'>
+        <div className='max-w-[512px] p-8 bg-white shadow-xl'>
           <div className='pb-8'>
             <img
               src={avatarImage ? avatarImage : defaultAvatar}

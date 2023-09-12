@@ -4,12 +4,10 @@ import PaymentsList from './PaymentsList';
 
 const PaymentsPage = () => {
   return (
-    <div>
+    <>
       <Header title='Payments' />
-      <div>
-        <PaymentsList />
-      </div>
-    </div>
+      <PaymentsList />
+    </>
   );
 };
 

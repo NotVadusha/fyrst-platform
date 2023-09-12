@@ -7,20 +7,10 @@ import { useNavigate } from 'react-router-dom';
 
 const NotificationsSettings = () => {
   const navigate = useNavigate();
-  const handleCreateBookingClick = () => {
-    navigate('/booking/create');
-  };
 
   return (
     <div>
-      <Header title='Profile'>
-        <div className='flex justify-end space-x-6 w-full'>
-          {/* <Button variant='secondary'>Export CVS</Button> */}
-          <Button variant='primary' onClick={handleCreateBookingClick}>
-            Create booking
-          </Button>
-        </div>
-      </Header>
+      <Header title='Profile' />
 
       <div className={styles.notificationsContainer}>
         <h6 className={styles.notificationsTitle}>Notifications</h6>

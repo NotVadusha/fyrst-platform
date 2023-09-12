@@ -4,12 +4,10 @@ import InvoicesList from './InvoicesList';
 
 const InvoicesPage = () => {
   return (
-    <div>
+    <>
       <Header title='Invoices' />
-      <div>
-        <InvoicesList />
-      </div>
-    </div>
+      <InvoicesList />
+    </>
   );
 };
 

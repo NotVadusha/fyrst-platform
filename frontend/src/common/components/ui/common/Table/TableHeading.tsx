@@ -21,7 +21,7 @@ export function TableHeading<T>({ columns }: { columns: ColumnInfo<T>[] }) {
   });
 
   return (
-    <thead className='bg-blue bg-opacity-5 w-full'>
+    <thead className='bg-blue bg-opacity-5 w-full '>
       <tr className='font-semibold text-blue first:font-extralight'>{headingCells}</tr>
     </thead>
   );

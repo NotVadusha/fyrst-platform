@@ -60,6 +60,7 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   async googleCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.googleAuthentication(req.user);
+    console.log(req.user);
     if (!!result.tokens.accessToken) {
       res.setHeader('Set-Cookie', [
         cookie.serialize('accessToken', result.tokens.accessToken, {

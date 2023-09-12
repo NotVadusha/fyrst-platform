@@ -55,7 +55,7 @@ const Messanger: React.FC = () => {
 
   return (
     <>
-      <div className='flex justify-center mt-8 xl:max-w-[1100px] md:mx-8'>
+      <div className='flex justify-center mt-8 xl:max-w-[1100px] md:mx-8 '>
         {!!conversations.length && (
           <div className='w-full h-full bg-white shadow-md rounded-2xl'>
             <div className='flex flex-col xl:flex-row gap-2 xl:gap-4 p-6'>
@@ -77,7 +77,7 @@ const Messanger: React.FC = () => {
                   </SheetContent>
                 </Sheet>
               </div>
-              <hr className='xl:h-[450px] border-b border-2 xl:border-r border-grey' />
+              <hr className='xl:h-[450px] border-b border-1 xl:border-r border-grey' />
               <Outlet />
             </div>
           </div>

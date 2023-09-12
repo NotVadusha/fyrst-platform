@@ -73,7 +73,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
     >
       <div
         className={cn(
-          'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 truncate xl:w-[300px]',
+          'w-full bg-white hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 truncate xl:w-[300px]',
           {
             'bg-grey': isOnPage,
           },
@@ -81,7 +81,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage src={otherMember.profile.avatar} />
+            <AvatarImage src={otherMember.profile?.avatar} />
             <AvatarFallback>
               {otherMember.first_name?.[0]}
               {otherMember.last_name?.[0] ?? ''}
@@ -133,7 +133,7 @@ function GroupChatLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }
     <Link to={`/chat/${chat.id}`} key={chat.id} onClick={() => onSelect?.()}>
       <div
         className={cn(
-          'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 xl:w-[300px]',
+          'w-full bg-white hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 xl:w-[300px]',
           {
             'bg-grey': isOnPage,
           },
@@ -141,9 +141,7 @@ function GroupChatLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }
       >
         <div className='flex gap-4 truncate'>
           <Avatar>
-            <AvatarImage
-            //   src={message.user.profile.avatar}
-            />
+            <AvatarImage src={otherMembers?.[0]?.profile?.avatar} />
             <AvatarFallback>
               {otherMembers?.[0].first_name?.[0]}
               {otherMembers?.[0].last_name?.[0] ?? ''}

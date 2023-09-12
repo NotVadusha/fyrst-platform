@@ -51,7 +51,7 @@ const NotificationsForm = () => {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='p-[32px]'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='p-[16px] md:p-[32px]'>
           <div className='flex justify-between mb-[16px]'>
             <div className={styles.checkboxContainer}>
               <Checkbox control={form.control} name='timecards' label='Timecards' />

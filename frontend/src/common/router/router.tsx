@@ -36,10 +36,14 @@ import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
-import JobRecommendations from 'src/pages/profiles/recommendations/JobRecommendations';
+
 import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
+import BookingPageLayout from '../../pages/bookings/ListBookingPage/BookingPageLayout';
+import JobRecommendations from 'src/pages/bookings/recommendations/JobRecommendations';
+import InterviewPage from 'src/pages/bookings/inverview/InterviewPage';
+import InvitationPage from 'src/pages/bookings/inverview/invitation/InvitationPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -64,8 +68,26 @@ export const router = createBrowserRouter([
             errorElement: <ErrorPage />,
             children: [
               {
-                index: true,
-                element: <BookingPage />,
+                path: '',
+                element: <BookingPageLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <BookingPage />,
+                  },
+                  {
+                    path: 'interview',
+                    element: <InterviewPage />,
+                  },
+                  {
+                    path: 'recommendation',
+                    element: <JobRecommendations />,
+                  },
+                ],
+              },
+              {
+                path: 'interview/:id',
+                element: <InvitationPage />,
               },
               {
                 path: ':id',
@@ -134,11 +156,6 @@ export const router = createBrowserRouter([
                 element: <SharedMediaPage />,
               },
             ],
-          },
-          {
-            path: 'recommendations',
-            errorElement: <ErrorPage />,
-            element: <JobRecommendations />,
           },
           {
             path: 'profile',
