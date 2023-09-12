@@ -59,9 +59,7 @@ export class StripeService {
 
   async webhook(req: RawBodyRequest<Request>) {
     const sig = req.headers['stripe-signature'];
-    const key =
-      'whsec_dd3abc4bd471a78a64d2b64843ea15f338f0a0c68a4ec72bb483a078c513e5fe' ||
-      process.env.STRIPE_WEBHOOK_KEY;
+    const key = process.env.STRIPE_WEBHOOK_KEY;
     let event;
 
     try {
@@ -121,6 +119,7 @@ export class StripeService {
 
           this.paymentService.updateByPaymentId(paymentIntentFailed.id, {
             status: PaymentStatus.Failed,
+            stripePaymentId: null,
           });
         } catch (err) {
           throw new InternalServerErrorException(`Payment Error: ${err.message}`);
