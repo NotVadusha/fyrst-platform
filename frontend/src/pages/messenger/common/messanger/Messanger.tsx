@@ -77,7 +77,7 @@ const Messanger: React.FC = () => {
                   </SheetContent>
                 </Sheet>
               </div>
-              <hr className='xl:h-[450px] border-b border-2 xl:border-r border-grey' />
+              <hr className='xl:h-[450px] border-b border-1 xl:border-r border-grey' />
               <Outlet />
             </div>
           </div>

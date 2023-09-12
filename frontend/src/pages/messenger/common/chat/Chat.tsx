@@ -113,7 +113,7 @@ export const ChatPage: React.FC = () => {
         </div>
       </div>
       <div
-        className='h-[320px] mb-[100px] py-2 overflow-y-auto overflow-x-hidden	 scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
+        className='h-[320px] mb-[100px] py-2 overflow-y-auto overflow-x-hidden scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
         ref={scrollAreaRef}
       >
         <div className='mt-4 flex flex-col w-full pr-4 overflow-x-hidden	'>

@@ -11,5 +11,6 @@ import { GoogleCalendarModule } from '../google-calendar/google-calendar.module'
   imports: [SequelizeModule.forFeature([Event]), BookingModule, UserModule, GoogleCalendarModule],
   controllers: [CalendarEventsController],
   providers: [CalendarEventsService, Logger],
+  exports: [CalendarEventsService],
 })
 export class CalendarEventsModule {}
