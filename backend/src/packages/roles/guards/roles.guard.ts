@@ -5,7 +5,7 @@ import { userRoles } from 'shared/packages/roles/userRoles';
 
 export function RoleGuard(role: keyof typeof userRoles) {
   @Injectable()
-  class PermissionsGuardMixin implements CanActivate {
+  class RolesGuardMixin implements CanActivate {
     constructor(readonly userService: UserService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -23,6 +23,6 @@ export function RoleGuard(role: keyof typeof userRoles) {
     }
   }
 
-  const guard = mixin(PermissionsGuardMixin);
+  const guard = mixin(RolesGuardMixin);
   return guard;
 }

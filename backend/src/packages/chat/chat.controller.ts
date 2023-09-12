@@ -18,6 +18,7 @@ import { CreateChatDto, UpdateChatDto } from './dto/dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @ApiTags('chat')
+@UseGuards(AccessTokenGuard)
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}

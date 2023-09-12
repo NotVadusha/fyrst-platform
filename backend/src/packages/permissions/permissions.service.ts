@@ -1,11 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Permissions } from './entities/permissions.entity';
 import { UpdatePermissionsDto } from './dto/update-permissions.dto';
+import { Permissions } from './entities/permissions.entity';
 
 @Injectable()
 export class PermissionsService {
-  private logger = new Logger(PermissionsService.name);
   constructor(@InjectModel(Permissions) private readonly permissionsModel: typeof Permissions) {}
 
   async updateByUser(
@@ -19,7 +18,6 @@ export class PermissionsService {
       rejectOnEmpty: true,
     });
 
-    this.logger.debug(JSON.stringify(permissions));
     Object.assign(permissions, updatePermissionsDto);
 
     await permissions.save();
