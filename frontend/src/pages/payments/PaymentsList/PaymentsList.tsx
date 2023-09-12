@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styles from './PaymentsList.module.css';
 import Table from '../../../common/components/ui/common/Table/Table';
 import { paymentsApi } from 'src/common/store/api/packages/payments/paymentApi';
 import { paymentsColumns } from './paymentsTableConfig';
