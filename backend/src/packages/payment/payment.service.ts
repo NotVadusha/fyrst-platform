@@ -15,6 +15,11 @@ import { PaymentsFiltersDto } from './dto/payments-filters.dto';
 import { UserService } from '../user/user.service';
 import { Booking } from '../booking/entities/booking.entity';
 import { userRoles } from 'shared/packages/roles/userRoles';
+import { NotificationService } from '../notification/notification.service';
+import {
+  paymentApproveNotification,
+  successPaymentNotification,
+} from 'shared/packages/notification/types/notificationTemplates';
 
 @Injectable()
 export class PaymentService {
@@ -24,6 +29,7 @@ export class PaymentService {
     @InjectModel(Payment)
     private readonly paymentRepository: typeof Payment,
     private userService: UserService,
+    private notificationService: NotificationService,
   ) {}
 
   async findOneById(id: number) {
@@ -155,6 +161,22 @@ export class PaymentService {
     const payment = await this.findOneById(id);
     if (!payment) throw new NotFoundException('Payment not found');
     await payment.update(data);
+    if (payment.approved !== data.approved)
+      this.notificationService.create({
+        recipientId: payment.timecard.createdBy,
+        content: paymentApproveNotification(payment.timecard.booking.facility.name),
+        type: 'payments',
+        refId: payment.id,
+      });
+
+    if (payment.status !== data.status)
+      this.notificationService.create({
+        recipientId: payment.timecard.approvedBy,
+        content: successPaymentNotification(payment.timecard.booking.facility.name),
+        type: 'moneySent',
+        refId: payment.id,
+      });
+
     return await this.findOneById(id);
   }
 

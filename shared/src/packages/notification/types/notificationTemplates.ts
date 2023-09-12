@@ -9,5 +9,9 @@ export const notificationTemplateTimecard = (name: string, status: TimecardStatu
 export const notificationTemplatePasswordChange = () =>
   `Your password has been changed successfully`;
 
-export const bookingNewUserNotify = (name: string) => `Booking ${name} have new applicants`;
-export const messageNewNotification = (name: string) => `New message in chat ${name}`;
+export const bookingNewUserNotify = (bookingName: string) =>
+  `Booking ${bookingName} have new applicants`;
+export const messageNewNotification = (chatName: string) => `New message in chat ${chatName}`;
+export const paymentApproveNotification = (userName: string) => `${userName} approved his payment`;
+export const successPaymentNotification = (bookingName: string) =>
+  `Your payment for booking ${bookingName} is success`;

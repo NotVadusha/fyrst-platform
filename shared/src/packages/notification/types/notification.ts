@@ -11,7 +11,7 @@ export interface Notification {
 export enum NotificationType {
   Bookings = 'bookings',
   Timecards = 'timecards',
-  PaymentSuccess = 'paymentSuccess',
+  Payments = 'payments',
   MoneySent = 'moneySent',
   WeeklyReport = 'weeklyReport',
   Messenger = 'messenger',
@@ -20,8 +20,8 @@ export enum NotificationType {
 export const NotificationTypeRoutes: Record<NotificationType, string> = {
   [NotificationType.Bookings]: '/booking/',
   [NotificationType.Timecards]: '/timecard/',
-  [NotificationType.PaymentSuccess]: '/payment-success/',
-  [NotificationType.MoneySent]: '/money-sent/',
+  [NotificationType.Payments]: '/payments/',
+  [NotificationType.MoneySent]: '/payments/',
   [NotificationType.WeeklyReport]: '/weekly-report/',
   [NotificationType.Messenger]: '/chat/',
 };
