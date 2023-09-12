@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Notification } from 'shared/packages/notification/types/notification';
 import NotificationItem from './NotificationItem';
-import { hr } from 'date-fns/locale';
 
 export interface NotificationsListProps {
   notifications: Notification[];
@@ -10,7 +9,7 @@ export interface NotificationsListProps {
 
 function NotificationsList({ notifications, dividerIndex }: NotificationsListProps) {
   return (
-    <div className='h-5/6 overflow-y-auto'>
+    <div className='h-[85%] overflow-y-auto'>
       {notifications?.length === 0 ? (
         <div className='text-center pt-4'>No messages</div>
       ) : (

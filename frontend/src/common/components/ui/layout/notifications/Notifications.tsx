@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Modal } from 'src/common/components/ui/common/Modal/Modal';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { useGetNotificationsQuery } from 'src/common/store/api/packages/notifications/notificationsApi';
 import NotificationsList from './NotificationsList';
@@ -8,10 +7,9 @@ import { Notification } from 'shared/packages/notification/types/notification';
 import { ReactComponent as BellIcon } from 'src/assets/icons/bell.svg';
 import { ReactComponent as Arrow } from 'src/assets/icons/arrow-long-left.svg';
 import { cva } from 'class-variance-authority';
-import { read } from 'fs';
 
 const panelVariants = cva(
-  'fixed left-full top-0 bottom-0 w-[420px] p-6 pt-28 bg-white shadow-lg -z-[10] transition-transform',
+  'fixed left-full top-0 bottom-0 w-[420px] p-6 bg-white shadow-lg z-[1] transition-transform',
   {
     variants: {
       open: {
@@ -57,6 +55,7 @@ function Notifications() {
     });
     socket.on('notificationCreated', (notification: Notification) => {
       setNotifications(prev => [notification, ...prev]);
+      setDividerIndex(notifications.length);
     });
     socket.on('notificationIsRead', (updatedNotification: Notification) => {
       setNotifications(prev =>
@@ -85,7 +84,7 @@ function Notifications() {
       <div className={`${panelVariants({ open: isOpen })}`}>
         <div className='flex justify-center items-center relative pb-8'>
           <button className='absolute left-0 cursor-pointer'>
-            <Arrow onClick={() => setIsOpen(false)} />
+            <Arrow className='rotate-180' onClick={() => setIsOpen(false)} />
           </button>
           <h2 className='text-2xl font-semibold text-center'>
             Notifications {dividerIndex > 0 && `(${dividerIndex})`}
