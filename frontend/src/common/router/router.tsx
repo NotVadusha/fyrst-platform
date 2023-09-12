@@ -44,6 +44,7 @@ import { Payment } from 'src/pages/payments/Payment/Payment';
 import BookingPageLayout from '../../pages/bookings/ListBookingPage/BookingPageLayout';
 import JobRecommendations from 'src/pages/bookings/recommendations/JobRecommendations';
 import InterviewPage from 'src/pages/bookings/inverview/InterviewPage';
+import InvitationPage from 'src/pages/bookings/inverview/invitation/InvitationPage';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
                     element: <JobRecommendations />,
                   },
                 ],
+              },
+              {
+                path: 'interview/:id',
+                element: <InvitationPage />,
               },
               {
                 path: ':id',

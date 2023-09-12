@@ -10,6 +10,7 @@ import { User } from 'src/common/packages/user/types/models/User.model';
 import { Link } from 'react-router-dom';
 import { selectUserId } from '../../../common/store/slices/packages/user/userSelectors';
 import { useCreateBookingEventMutation } from 'src/common/store/api/packages/calendar/calendarApi';
+import { InviteButton } from './InviteButton';
 
 interface BookingHeaderProps {
   facility: string;
@@ -62,10 +63,13 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users,
           You can&apos;t apply for this booking
         </span>
       ) : (
-        <Button onClick={handleApplyClick} disabled={userExists}>
-          {isLoading ? 'Applying...' : 'Apply'}
-        </Button>
+        booking.creator.id !== userId && (
+          <Button onClick={handleApplyClick} disabled={userExists}>
+            {isLoading ? 'Applying...' : 'Apply'}
+          </Button>
+        )
       )}
+      {booking.creator.id === userId && <InviteButton bookingId={booking.id} />}
     </div>
   );
 };

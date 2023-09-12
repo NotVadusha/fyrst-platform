@@ -106,8 +106,6 @@ RABBITMQ_DEFAULT_PASS=user
 RABBITMQ_HOST=rabbitmq:${RABBITMQ_PORT}
 RABBITMQ_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
 
-PUBLIC_URL=
-
 ---
 
 #### 2. Bootstrap project using Docker Compose
