@@ -7,6 +7,8 @@ import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { User } from 'src/packages/user/entities/user.entity';
 import { Facility } from 'src/packages/facility/entities/facility.entity';
 import { CalendarEventsService } from 'src/packages/calendar-events/calendar-events.service';
+import { BookingService } from 'src/packages/booking/booking.service';
+import { UserService } from 'src/packages/user/user.service';
 
 @Injectable()
 export class InvitationService {
@@ -14,9 +16,17 @@ export class InvitationService {
     @InjectModel(Invitation)
     private readonly invitationRespository: typeof Invitation,
     private readonly calendarEventsService: CalendarEventsService,
+    private readonly bookingService: BookingService,
+    private readonly userService: UserService,
   ) {}
 
   async create(createInvitationDto: CreateInvitationDto, ownerId: number) {
+    await Promise.all([
+      this.userService.findOne(ownerId),
+      this.userService.findOne(createInvitationDto.employeeId),
+      this.bookingService.find(createInvitationDto.bookingId),
+    ]);
+
     return await this.invitationRespository.create({
       ...createInvitationDto,
       organizerId: ownerId,

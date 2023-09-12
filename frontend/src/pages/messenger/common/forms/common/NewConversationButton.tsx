@@ -9,7 +9,6 @@ import { toast } from 'src/common/components/ui/common/Toast/useToast';
 
 export function NewConversationButton() {
   const [createChat, result] = useCreateChatMutation();
-  const [searchQuery, setSearchQuery] = useState('');
   const [open, setIsOpen] = useState(false);
 
   async function createConversation(user: User) {
@@ -32,7 +31,7 @@ export function NewConversationButton() {
         className='flex items-center'
       >
         <Pencil className='w-5 h-5 mr-2' />
-        new conversation
+        New Conversation
       </Button>
       <Modal
         open={open}

@@ -25,8 +25,6 @@ export default function InvitationPage() {
 
   const [updateInvitation] = useUpdateInvitationMutation();
 
-  console.log('inv ', data);
-
   const createdAt = useFormattedDate({
     dateString: String(data?.booking?.createdAt),
     format: 'dash',

@@ -13,8 +13,6 @@ import { cn } from 'src/common/helpers/helpers';
 export default function InverviewPage() {
   const { data } = useGetInvitationsQuery('');
 
-  console.log(data);
-
   return (
     <Accordion type='single' collapsible>
       <AccordionItem value='item-1'>
@@ -30,10 +28,7 @@ export default function InverviewPage() {
                   key={invitation.id}
                 >
                   <div className='flex md:justify-initial justify-between gap-12 text-[1rem]'>
-                    <span className='text-dark-grey'>
-                      {/* 06/09/2023 */}
-                      {format(new Date(invitation.date), 'P')}
-                    </span>
+                    <span className='text-dark-grey'>{format(new Date(invitation.date), 'P')}</span>
                     <Link to={`/booking/interview/${invitation.id}`}>
                       <span className='text-blue font-medium'>
                         {invitation.booking.facility.name}
