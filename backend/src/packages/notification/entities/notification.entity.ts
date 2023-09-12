@@ -1,12 +1,10 @@
 import {
-  AutoIncrement,
   BelongsTo,
   CreatedAt,
   Column,
   DataType,
   ForeignKey,
   Model,
-  PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { NotificationType } from 'shared/packages/notification/types/notification';
@@ -14,9 +12,12 @@ import { User } from 'src/packages/user/entities/user.entity';
 
 @Table({ updatedAt: false, deletedAt: false })
 export class Notification extends Model {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    primaryKey: true,
+    autoIncrement: true,
+  })
   id: number;
 
   @CreatedAt
