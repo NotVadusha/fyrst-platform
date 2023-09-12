@@ -105,9 +105,6 @@ export class TimecardService {
   }
   async update(id: number, updateTimecardDto: UpdateTimecardDto): Promise<Timecard> {
     const timecard = await this.getById(id);
-    Object.assign(timecard, updateTimecardDto);
-
-    await timecard.save();
 
     if (
       updateTimecardDto.status === TimecardStatus.Approved &&
@@ -131,6 +128,9 @@ export class TimecardService {
         approved: false,
       });
     }
+
+    Object.assign(timecard, updateTimecardDto);
+    await timecard.save();
 
     return await this.getById(id);
   }
