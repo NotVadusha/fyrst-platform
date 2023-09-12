@@ -8,22 +8,25 @@ import { userRoles } from 'shared/packages/roles/userRoles';
 import { paymentsApi } from 'src/common/store/api/packages/payments/paymentApi';
 import { Navigate, useParams } from 'react-router-dom';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
-import { PaymentApproval } from './PaymentApproval';
-import { PaymentGateway } from './PaymentGateway';
 import { taxApi } from 'src/common/store/api/packages/tax/taxApi';
 import { TaxCell } from 'src/common/packages/payments/types/models/TaxCell.model';
 import { getTableCells } from './helpers/getTableCells';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
 import { CardModal } from './CardModal';
 import { Button } from 'src/common/components/ui/common/Button';
+import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { profileApi } from 'src/common/store/api/packages/user-profile/userProfileApi';
+import { ReactComponent as SpinnerSvg } from 'src/assets/icons/spinner.svg';
 
 export const Payment = () => {
   const { id: paramsId } = useParams<{ id: string }>();
   const [taxesCells, setTaxesCells] = useState<TaxCell[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [cardModalVisibility, setCardModalVisibility] = useState<boolean>(false);
+  const [isPaid, setIsPaid] = useState<boolean>();
 
   const roleId = useAppSelector(state => state.user.role_id);
+  const userId = useAppSelector(state => state.user.id);
 
   const {
     data: payment,
@@ -31,6 +34,32 @@ export const Payment = () => {
     isError: isFetchPaymentError,
   } = paymentsApi.useGetPaymentQuery(+paramsId!);
   const { data: taxes } = taxApi.useGetTaxesQuery(+paramsId!);
+  const [updatePayment, { isLoading }] = paymentsApi.useUpdatePaymentMutation();
+  const [haveAccount, { data }] = profileApi.useLazyHaveStripeAccountQuery();
+
+  useEffect(() => {
+    if (userId) haveAccount(userId);
+  }, [userId]);
+
+  const handleApproveClick = async () => {
+    if (roleId === userRoles.FACILITY_MANAGER || isLoading) return;
+    if (data?.stripeAccount) {
+      if (payment) {
+        updatePayment({
+          id: payment.id!,
+          body: {
+            approved: true,
+          },
+        });
+      }
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Payment approval',
+        description: 'Connect your Stripe account to approve the payment',
+      });
+    }
+  };
 
   useEffect(() => {
     if (taxes && payment) {
@@ -39,6 +68,7 @@ export const Payment = () => {
         tableCells[tableCells.length - 1].amount + tableCells[tableCells.length - 2].amount;
       setTaxesCells(tableCells);
       setTotal(total);
+      setIsPaid(payment.status === 'completed');
     }
   }, [taxes, payment]);
 
@@ -51,6 +81,13 @@ export const Payment = () => {
 
   if (isFetchPaymentError) return <Navigate to='/payments' />;
 
+  const approvingButtonContent = (
+    <div className='flex flex-row items-center gap-2.5'>
+      <SpinnerSvg className='animate-[spin_4s_linear_infinite] w-5 h-5' />
+      <p className='text-base leading-4'>Approving</p>
+    </div>
+  );
+
   return (
     <>
       <Header title='Payments' />
@@ -59,56 +96,49 @@ export const Payment = () => {
           <GoBackButton path='/payments' className='text-dark-grey'>
             All payments
           </GoBackButton>
-          {payment?.status === 'completed' ? (
-            <p className='text-body-large text-black font-semibold'>
-              This payment has been completed already
-            </p>
-          ) : null}
 
-          {payment?.status !== 'completed' &&
-          roleId === userRoles.FACILITY_MANAGER &&
-          !payment?.approved &&
-          !isPaymentFetching ? (
-            <p className='text-body-large text-black font-semibold'>
-              This payment hasn&apos;t been approved by the employee yet
-            </p>
-          ) : null}
+          <div className='flex flex-row gap-6'>
+            {roleId === userRoles.FACILITY_MANAGER && !isPaymentFetching ? (
+              <Button
+                variant='primary'
+                className='w-[154px] px-4'
+                onClick={() => setCardModalVisibility(true)}
+                disabled={isPaid || !payment?.approved}
+              >
+                {isPaid ? 'Payed' : 'Make a payment'}
+              </Button>
+            ) : null}
 
-          {payment?.status !== 'completed' &&
-          roleId === userRoles.FACILITY_MANAGER &&
-          payment?.approved &&
-          !isPaymentFetching ? (
             <Button
+              className='w-[154px]'
               variant='primary'
-              type='submit'
-              className='w-fit'
-              onClick={() => setCardModalVisibility(true)}
+              disabled={payment?.approved}
+              onClick={handleApproveClick}
             >
-              Approve
+              {roleId === userRoles.FACILITY_MANAGER && !payment?.approved
+                ? approvingButtonContent
+                : null}
+              {roleId === userRoles.WORKER && !payment?.approved && !isLoading ? 'Approve' : null}
+              {roleId === userRoles.WORKER && isLoading ? approvingButtonContent : null}
+              {payment?.approved && !isLoading ? 'Approved' : null}
             </Button>
-          ) : null}
+          </div>
         </div>
         <h3 className='text-h3 text-black font-bold mt-5'>Taxes overview</h3>
         <p className='text-body-large text-black font-normal mt-[18px]'>
           The payment before tax collection is $
           <span className='underline'>{Math.round(total * 100) / 100}</span>. Here is a list of all
           taxes and your payment after the taxes collection.
-          {roleId === userRoles.WORKER
-            ? ' If you agree, click the ‘Approve’ button, and you will be paid in a few days.'
-            : null}
         </p>
         <div className='mt-10 mb-12'>
           <Table items={taxesCells} columns={taxesColumns} getRowId={item => item.id} />
         </div>
-        <PaymentApproval payment={payment!} roleId={roleId!} />
-
-        {roleId === userRoles.FACILITY_MANAGER && payment?.approved && !isPaymentFetching ? (
-          <CardModal
-            onOpenChange={setCardModalVisibility}
-            open={cardModalVisibility}
-            paymentId={payment.id}
-          />
-        ) : null}
+        <CardModal
+          onOpenChange={setCardModalVisibility}
+          open={cardModalVisibility}
+          paymentId={payment!.id}
+          onPaymentComplete={setIsPaid}
+        />
       </div>
     </>
   );

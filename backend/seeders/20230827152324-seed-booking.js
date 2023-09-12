@@ -86,7 +86,7 @@ module.exports = {
       workingHours: 40,
       pricePerHour: 20,
       notes: faker.lorem.paragraphs(3),
-      facilityId: 1,
+      facilityId: 14,
       createdAt: faker.date.past(),
       startDate: faker.date.past(),
       endDate: faker.date.past(),
