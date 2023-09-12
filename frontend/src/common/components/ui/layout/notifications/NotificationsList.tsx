@@ -10,7 +10,7 @@ export interface NotificationsListProps {
 
 function NotificationsList({ notifications, dividerIndex }: NotificationsListProps) {
   return (
-    <>
+    <div className='h-5/6 overflow-y-auto'>
       {notifications?.length === 0 ? (
         <div className='text-center pt-4'>No messages</div>
       ) : (
@@ -21,7 +21,7 @@ function NotificationsList({ notifications, dividerIndex }: NotificationsListPro
           </div>
         ))
       )}
-    </>
+    </div>
   );
 }
 
