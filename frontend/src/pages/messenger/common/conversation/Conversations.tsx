@@ -73,7 +73,7 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
     >
       <div
         className={cn(
-          'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 truncate xl:w-[300px]',
+          'w-full bg-white hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 truncate xl:w-[300px]',
           {
             'bg-grey': isOnPage,
           },
@@ -133,7 +133,7 @@ function GroupChatLink({ chat, onSelect }: { chat: Chat; onSelect?: () => void }
     <Link to={`/chat/${chat.id}`} key={chat.id} onClick={() => onSelect?.()}>
       <div
         className={cn(
-          'w-full bg-white drop-shadow hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 xl:w-[300px]',
+          'w-full bg-white hover:bg-grey rounded-2xl p-4 flex justify-between gap-6 xl:w-[300px]',
           {
             'bg-grey': isOnPage,
           },
