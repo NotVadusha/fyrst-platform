@@ -12,6 +12,8 @@ import {
 } from './timecard.mock';
 import { GetAllTimecardsDto } from '../../src/packages/timecard/dto/get-all-timecards.dto';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
+import { InvoiceService } from 'src/packages/invoice/invoice.service';
+import { PaymentService } from 'src/packages/payment/payment.service';
 
 describe('TimecardController', () => {
   let timecardController: TimecardController;
@@ -26,6 +28,14 @@ describe('TimecardController', () => {
         {
           provide: TimecardService,
           useValue: mockTimecardService,
+        },
+        {
+          provide: InvoiceService,
+          useValue: {},
+        },
+        {
+          provide: PaymentService,
+          useValue: {},
         },
       ],
     }).compile();

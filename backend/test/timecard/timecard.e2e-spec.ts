@@ -16,6 +16,11 @@ import {
 import { User } from 'src/packages/user/entities/user.entity';
 import { UserService } from 'src/packages/user/user.service';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
+import { InvoiceService } from 'src/packages/invoice/invoice.service';
+import { PaymentService } from 'src/packages/payment/payment.service';
+import { Invoice } from 'src/packages/invoice/entities/invoice.entity';
+import { Payment } from 'src/packages/payment/entities/payment.entity';
+import { Tax } from 'src/packages/tax/entities/tax.entity';
 
 const timecardApiPrefix = '/timecard';
 
@@ -32,7 +37,17 @@ describe('TimecardModule', () => {
       .useValue({})
       .overrideProvider(getModelToken(Roles))
       .useValue({})
+      .overrideProvider(getModelToken(Invoice))
+      .useValue({})
+      .overrideProvider(getModelToken(Payment))
+      .useValue({})
+      .overrideProvider(getModelToken(Tax))
+      .useValue({})
       .overrideProvider(UserService)
+      .useValue({})
+      .overrideProvider(InvoiceService)
+      .useValue({})
+      .overrideProvider(PaymentService)
       .useValue({})
       .compile();
 
