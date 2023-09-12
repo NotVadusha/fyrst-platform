@@ -17,7 +17,12 @@ const MainControls = () => {
       <Button variant='controls' size='controls' className='mr-6' onClick={() => toggleWebcam()}>
         {localWebcamOn ? <CameraOnIcon /> : <CameraOffIcon />}
       </Button>
-      <Button variant='controls' size='controls' onClick={() => leave()}>
+      <Button
+        className='bg-red hover:bg-red'
+        variant='controls'
+        size='controls'
+        onClick={() => leave()}
+      >
         <LeaveCallIcon />
       </Button>
     </div>

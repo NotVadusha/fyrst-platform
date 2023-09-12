@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useMeeting } from '@videosdk.live/react-sdk';
 import { ParticipantView } from '../participant-view/ParticipantView';
 import { Button } from 'src/common/components/ui/common/Button';
@@ -8,6 +8,15 @@ import { useAppSelector } from 'src/common/hooks/redux';
 import { ReactComponent as VideoParticipantsIcon } from 'src/assets/icons/video-participants.svg';
 import { ReactComponent as VideoChatIcon } from 'src/assets/icons/video-chat.svg';
 import { MeetingChat } from '../meeting-chat/MeetingChat';
+import { SocketContext } from 'src/common/config/packages/socket/socket.config';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from 'src/common/components/ui/common/Sheet/Sheet';
+import { VideoMeetingChat } from '../chat/VideoMeetingChat';
 
 const MeetingView = ({
   onMeetingLeave,
@@ -20,12 +29,17 @@ const MeetingView = ({
 
   const { join } = useMeeting();
 
+  const socket = useContext(SocketContext);
+
   const { participants } = useMeeting({
     onMeetingJoined: () => {
       setJoined('JOINED');
     },
     onMeetingLeft: () => {
       onMeetingLeave();
+    },
+    onSpeakerChanged: activeSpeakerId => {
+      console.log('active speaker', activeSpeakerId);
     },
   });
 
@@ -36,6 +50,8 @@ const MeetingView = ({
 
   const user = useAppSelector(state => state.user);
   console.log(meetingId);
+
+  useEffect(() => {}, [meetingId]);
 
   const [showMeetingChat, setShowMeetingChat] = useState(false);
 
@@ -54,7 +70,6 @@ const MeetingView = ({
                   <ParticipantView participantId={participantId} />
                 </div>
               ))}
-              {showMeetingChat && <MeetingChat />}
             </div>
             <div className='flex justify-between items-center pb-6'>
               <p className='text-center text-white'>
@@ -70,14 +85,27 @@ const MeetingView = ({
                 >
                   <VideoParticipantsIcon />
                 </Button>
-                <Button
-                  variant='controls'
-                  size='controls'
-                  className='mr-6'
-                  onClick={toggleMeetingChat}
-                >
-                  <VideoChatIcon />
-                </Button>
+
+                <Sheet>
+                  <SheetTrigger>
+                    <Button variant='controls' size='controls' className='mr-6'>
+                      <VideoChatIcon />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side={'right'}>
+                    <SheetHeader>
+                      <SheetTitle>
+                        <span className='text-blue font-semibold text-xl'>Chat</span>
+                        <hr className='border-b border-1 border-grey/80 my-4' />
+                        <p className='text-dark-grey text-xs leading-4	'>
+                          Only meeting participants can send and view messages. When the meeting has
+                          ended, the messages disappear.
+                        </p>
+                      </SheetTitle>
+                      <VideoMeetingChat />
+                    </SheetHeader>
+                  </SheetContent>
+                </Sheet>
               </div>
             </div>
           </div>
