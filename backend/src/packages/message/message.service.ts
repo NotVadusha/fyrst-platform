@@ -60,10 +60,13 @@ export class MessageService {
 
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
     this.gateway.wss.emit('conversation-update', { chatId, message: createdMessage });
+
     const chat = await this.chatService.find(chatId);
-    const offlineUsers = Array.from(this.gateway.onlineUsers.keys()).filter(
-      async userId => !chat.members.includes(await this.userService.findOne(userId)),
-    );
+    const onlineUsers = [...this.gateway.onlineUsers.keys()];
+    const chatMembers = chat.members.map(user => user.id);
+    const offlineUsers = chatMembers.filter(userId => !onlineUsers.includes(userId));
+    this.logger.log('Offline users: ', offlineUsers);
+
     offlineUsers.forEach(userId => {
       this.notificationService.create({
         recipientId: userId,

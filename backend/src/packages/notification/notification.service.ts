@@ -16,11 +16,11 @@ export class NotificationService {
   ) {}
 
   async create(createNotificationDto: CreateNotificationDto): Promise<Notification> {
-    const settingsState = await this.NotificationsConfigService.getByUserId(
+    const userSettings = await this.NotificationsConfigService.getByUserId(
       createNotificationDto.recipientId,
     );
 
-    if (createNotificationDto.type && settingsState[createNotificationDto.type]) {
+    if (createNotificationDto.type && userSettings && userSettings[createNotificationDto.type]) {
       const notificationsCount = await this.notificationRepository.count({
         where: { recipientId: createNotificationDto.recipientId },
       });

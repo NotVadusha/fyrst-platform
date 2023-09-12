@@ -30,11 +30,17 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
 
   handleConnection(client: Socket) {
     this.logger.log(`${client} New client connected`);
+    this.logger.log('Connected clients', {
+      keys: [...this.connectedClients.keys()],
+      values: [...this.connectedClients.values()],
+    });
+
     client.emit('connection', 'Successfully connected to ws server');
   }
 
   async create(notification: Notification) {
     this.logger.log(`created notification was send for ${notification.recipientId})}`);
+    this.logger.log(this.connectedClients);
     this.server
       .to(this.connectedClients.get(notification.recipientId))
       .emit('notificationCreated', notification);
