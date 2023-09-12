@@ -42,7 +42,7 @@ const ForgotPage = () => {
 
   return (
     <AuthWrapper image={resetImage}>
-      <div className='flex flex-col w-[450px]'>
+      <div className='flex flex-col w-[450px] px-5'>
         <h1 className='xl:text-h2 text-h3 text-black font-bold mb-4'>Forgot Password</h1>
 
         <p className='text-body-default text-dark-grey font-semibold mb-6'>
