@@ -144,7 +144,7 @@ export class StripeService {
     const accountLink = await this.stripe.accountLinks.create({
       account: accountId,
       refresh_url: `${process.env.REACT_APP_API_URL}/stripe/confirm/${userId}/${accountId}`,
-      return_url: `${process.env.CLIENT_URL}/payments`,
+      return_url: `${process.env.CLIENT_URL}/profile/security`,
       type: 'account_onboarding',
     });
     return accountLink;
