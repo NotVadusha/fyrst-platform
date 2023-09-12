@@ -104,7 +104,7 @@ export function UserListPage() {
     <>
       <Header>
         <div className='flex w-full  items-center justify-between'>
-          <h2 className='text-2xl font-semibold text-dark-grey'>Users</h2>
+          <h2 className='ml-[-15px] md:ml-[15px] text-2xl font-semibold text-dark-grey'>Users</h2>
           <div className='flex items-center gap-2'>
             <Button
               className='px-[16px] md:px-[32px]'

@@ -159,7 +159,7 @@ describe('AuthService', () => {
         expect(redisService.set).toHaveBeenCalledWith(
           usersMock[0].id.toString(),
           'r-e-f-r-e-s-h',
-          7 * 24 * 60 * 60,
+          7 * 24 * 60 * 60 * 1000,
         );
       });
     });
@@ -195,7 +195,7 @@ describe('AuthService', () => {
         expect(redisService.set).toHaveBeenCalledWith(
           refreshDtoMock.id.toString(),
           'r-e-f-r-e-s-h',
-          7 * 24 * 60 * 60,
+          7 * 24 * 60 * 60 * 1000,
         );
       });
     });
@@ -239,7 +239,7 @@ describe('AuthService', () => {
         expect(redisService.set).toHaveBeenCalledWith(
           refreshDtoMock.id.toString(),
           'r-e-f-r-e-s-h',
-          7 * 24 * 60 * 60,
+          7 * 24 * 60 * 60 * 1000,
         );
       });
     });
@@ -283,7 +283,7 @@ describe('AuthService', () => {
         expect(redisService.set).toHaveBeenCalledWith(
           usersMock[0].id.toString(),
           'r-e-f-r-e-s-h',
-          7 * 24 * 60 * 60,
+          7 * 24 * 60 * 60 * 1000,
         );
       });
     });

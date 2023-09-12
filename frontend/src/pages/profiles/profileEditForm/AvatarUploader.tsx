@@ -73,7 +73,7 @@ export const AvatarUploader = ({
         onClick={e => {
           e.stopPropagation();
         }}
-        className='relative w-fit ml-80 mt-6 px-20 py-10 bg-black'
+        className='md:relative md:w-fit mx-4 pl-8 md:ml-80 md:mt-6 md:px-20 py-10 bg-black'
       >
         <h5 className='text-white font-semibold text-2xl mb-2'>Replace profile picture</h5>
         <p className='font-semibold text-grey text-lg mb-4'>Image size must be less than 5MB</p>
@@ -122,14 +122,14 @@ export const AvatarUploader = ({
             )}
           />
         </div>
-        <div className='pt-6 w-fit ml-auto'>
+        <div className='pt-6 w-fit md:ml-auto'>
           <button className='text-white py-2 px-2 rounded-md' onClick={onClose}>
             Cancel
           </button>
           <button className='text-white py-2 px-2 mx-6 rounded-md' onClick={handleUploadImage}>
             Upload image
           </button>
-          <button className='text-white py-2 px-14 rounded-md bg-blue' onClick={handleSave}>
+          <button className='text-white py-2 px-4 md:px-14 rounded-md bg-blue' onClick={handleSave}>
             Save
           </button>
         </div>
