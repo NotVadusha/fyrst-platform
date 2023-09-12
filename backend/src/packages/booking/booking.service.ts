@@ -9,10 +9,7 @@ import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
 import { NotificationService } from '../notification/notification.service';
-import {
-  bookingNewUserNotify,
-  notificationTemplateBooking,
-} from 'shared/packages/notification/types/notificationTemplates';
+import { bookingNewUserNotify } from 'shared/packages/notification/types/notificationTemplates';
 import * as Papa from 'papaparse';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { flatten } from 'flat';
@@ -28,7 +25,6 @@ export class BookingService {
     private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly facilityService: FacilityService,
-    @Inject(NotificationService)
     private readonly notificationService: NotificationService,
     @Inject(UserProfileService)
     private readonly userProfile: UserProfileService,
