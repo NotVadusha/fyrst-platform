@@ -12,6 +12,7 @@ export const paymentsApi = apiSlice.injectEndpoints({
         Object.entries(params).map(param => paramsString.set(param[0], param[1]));
         return `/payment?${paramsString}`;
       },
+      providesTags: ['Payments'],
     }),
     getPayment: build.query<Payment, number>({
       query: id => ({
@@ -25,7 +26,7 @@ export const paymentsApi = apiSlice.injectEndpoints({
         body,
         method: 'PATCH',
       }),
-      invalidatesTags: () => ['Payment'],
+      invalidatesTags: ['Payment'],
     }),
   }),
 });

@@ -13,16 +13,18 @@ import styles from './Payment.module.css';
 import { CardElementWrapper } from './CardElementWrapper';
 import { stripeApi } from 'src/common/store/api/packages/stripe/stripeApi';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { apiSlice } from 'src/common/store/api/api';
+import { useAppDispatch } from 'src/common/hooks/redux';
 
 type PaymentProps = {
   paymentId: number;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  onPaymentComplete: React.Dispatch<React.SetStateAction<boolean | undefined>>;
 };
 
-const CardDetails: React.FC<PaymentProps> = ({ paymentId, onOpenChange, onPaymentComplete }) => {
+const CardDetails: React.FC<PaymentProps> = ({ paymentId, onOpenChange }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const dispatch = useAppDispatch();
 
   const [isProceeding, setIsProceeding] = useState<boolean>(false);
 
@@ -58,8 +60,8 @@ const CardDetails: React.FC<PaymentProps> = ({ paymentId, onOpenChange, onPaymen
           title: 'Payment',
           description: 'Payment was successful',
         });
+        dispatch(apiSlice.util.invalidateTags(['Payments', 'Payment']));
         onOpenChange(false);
-        onPaymentComplete(true);
       } else {
         throw new Error();
       }
@@ -130,20 +132,12 @@ const CardDetails: React.FC<PaymentProps> = ({ paymentId, onOpenChange, onPaymen
   );
 };
 
-export const PaymentGateway: React.FC<PaymentProps> = ({
-  paymentId,
-  onOpenChange,
-  onPaymentComplete,
-}) => {
+export const PaymentGateway: React.FC<PaymentProps> = ({ paymentId, onOpenChange }) => {
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY!);
 
   return (
     <Elements stripe={stripePromise}>
-      <CardDetails
-        paymentId={paymentId}
-        onOpenChange={onOpenChange}
-        onPaymentComplete={onPaymentComplete}
-      />
+      <CardDetails paymentId={paymentId} onOpenChange={onOpenChange} />
     </Elements>
   );
 };

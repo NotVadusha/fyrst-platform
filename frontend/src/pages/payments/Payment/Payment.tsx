@@ -23,7 +23,6 @@ export const Payment = () => {
   const [taxesCells, setTaxesCells] = useState<TaxCell[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [cardModalVisibility, setCardModalVisibility] = useState<boolean>(false);
-  const [isPaid, setIsPaid] = useState<boolean>();
 
   const roleId = useAppSelector(state => state.user.role_id);
   const userId = useAppSelector(state => state.user.id);
@@ -68,7 +67,6 @@ export const Payment = () => {
         tableCells[tableCells.length - 1].amount + tableCells[tableCells.length - 2].amount;
       setTaxesCells(tableCells);
       setTotal(total);
-      setIsPaid(payment.status === 'completed');
     }
   }, [taxes, payment]);
 
@@ -103,9 +101,13 @@ export const Payment = () => {
                 variant='primary'
                 className='w-[154px] px-4'
                 onClick={() => setCardModalVisibility(true)}
-                disabled={isPaid || !payment?.approved}
+                disabled={
+                  payment?.status === 'completed' || !payment?.approved || !!payment.stripePaymentId
+                }
               >
-                {isPaid ? 'Payed' : 'Make a payment'}
+                {payment?.status === 'completed' || payment?.stripePaymentId
+                  ? 'Payed'
+                  : 'Make a payment'}
               </Button>
             ) : null}
 
@@ -137,7 +139,6 @@ export const Payment = () => {
           onOpenChange={setCardModalVisibility}
           open={cardModalVisibility}
           paymentId={payment!.id}
-          onPaymentComplete={setIsPaid}
         />
       </div>
     </>
