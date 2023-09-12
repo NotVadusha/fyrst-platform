@@ -1,4 +1,5 @@
 import { apiSlice } from '../../api';
+import type { Invitation } from 'shared/invitatation';
 
 export const invitationApi = apiSlice.injectEndpoints({
   endpoints: build => ({
@@ -14,10 +15,27 @@ export const invitationApi = apiSlice.injectEndpoints({
         };
       },
     }),
-    getInvitations: build.query({
+    getInvitations: build.query<Invitation[], string>({
       query: () => '/invitation',
+    }),
+    getInvitation: build.query<Invitation, string>({
+      query: id => `/invitation/${id}`,
+    }),
+    updateInvitation: build.mutation<Invitation, { id: string; status: Invitation['status'] }>({
+      query: args => {
+        return {
+          url: `/invitation/${args.id}`,
+          method: 'PATCH',
+          body: { status: args.status },
+        };
+      },
     }),
   }),
 });
 
-export const { useCreateInvitationMutation, useGetInvitationsQuery } = invitationApi;
+export const {
+  useCreateInvitationMutation,
+  useGetInvitationsQuery,
+  useUpdateInvitationMutation,
+  useGetInvitationQuery,
+} = invitationApi;
