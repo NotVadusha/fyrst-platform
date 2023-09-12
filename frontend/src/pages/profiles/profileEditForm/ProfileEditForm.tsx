@@ -46,6 +46,7 @@ export function ProfileEditForm() {
   const [isAvatarEditorShown, setAvatarEditorShown] = useState(false);
   const [city, setCity] = useState<string>('');
   const [updateUser] = useUpdateUserMutation();
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 768);
 
   const token = localStorage.getItem('accessToken');
   const decode: DecodedUser = jwtDecode(token as string);
@@ -80,6 +81,15 @@ export function ProfileEditForm() {
       setUser(infoToUpdate);
     }
   }, [parsedData]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth > 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const onSubmit = async (valuesFromForm: Inputs) => {
     if (!!avatarImage && avatarImage.includes('blob:')) {
@@ -137,8 +147,8 @@ export function ProfileEditForm() {
       {isAvatarEditorShown ? (
         <AvatarUploader
           savedImage={avatarImage}
-          width={500}
-          height={500}
+          width={isLargeScreen ? 500 : 220}
+          height={isLargeScreen ? 500 : 220}
           border={40}
           isShown={isAvatarEditorShown}
           setShown={setAvatarEditorShown}
