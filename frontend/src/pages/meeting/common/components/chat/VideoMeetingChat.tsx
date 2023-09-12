@@ -109,9 +109,9 @@ export function VideoMeetingChat() {
       <input
         type='text'
         placeholder='Message'
-        className='absolute bottom-2 focus:outline-blue p-4 pr-12 rounded-2xl w-full bg-[#DBDBDB]'
+        className='md:absolute bottom-2 focus:outline-blue mt-5 md:mt-0 p-4 mx:pr-12 rounded-2xl w-full bg-[#DBDBDB]'
       />
-      <SendHorizontal className='absolute text-blue z-20 bottom-6 right-2' />
+      <SendHorizontal className='absolute text-blue z-20 bottom-4 md:bottom-6 right-2' />
     </div>
   );
 }

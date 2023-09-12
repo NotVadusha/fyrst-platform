@@ -63,7 +63,7 @@ const MeetingView = ({
     <div className='flex justify-center items-center h-screen bg-black'>
       {joined && joined === 'JOINED' ? (
         <>
-          <div className='grid content-between h-screen ml-6'>
+          <div className='grid content-between h-screen ml-6 z-60'>
             <div className='grid grid-cols-1 md:grid-cols-2 mt-5 bg-black'>
               {[...participants.keys()].map(participantId => (
                 <div className='flex flex-wrap' key={participantId}>
@@ -113,7 +113,10 @@ const MeetingView = ({
       ) : joined && joined === 'JOINING' ? (
         <Spinner />
       ) : (
-        <Button onClick={joinMeeting} className='flex justify-center items-center w-1/6'>
+        <Button
+          onClick={joinMeeting}
+          className='w-[170px] flex justify-center items-center md:w-1/6'
+        >
           Join
         </Button>
       )}
