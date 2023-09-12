@@ -9,7 +9,7 @@ import { ReactComponent as Arrow } from 'src/assets/icons/arrow-long-left.svg';
 import { cva } from 'class-variance-authority';
 
 const panelVariants = cva(
-  'fixed left-full top-0 bottom-0 w-[420px] p-6 bg-white shadow-lg z-[1] transition-transform',
+  'fixed left-full top-0 bottom-0 w-[420px] p-6 bg-white shadow-lg z-50 transition-transform',
   {
     variants: {
       open: {
@@ -55,7 +55,8 @@ function Notifications() {
     });
     socket.on('notificationCreated', (notification: Notification) => {
       setNotifications(prev => [notification, ...prev]);
-      setDividerIndex(notifications.length);
+      const [unreadNotifications, readNotifications] = getSortedNotifications(notifications);
+      setDividerIndex(unreadNotifications.length);
     });
     socket.on('notificationIsRead', (updatedNotification: Notification) => {
       setNotifications(prev =>
@@ -86,9 +87,7 @@ function Notifications() {
           <button className='absolute left-0 cursor-pointer'>
             <Arrow className='rotate-180' onClick={() => setIsOpen(false)} />
           </button>
-          <h2 className='text-2xl font-semibold text-center'>
-            Notifications {dividerIndex > 0 && `(${dividerIndex})`}
-          </h2>
+          <h2 className='text-2xl font-semibold text-center'>Notifications</h2>
         </div>
         <NotificationsList notifications={notifications} dividerIndex={dividerIndex} />
       </div>
