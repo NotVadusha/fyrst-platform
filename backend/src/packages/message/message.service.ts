@@ -12,6 +12,7 @@ import { BucketService } from '../bucket/bucket.service';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationType } from 'shared/packages/notification/types/notification';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
+import { messageNewNotification } from 'shared/packages/notification/types/notificationTemplates';
 @Injectable()
 export class MessageService {
   WEEK_IN_MILLISECONDS = 604800000;
@@ -66,9 +67,9 @@ export class MessageService {
     offlineUsers.forEach(userId => {
       this.notificationService.create({
         recipientId: userId,
-        content: `New message from ${messageWithUser.user.first_name} ${messageWithUser.user.last_name}`,
-        refId: chatId,
-        type: NotificationType.Messenger,
+        content: messageNewNotification(chat.name),
+        refId: chat.id,
+        type: 'bookings',
       });
     });
     this.logger.log(`Created message with ID ${messageWithUser.id}`, {

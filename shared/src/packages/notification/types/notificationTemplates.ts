@@ -10,3 +10,4 @@ export const notificationTemplatePasswordChange = () =>
   `Your password has been changed successfully`;
 
 export const bookingNewUserNotify = (name: string) => `Booking ${name} have new applicants`;
+export const messageNewNotification = (name: string) => `New message in chat ${name}`;
