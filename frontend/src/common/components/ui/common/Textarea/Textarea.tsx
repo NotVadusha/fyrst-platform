@@ -24,8 +24,12 @@ const Textarea = React.forwardRef<
   useEffect(() => {
     const textarea = internalRef.current;
     if (textarea) {
+      const previousScrollTop = window.scrollY + 1000;
+
       textarea.style.height = 'auto';
       textarea.style.height = `${textarea.scrollHeight}px`;
+
+      window.scrollTo(0, previousScrollTop);
     }
   }, [props.value]);
 
