@@ -1,5 +1,5 @@
 import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { Notification } from './entities/notification.entity';
 import { InjectModel } from '@nestjs/sequelize';
@@ -25,7 +25,6 @@ export class NotificationService {
         where: { recipientId: createNotificationDto.recipientId },
       });
 
-      console.log(notificationsCount);
       if (notificationsCount >= 100) {
         const oldestUserNotification = await this.notificationRepository.findOne({
           where: { recipientId: createNotificationDto.recipientId },
@@ -65,6 +64,7 @@ export class NotificationService {
 
   async markAsRead(notificationId: number): Promise<Notification> {
     const notification = await this.notificationRepository.findByPk(notificationId);
+    if (!notification) throw new NotFoundException('There is no such notification');
     notification.isRead = true;
     await notification.save();
     return notification;
