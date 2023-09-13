@@ -110,6 +110,7 @@ STRIPE_SECRET_KEY=
 REACT_APP_STRIPE_PUBLIC_KEY=
 STRIPE_WEBHOOK_KEY=
 
+=======
 ---
 
 #### 2. Bootstrap project using Docker Compose
