@@ -12,22 +12,21 @@ import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
-import { ReactComponent as BurgerIcon } from 'src/assets/icons/burger.svg';
 import { ScrollArea } from '../../../common/components/ui/common/ScrollArea/ScrollArea';
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from 'src/common/components/ui/common/Sheet/Sheet';
 import { useGetUserQuery } from 'src/common/store/api/packages/user/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { useBurgerMenuContext } from '../../../common/context/BurgerMenuContext';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Layout = () => {
-  const [open, setIsOpen] = useState<boolean>(false);
+  const { open, setIsOpen } = useBurgerMenuContext();
   const dispatch = useAppDispatch();
 
   const [isNavOpen, setIsNavOpen] = React.useState(false);
@@ -53,11 +52,6 @@ const Layout = () => {
   return (
     <div className='flex flex-col lg:flex-row relative'>
       <Sheet open={open} onOpenChange={setIsOpen}>
-        <SheetTrigger>
-          <button className='fixed lg:hidden top-4 left-4 lg:left-auto z-50 p-4 h-[55px] w-[70px] flex justify-center items-center'>
-            <BurgerIcon className='w-[20px] h-[20px]' />
-          </button>
-        </SheetTrigger>
         <SheetContent side={'left'}>
           <SheetHeader>
             <SheetTitle>{routerConfig.name}</SheetTitle>
