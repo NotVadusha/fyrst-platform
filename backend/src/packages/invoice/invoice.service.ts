@@ -15,6 +15,8 @@ import { BucketService } from '../bucket/bucket.service';
 import { Facility } from '../facility/entities/facility.entity';
 import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 import { PdfResponseDto } from 'shared/packages/invoice/PdfResponseDto';
+import { Payment } from '../payment/entities/payment.entity';
+import { Tax } from '../tax/entities/tax.entity';
 
 @Injectable()
 export class InvoiceService {
@@ -41,6 +43,10 @@ export class InvoiceService {
             {
               model: Booking,
               include: [Facility],
+            },
+            {
+              model: Payment,
+              include: [Tax],
             },
           ],
         },

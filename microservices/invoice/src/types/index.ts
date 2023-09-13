@@ -59,6 +59,7 @@ export interface Timecard {
   status: TimecardStatus;
   bookingId: number;
   booking: Booking;
+  payment: Payment;
 }
 
 export interface Invoice {
@@ -69,4 +70,26 @@ export interface Invoice {
   timecardId: number;
   createdAt: Date;
   timecard: Timecard;
+}
+
+export interface Payment {
+  id: number;
+  stripePaymentId: string;
+  amountPaid: number;
+  type: string;
+  instapay: number;
+  status: PaymentStatus;
+  approved: boolean;
+  timecardId: number;
+  createdAt: Date;
+  timecard: Partial<Timecard>;
+  taxes: Tax[];
+}
+
+export interface Tax {
+  id: number;
+  name: string;
+  percentage: number;
+  additionalAmount?: number;
+  paymentId: number;
 }

@@ -34,9 +34,18 @@ export class StripeService {
     const payment = await this.paymentService.findOneById(id, userId);
     const taxes = await this.taxService.findAllTaxesByPaymentId(payment.id);
 
-    const stripeTax = taxes.find(tax => tax.name === 'Stripe fee');
+    const totalTax = {
+      percentage: 0,
+      additionalAmount: 0,
+    };
+
+    taxes.forEach(tax => {
+      totalTax.percentage += tax.percentage;
+      if (tax.additionalAmount) totalTax.additionalAmount += tax.additionalAmount;
+    });
+
     const total = getTotal(
-      { percentage: stripeTax.percentage, additionalAmount: stripeTax.additionalAmount },
+      { percentage: totalTax.percentage, additionalAmount: totalTax.additionalAmount },
       payment.amountPaid,
     );
 
