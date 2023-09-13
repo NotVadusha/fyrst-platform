@@ -18,5 +18,6 @@ import { BucketModule } from '../bucket/bucket.module';
     },
   ],
   controllers: [InvoiceController],
+  exports: [InvoiceService],
 })
 export class InvoiceModule {}

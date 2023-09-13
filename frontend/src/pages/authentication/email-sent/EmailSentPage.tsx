@@ -30,7 +30,7 @@ const EmailSentPage = () => {
 
   return (
     <AuthWrapper image={imageSent}>
-      <div className='flex flex-col w-[450px]'>
+      <div className='flex flex-col w-[450px] px-5'>
         <h1 className='text-h3 text-black font-bold mb-4'>The link has been sent!</h1>
 
         <p className='text-body-default text-dark-grey font-semibold mb-8'>

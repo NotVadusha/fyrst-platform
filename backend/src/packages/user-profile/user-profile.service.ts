@@ -7,6 +7,7 @@ import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { NotificationsConfigService } from '../notifications-config/notifications-config.service';
 import { BucketService } from '../bucket/bucket.service';
 import * as crypto from 'crypto';
+import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 
 @Injectable()
 export class UserProfileService {
@@ -34,12 +35,14 @@ export class UserProfileService {
 
   async findOne(userId: number) {
     const profile = await this.profileRepository.findOne({ where: { user_id: userId } });
-    if (!!profile?.avatar)
+    if (!profile) throw new NotFoundException('User profile not found');
+    if (profile?.avatar)
       profile.avatar = await this.bucketService.getFileLink(
         profile.avatar,
         'read',
-        Date.now() + 1000 * 60 * 60 * 24 * 7,
+        Date.now() + WEEK_IN_MILLISECONDS,
       );
+    delete profile.stripeAccountId;
     return profile;
   }
 
@@ -75,5 +78,16 @@ export class UserProfileService {
 
   async delete(userId: number) {
     return await this.profileRepository.destroy({ where: { user_id: userId } });
+  }
+
+  async haveStripeAccount(userId: number) {
+    const profile = await this.profileRepository.findOne({
+      where: {
+        user_id: userId,
+      },
+    });
+    return {
+      stripeAccount: !!profile.stripeAccountId,
+    };
   }
 }

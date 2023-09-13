@@ -63,7 +63,7 @@ const ParticipantView = ({ participantId }: { participantId: string }) => {
           }}
         />
       ) : (
-        <div className='w-[350px] md:w-[378px] h-[calc(300px-5rem)] bg-grey flex items-center	 justify-center'>
+        <div className='w-[350px] md:w-[378px] h-[calc(300px-4.6rem)] bg-grey flex items-center	 justify-center'>
           <User className='rounded-full w-[80px] h-[80px] bg-white' />
         </div>
       )}

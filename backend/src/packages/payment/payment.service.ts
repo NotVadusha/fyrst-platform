@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -15,6 +16,8 @@ import { PaymentsFiltersDto } from './dto/payments-filters.dto';
 import { UserService } from '../user/user.service';
 import { Booking } from '../booking/entities/booking.entity';
 import { userRoles } from 'shared/packages/roles/userRoles';
+import { defaultTaxes } from './data/taxes';
+import { TaxService } from '../tax/tax.service';
 
 @Injectable()
 export class PaymentService {
@@ -24,9 +27,10 @@ export class PaymentService {
     @InjectModel(Payment)
     private readonly paymentRepository: typeof Payment,
     private userService: UserService,
+    private taxService: TaxService,
   ) {}
 
-  async findOneById(id: number) {
+  async findOneById(id: number, userId: number) {
     const payment = await this.paymentRepository.findOne({
       where: { id },
       include: [
@@ -38,12 +42,19 @@ export class PaymentService {
               attributes: ['id', 'first_name', 'last_name'],
               as: 'employee',
             },
+            {
+              model: Booking,
+              attributes: ['id', 'createdBy'],
+            },
           ],
           attributes: ['id'],
         },
       ],
     });
     if (!payment) throw new NotFoundException('Payment not found');
+    if (payment.timecard.employee.id !== userId && payment.timecard.booking.createdBy !== userId)
+      throw new ForbiddenException('Access denied');
+    delete payment.timecard.booking;
     return payment;
   }
 
@@ -144,18 +155,19 @@ export class PaymentService {
     return { payments, total };
   }
 
-  async delete(id: number) {
-    const payment = await this.findOneById(id);
-    if (!payment) return false;
-    await payment.destroy();
-    return true;
+  async delete(id: number, userId: number) {
+    try {
+      const payment = await this.findOneById(id, userId);
+      await payment.destroy();
+      return true;
+    } catch {
+      return false;
+    }
   }
 
-  async update(id: number, data: Partial<Payment>) {
-    const payment = await this.findOneById(id);
-    if (!payment) throw new NotFoundException('Payment not found');
-    await payment.update(data);
-    return await this.findOneById(id);
+  async update(id: number, data: Partial<Payment>, userId: number) {
+    const payment = await this.findOneById(id, userId);
+    return await payment.update(data);
   }
 
   async updateByPaymentId(paymentId: string, data: Partial<Payment>) {
@@ -180,6 +192,14 @@ export class PaymentService {
   }
 
   async create(data: CreatePaymentDto) {
-    return await this.paymentRepository.create(data);
+    const payment = await this.paymentRepository.create(data);
+    defaultTaxes.forEach(
+      async tax =>
+        await this.taxService.createTax({
+          ...tax,
+          paymentId: payment.id,
+        }),
+    );
+    return payment;
   }
 }

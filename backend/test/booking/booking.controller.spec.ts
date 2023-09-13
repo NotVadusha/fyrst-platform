@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { existingId, mockedBooking, mockedBookingService } from './booking.mock';
 import { BookingController } from 'src/packages/booking/booking.controller';
 import { BookingService } from 'src/packages/booking/booking.service';
+import { UserService } from 'src/packages/user/user.service';
 
 describe('BookingController', () => {
   let controller: BookingController;
@@ -14,6 +15,10 @@ describe('BookingController', () => {
         {
           provide: BookingService,
           useValue: mockedBookingService,
+        },
+        {
+          provide: UserService,
+          useValue: {},
         },
       ],
     }).compile();

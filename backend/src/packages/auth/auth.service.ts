@@ -11,7 +11,7 @@ import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
 import { EmailConfirmationService } from 'src/packages/email-confirmation/emailConfirmation.service';
 import { RegistrationDto } from './dto/registration.dto';
 import { UserProfileService } from '../user-profile/user-profile.service';
-
+import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -129,7 +129,11 @@ export class AuthService {
   }
 
   async updateRefreshToken(id: number, refreshToken: string): Promise<void> {
-    await this.redisService.set(id.toString(), refreshToken, 7 * 24 * 60 * 60);
+    await this.redisService.set(id.toString(), refreshToken, WEEK_IN_MILLISECONDS);
+  }
+
+  private async setGoogleAccessToken(id: number, accessToken: string) {
+    await this.redisService.set(`google_access_token_${id}`, accessToken, 7 * 24 * 60 * 60);
   }
 
   async googleAuthentication(googleDto: GoogleDto) {
@@ -155,6 +159,7 @@ export class AuthService {
 
       const tokens = await this.getTokens({ id: userInfo.id });
       this.updateRefreshToken(userInfo.id, tokens.refreshToken);
+      await this.setGoogleAccessToken(userInfo.id, googleDto.accessToken);
       return {
         tokens,
         user: userInfo,

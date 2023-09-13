@@ -31,7 +31,7 @@ export function WorkerStats({ facilityId, startDate }: { facilityId: number; sta
   }
 
   return (
-    <section className='max-h-[35vh]'>
+    <section className='max-h-[35vh] mt-[70px] md:mt-0'>
       <SectionHeader>Worker statistics</SectionHeader>
       <ul className='list-disc mx-10'>
         <li>

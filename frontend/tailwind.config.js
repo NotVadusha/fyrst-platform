@@ -10,6 +10,10 @@ module.exports = {
         inputs: '15.625rem',
       },
       keyframes: {
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
         spinAround: {
           '0%': { transform: 'rotate(0deg) translate(2rem)' },
           '100%': { transform: 'rotate(360deg) translate(2rem)' },

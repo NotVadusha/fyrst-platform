@@ -106,6 +106,10 @@ RABBITMQ_DEFAULT_PASS=user
 RABBITMQ_HOST=rabbitmq:${RABBITMQ_PORT}
 RABBITMQ_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
 
+STRIPE_SECRET_KEY=
+REACT_APP_STRIPE_PUBLIC_KEY=
+STRIPE_WEBHOOK_KEY=
+
 ---
 
 #### 2. Bootstrap project using Docker Compose
@@ -131,3 +135,4 @@ RABBITMQ_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5
 - It's a good thing to keep your branch in sync with develop, so once in a while you should merge
   develop into your branch
 - Prefer small but frequent pull requests over infrequent and huge ones
+```

@@ -24,7 +24,7 @@ export function ReportsPage() {
   return (
     <section className='min-h-full'>
       <Header title='Reports' />
-      <div className='px-20 py-10 flex flex-col gap-y-10'>
+      <div className='px-4 sm:px-6 lg:px-20 py-10 flex flex-col gap-y-10'>
         <BookingStatistics facilityId={user.facility_id} startDate={lastYear} />
         <BookingsByMonth facilityId={user.facility_id} />
         <WorkerStats facilityId={user.facility_id} startDate={lastYear} />

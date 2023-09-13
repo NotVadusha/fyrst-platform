@@ -19,6 +19,14 @@ module.exports = {
         updatedAt,
       });
     }
+
+    invoices.push({
+      amountPaid: 900,
+      status: 'pending',
+      timecardId: 150,
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+    });
     
     await queryInterface.bulkInsert('Invoices', invoices);
   },

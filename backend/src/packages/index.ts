@@ -18,3 +18,4 @@ export { InvoiceModule } from './invoice/invoice.module';
 export { PermissionsModule } from './permissions/permissions.module';
 export { StatisticsModule } from './statistics/statistics.module';
 export { CalendarEventsModule } from './calendar-events/calendar-events.module';
+export { TaxModule } from './tax/tax.module';

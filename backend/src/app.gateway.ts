@@ -100,6 +100,25 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.to(data.chatId).emit('user-stop-typing', { user: data.user });
   }
 
+  @SubscribeMessage('user-join-meeting')
+  async handleJoinMeeting(client: Socket, data: { meetingId: string }) {
+    this.logger.log(`${client.id} joined meeting ${data.meetingId}`);
+    client.join(data.meetingId);
+  }
+
+  @SubscribeMessage('new-meeting-message')
+  async handleNewMeetingMessage(
+    client: Socket,
+    data: { meetingId: string; messageContent: string; username: string },
+  ) {
+    this.logger.log(`${client.id} sent a message to ${data.meetingId}`);
+
+    this.wss.to(data.meetingId).emit('new-meeting-message', {
+      messageContent: data.messageContent,
+      username: data.username,
+    });
+  }
+
   handleDisconnect(client: Socket) {
     this.logger.log('Client disconnected');
     this.onlineUsers.forEach((socketId, userId) => {

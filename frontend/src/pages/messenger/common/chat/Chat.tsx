@@ -113,7 +113,7 @@ export const ChatPage: React.FC = () => {
         </div>
       </div>
       <div
-        className='h-[320px] mb-[100px] py-2 overflow-y-auto overflow-x-hidden	 scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
+        className='h-[320px] mb-[100px] py-2 overflow-y-auto overflow-x-hidden scrollbar-w-2 scrollbar-track-blue-lighter scrollbar-thumb-blue scrollbar-thumb-rounded'
         ref={scrollAreaRef}
       >
         <div className='mt-4 flex flex-col w-full pr-4 overflow-x-hidden	'>
@@ -172,7 +172,7 @@ const MessageElement = ({
       {!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
-          path={message.user.profile.avatar}
+          path={message.user.profile?.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />
@@ -192,7 +192,7 @@ const MessageElement = ({
       {!!isAuthor && (
         <UserAvatar
           className={cn('w-8 h-8 self-end', { invisible: hasNextMessage })}
-          path={message.user.profile.avatar}
+          path={message.user.profile?.avatar}
           isOnline={isOnline}
           fallback={fallback}
         />

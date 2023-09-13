@@ -5,7 +5,7 @@ import TimeCardPage from '../../pages/timecards/main/TimeCard';
 import ProfilePage from '../../pages/profiles/ProfilePage';
 import ProfileEditPage from '../../pages/profiles/ProfileEditPage';
 import MessangerPage from '../../pages/messenger/MessangerPage';
-import PaymentsPage from '../../pages/payments/PaymentsList/PaymentsPage';
+import { PaymentsPage } from '../../pages/payments/PaymentsList/PaymentsPage';
 import SignInPage from '../../pages/authentication/signin/SignInPage';
 import EmployeesPage from '../../pages/employees/EmployeesPage';
 import ErrorPage from '../../pages/common/error/ErrorPage';
@@ -41,8 +41,11 @@ import { JoinScreen } from 'src/pages/meeting/JoinScreen';
 
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
+import { Payment } from 'src/pages/payments/Payment/Payment';
 import BookingPageLayout from '../../pages/bookings/ListBookingPage/BookingPageLayout';
 import InterviewPage from 'src/pages/bookings/inverview/InterviewPage';
+import InvitationPage from 'src/pages/bookings/inverview/invitation/InvitationPage';
+import { BurgerMenuProvider } from '../context/BurgerMenuContext';
 import { VideoMeeting } from 'src/pages/meeting/VideoMeeting';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
@@ -54,7 +57,9 @@ export const router = createBrowserRouter([
       {
         element: (
           <ConfigurateProtectedRoute>
-            <Layout />
+            <BurgerMenuProvider>
+              <Layout />
+            </BurgerMenuProvider>
           </ConfigurateProtectedRoute>
         ),
         children: [
@@ -84,6 +89,10 @@ export const router = createBrowserRouter([
                     element: <JobRecommendations />,
                   },
                 ],
+              },
+              {
+                path: 'interview/:id',
+                element: <InvitationPage />,
               },
               {
                 path: ':id',
@@ -189,11 +198,11 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          {
-            path: '/meeting-chat',
-            errorElement: <ErrorPage />,
-            element: <JoinScreen />,
-          },
+          // {
+          //   path: '/meeting-chat',
+          //   errorElement: <ErrorPage />,
+          //   element: <JoinScreen />,
+          // },
           {
             path: 'payments',
             errorElement: <ErrorPage />,
@@ -204,7 +213,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: ':id',
-                element: <TestPage />,
+                element: <Payment />,
               },
             ],
           },

@@ -19,11 +19,11 @@ import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { MessageFiltersDto } from './dto/message-filters.dto';
 
 @ApiTags('message')
+@UseGuards(AccessTokenGuard)
 @Controller('chat/:chatId/message')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Post()
   async createMessage(
     @Request() req,
@@ -33,7 +33,6 @@ export class MessageController {
     return this.messageService.create(chatId, { ...createdData, userId: req.user['id'], chatId });
   }
 
-  @UseGuards(AccessTokenGuard)
   @Get()
   async getAllMessages(
     @Param('chatId', ParseIntPipe) chatId: number,
@@ -42,7 +41,6 @@ export class MessageController {
     return this.messageService.findAll(chatId, { messageContent: query.messageContent });
   }
 
-  @UseGuards(AccessTokenGuard)
   @Get('media')
   async getAllMessagesWithMedia(@Param('chatId', ParseIntPipe) chatId: number) {
     return this.messageService.findAllMedia(chatId);
@@ -56,7 +54,6 @@ export class MessageController {
     return this.messageService.find(chatId, id);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async updateMessage(
     @Request() req,

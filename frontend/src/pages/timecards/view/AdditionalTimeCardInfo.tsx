@@ -38,7 +38,7 @@ export const AdditionalTimeCardInfo = ({ timecard }: AdditionalInfoInputProps) =
   const employeeAvatar = defaultAvatar;
 
   return (
-    <Card className='col-span-3'>
+    <Card className='md:ml-[35px] md:miw-w-[305px] md:w-[405px]'>
       <CardTitle>Additional details</CardTitle>
       <CardContent className='flex flex-col space-y-4 items-start text-dark-grey'>
         <div className='flex justify-between gap-2 w-full'>

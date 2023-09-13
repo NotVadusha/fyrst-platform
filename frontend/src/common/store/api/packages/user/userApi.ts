@@ -52,10 +52,10 @@ export const userApi = apiSlice.injectEndpoints({
       },
     }),
     getUser: build.query<User, number>({
-      query: id => ({
-        url: `/user/${id}`,
-        method: 'GET',
-      }),
+      query: id => {
+        console.log(id);
+        return { url: `/user/${id}`, method: 'GET' };
+      },
     }),
     getUserWithEvents: build.query<User, number>({
       query: id => ({

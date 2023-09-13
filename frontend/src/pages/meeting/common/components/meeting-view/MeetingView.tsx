@@ -4,10 +4,9 @@ import { ParticipantView } from '../participant-view/ParticipantView';
 import { Button } from 'src/common/components/ui/common/Button';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { MainControls } from '../controls/main-controls/MainControls';
-import { useAppSelector } from 'src/common/hooks/redux';
+import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { ReactComponent as VideoParticipantsIcon } from 'src/assets/icons/video-participants.svg';
 import { ReactComponent as VideoChatIcon } from 'src/assets/icons/video-chat.svg';
-import { MeetingChat } from '../meeting-chat/MeetingChat';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
 import {
   Sheet,
@@ -17,6 +16,13 @@ import {
   SheetTrigger,
 } from 'src/common/components/ui/common/Sheet/Sheet';
 import { VideoMeetingChat } from '../chat/VideoMeetingChat';
+import { TokenResponseDto } from 'src/common/packages/authentication/login/types/dto/TokenResponseDto';
+import jwtDecode from 'jwt-decode';
+import { JWTPayload } from 'shared/packages/authentication/types/JWTPayload';
+import { useGetUserQuery } from 'src/common/store/api/packages/user/userApi';
+import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { setUser } from 'src/common/store/slices/packages/user/userSlice';
 
 const MeetingView = ({
   onMeetingLeave,
@@ -29,6 +35,7 @@ const MeetingView = ({
   const { leave } = useMeeting();
 
   const socket = useContext(SocketContext);
+  const user = useAppSelector(state => state.user);
 
   const { participants } = useMeeting({
     onMeetingJoined: () => {
@@ -44,12 +51,27 @@ const MeetingView = ({
     },
   });
 
-  useEffect(() => {
-    return () => leave();
-  }, [meetingId]);
+  const token = localStorage.getItem('accessToken');
+  let decode: DecodedUser | undefined;
 
-  const user = useAppSelector(state => state.user);
-  console.log(meetingId);
+  if (token) {
+    decode = jwtDecode(token);
+  }
+
+  const { data } = useGetUserQuery(decode?.id ?? skipToken);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (user?.id) return;
+
+    console.log('data: ', data);
+
+    socket.emit('user-join-meeting', { meetingId });
+
+    dispatch(setUser(data));
+
+    return () => leave();
+  }, [data, meetingId]);
 
   useEffect(() => {}, [meetingId]);
 
@@ -61,7 +83,7 @@ const MeetingView = ({
         <Spinner size='lg' color='bg-white' />
       ) : (
         <div className='grid content-between h-screen ml-6 z-60'>
-          <div className='grid grid-cols-1 md:grid-cols-2 mt-5 bg-black'>
+          <div className='grid grid-cols-1 md:grid-cols-2 mt-5 bg-black gap-6'>
             {[...participants.keys()].map(participantId => (
               <div className='flex flex-wrap' key={participantId}>
                 <ParticipantView participantId={participantId} />
@@ -74,15 +96,6 @@ const MeetingView = ({
             </p>
             <MainControls />
             <div className='flex align-center items-center'>
-              <Button
-                variant='controls'
-                size='controls'
-                className='mr-6'
-                onClick={() => console.log('mock')}
-              >
-                <VideoParticipantsIcon />
-              </Button>
-
               <Sheet>
                 <SheetTrigger>
                   <Button variant='controls' size='controls' className='mr-6'>
@@ -99,7 +112,7 @@ const MeetingView = ({
                         ended, the messages disappear.
                       </p>
                     </SheetTitle>
-                    <VideoMeetingChat />
+                    <VideoMeetingChat meetingId={meetingId} />
                   </SheetHeader>
                 </SheetContent>
               </Sheet>

@@ -59,8 +59,8 @@ export function BookingStatistics({
   };
 
   return (
-    <section className='max-h-[30vh] grid grid-cols-3'>
-      <div className='col-span-2'>
+    <section className='grid md:grid-cols-3 grid-cols-1 mb-6'>
+      <div className='md:col-span-2'>
         <SectionHeader>Amount of bookings</SectionHeader>
         <p className='text-body-large'>
           During the last year, your company submitted total of{' '}
@@ -70,7 +70,7 @@ export function BookingStatistics({
           <span className='underline'>{stats.pending}</span> of them are still pending.
         </p>
       </div>
-      <div className='col-span-1 flex flex-col items-center justify-center'>
+      <div className='mt-6 md:mt-0 md:col-span-1 flex flex-col items-center justify-center'>
         <div className='max-h-[30vh]'>
           <Pie data={chartData} options={chartOptions} />
         </div>
