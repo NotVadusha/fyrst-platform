@@ -5,6 +5,7 @@ import { GotenbergClientService } from '../gotenberg-client/gotenberg-client.ser
 import { DataToPdfDto } from '../invoice/dto/data-to-pdf.dto';
 import { streamToBase64 } from 'src/helpers/streamToBase64';
 import { getTotal } from 'shared/getTotal';
+import { getTotalTax } from 'shared/getTotalTax';
 
 @Injectable()
 export class ConvertService implements OnModuleInit {
@@ -14,15 +15,7 @@ export class ConvertService implements OnModuleInit {
   private hbsTemplate: HandlebarsTemplateDelegate;
 
   async toPdfInvoice(data: DataToPdfDto) {
-    const totalTax = {
-      percentage: 0,
-      additionalAmount: 0,
-    };
-
-    data.invoice.timecard.payment.taxes.forEach(tax => {
-      totalTax.percentage += tax.percentage;
-      if (tax.additionalAmount) totalTax.additionalAmount += tax.additionalAmount;
-    });
+    const totalTax = getTotalTax(data.invoice.timecard.payment.taxes);
 
     const total = getTotal(totalTax, data.invoice.amountPaid);
     let totalRate = `${totalTax.percentage}%`;

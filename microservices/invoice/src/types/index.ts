@@ -1,5 +1,6 @@
 import { TimecardStatus } from 'shared/timecard-status';
 import { PaymentStatus } from 'shared/payment-status';
+import { Tax } from 'shared/packages/tax/Tax';
 
 export interface Role {
   id: number;
@@ -84,12 +85,4 @@ export interface Payment {
   createdAt: Date;
   timecard: Partial<Timecard>;
   taxes: Tax[];
-}
-
-export interface Tax {
-  id: number;
-  name: string;
-  percentage: number;
-  additionalAmount?: number;
-  paymentId: number;
 }
