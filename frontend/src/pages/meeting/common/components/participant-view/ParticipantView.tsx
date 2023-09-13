@@ -42,7 +42,7 @@ const ParticipantView = ({ participantId }: { participantId: string }) => {
   return (
     <div
       key={participantId}
-      className={cn('relative h-[227px] mr-4', { 'border border-green-2': isActiveSpeaker })}
+      className={cn('relative h-[227px]', { 'border border-green-2': isActiveSpeaker })}
     >
       <audio ref={micRef} autoPlay muted={isLocal} />
 
@@ -56,18 +56,18 @@ const ParticipantView = ({ participantId }: { participantId: string }) => {
           playing={true}
           url={videoStream}
           height={'100%'}
-          width={'95%'}
+          width={'100%'}
           style={{ height: '100%' }}
           onError={error => {
             console.log(error, 'participant video error');
           }}
         />
       ) : (
-        <div className='w-[350px] md:w-[400px] h-[calc(300px-4rem)] bg-grey flex items-center	 justify-center'>
+        <div className='w-[350px] md:w-[378px] h-[calc(300px-5rem)] bg-grey flex items-center	 justify-center'>
           <User className='rounded-full w-[80px] h-[80px] bg-white' />
         </div>
       )}
-      {!micOn && <MicOff className='w-6 h-6 absolute bottom-6 right-5 text-white' />}
+      {!micOn && <MicOff className='w-6 h-6 absolute bottom-6 right-8 text-white' />}
     </div>
   );
 };

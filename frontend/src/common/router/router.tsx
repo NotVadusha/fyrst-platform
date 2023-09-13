@@ -37,12 +37,13 @@ import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMed
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
 import JobRecommendations from 'src/pages/bookings/recommendations/JobRecommendations';
-import { Meeting } from 'src/pages/meeting/Meeting';
+import { JoinScreen } from 'src/pages/meeting/JoinScreen';
 
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
 import BookingPageLayout from '../../pages/bookings/ListBookingPage/BookingPageLayout';
 import InterviewPage from 'src/pages/bookings/inverview/InterviewPage';
+import { VideoMeeting } from 'src/pages/meeting/VideoMeeting';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -191,7 +192,7 @@ export const router = createBrowserRouter([
           {
             path: '/meeting-chat',
             errorElement: <ErrorPage />,
-            element: <Meeting />,
+            element: <JoinScreen />,
           },
           {
             path: 'payments',
@@ -263,6 +264,11 @@ export const router = createBrowserRouter([
             element: <Navigate to='/booking' replace />,
           },
         ],
+      },
+      {
+        path: '/meeting-chat/:id',
+        errorElement: <ErrorPage />,
+        element: <VideoMeeting />,
       },
       {
         path: '/auth',

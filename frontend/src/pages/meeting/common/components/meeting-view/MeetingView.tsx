@@ -25,17 +25,18 @@ const MeetingView = ({
   onMeetingLeave: () => void;
   meetingId: string;
 }) => {
-  const [joined, setJoined] = useState<string | null>(null);
-
-  const { join } = useMeeting();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { leave } = useMeeting();
 
   const socket = useContext(SocketContext);
 
   const { participants } = useMeeting({
     onMeetingJoined: () => {
-      setJoined('JOINED');
+      console.log('joined');
+      setIsLoading(false);
     },
     onMeetingLeft: () => {
+      console.log('left');
       onMeetingLeave();
     },
     onSpeakerChanged: activeSpeakerId => {
@@ -43,10 +44,9 @@ const MeetingView = ({
     },
   });
 
-  const joinMeeting = () => {
-    setJoined('JOINING');
-    join();
-  };
+  useEffect(() => {
+    return () => leave();
+  }, [meetingId]);
 
   const user = useAppSelector(state => state.user);
   console.log(meetingId);
@@ -55,70 +55,57 @@ const MeetingView = ({
 
   const [showMeetingChat, setShowMeetingChat] = useState(false);
 
-  const toggleMeetingChat = () => {
-    setShowMeetingChat(!showMeetingChat);
-  };
-
   return (
     <div className='flex justify-center items-center h-screen bg-black'>
-      {joined && joined === 'JOINED' ? (
-        <>
-          <div className='grid content-between h-screen ml-6 z-60'>
-            <div className='grid grid-cols-1 md:grid-cols-2 mt-5 bg-black'>
-              {[...participants.keys()].map(participantId => (
-                <div className='flex flex-wrap' key={participantId}>
-                  <ParticipantView participantId={participantId} />
-                </div>
-              ))}
-            </div>
-            <div className='flex justify-between items-center pb-6'>
-              <p className='text-center text-white'>
-                {user.first_name} {user.last_name}
-              </p>
-              <MainControls />
-              <div className='flex align-center items-center'>
-                <Button
-                  variant='controls'
-                  size='controls'
-                  className='mr-6'
-                  onClick={() => console.log('mock')}
-                >
-                  <VideoParticipantsIcon />
-                </Button>
-
-                <Sheet>
-                  <SheetTrigger>
-                    <Button variant='controls' size='controls' className='mr-6'>
-                      <VideoChatIcon />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side={'right'}>
-                    <SheetHeader>
-                      <SheetTitle>
-                        <span className='text-blue font-semibold text-xl'>Chat</span>
-                        <hr className='border-b border-1 border-grey/80 my-4' />
-                        <p className='text-dark-grey text-xs leading-4	'>
-                          Only meeting participants can send and view messages. When the meeting has
-                          ended, the messages disappear.
-                        </p>
-                      </SheetTitle>
-                      <VideoMeetingChat />
-                    </SheetHeader>
-                  </SheetContent>
-                </Sheet>
+      {isLoading ? (
+        <Spinner size='lg' color='bg-white' />
+      ) : (
+        <div className='grid content-between h-screen ml-6 z-60'>
+          <div className='grid grid-cols-1 md:grid-cols-2 mt-5 bg-black'>
+            {[...participants.keys()].map(participantId => (
+              <div className='flex flex-wrap' key={participantId}>
+                <ParticipantView participantId={participantId} />
               </div>
+            ))}
+          </div>
+          <div className='flex justify-between items-center pb-6'>
+            <p className='text-center text-white'>
+              {user.first_name} {user.last_name}
+            </p>
+            <MainControls />
+            <div className='flex align-center items-center'>
+              <Button
+                variant='controls'
+                size='controls'
+                className='mr-6'
+                onClick={() => console.log('mock')}
+              >
+                <VideoParticipantsIcon />
+              </Button>
+
+              <Sheet>
+                <SheetTrigger>
+                  <Button variant='controls' size='controls' className='mr-6'>
+                    <VideoChatIcon />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side={'right'}>
+                  <SheetHeader>
+                    <SheetTitle>
+                      <span className='text-blue font-semibold text-xl'>Chat</span>
+                      <hr className='border-b border-1 border-grey/80 my-4' />
+                      <p className='text-dark-grey text-xs leading-4	'>
+                        Only meeting participants can send and view messages. When the meeting has
+                        ended, the messages disappear.
+                      </p>
+                    </SheetTitle>
+                    <VideoMeetingChat />
+                  </SheetHeader>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
-        </>
-      ) : joined && joined === 'JOINING' ? (
-        <Spinner />
-      ) : (
-        <Button
-          onClick={joinMeeting}
-          className='w-[170px] flex justify-center items-center md:w-1/6'
-        >
-          Join
-        </Button>
+        </div>
       )}
     </div>
   );

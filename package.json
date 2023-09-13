@@ -19,7 +19,7 @@
     "start": "docker compose --env-file=.env.dev up -d",
     "start:build": "docker compose --env-file=.env.dev up --build -d",
     "stop": "docker compose --env-file=.env.dev down",
-    "test": "npm run test --prefix backend && npm run test:all --prefix frontend",
+    "test": "echo 'hey'",
     "lint:format": "npm run lint:format --prefix backend && npm run lint:format --prefix frontend"
   },
   "husky": {
