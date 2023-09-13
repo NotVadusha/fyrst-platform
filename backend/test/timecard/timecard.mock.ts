@@ -4,6 +4,7 @@ import { UpdateTimecardDto } from '../../src/packages/timecard/dto/update-timeca
 import { TimecardFiltersDto } from '../../src/packages/timecard/dto/timecard-filters.dto';
 import { Timecard } from '../../src/packages/timecard/entities/timecard.entity';
 import { TimecardStatus } from 'shared/timecard-status';
+import { CreateNotificationDto } from 'src/packages/notification/dto/create-notification.dto';
 
 export interface TestTimecard {
   id?: number;
@@ -130,4 +131,12 @@ export const mockTimecardModel = {
   }),
   build: buildModelMock,
   count: jest.fn().mockResolvedValue(timecardsMock.length),
+};
+
+export const mockUserNotification = {
+  create: jest
+    .fn()
+    .mockImplementation((createNotificationDto: CreateNotificationDto) =>
+      Promise.resolve({ id: 1, createdAt: new Date(), ...createNotificationDto }),
+    ),
 };

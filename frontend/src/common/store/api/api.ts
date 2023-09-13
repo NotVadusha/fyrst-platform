@@ -9,9 +9,10 @@ export const apiSlice = createApi({
     'Bookings',
     'Notification config',
     'Calendar',
+    'Events',
+    'Notifications',
     'Payments',
     'Payment',
-    'Events',
   ],
   endpoints: () => ({}),
 });

@@ -6,6 +6,7 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Chat } from './entities/chat.entity';
@@ -14,7 +15,7 @@ import { UserService } from '../user/user.service';
 import { Message } from '../message/entities/message.entity';
 import { User, UserChat } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
-import { AppGateway } from 'src/app.gateway';
+import { ChatGateway } from 'src/packages/websocket/chat.gateway';
 import sequelize from 'sequelize';
 import { BucketService } from '../bucket/bucket.service';
 import * as crypto from 'crypto';
@@ -32,8 +33,8 @@ export class ChatService {
     private readonly logger: Logger,
     @Inject(UserService)
     private readonly userService: UserService,
-    @Inject(AppGateway)
-    private readonly gateway: AppGateway,
+    @Inject(forwardRef(() => ChatGateway))
+    private readonly gateway: ChatGateway,
     @InjectModel(UserChat)
     private readonly userChatRepository: typeof UserChat,
     private bucketService: BucketService,

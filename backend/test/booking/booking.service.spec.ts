@@ -3,6 +3,7 @@ import { NotFoundException, Logger } from '@nestjs/common';
 import { getModelToken } from '@nestjs/sequelize';
 import {
   facilityServiceMock,
+  mockUserNotification,
   mockedBooking,
   mockedBookings,
   mockedUpdatedBooking,
@@ -14,6 +15,7 @@ import { BookingService } from 'src/packages/booking/booking.service';
 import { Booking } from 'src/packages/booking/entities/booking.entity';
 import { FacilityService } from 'src/packages/facility/facility.service';
 import { UserProfileService } from 'src/packages/user-profile/user-profile.service';
+import { NotificationService } from 'src/packages/notification/notification.service';
 
 describe('BookingService', () => {
   let bookingService: BookingService;
@@ -44,6 +46,10 @@ describe('BookingService', () => {
         },
         { provide: FacilityService, useValue: facilityServiceMock },
         { provide: UserProfileService, useValue: userProfileServiceMock },
+        {
+          provide: NotificationService,
+          useValue: mockUserNotification,
+        },
       ],
     }).compile();
 

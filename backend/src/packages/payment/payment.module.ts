@@ -5,9 +5,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Payment } from './entities/payment.entity';
 import { UserModule } from '../user/user.module';
 import { TaxModule } from '../tax/tax.module';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Payment]), UserModule, TaxModule],
+  imports: [SequelizeModule.forFeature([Payment]), UserModule, TaxModule, NotificationModule],
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],

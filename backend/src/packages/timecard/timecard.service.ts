@@ -1,4 +1,4 @@
-import { Injectable, Logger, ForbiddenException } from '@nestjs/common';
+import { Injectable, Logger, ForbiddenException, Inject } from '@nestjs/common';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
 import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardFiltersDto } from './dto/timecard-filters.dto';
@@ -10,6 +10,8 @@ import { Booking } from '../booking/entities/booking.entity';
 import { Facility } from '../facility/entities/facility.entity';
 import { Roles } from '../roles/entities/roles.entity';
 import { getFilterParams } from 'shared/getFilterParams';
+import { NotificationService } from '../notification/notification.service';
+import { notificationTemplateTimecard } from 'shared/packages/notification/types/notificationTemplates';
 import * as Papa from 'papaparse';
 import _ from 'lodash';
 import { flatten } from 'flat';
@@ -26,6 +28,7 @@ export class TimecardService {
   constructor(
     @InjectModel(Timecard) private readonly timecardModel: typeof Timecard,
     private userService: UserService,
+    private notificationService: NotificationService,
     private invoiceService: InvoiceService,
     private paymentService: PaymentService,
   ) {}
@@ -131,8 +134,15 @@ export class TimecardService {
 
     Object.assign(timecard, updateTimecardDto);
     await timecard.save();
+    const updatedTimecard = await this.getById(id);
+    this.notificationService.create({
+      recipientId: updatedTimecard.createdBy,
+      content: notificationTemplateTimecard(updatedTimecard.id, updateTimecardDto.status),
+      type: 'timecards',
+      refId: updatedTimecard.id,
+    });
 
-    return await this.getById(id);
+    return updatedTimecard;
   }
 
   async remove(id: number): Promise<Timecard> {

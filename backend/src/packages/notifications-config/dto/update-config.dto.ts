@@ -28,7 +28,7 @@ class UpdateNotificationsConfigDto {
 
   @IsOptional()
   @IsBoolean()
-  readonly passwordChange?: boolean;
+  readonly messenger?: boolean;
 }
 
 export { UpdateNotificationsConfigDto };

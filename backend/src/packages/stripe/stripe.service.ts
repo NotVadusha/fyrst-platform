@@ -8,6 +8,8 @@ import Stripe from 'stripe';
 import { PaymentService } from '../payment/payment.service';
 import { PaymentStatus } from 'shared/payment-status';
 import { UserProfileService } from '../user-profile/user-profile.service';
+import { NotificationService } from '../notification/notification.service';
+import { successPaymentNotification } from 'shared/packages/notification/types/notificationTemplates';
 import { TimecardService } from '../timecard/timecard.service';
 import { InvoiceService } from '../invoice/invoice.service';
 import { TimecardStatus } from 'shared/timecard-status';
@@ -21,6 +23,7 @@ export class StripeService {
   constructor(
     private paymentService: PaymentService,
     private userProfileService: UserProfileService,
+    private notificationService: NotificationService,
     private timecardService: TimecardService,
     private invoiceService: InvoiceService,
     private taxService: TaxService,
@@ -96,12 +99,15 @@ export class StripeService {
             status: PaymentStatus.Completed,
           });
 
-          this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
-            status: PaymentStatus.Completed,
-          });
-
           this.timecardService.update(payment.timecardId, {
             status: TimecardStatus.Paid,
+          });
+
+          this.notificationService.create({
+            recipientId: payment.timecard.approvedBy,
+            content: successPaymentNotification(payment.timecard.booking.facility.name),
+            type: 'payments',
+            refId: payment.id,
           });
         } catch (err) {
           throw new InternalServerErrorException(`Payment Error: ${err.message}`);
@@ -116,19 +122,12 @@ export class StripeService {
           this.invoiceService.updateByTimecardId(payment.timecardId, {
             status: PaymentStatus.Failed,
           });
-
-          this.paymentService.updateByPaymentId(paymentIntentFailed.id, {
-            status: PaymentStatus.Failed,
-            stripePaymentId: null,
-          });
         } catch (err) {
           throw new InternalServerErrorException(`Payment Error: ${err.message}`);
         }
         break;
       default:
         break;
-    }
-    if (event.type === 'payment_intent.succeeded') {
     }
   }
 

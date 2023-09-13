@@ -6,6 +6,8 @@ import { Message } from 'src/packages/message/entities/message.entity';
 import { Roles } from 'src/packages/roles/entities/roles.entity';
 import { User, UserChat } from 'src/packages/user/entities/user.entity';
 import { Permissions } from 'src/packages/permissions/entities/permissions.entity';
+import { Notification } from 'src/packages/notification/entities/notification.entity';
+import { NotificationsConfig } from 'src/packages/notifications-config/entities/notifications-config.entity';
 import { UserProfile } from 'src/packages/user-profile/entities/user-profile.entity';
 import { Event } from 'src/packages/calendar-events/entities/event.entity';
 
@@ -27,6 +29,8 @@ export const development: SequelizeModuleOptions = {
     Message,
     Permissions,
     UserProfile,
+    Notification,
+    NotificationsConfig,
     Event,
   ],
 };
