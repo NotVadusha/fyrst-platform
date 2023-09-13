@@ -1,4 +1,4 @@
-type TotalTax = {
+export type TotalTax = {
   percentage: number;
   additionalAmount: number;
 };

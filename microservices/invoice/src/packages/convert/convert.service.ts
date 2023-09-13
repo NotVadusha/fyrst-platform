@@ -28,6 +28,7 @@ export class ConvertService implements OnModuleInit {
       total: Math.round(total * 100) / 100,
       totalRate: `Tax ${totalRate}:`,
       tax: Math.round((total - data.invoice.amountPaid) * 100) / 100,
+      totalHours: data.invoice.timecard.hoursWorked + data.invoice.timecard.lunchHours,
     });
     const pdfStream = await this.gotenbergClientService.createPdfFromHtml(invoiceHTML);
     const pdfBase64: string = await streamToBase64(pdfStream);

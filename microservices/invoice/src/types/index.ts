@@ -61,6 +61,8 @@ export interface Timecard {
   bookingId: number;
   booking: Booking;
   payment: Payment;
+  hoursWorked: number;
+  lunchHours: number;
 }
 
 export interface Invoice {
