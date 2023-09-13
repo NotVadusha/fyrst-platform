@@ -8,6 +8,8 @@ import Stripe from 'stripe';
 import { PaymentService } from '../payment/payment.service';
 import { PaymentStatus } from 'shared/payment-status';
 import { UserProfileService } from '../user-profile/user-profile.service';
+import { NotificationService } from '../notification/notification.service';
+import { successPaymentNotification } from 'shared/packages/notification/types/notificationTemplates';
 
 @Injectable()
 export class StripeService {
@@ -16,6 +18,7 @@ export class StripeService {
   constructor(
     private paymentService: PaymentService,
     private userProfileService: UserProfileService,
+    private notificationService: NotificationService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2023-08-16',
@@ -66,6 +69,12 @@ export class StripeService {
 
         this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
           status: PaymentStatus.Completed,
+        });
+        this.notificationService.create({
+          recipientId: payment.timecard.approvedBy,
+          content: successPaymentNotification(payment.timecard.booking.facility.name),
+          type: 'payments',
+          refId: payment.id,
         });
       } catch (err) {
         throw new InternalServerErrorException(`Payment Error: ${err.message}`);
