@@ -23,6 +23,7 @@ import { ReactComponent as FiltersCloseIcon } from 'src/assets/icons/filters-clo
 import { ReactComponent as FiltersOpenIcon } from 'src/assets/icons/filters-open.svg';
 import { Button } from '../../../common/components/ui/common/Button';
 
+
 type PaymentsFiltersProps = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (value: string, param: string) => void;

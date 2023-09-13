@@ -32,6 +32,10 @@ const ProfileSecurity = () => {
         <h6 className='text-dark-grey text-h6 pb-8 font-semibold'>Stripe account</h6>
         <StripeConnection />
       </div>
+      <div className='mx-4 md:mx-16 mb-10'>
+        <h6 className='text-dark-grey text-h6 pb-8 font-semibold'>Stripe account</h6>
+        <StripeConnection />
+      </div>
     </>
   );
 };

@@ -16,6 +16,7 @@ import { NotificationModule } from '../notification/notification.module';
     PaymentModule,
     NotificationModule,
   ],
+
   providers: [TimecardService],
   controllers: [TimecardController],
   exports: [TimecardService],

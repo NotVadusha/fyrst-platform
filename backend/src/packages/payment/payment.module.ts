@@ -9,6 +9,7 @@ import { NotificationModule } from '../notification/notification.module';
 
 @Module({
   imports: [SequelizeModule.forFeature([Payment]), UserModule, TaxModule, NotificationModule],
+
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],
