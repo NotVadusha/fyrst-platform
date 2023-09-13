@@ -23,7 +23,7 @@ interface TableProps<T> extends React.HTMLAttributes<HTMLTableElement> {
 
 export default function Table<T>({ items, columns, getRowId, className, ...props }: TableProps<T>) {
   return (
-    <div className='w-full bg-white overflow-auto whitespace-nowrap shadow-xl rounded-lg p-10'>
+    <div className='w-full bg-white overflow-visible whitespace-nowrap shadow-xl rounded-lg p-10'>
       <table className={cn('w-full overflow-x-auto whitespace-nowrap', className)} {...props}>
         <TableHeading<T> columns={columns} />
         <TableBody<T> items={items} columns={columns} getRowId={getRowId} />
