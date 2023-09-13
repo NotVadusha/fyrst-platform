@@ -8,6 +8,8 @@ import { FilterBookingDto } from './dto/filter-booking.dto';
 import { User } from '../user/entities/user.entity';
 import { Op } from 'sequelize';
 import { Facility } from '../facility/entities/facility.entity';
+import { NotificationService } from '../notification/notification.service';
+import { bookingNewUserNotify } from 'shared/packages/notification/types/notificationTemplates';
 import * as Papa from 'papaparse';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { flatten } from 'flat';
@@ -23,6 +25,7 @@ export class BookingService {
     private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly facilityService: FacilityService,
+    private readonly notificationService: NotificationService,
     @Inject(UserProfileService)
     private readonly userProfile: UserProfileService,
   ) {}
@@ -132,6 +135,7 @@ export class BookingService {
 
     await booking.update(updatedData);
     this.logger.log(`Updated booking with ID ${id}`, { booking });
+
     return booking;
   }
 
@@ -151,6 +155,13 @@ export class BookingService {
     await booking.$add('users', userId);
     const updatedBooking = await this.find(bookingId);
     this.logger.log(`Added user with ID ${userId} to booking with ID ${bookingId}`);
+
+    this.notificationService.create({
+      recipientId: booking.createdBy,
+      content: bookingNewUserNotify(updatedBooking.facility.name),
+      refId: updatedBooking.id,
+      type: 'bookings',
+    });
 
     return { message: 'User successfully added to booking!', booking: updatedBooking };
   }

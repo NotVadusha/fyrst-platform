@@ -1,21 +1,21 @@
-import { Inject, Logger, UseGuards, forwardRef } from '@nestjs/common';
+import { Inject, Injectable, Logger, UseGuards, forwardRef } from '@nestjs/common';
 import {
   WebSocketGateway,
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
-  MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ClientToServerEvents, ServerToClientEvents, TypingUser } from 'shared/socketEvents';
-import { ChatService } from './packages/chat/chat.service';
-import { SocketAuthMiddleware } from './packages/auth/ws.md';
-import { WsJwtGuard } from './packages/auth/guards/ws-jwt.guard';
+import { ChatService } from '../chat/chat.service';
+import { SocketAuthMiddleware } from '../auth/ws.md';
+import { WsJwtGuard } from '../auth/guards/ws-jwt.guard';
 
 @WebSocketGateway()
 @UseGuards(WsJwtGuard)
-export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
+@Injectable()
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     @Inject(forwardRef(() => ChatService))
     private readonly chatService: ChatService,
@@ -24,8 +24,8 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   wss: Server<ClientToServerEvents, ServerToClientEvents>;
   // userId - socketId
-  private onlineUsers = new Map<number, string>();
-  private logger = new Logger('AppGateway');
+  public onlineUsers = new Map<number, string>();
+  private logger = new Logger('ChatGateway');
 
   afterInit(client: Socket) {
     client.use(SocketAuthMiddleware() as any);

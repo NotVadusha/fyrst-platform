@@ -46,9 +46,9 @@ const MessangerPage = () => {
     <>
       <div>
         <Header title='Messages' />
-        <div className='lg:mx-20 mx-4 md:mx-10 grid gap-4'>
-          <p className='text-[h6] font-semibold text-dark-grey mt-5'>Messages</p>
-          <div className='flex'>
+        <div className='lg:mx-20 md:mx-10 grid gap-4'>
+          <p className='text-[h6] font-semibold text-dark-grey mt-5 mx-4'>Messages</p>
+          <div className='flex mx-4'>
             <NewConversationButton />
             <NewGroupChatButton />
           </div>

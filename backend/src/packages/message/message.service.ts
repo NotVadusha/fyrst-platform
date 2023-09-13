@@ -1,15 +1,18 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Message } from './entities/message.entity';
 import { CreateMessageDto, UpdateMessageDto } from './dto/dto';
 import { ChatService } from '../chat/chat.service';
 import { UserService } from '../user/user.service';
-import { AppGateway } from 'src/app.gateway';
+import { ChatGateway } from 'src/packages/websocket/chat.gateway';
 import { User } from '../user/entities/user.entity';
 import { MessageFiltersDto } from './dto/message-filters.dto';
 import { Op } from 'sequelize';
 import { BucketService } from '../bucket/bucket.service';
+import { NotificationService } from '../notification/notification.service';
+import { NotificationType } from 'shared/packages/notification/types/notification';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
+import { messageNewNotification } from 'shared/packages/notification/types/notificationTemplates';
 @Injectable()
 export class MessageService {
   WEEK_IN_MILLISECONDS = 604800000;
@@ -19,9 +22,13 @@ export class MessageService {
     private readonly messageRepository: typeof Message,
     private readonly logger: Logger,
     private readonly chatService: ChatService,
+    @InjectModel(User)
+    private readonly userRepository: typeof User,
     private readonly userService: UserService,
-    private readonly gateway: AppGateway,
+    @Inject(ChatGateway)
+    private readonly gateway: ChatGateway,
     private bucketService: BucketService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(chatId: number, data: CreateMessageDto & { chatId: number; userId: number }) {
@@ -54,6 +61,20 @@ export class MessageService {
     this.gateway.wss.to(String(chatId)).emit('new-message', messageWithUser);
     this.gateway.wss.emit('conversation-update', { chatId, message: createdMessage });
 
+    const chat = await this.chatService.find(chatId);
+    const onlineUsers = [...this.gateway.onlineUsers.keys()];
+    const chatMembers = chat.members.map(user => user.id);
+    const offlineUsers = chatMembers.filter(userId => !onlineUsers.includes(userId));
+    this.logger.log('Offline users: ', offlineUsers);
+
+    offlineUsers.forEach(userId => {
+      this.notificationService.create({
+        recipientId: userId,
+        content: messageNewNotification(chat.name),
+        refId: chat.id,
+        type: 'messenger',
+      });
+    });
     this.logger.log(`Created message with ID ${messageWithUser.id}`, {
       messageWithUser,
     });

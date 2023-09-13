@@ -1,3 +1,5 @@
+import { from } from 'rxjs';
+
 export { EmailConfirmationModule } from './email-confirmation/emailConfirmation.module';
 export { UserModule } from './user/user.module';
 export { TimecardModule } from './timecard/timecard.module';
@@ -12,6 +14,8 @@ export { ChatModule } from './chat/chat.module';
 export { MessageModule } from './message/message.module';
 export { NotificationsConfigModule } from './notifications-config/notifications-config.module';
 export { BucketModule } from './bucket/bucket.module';
+export { NotificationModule } from './notification/notification.module';
+export { WebSocketModule } from './websocket/websocket.module';
 export { PaymentModule } from './payment/payment.module';
 export { StripeModule } from './stripe/stripe.module';
 export { InvoiceModule } from './invoice/invoice.module';

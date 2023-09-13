@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { development } from 'src/config';
+import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
+import { InvitationModule } from './packages/invitation/invitation/invitation.module';
 
 import {
   EmailConfirmationModule,
@@ -17,16 +19,17 @@ import {
   MessageModule,
   NotificationsConfigModule,
   BucketModule,
+  PermissionsModule,
+  StatisticsModule,
   PaymentModule,
   StripeModule,
   InvoiceModule,
+  TaxModule,
+  NotificationModule,
+  WebSocketModule,
   PermissionsModule,
   StatisticsModule,
-  TaxModule,
 } from './packages';
-import { AppGateway } from './app.gateway';
-import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
-import { InvitationModule } from './packages/invitation/invitation/invitation.module';
 @Module({
   imports: [
     SequelizeModule.forRoot(development),
@@ -44,16 +47,18 @@ import { InvitationModule } from './packages/invitation/invitation/invitation.mo
     MessageModule,
     NotificationsConfigModule,
     BucketModule,
-    PaymentModule,
-    StripeModule,
-    InvoiceModule,
     PermissionsModule,
     StatisticsModule,
     CalendarEventsModule,
     TaxModule,
     InvitationModule,
+    PaymentModule,
+    StripeModule,
+    InvoiceModule,
+    NotificationModule,
+    WebSocketModule,
   ],
   controllers: [],
-  providers: [AppGateway],
+  providers: [],
 })
 export class AppModule {}

@@ -18,6 +18,9 @@ import { Booking } from '../booking/entities/booking.entity';
 import { userRoles } from 'shared/packages/roles/userRoles';
 import { defaultTaxes } from './data/taxes';
 import { TaxService } from '../tax/tax.service';
+import { NotificationService } from '../notification/notification.service';
+import { paymentApproveNotification } from 'shared/packages/notification/types/notificationTemplates';
+
 
 @Injectable()
 export class PaymentService {
@@ -28,6 +31,7 @@ export class PaymentService {
     private readonly paymentRepository: typeof Payment,
     private userService: UserService,
     private taxService: TaxService,
+    private notificationService: NotificationService,
   ) {}
 
   async findOneById(id: number, userId: number) {
@@ -167,6 +171,14 @@ export class PaymentService {
 
   async update(id: number, data: Partial<Payment>, userId: number) {
     const payment = await this.findOneById(id, userId);
+    if (payment.approved !== data.approved)
+      this.notificationService.create({
+        recipientId: payment.timecard.createdBy,
+        content: paymentApproveNotification(payment.timecard.booking.facility.name),
+        type: 'payments',
+        refId: payment.id,
+      });
+
     return await payment.update(data);
   }
 

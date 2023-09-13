@@ -20,7 +20,7 @@ import { UserListPage } from 'src/pages/users/UserListPage';
 import ForgotPage from 'src/pages/authentication/forgot/ForgotPage';
 import EmailSentPage from 'src/pages/authentication/email-sent/EmailSentPage';
 import ResetPage from 'src/pages/authentication/reset/ResetPage';
-import Notifications from '../../pages/notifications/Notifications';
+import NotificationsSettings from '../../pages/notifications-settings/NotificationsSettings';
 import ProfileSecurity from '../../pages/profiles/ProfileSecurity/ProfileSecurity';
 import { CreateBookingPage } from 'src/pages/bookings/CreateBookingPage/CreateBookingPage';
 import { App } from 'src/pages/App';
@@ -179,7 +179,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'notifications',
-                element: <Notifications />,
+                element: <NotificationsSettings />,
               },
               {
                 path: 'security',

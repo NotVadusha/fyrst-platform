@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { Button } from 'src/common/components/ui/common/Button';
 import { useForm } from 'react-hook-form';
 import { Form } from '../../common/components/ui/common/Form/Form';
-import styles from './Notifications.module.css';
+import styles from './NotificationsSettings.module.css';
 import Checkbox from 'src/common/components/ui/common/Checkbox/Checkbox';
 import { useToast } from 'src/common/components/ui/common/Toast/useToast';
 import { useAppSelector } from 'src/common/hooks/redux';
@@ -60,7 +60,7 @@ const NotificationsForm = () => {
             </div>
 
             <div className={styles.checkboxContainer}>
-              <Checkbox control={form.control} name='passwordChange' label='Password Change' />
+              <Checkbox control={form.control} name='messenger' label='Messenger' />
               <Checkbox control={form.control} name='weeklyReport' label='Weekly report' />
               <Checkbox control={form.control} name='moneySent' label='Sent money success' />
             </div>

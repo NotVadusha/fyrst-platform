@@ -1,3 +1,5 @@
+import { CreateNotificationDto } from 'src/packages/notification/dto/create-notification.dto';
+
 const mockedBookings = [
   {
     status: 'accepted',
@@ -71,4 +73,12 @@ export {
   userServiceMock,
   facilityServiceMock,
   userProfileServiceMock,
+};
+
+export const mockUserNotification = {
+  create: jest
+    .fn()
+    .mockImplementation((createNotificationDto: CreateNotificationDto) =>
+      Promise.resolve({ id: 1, createdAt: new Date(), ...createNotificationDto }),
+    ),
 };
