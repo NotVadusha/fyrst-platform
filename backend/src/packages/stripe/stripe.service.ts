@@ -85,50 +85,12 @@ export class StripeService {
             destination: profile.stripeAccountId,
           });
 
-          await this.stripe.payouts.create(
-            {
-              amount: Math.round(payment.amountPaid * 100),
-              currency: 'usd',
-            },
-            {
-              stripeAccount: profile.stripeAccountId,
-            },
-          );
-
-          this.invoiceService.updateByTimecardId(payment.timecardId, {
+          this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
             status: PaymentStatus.Completed,
           });
-
-          this.timecardService.update(payment.timecardId, {
-            status: TimecardStatus.Paid,
-          });
-
-          this.notificationService.create({
-            recipientId: payment.timecard.approvedBy,
-            content: successPaymentNotification(payment.timecard.booking.facility.name),
-            type: 'payments',
-            refId: payment.id,
-          });
         } catch (err) {
           throw new InternalServerErrorException(`Payment Error: ${err.message}`);
         }
-        break;
-      case 'payment_intent.payment_failed':
-        try {
-          const paymentIntentFailed = event.data.object;
-
-          const payment = await this.paymentService.findOneByPaymentId(paymentIntentFailed.id);
-
-          this.invoiceService.updateByTimecardId(payment.timecardId, {
-            status: PaymentStatus.Failed,
-          });
-
-        } catch (err) {
-          throw new InternalServerErrorException(`Payment Error: ${err.message}`);
-        }
-        break;
-      default:
-        break;
     }
   }
 
