@@ -53,7 +53,7 @@ function Notifications() {
     socket.on('connection', () => {
       socket.emit('mapping', { userId: user?.id ?? 1 });
     });
-    socket.on('notificationCreated', (notification: Notification) => {
+    socket.on('createNotification', (notification: Notification) => {
       setNotifications(prev => [notification, ...prev]);
       const [unreadNotifications, readNotifications] = getSortedNotifications(notifications);
       setDividerIndex(unreadNotifications.length);
@@ -70,7 +70,7 @@ function Notifications() {
       if (!socket) return;
       socket.off('connection');
       socket.off('notificationIsRead');
-      socket.off('notificationCreated');
+      socket.off('createNotification');
     };
   }, [user, socket]);
 

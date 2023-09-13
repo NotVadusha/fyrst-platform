@@ -39,11 +39,11 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }
 
   async create(notification: Notification) {
-    this.logger.log(`created notification was send for ${notification.recipientId})}`);
-    this.logger.log(this.connectedClients);
+    this.logger.log(`created notification was send for ${notification.recipientId}`);
+    this.logger.log(this.connectedClients.get(notification.recipientId));
     this.server
       .to(this.connectedClients.get(notification.recipientId))
-      .emit('notificationCreated', notification);
+      .emit('createNotification', notification);
   }
 
   async markAsRead(notification: Notification) {
