@@ -144,6 +144,16 @@ export class InvoiceService {
     return await invoice.update(data);
   }
 
+  async updateByTimecardId(timecardId: number, data: Partial<Invoice>) {
+    const invoice = await this.invoiceRepository.findOne({
+      where: {
+        timecardId,
+      },
+    });
+    if (!invoice) throw new NotFoundException('Invoice not found');
+    return await invoice.update(data);
+  }
+
   async create(data: CreateInvoiceDto) {
     return await this.invoiceRepository.create(data);
   }

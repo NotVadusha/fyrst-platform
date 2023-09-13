@@ -63,15 +63,17 @@ export default function ViewTimeCardPage() {
   return (
     <>
       <Header title='Timecard' />
-      <div className='mx-16'>
+      <div className='mx-4 max-w-[971px] sm:mx-auto md:px-4 md:mx-auto'>
         <div className='flex flex-col space-y-6 mt-6'>
           <GoBackButton path='/timecard' className='text-dark-grey'>
             All timecards
           </GoBackButton>
 
           <>
-            <div className='flex items-center justify-between'>
-              <h2 className='text-4xl font-bold'>{timecard.booking.facility.name} timecard</h2>
+            <div className='flex flex-col md:flex-row items-center justify-between'>
+              <h2 className='text-4xl  font-bold mb-4 md:mb-0'>
+                {timecard.booking.facility.name} timecard
+              </h2>
               <div className='flex gap-x-4'>
                 <Button
                   variant='primary'
@@ -90,9 +92,8 @@ export default function ViewTimeCardPage() {
                 </Button>
               </div>
             </div>
-
-            <div className='grid grid-cols-8 gap-x-10'>
-              <Card className='col-span-5'>
+            <div className='flex flex-col md:flex-row md:justify-between gap-y-4 mx-0'>
+              <Card className='w-full! max-w-[515px]'>
                 <CardTitle>Job description</CardTitle>
                 <CardContent className='text-black'>{timecard.booking.notes}</CardContent>
               </Card>

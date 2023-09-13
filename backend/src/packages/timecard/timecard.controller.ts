@@ -12,6 +12,7 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateTimecardDto } from './dto/create-timecard.dto';
@@ -20,8 +21,12 @@ import { UpdateTimecardDto } from './dto/update-timecard.dto';
 import { TimecardService } from './timecard.service';
 import { Readable } from 'stream';
 import { Response as ExpressResponse } from 'express';
+import { RoleGuard } from '../roles/guards/roles.guard';
+import { PermissionsGuard } from '../permissions/guards/permissions.guard';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @ApiTags('Timecard endpoints')
+@UseGuards(AccessTokenGuard)
 @Controller('timecard')
 export class TimecardController {
   private readonly logger = new Logger(TimecardController.name);
@@ -40,6 +45,7 @@ export class TimecardController {
     }
   }
 
+  @UseGuards(RoleGuard('WORKER'))
   @Get()
   async getAllFiltered(@Query() query: TimecardFiltersDto) {
     try {
@@ -53,6 +59,7 @@ export class TimecardController {
     }
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageTimecards']))
   @Get('export-csv')
   async exportAllTimecardsToCSV(
     @Res() response: ExpressResponse,
@@ -79,6 +86,7 @@ export class TimecardController {
     }
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageTimecards']))
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number) {
     try {
@@ -106,6 +114,7 @@ export class TimecardController {
     }
   }
 
+  @UseGuards(RoleGuard('FACILITY_MANAGER'), PermissionsGuard(['manageTimecards']))
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
     try {

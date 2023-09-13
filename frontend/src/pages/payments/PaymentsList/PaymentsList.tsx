@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styles from './PaymentsList.module.css';
 import Table from '../../../common/components/ui/common/Table/Table';
 import { paymentsApi } from 'src/common/store/api/packages/payments/paymentApi';
 import { paymentsColumns } from './paymentsTableConfig';
 import { useSearchParams } from 'react-router-dom';
-import { PaymentsFiltersDto } from 'src/common/packages/payments/types/dto/PaymentsFilters.dto';
+import { PaymentsFiltersDto } from 'src/common/packages/payments/types/dto/PaymentsFiltersDto';
 import { PaymentsFilters } from './PaymentsFilters';
 import { Spinner } from 'src/common/components/ui/common/Spinner/Spinner';
 import { Pagination } from 'src/common/components/ui/common/Pagination/Pagination';

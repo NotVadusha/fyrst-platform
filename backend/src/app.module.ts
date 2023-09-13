@@ -24,6 +24,7 @@ import {
   PaymentModule,
   StripeModule,
   InvoiceModule,
+  TaxModule,
   NotificationModule,
   WebSocketModule,
 } from './packages';
@@ -47,6 +48,7 @@ import {
     PermissionsModule,
     StatisticsModule,
     CalendarEventsModule,
+    TaxModule,
     InvitationModule,
     PaymentModule,
     StripeModule,

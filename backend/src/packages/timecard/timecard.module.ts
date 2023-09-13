@@ -4,13 +4,18 @@ import { Timecard } from './entities/timecard.entity';
 import { TimecardController } from './timecard.controller';
 import { TimecardService } from './timecard.service';
 import { UserModule } from '../user/user.module';
+import { InvoiceModule } from '../invoice/invoice.module';
+import { PaymentModule } from '../payment/payment.module';
 import { NotificationModule } from '../notification/notification.module';
-import { Notification } from '../notification/entities/notification.entity';
-import { NotificationService } from '../notification/notification.service';
-import { NotificationGateway } from '../websocket/notification.gateway';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Timecard]), NotificationModule],
+  imports: [
+    SequelizeModule.forFeature([Timecard]),
+    UserModule,
+    InvoiceModule,
+    PaymentModule,
+    NotificationModule,
+  ],
   providers: [TimecardService],
   controllers: [TimecardController],
   exports: [TimecardService],

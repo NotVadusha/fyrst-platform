@@ -62,7 +62,7 @@ export default function BookingPage() {
           <Spinner size='lg' />
         </div>
       ) : data?.bookings.length === 0 ? (
-        <p className='text-body-default font-semibold'>
+        <p className='text-body-default font-semibold mt-10'>
           No bookings to display here. Most probably, nothing matches your search query
         </p>
       ) : (

@@ -15,6 +15,8 @@ import { getModelToken } from '@nestjs/sequelize';
 import { GetAllTimecardsDto } from 'src/packages/timecard/dto/get-all-timecards.dto';
 import { UserService } from 'src/packages/user/user.service';
 import { userServiceMock } from 'test/auth/auth.mocks';
+import { InvoiceService } from 'src/packages/invoice/invoice.service';
+import { PaymentService } from 'src/packages/payment/payment.service';
 import { NotificationService } from 'src/packages/notification/notification.service';
 
 describe('TimecardService', () => {
@@ -38,6 +40,14 @@ describe('TimecardService', () => {
         {
           provide: NotificationService,
           useValue: mockUserNotification,
+        },
+        {
+          provide: InvoiceService,
+          useValue: {},
+        },
+        {
+          provide: PaymentService,
+          useValue: {},
         },
       ],
     }).compile();

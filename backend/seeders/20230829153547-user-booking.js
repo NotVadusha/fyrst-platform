@@ -36,6 +36,12 @@ module.exports = {
       const uniqueBooking = generateUniqueBooking();
       userBooking.push(uniqueBooking);
     }
+    userBooking.push({
+      createdAt: faker.date.recent(),
+      updatedAt: faker.date.recent(),
+      user_id: 24,
+      booking_id: 99,
+    })
     await queryInterface.bulkInsert('user_bookings', userBooking);
   },
 

@@ -33,7 +33,7 @@ export const CreateBookingPage = () => {
   return (
     <>
       <Header title='Create booking' />
-      <div className='mx-4 md:mx-16 mb-8'>
+      <div className='mx-4 md:mx-16 mb-16'>
         <div className='flex flex-col space-y-6 mt-6'>
           <GoBackButton path='/booking' className='text-dark-grey'>
             All bookings

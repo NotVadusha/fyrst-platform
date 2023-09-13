@@ -9,13 +9,16 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { NotificationsConfigService } from './notifications-config.service';
 import { UpdateNotificationsConfigDto } from './dto/update-config.dto';
 import { CreateNotificationsConfigDto } from './dto/create-config-dto';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @ApiTags('Notification config endpoints')
+@UseGuards(AccessTokenGuard)
 @Controller('notification-config')
 export class NotificationsConfigController {
   private readonly logger = new Logger(NotificationsConfigController.name);
