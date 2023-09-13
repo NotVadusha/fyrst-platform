@@ -53,8 +53,8 @@ const Layout = () => {
   return (
     <div className='flex flex-col lg:flex-row relative'>
       <Sheet open={open} onOpenChange={setIsOpen}>
-        <SheetContent side={'left'}>
-          <SheetHeader>
+        <SheetContent side={'left'} className='bg-white w-full text-h6-body-default'>
+          <SheetHeader className='text-left'>
             <SheetTitle>{routerConfig.name}</SheetTitle>
             <MainNav onSelect={() => setIsOpen(false)} />
           </SheetHeader>
