@@ -24,8 +24,8 @@ export class PaymentController {
 
   @UseGuards(AccessTokenGuard)
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Payment | null> {
-    return this.paymentService.findOneById(id);
+  findOne(@Param('id') id: number, @Request() req): Promise<Payment | null> {
+    return this.paymentService.findOneById(id, req.user['id']);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -45,14 +45,15 @@ export class PaymentController {
   update(
     @Param('id') id: number,
     @Body() data: Partial<CreatePaymentDto>,
+    @Request() req,
   ): Promise<Payment | null> {
-    return this.paymentService.update(id, data);
+    return this.paymentService.update(id, data, req.user['id']);
   }
 
   @UseGuards(AccessTokenGuard)
   @HttpCode(204)
   @Delete(':id')
-  async remove(@Param('id') id: number): Promise<boolean> {
-    return this.paymentService.delete(id);
+  async remove(@Param('id') id: number, @Request() req): Promise<boolean> {
+    return this.paymentService.delete(id, req.user['id']);
   }
 }

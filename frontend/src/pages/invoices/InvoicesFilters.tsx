@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { useLazyFetchWorkersByFacilityAdminIdQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 import * as yup from 'yup';
-import styles from './InvoicesList.module.css';
 import {
   Form,
   FormField,
@@ -20,6 +19,7 @@ import {
 } from 'src/common/components/ui/common/Select/Select';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
 import TextInput from '../../common/components/ui/common/Input/common/TextInput/TextInput';
+import { userRoles } from 'shared/packages/roles/userRoles';
 
 type InvoicesFiltersProps = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -38,13 +38,13 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
   handleInputChange,
   handleSelectChange,
 }): React.ReactElement => {
-  const userId = useAppSelector(state => state.user.id);
+  const user = useAppSelector(state => state.user);
   const userRoleId = useAppSelector(state => state.user.role_id);
   const [getPayees, { data: payees }] = useLazyFetchWorkersByFacilityAdminIdQuery();
 
   useEffect(() => {
-    if (!!userId) getPayees(userId);
-  }, [userId]);
+    if (user.id && user.role_id !== userRoles.WORKER) getPayees(user.id!);
+  }, [user]);
 
   const form = useForm<FormValues>({
     resolver: yupResolver<FormValues>(formSchema),

@@ -15,6 +15,10 @@ import _ from 'lodash';
 import { flatten } from 'flat';
 import { UserService } from '../user/user.service';
 import { userRoles } from 'shared/packages/roles/userRoles';
+import { TimecardStatus } from 'shared/timecard-status';
+import { InvoiceService } from '../invoice/invoice.service';
+import { PaymentService } from '../payment/payment.service';
+import { PaymentStatus } from 'shared/payment-status';
 
 @Injectable()
 export class TimecardService {
@@ -22,6 +26,8 @@ export class TimecardService {
   constructor(
     @InjectModel(Timecard) private readonly timecardModel: typeof Timecard,
     private userService: UserService,
+    private invoiceService: InvoiceService,
+    private paymentService: PaymentService,
   ) {}
 
   async create(createTimecardDto: CreateTimecardDto): Promise<Timecard> {
@@ -99,8 +105,31 @@ export class TimecardService {
   }
   async update(id: number, updateTimecardDto: UpdateTimecardDto): Promise<Timecard> {
     const timecard = await this.getById(id);
-    Object.assign(timecard, updateTimecardDto);
 
+    if (
+      updateTimecardDto.status === TimecardStatus.Approved &&
+      timecard.status !== TimecardStatus.Approved
+    ) {
+      const amountPaid =
+        (timecard.hoursWorked + timecard.lunchHours) * timecard.booking.pricePerHour;
+
+      this.invoiceService.create({
+        amountPaid,
+        status: PaymentStatus.Pending,
+        timecardId: timecard.id,
+      });
+
+      this.paymentService.create({
+        amountPaid,
+        status: PaymentStatus.Pending,
+        timecardId: timecard.id,
+        type: 'Stripe',
+        instapay: 100,
+        approved: false,
+      });
+    }
+
+    Object.assign(timecard, updateTimecardDto);
     await timecard.save();
 
     return await this.getById(id);

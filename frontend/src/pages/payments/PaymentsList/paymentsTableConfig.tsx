@@ -2,12 +2,21 @@ import React from 'react';
 import { Payment } from 'src/common/packages/payments/types/models/Payment.model';
 import { ColumnInfo } from '../../../common/components/ui/common/Table/Table';
 import { capitalizeFirstLetter } from 'src/common/helpers/capitalizeFirstLetter';
+import { Link } from 'react-router-dom';
 
 const statusColors = [
   { status: 'Completed', color: 'text-green-2' },
   { status: 'Pending', color: 'text-hover' },
   { status: 'Failed', color: 'text-red-2' },
 ];
+
+export function ViewMoreCell({ item }: { item: Payment }) {
+  return (
+    <Link className='text-blue underline' to={`${item.id}`}>
+      View more
+    </Link>
+  );
+}
 
 export const paymentsColumns: ColumnInfo<Payment>[] = [
   {
@@ -40,5 +49,9 @@ export const paymentsColumns: ColumnInfo<Payment>[] = [
 
       return <span className={statusColor}>{formattedStatus}</span>;
     },
+  },
+  {
+    columnName: 'View more',
+    cellComponent: ViewMoreCell,
   },
 ];

@@ -29,6 +29,20 @@ module.exports = {
       });
     }
 
+    const createdAt = faker.date.past();
+    const approvedAt = faker.date.between({ from: createdAt, to: new Date() });
+
+    timecards.push({
+      createdAt,
+      createdBy: 24,
+      approvedBy: 23,
+      approvedAt,
+      status: 'approved',
+      hoursWorked: 40,
+      lunchHours: 5,
+      bookingId: 99,
+    });
+
     await queryInterface.bulkInsert('Timecards', timecards);
   },
 
