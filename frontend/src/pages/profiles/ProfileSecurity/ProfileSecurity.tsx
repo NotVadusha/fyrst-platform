@@ -12,8 +12,6 @@ const ProfileSecurity = () => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       const payload = jwtDecode<JWTPayload>(accessToken);
-      console.log(payload);
-
       setChangePasswordFormVisibility(!payload.isGoogle);
     }
   }, []);
