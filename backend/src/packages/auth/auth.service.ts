@@ -82,7 +82,7 @@ export class AuthService {
       delete userInfo.password;
       delete userInfo.is_confirmed;
 
-      const tokens = await this.getTokens({ id: userInfo.id });
+      const tokens = await this.getTokens({ id: userInfo.id, isGoogle: false });
       this.updateRefreshToken(userInfo.id, tokens.refreshToken);
       return {
         accessToken: tokens.accessToken,
@@ -106,7 +106,7 @@ export class AuthService {
       if (currentRefreshToken !== refreshDto.refresh_token)
         throw new HttpException('Access Denied', HttpStatus.FORBIDDEN);
 
-      const tokens = await this.getTokens({ id: user.id });
+      const tokens = await this.getTokens({ id: user.id, isGoogle: !user.password });
       this.updateRefreshToken(user.id, tokens.refreshToken);
       return tokens;
     } catch (error) {
@@ -157,7 +157,7 @@ export class AuthService {
       delete userInfo.password;
       delete userInfo.is_confirmed;
 
-      const tokens = await this.getTokens({ id: userInfo.id });
+      const tokens = await this.getTokens({ id: userInfo.id, isGoogle: !user.password });
       this.updateRefreshToken(userInfo.id, tokens.refreshToken);
       await this.setGoogleAccessToken(userInfo.id, googleDto.accessToken);
       return {

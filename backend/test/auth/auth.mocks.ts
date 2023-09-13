@@ -79,6 +79,7 @@ export const signInResponseMock: SignInResponse = {
 
 export const payloadMock: JWTPayload = {
   id: 1,
+  isGoogle: true,
 };
 
 export const existingId = 1;
