@@ -1,5 +1,5 @@
 .profileSecurityContainer {
-  @apply max-w-[515px] md:mx-16 mb-[80px] mt-[40px] mx-4;
+  @apply max-w-[515px] md:mx-16 mb-[40px] mt-[40px] mx-4;
 }
 
 .profileHeader {

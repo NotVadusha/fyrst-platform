@@ -8,11 +8,12 @@ import {
   Param,
   ParseIntPipe,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { Response } from 'express';
-import { CreateIntentsDto } from './dto/create-intents.dto';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 
 @Controller('stripe')
 export class StripeController {
@@ -21,9 +22,10 @@ export class StripeController {
     private userProfileService: UserProfileService,
   ) {}
 
-  @Post('/intents')
-  async initialize(@Body() createIntentsDto: CreateIntentsDto) {
-    return this.stripeService.initializeIntents(createIntentsDto.paymentId);
+  @UseGuards(AccessTokenGuard)
+  @Get('/:id/intent')
+  async initialize(@Param('id', ParseIntPipe) paymentId: number, @Request() req) {
+    return this.stripeService.initializeIntent(paymentId, req.user['id']);
   }
 
   @Post('/webhook')
@@ -31,6 +33,7 @@ export class StripeController {
     return this.stripeService.webhook(req);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get(':userId/stripe-link')
   async connectStripe(@Param('userId', ParseIntPipe) userId: number) {
     const link = await this.stripeService.getStripeAccountLink(userId);

@@ -22,6 +22,7 @@ import {
   InvoiceModule,
   PermissionsModule,
   StatisticsModule,
+  TaxModule,
 } from './packages';
 import { AppGateway } from './app.gateway';
 import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
@@ -49,6 +50,7 @@ import { InvitationModule } from './packages/invitation/invitation/invitation.mo
     PermissionsModule,
     StatisticsModule,
     CalendarEventsModule,
+    TaxModule,
     InvitationModule,
   ],
   controllers: [],

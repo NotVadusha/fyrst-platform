@@ -13,7 +13,7 @@ export class CreateInvoiceDto {
 
   @IsNumber()
   @IsOptional()
-  path: string;
+  path?: string;
 
   @IsNumber()
   @IsNotEmpty()
