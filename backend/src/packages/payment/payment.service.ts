@@ -21,7 +21,6 @@ import { TaxService } from '../tax/tax.service';
 import { NotificationService } from '../notification/notification.service';
 import { paymentApproveNotification } from 'shared/packages/notification/types/notificationTemplates';
 
-
 @Injectable()
 export class PaymentService {
   private readonly logger = new Logger(PaymentService.name);

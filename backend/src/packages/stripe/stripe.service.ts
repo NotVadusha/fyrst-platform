@@ -124,7 +124,6 @@ export class StripeService {
           this.invoiceService.updateByTimecardId(payment.timecardId, {
             status: PaymentStatus.Failed,
           });
-
         } catch (err) {
           throw new InternalServerErrorException(`Payment Error: ${err.message}`);
         }
