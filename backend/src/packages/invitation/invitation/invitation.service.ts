@@ -106,10 +106,18 @@ export class InvitationService {
     if (updateInvitationDto.status === 'accepted') {
       this.calendarEventsService.create({
         name: 'Inverview',
-        description: `Inverview for ${invitation.booking.facility.name} position`,
+        description: `Inverview for ${invitation.booking.facility.name} position https://www.fyrst.site/meeting-chat/${updateInvitationDto.meetingId}`,
         startDate: invitation.date,
         endDate: invitation.date,
         user_id: invitation.employee.id,
+      });
+
+      this.calendarEventsService.create({
+        name: 'Inverview',
+        description: `Inverview for with ${invitation.employee.first_name} https://www.fyrst.site/meeting-chat/${updateInvitationDto.meetingId}`,
+        startDate: invitation.date,
+        endDate: invitation.date,
+        user_id: invitation.organizer.id,
       });
     }
 

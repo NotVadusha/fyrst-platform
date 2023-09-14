@@ -95,10 +95,12 @@ export function ProfileEditForm() {
       const arrayBuffer = await blob.arrayBuffer();
       const base64 = Buffer.from(arrayBuffer).toString('base64');
 
-      updateProfile({
+      const updatedProfile = await updateProfile({
         id: userId,
         body: { avatar: base64, sex: parsedData && capitalize(parsedData.sex) },
-      });
+      }).unwrap();
+
+      setAvatarImage(updatedProfile.avatar || '');
     }
     if (user) {
       const updateUserReq = {
