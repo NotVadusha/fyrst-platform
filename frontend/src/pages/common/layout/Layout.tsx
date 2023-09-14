@@ -11,9 +11,9 @@ import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
-import Notifications from '../../../common/components/ui/layout/notifications/Notifications';
-import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
-import { ScrollArea } from '../../../common/components/ui/common/ScrollArea/ScrollArea';
+import Notifications from 'src/common/components/ui/layout/notifications/Notifications';
+import { selectUser } from 'src/common/store/slices/packages/user/userSelectors';
+import { ScrollArea } from 'src/common/components/ui/common/ScrollArea/ScrollArea';
 import {
   Sheet,
   SheetContent,
@@ -22,7 +22,7 @@ import {
 } from 'src/common/components/ui/common/Sheet/Sheet';
 import { useGetUserQuery } from 'src/common/store/api/packages/user/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
-import { useBurgerMenuContext } from '../../../common/context/BurgerMenuContext';
+import { useBurgerMenuContext } from 'src/common/context/BurgerMenuContext';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

@@ -17,7 +17,7 @@ export function AddUserButton() {
       .unwrap()
       .then(() => {
         navigate(0);
-        toast({ title: 'Success', description: 'User successfully added' });
+        toast({ title: 'Success', description: 'User successfully added', variant: 'success' });
       })
       .catch(error => error);
   }

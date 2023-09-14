@@ -10,7 +10,7 @@ import { MeetingMessage } from 'shared/socketEvents';
 import { v4 as uuidv4 } from 'uuid';
 
 export function VideoMeetingChat({ meetingId }: { meetingId: string }) {
-  const [messages, setMessages] = useState<MeetingMessage[]>([]);
+  const messages = useAppSelector(state => state.meeting.messages);
 
   const [value, setValue] = useState<string>('');
   const socket = useContext(SocketContext);
@@ -29,19 +29,6 @@ export function VideoMeetingChat({ meetingId }: { meetingId: string }) {
     });
     setValue('');
   }
-
-  useEffect(() => {
-    socket.on('new-meeting-message', payload => {
-      setMessages(prev => {
-        if (prev.some(m => m.id === payload.id)) return prev;
-        return [...prev, payload];
-      });
-    });
-
-    return () => {
-      socket.off('new-meeting-message');
-    };
-  }, []);
 
   return (
     <div className='relative h-[calc(100vh-8rem)]'>

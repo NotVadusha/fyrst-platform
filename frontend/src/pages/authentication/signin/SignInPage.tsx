@@ -61,7 +61,7 @@ const SignInPage = () => {
         setUser({ ...data.userInfo, birthdate: data.userInfo.birthdate?.toString() || undefined }),
       );
 
-      toast({ title: 'Successfully signed in' });
+      toast({ title: 'Successfully signed in', variant: 'success' });
 
       navigate('/');
     }

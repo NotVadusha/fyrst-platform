@@ -4,12 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { useLazyFetchWorkersByFacilityAdminIdQuery } from 'src/common/store/api/packages/timecards/timecardsApi';
 import * as yup from 'yup';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-} from '../../common/components/ui/common/Form/Form';
+import { Form, FormField, FormItem, FormControl } from 'src/common/components/ui/common/Form/Form';
 import {
   Select,
   SelectContent,
@@ -18,9 +13,9 @@ import {
   SelectValue,
 } from 'src/common/components/ui/common/Select/Select';
 import { RefreshButton } from 'src/common/components/ui/common/Button/common/refresh-button/RefreshButton';
-import TextInput from '../../common/components/ui/common/Input/common/TextInput/TextInput';
+import TextInput from 'src/common/components/ui/common/Input/common/TextInput/TextInput';
 import { userRoles } from 'shared/packages/roles/userRoles';
-import { Button } from '../../common/components/ui/common/Button';
+import { Button } from 'src/common/components/ui/common/Button';
 import { ReactComponent as FiltersCloseIcon } from 'src/assets/icons/filters-close.svg';
 import { ReactComponent as FiltersOpenIcon } from 'src/assets/icons/filters-open.svg';
 
