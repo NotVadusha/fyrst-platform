@@ -23,7 +23,6 @@ import { ReactComponent as FiltersCloseIcon } from 'src/assets/icons/filters-clo
 import { ReactComponent as FiltersOpenIcon } from 'src/assets/icons/filters-open.svg';
 import { Button } from '../../../common/components/ui/common/Button';
 
-
 type PaymentsFiltersProps = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (value: string, param: string) => void;
@@ -106,7 +105,7 @@ export const PaymentsFilters: React.FC<PaymentsFiltersProps> = ({
                                 <SelectItem value=''>All</SelectItem>
                               </span>
                               {workerOptions.map(option => (
-                                <span className='font-semibold text-dark-blue' key={status}>
+                                <span className='font-semibold text-dark-blue' key={option.value}>
                                   <SelectItem value={option.value.toString()}>
                                     {option.label}
                                   </SelectItem>
