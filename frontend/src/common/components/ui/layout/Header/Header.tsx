@@ -1,7 +1,7 @@
 import React from 'react';
 import Notifications from 'src/common/components/ui/layout/notifications/Notifications';
 import './Header.css';
-import { useBurgerMenuContext } from '../../../../context/BurgerMenuContext';
+import { useBurgerMenuContext } from 'src/common/context/BurgerMenuContext';
 import { ReactComponent as BurgerIcon } from 'src/assets/icons/burger.svg';
 
 export interface HeaderProps {

@@ -13,6 +13,7 @@ import { SocketAuthMiddleware } from '../auth/ws.md';
 import { WsJwtGuard } from '../auth/guards/ws-jwt.guard';
 import { randomUUID } from 'crypto';
 
+
 @WebSocketGateway()
 @UseGuards(WsJwtGuard)
 @Injectable()
