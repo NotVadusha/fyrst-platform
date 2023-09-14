@@ -7,10 +7,13 @@ import { SearchUserForm } from '../forms/SearchUserForm';
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { useCreateChatMutation } from 'src/common/store/api/packages/chat/chatApi';
+import { useNavigate } from 'react-router-dom';
 
 export function NoConversations() {
   const [createChat, result] = useCreateChatMutation();
   const [open, setIsOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   async function createConversation(user: User) {
     if (!user) return;
@@ -19,6 +22,7 @@ export function NoConversations() {
       .then(res => {
         toast({ title: 'Success', description: 'New chat successfully created' });
         setIsOpen(false);
+        navigate(`/chat/${res?.id}`);
       })
       .catch(err => err);
   }
@@ -34,7 +38,12 @@ export function NoConversations() {
           <Button onClick={() => setIsOpen(true)}>New Conversation</Button>
         </div>
       </div>
-      <Modal open={open} onOpenChange={setIsOpen} title='New Message'>
+      <Modal
+        open={open}
+        onOpenChange={setIsOpen}
+        title='New Message'
+        className='max-w-[600px] w-full'
+      >
         <SearchUserForm onSelect={createConversation} />
       </Modal>
     </>

@@ -41,6 +41,13 @@ export const ChatPage: React.FC = () => {
 
   const otherMembers = chat?.members.filter(({ id }) => id !== user?.id);
 
+  const attachmentFile = useAppSelector(state => state.messanger.attachmentFile);
+
+  const imageUrl = React.useMemo(() => {
+    if (!attachmentFile) return null;
+    return URL.createObjectURL(attachmentFile);
+  }, []);
+
   const scrollToLastMessage = React.useCallback(
     ({ behavior }: { behavior?: ScrollBehavior }) => {
       if (!scrollAreaRef?.current || !lastMessageRef.current) return;
@@ -144,6 +151,10 @@ export const ChatPage: React.FC = () => {
             })}
         </div>
       </div>
+      <div className='absolute bottom-20 w-full'>
+        {/* {imageUrl && <img src={imageUrl} alt='image' width={20} height={20} />}
+        hello there */}
+      </div>
       <div className='absolute bottom-0 z-10 w-full'>
         <NewMessageInput chatId={chatId} />
       </div>
@@ -179,7 +190,7 @@ const MessageElement = ({
       )}
       <div
         className={cn(
-          'inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl bg-inactive break-all',
+          'inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl bg-inactive break-words w-[200px] sm:w-auto',
           { 'rounded-bl-2xl': isAuthor, 'rounded-br-2xl': !isAuthor },
         )}
       >

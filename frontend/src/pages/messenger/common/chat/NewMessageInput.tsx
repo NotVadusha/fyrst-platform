@@ -14,10 +14,13 @@ import * as yup from 'yup';
 import { TypingUser } from 'shared/socketEvents';
 import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
-import { setAttachment } from 'src/common/store/slices/packages/messenger/messangerSlice';
+import {
+  setAttachmentPath,
+  setAttachmentFile,
+} from 'src/common/store/slices/packages/messenger/messangerSlice';
 
 const messageSchema = yup.object().shape({
-  messageContent: yup.string().max(60, 'Message is too long'),
+  messageContent: yup.string().max(500, 'Message is too long'),
 });
 
 type Inputs = yup.InferType<typeof messageSchema>;
@@ -55,7 +58,8 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
       },
     });
     form.resetField('messageContent');
-    dispatch(setAttachment(undefined));
+    dispatch(setAttachmentPath(undefined));
+    dispatch(setAttachmentFile(undefined));
   }
 
   const form = useForm<Inputs>({
@@ -119,7 +123,10 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
     if (!attachment) return;
     deleteAttachment({ path: attachment })
       .unwrap()
-      .then(res => dispatch(setAttachment(undefined)))
+      .then(res => {
+        dispatch(setAttachmentPath(undefined));
+        dispatch(setAttachmentFile(undefined));
+      })
       .catch(err => err);
   };
 
