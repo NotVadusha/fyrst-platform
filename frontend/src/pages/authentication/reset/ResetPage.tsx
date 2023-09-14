@@ -49,8 +49,7 @@ const ResetPage = () => {
       .then(() => {
         dispatch(setEmail(null));
         navigate('/auth/signin', { replace: true });
-      })
-      .catch(() => console.log(error));
+      });
   };
 
   return (

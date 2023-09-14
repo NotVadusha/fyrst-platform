@@ -32,7 +32,7 @@ export default function CreateTimeCardPage() {
       hoursWorked: values.hoursWorked,
     });
 
-    toast({ title: 'Success', description: 'Successfully created timecard' });
+    toast({ title: 'Success', description: 'Successfully created timecard', variant: 'success' });
 
     navigate(`/booking/${bookingId}`);
   }

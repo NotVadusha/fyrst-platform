@@ -55,7 +55,7 @@ const ProfileSecurityForm = () => {
       }
 
       toast({
-        variant: 'default',
+        variant: 'success',
         title: 'Success',
         description: 'Your password has been successfully updated.',
       });

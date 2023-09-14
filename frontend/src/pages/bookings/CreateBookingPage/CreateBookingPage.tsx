@@ -16,7 +16,7 @@ export const CreateBookingPage = () => {
     try {
       await createBooking(values);
       toast({
-        variant: 'default',
+        variant: 'success',
         title: 'Success',
         description: 'Booking has been created successfully',
       });

@@ -83,7 +83,7 @@ export const InvoiceButton: React.FC<InvoiceButtonProps> = ({ id }) => {
       </button>
       {menuVisibility ? (
         <div
-          className='absolute flex flex-col px-2 py-2.5 w-[180px] top-7 right-0 bg-white rounded-[8px] shadow-[0px_4px_16px_0px_rgba(0,0,0,0.10)]'
+          className='absolute flex z-[500] flex-col px-2 py-2.5 w-[180px] top-7 right-0 bg-white rounded-[8px] shadow-[0px_4px_16px_0px_rgba(0,0,0,0.10)]'
           ref={menuRef}
         >
           <button

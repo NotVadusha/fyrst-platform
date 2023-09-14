@@ -43,9 +43,7 @@ const SignInPage = () => {
       };
 
       login(body);
-    } catch {
-      console.log(error);
-    }
+    } catch {}
   };
 
   const handleClick = () => {
@@ -61,7 +59,7 @@ const SignInPage = () => {
         setUser({ ...data.userInfo, birthdate: data.userInfo.birthdate?.toString() || undefined }),
       );
 
-      toast({ title: 'Successfully signed in' });
+      toast({ title: 'Successfully signed in', variant: 'success' });
 
       navigate('/');
     }

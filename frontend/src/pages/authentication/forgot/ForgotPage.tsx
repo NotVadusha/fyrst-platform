@@ -36,8 +36,7 @@ const ForgotPage = () => {
       .then(() => {
         dispatch(setEmail(data.email));
         navigate('/auth/forgot/email-sended');
-      })
-      .catch(() => console.log(error));
+      });
   };
 
   return (

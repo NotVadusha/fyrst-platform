@@ -19,7 +19,11 @@ export function NewConversationButton() {
     createChat({ name: 'Any', members: [user.id] })
       .unwrap()
       .then(res => {
-        toast({ title: 'Success', description: 'New chat successfully created' });
+        toast({
+          title: 'Success',
+          description: 'New chat successfully created',
+          variant: 'success',
+        });
         setIsOpen(false);
         navigate(`/chat/${res?.id}`);
       })
