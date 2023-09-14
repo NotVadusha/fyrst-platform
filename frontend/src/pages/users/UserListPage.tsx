@@ -90,8 +90,7 @@ export function UserListPage() {
       complete: result => {
         addUsers(result.data as User[])
           .unwrap()
-          .then(() => navigate(0))
-          .catch(err => console.log(err));
+          .then(() => navigate(0));
       },
     });
   }

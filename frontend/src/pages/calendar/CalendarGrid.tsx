@@ -117,6 +117,7 @@ export const CalendarGrid = ({ userId }: CalendarGridProps) => {
           <div className='flex flex-col border-t-grey border-t border-l-grey border-l h-full'>
             {weeks.map((week, i) => (
               <CalendarRow
+                firstDayMonth={firstDayOfCurrentMonth}
                 events={events}
                 week={week}
                 key={i}

@@ -56,7 +56,6 @@ export const AvatarUploader = ({
   };
 
   const handleSave = async () => {
-    console.log(tempImage);
     if (tempImage && tempImage !== defaultAvatar) {
       const url = avatarEditorRef.current?.getImageScaledToCanvas().toDataURL();
       const result = await fetch(url!);

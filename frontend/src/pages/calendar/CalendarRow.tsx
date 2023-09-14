@@ -1,6 +1,6 @@
 import React from 'react';
 import { WeekWrapper } from './WeekWraper';
-import { isSameDay, isWithinInterval } from 'date-fns';
+import { isSameDay, isSameMonth, isWithinInterval } from 'date-fns';
 
 import { Event } from 'src/common/packages/event/types/models/Event.model';
 import { Droppable } from 'react-beautiful-dnd';
@@ -10,11 +10,16 @@ interface CalendarRowProps {
   week: Date[];
   events?: Event[];
   setEvent: (event: Event) => void;
+  firstDayMonth: Date;
 }
 
-export const CalendarRow = ({ week, events, setEvent }: CalendarRowProps) => {
+export const CalendarRow = ({ week, events, setEvent, firstDayMonth }: CalendarRowProps) => {
   const isCurrentDate = (day: Date) => {
     return isSameDay(day, new Date());
+  };
+
+  const sameMonth = (day: Date) => {
+    return isSameMonth(firstDayMonth, day);
   };
 
   return (
@@ -25,7 +30,8 @@ export const CalendarRow = ({ week, events, setEvent }: CalendarRowProps) => {
           <div key={i} className='bg-transparent leading-8 flex-1 flex justify-center'>
             <h2
               className={`block text-center whitespace-nowrap w-max min-w-[24px] h-6 leading-4
-              ${isCurrentDate(day) ? 'bg-green rounded-[50%] w-6 text-white pt-1 mt-1' : 'mt-2 '}`}
+              ${isCurrentDate(day) ? 'bg-green rounded-[50%] w-6 text-white pt-1 mt-1' : 'mt-2 '}
+              ${!sameMonth(day) ? 'text-grey' : ''}`}
             >
               {day.getDate()}
             </h2>

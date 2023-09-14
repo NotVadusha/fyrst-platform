@@ -11,8 +11,6 @@ export class RedisService {
   }
 
   async set(key: string, value: unknown, ttl: number) {
-    console.log('key: ', key);
-    console.log('value: ', value);
     return await this.cache.set(key, value, ttl);
   }
 

@@ -43,9 +43,7 @@ const SignInPage = () => {
       };
 
       login(body);
-    } catch {
-      console.log(error);
-    }
+    } catch {}
   };
 
   const handleClick = () => {
