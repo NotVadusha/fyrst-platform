@@ -23,10 +23,14 @@ export const AvatarUploader = ({
   isShown,
   setShown,
   setImage,
+  savedImage,
 }: InputProps) => {
-  const [tempImage, setTempImage] = useState<string>(defaultAvatar);
+  console.log(savedImage);
+  const [tempImage, setTempImage] = useState<string>(savedImage || defaultAvatar);
   const imageInput = useRef<HTMLInputElement | null>(null);
   const [rangeValue, setRangeValue] = useState<number>(10);
+
+  const avatarEditorRef = useRef<AvatarEditor | null>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -53,8 +57,10 @@ export const AvatarUploader = ({
   };
 
   const handleSave = async () => {
+    console.log(tempImage);
     if (tempImage && tempImage !== defaultAvatar) {
-      const result = await fetch(tempImage);
+      const url = avatarEditorRef.current?.getImageScaledToCanvas().toDataURL();
+      const result = await fetch(url!);
       const blob = await result.blob();
       const image = URL.createObjectURL(blob);
       setImage(image);
@@ -94,6 +100,7 @@ export const AvatarUploader = ({
           borderRadius={500}
           color={[0, 0, 0, 0.72]}
           scale={rangeValue / 10}
+          ref={avatarEditorRef}
         />
         <div className='px-10'>
           <ReactSlider
@@ -103,6 +110,7 @@ export const AvatarUploader = ({
             max={50}
             defaultValue={rangeValue}
             onChange={value => setRangeValue(value)}
+            disabled={!tempImage.includes('blob:')}
             renderThumb={(props, state) => (
               <div
                 {...props}
