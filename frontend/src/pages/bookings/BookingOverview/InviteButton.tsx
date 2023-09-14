@@ -105,7 +105,7 @@ export function InviteButton({ bookingId }: { bookingId: number }) {
                         control={form.control}
                         min={new Date().toISOString().split('T')[0]}
                         type='time'
-                        label='Time'
+                        label=''
                         {...field}
                         value={String(field.value)}
                         onChange={e => field.onChange(e.target.value)}

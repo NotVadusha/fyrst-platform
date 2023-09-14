@@ -78,7 +78,7 @@ export default function InvitationPage() {
                       <Link
                         target='_blank'
                         to={`/meeting-chat/${data?.meetingId}`}
-                      >{`${SITE_URL}meeting-chat/${data?.meetingId}`}</Link>
+                      >{`https://www.fyrst.site/meeting-chat/${data?.meetingId}`}</Link>
                     </p>
                   </>
                 )}
