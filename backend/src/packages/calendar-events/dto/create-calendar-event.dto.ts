@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { AssociatedModel } from '../entities/event.entity';
 
 export class CreateCalendarEventDto {
@@ -9,11 +9,11 @@ export class CreateCalendarEventDto {
   @IsNotEmpty()
   description: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   startDate: Date;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   endDate: Date;
 

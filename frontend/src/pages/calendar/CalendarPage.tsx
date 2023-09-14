@@ -14,6 +14,7 @@ export const CalendarPage = () => {
   const handleExportCalendar = () => {
     dispatch(exportCalendar(userId || 1));
   };
+
   return (
     <>
       <Header title='Calendar' className='mb-10'>
@@ -23,6 +24,7 @@ export const CalendarPage = () => {
           </Button>
         </div>
       </Header>
+
       <CalendarGrid userId={userId || 1}></CalendarGrid>
     </>
   );

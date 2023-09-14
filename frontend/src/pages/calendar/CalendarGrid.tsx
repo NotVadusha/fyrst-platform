@@ -1,37 +1,33 @@
+import React, { useState } from 'react';
 import {
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
-  getDay,
   startOfToday,
   startOfWeek,
   format,
   parse,
   add,
-  isWithinInterval,
-  isSameMonth,
+  differenceInDays,
+  addDays,
 } from 'date-fns';
-import React, { useState } from 'react';
 
-import { CalendarCell } from './CalendarCell';
-import { ReactComponent as ArrowRight } from '../../assets/icons/gray-arrow-right.svg';
+import { ReactComponent as ArrowRight } from '../../assets/icons/gray-arrow-right.svg'; // Import your arrow icon
 import { useGetUserWithEventsQuery } from 'src/common/store/api/packages/user/userApi';
+import { DragDropContext, DragUpdate } from 'react-beautiful-dnd';
+import { useUpdateEventMutation } from 'src/common/store/api/packages/calendar/calendarApi';
 
-const colStart = [
-  'col-start-7',
-  'col-start-1',
-  'col-start-2',
-  'col-start-3',
-  'col-start-4',
-  'col-start-5',
-  'col-start-6',
-];
+import { CalendarRow } from './CalendarRow';
 
 interface CalendarGridProps {
   userId: number;
 }
+
 export const CalendarGrid = ({ userId }: CalendarGridProps) => {
+  const [editEvent] = useUpdateEventMutation();
+
   const { data } = useGetUserWithEventsQuery(userId || 1);
+
   const events = data?.events;
 
   const today = startOfToday();
@@ -42,6 +38,12 @@ export const CalendarGrid = ({ userId }: CalendarGridProps) => {
     start: startOfWeek(firstDayOfCurrentMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayOfCurrentMonth), { weekStartsOn: 1 }),
   });
+
+  const weeks = [];
+
+  for (let i = 0; i < days.length; i += 7) {
+    weeks.push(days.slice(i, i + 7));
+  }
 
   const prevMonth = () => {
     const firstDayPrevMonth = add(firstDayOfCurrentMonth, { months: -1 });
@@ -56,8 +58,30 @@ export const CalendarGrid = ({ userId }: CalendarGridProps) => {
   const goToCurrentMonth = () => {
     setCurrentMonth(format(today, 'MMMM, yyyy'));
   };
+
+  const dragEnd = async (value: DragUpdate) => {
+    const startDate = value.destination?.droppableId;
+    if (!startDate) return;
+    if (!events) return;
+
+    const eventId = Number(value.draggableId);
+
+    const event = events.find(event => event.id === eventId);
+    if (!event) return;
+
+    const deference = differenceInDays(new Date(startDate), new Date(event.startDate));
+
+    const endDate = addDays(new Date(event.endDate), deference);
+
+    await editEvent({
+      id: eventId,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+    });
+  };
+
   return (
-    <div className='w-[955px] mx-auto pb-11'>
+    <div className='lg:w-[955px] mx-auto pb-11 md:w-full'>
       <div className='flex justify-between w-full items-center mb-8'>
         <div className='flex gap-2 items-center'>
           <button onClick={prevMonth}>
@@ -84,26 +108,15 @@ export const CalendarGrid = ({ userId }: CalendarGridProps) => {
         <div>Sat</div>
         <div>Sun</div>
       </div>
-      <div className='grid grid-cols-7 bg-[#686565]/[0.15]  gap-[1px] p-[1px] h-full'>
-        {days.map((day, i) => {
-          if (!events) return;
-          const eventForDate = events.filter(event => {
-            return isWithinInterval(day, {
-              start: new Date(event.startDate),
-              end: new Date(event.endDate),
-            });
-          });
-          return (
-            <div key={day.toString()} className={i === 0 ? colStart[getDay(day)] : ''}>
-              <CalendarCell
-                date={day}
-                events={eventForDate}
-                isSameMonth={isSameMonth(firstDayOfCurrentMonth, day)}
-              ></CalendarCell>
-            </div>
-          );
-        })}
-      </div>
+      <DragDropContext onDragEnd={dragEnd}>
+        <div className='flex flex-col border-t-grey border-t border-l-grey border-l h-full'>
+          {weeks.map((week, i) => (
+            <CalendarRow events={events} week={week} key={i}></CalendarRow>
+          ))}
+        </div>
+      </DragDropContext>
     </div>
   );
 };
+
+export default CalendarGrid;

@@ -12,7 +12,15 @@ export const calendarApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['Events'],
     }),
+    updateEvent: builder.mutation({
+      query: ({ id, startDate, endDate }) => ({
+        url: `calendar-events/${id}`,
+        method: 'PATCH',
+        body: { startDate, endDate },
+      }),
+      invalidatesTags: ['Events'],
+    }),
   }),
 });
 
-export const { useCreateBookingEventMutation } = calendarApi;
+export const { useCreateBookingEventMutation, useUpdateEventMutation } = calendarApi;
