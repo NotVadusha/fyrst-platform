@@ -11,7 +11,6 @@ export const bookingApi = apiSlice.injectEndpoints({
         Object.keys(filters).forEach(key =>
           params.set(key, String(filters[key as keyof BookingFiltersDto])),
         );
-        console.log(params.toString());
 
         return '/booking/get-by?' + params;
       },

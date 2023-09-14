@@ -25,7 +25,6 @@ export const AvatarUploader = ({
   setImage,
   savedImage,
 }: InputProps) => {
-  console.log(savedImage);
   const [tempImage, setTempImage] = useState<string>(savedImage || defaultAvatar);
   const imageInput = useRef<HTMLInputElement | null>(null);
   const [rangeValue, setRangeValue] = useState<number>(10);
