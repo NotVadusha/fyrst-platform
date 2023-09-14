@@ -63,7 +63,7 @@ export class InvoiceService {
 
     if (user.role_id === userRoles.WORKER) where['$timecard.employee.id$'] = user.id;
     else if (user.role_id === userRoles.FACILITY_MANAGER) {
-      where['$timecard.booking.createdBy$'] = user.id;
+      where['$timecard.booking.facilityId$'] = user.facility_id;
       if (!!filters.payee) {
         where['$timecard.employee.id$'] = filters.payee;
       }
