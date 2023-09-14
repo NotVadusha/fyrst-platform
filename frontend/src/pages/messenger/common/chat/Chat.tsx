@@ -151,10 +151,7 @@ export const ChatPage: React.FC = () => {
             })}
         </div>
       </div>
-      <div className='absolute bottom-20 w-full'>
-        {/* {imageUrl && <img src={imageUrl} alt='image' width={20} height={20} />}
-        hello there */}
-      </div>
+      <div className='absolute bottom-20 w-full'></div>
       <div className='absolute bottom-0 z-10 w-full'>
         <NewMessageInput chatId={chatId} />
       </div>
