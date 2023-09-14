@@ -12,6 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from 'src/common/components/ui/common/Avatar/Avatar';
 import { Message } from 'shared/socketEvents';
 import { format } from 'date-fns';
+import { ScrollArea } from 'src/common/components/ui/common/ScrollArea/ScrollArea';
 
 export function SearchChatMessagesPage() {
   const { chatId } = useParams();
@@ -39,7 +40,7 @@ export function SearchChatMessagesPage() {
   });
 
   return (
-    <div className='w-full min-h-[460px]'>
+    <div className='w-full min-h-[460px] truncate whitespace-normal break-words'>
       <div className='flex w-full gap-2 items-center'>
         <Link
           relative='path'
@@ -58,10 +59,12 @@ export function SearchChatMessagesPage() {
       {isSuccess && !!data.length && (
         <div className='my-2 text-dark-grey'>{data.length} messages found</div>
       )}
-      <div className='flex flex-col gap-2 w-full'>
-        {data?.map(message => (
-          <UserMessageItem message={message} key={message.id} />
-        ))}
+      <div className='flex flex-col gap-2 w-full truncate whitespace-normal'>
+        <ScrollArea className='h-[400px]'>
+          {data?.map(message => (
+            <UserMessageItem message={message} key={message.id} />
+          ))}
+        </ScrollArea>
       </div>
     </div>
   );
@@ -69,7 +72,7 @@ export function SearchChatMessagesPage() {
 
 function UserMessageItem({ message }: { message: Message }) {
   return (
-    <div className='flex justify-between p-2 truncate w-full whitespace-nowrap overflow-hidden'>
+    <div className='flex justify-between p-2 whitespace-normal  w-full overflow-hidden'>
       <div className='flex gap-2 items-center'>
         <Avatar>
           <AvatarImage src={message.user.profile?.avatar} />
@@ -77,7 +80,7 @@ function UserMessageItem({ message }: { message: Message }) {
             message.user?.last_name?.[0] ?? ''
           }`}</AvatarFallback>
         </Avatar>
-        <div className='flex flex-col gap-1 max-w-[100%] whitespace-nowrap overflow-hidden '>
+        <div className='flex flex-col gap-1 max-w-[100%] break-all'>
           <span className='text-black text-md font-bold'>
             {message.user.first_name} {message.user.last_name}
           </span>

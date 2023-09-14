@@ -3,12 +3,16 @@ import { Button } from 'src/common/components/ui/common/Button';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { useAppDispatch } from 'src/common/hooks/redux';
 import { useUploadAttachmentMutation } from 'src/common/store/api/packages/chat/chatApi';
-import { setAttachment } from 'src/common/store/slices/packages/messenger/messangerSlice';
+import {
+  setAttachmentPath,
+  setAttachmentFile,
+} from 'src/common/store/slices/packages/messenger/messangerSlice';
 
-const MAX_IMAGE_SIZE = 100 * 1024;
+const MAX_IMAGE_SIZE = 2e6;
 
 export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
   const [base64String, setBase64String] = useState<string | undefined>('');
+  const [file, setFile] = useState<File | undefined>();
 
   const dispatch = useAppDispatch();
 
@@ -21,7 +25,8 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
       .unwrap()
       .then(res => {
         toast({ title: 'Image successfully uploaded' });
-        dispatch(setAttachment(res));
+        dispatch(setAttachmentPath(res));
+        dispatch(setAttachmentFile(file));
         onUpload();
       })
       .catch(err => err);
@@ -35,9 +40,10 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
     if (file.size >= MAX_IMAGE_SIZE) {
       toast({
         title: 'Image is too large.',
-        description: 'Please, choose another image less than 100kb size',
+        description: 'Please, choose another image less than 2MB size',
         variant: 'destructive',
       });
+      setFile(event.target?.files?.[0]);
       return;
     }
 
