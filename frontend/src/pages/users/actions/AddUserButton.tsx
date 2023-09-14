@@ -30,7 +30,7 @@ export function AddUserButton() {
         onClick={() => setIsOpen(true)}
       >
         <span className='hidden md:inline'>Add user</span>
-        <AddIcon className='md:hidden w-8 h-8' />
+        <AddIcon className='md:hidden w-6 h-6' />
       </Button>
       <div>
         <Modal

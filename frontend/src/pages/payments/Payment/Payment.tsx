@@ -95,36 +95,40 @@ export const Payment = () => {
             All payments
           </GoBackButton>
 
-          <div className='flex flex-row gap-6'>
-            {roleId === userRoles.FACILITY_MANAGER && !isPaymentFetching ? (
-              <Button
-                variant='primary'
-                className='w-[154px] px-4'
-                onClick={() => setCardModalVisibility(true)}
-                disabled={
-                  payment?.status === 'completed' || !payment?.approved || !!payment.stripePaymentId
-                }
-              >
-                {payment?.status === 'completed' || payment?.stripePaymentId
-                  ? 'Payed'
-                  : 'Make a payment'}
-              </Button>
-            ) : null}
+          {roleId !== userRoles.PLATFORM_ADMIN ? (
+            <div className='flex flex-row gap-6'>
+              {roleId === userRoles.FACILITY_MANAGER && !isPaymentFetching ? (
+                <Button
+                  variant='primary'
+                  className='w-[154px] px-4'
+                  onClick={() => setCardModalVisibility(true)}
+                  disabled={
+                    payment?.status === 'completed' ||
+                    !payment?.approved ||
+                    !!payment.stripePaymentId
+                  }
+                >
+                  {payment?.status === 'completed' || payment?.stripePaymentId
+                    ? 'Payed'
+                    : 'Make a payment'}
+                </Button>
+              ) : null}
 
-            <Button
-              className='w-[154px]'
-              variant='primary'
-              disabled={payment?.approved}
-              onClick={handleApproveClick}
-            >
-              {roleId === userRoles.FACILITY_MANAGER && !payment?.approved
-                ? approvingButtonContent
-                : null}
-              {roleId === userRoles.WORKER && !payment?.approved && !isLoading ? 'Approve' : null}
-              {roleId === userRoles.WORKER && isLoading ? approvingButtonContent : null}
-              {payment?.approved && !isLoading ? 'Approved' : null}
-            </Button>
-          </div>
+              <Button
+                className='w-[154px]'
+                variant='primary'
+                disabled={payment?.approved}
+                onClick={handleApproveClick}
+              >
+                {roleId === userRoles.FACILITY_MANAGER && !payment?.approved
+                  ? approvingButtonContent
+                  : null}
+                {roleId === userRoles.WORKER && !payment?.approved && !isLoading ? 'Approve' : null}
+                {roleId === userRoles.WORKER && isLoading ? approvingButtonContent : null}
+                {payment?.approved && !isLoading ? 'Approved' : null}
+              </Button>
+            </div>
+          ) : null}
         </div>
         <h3 className='text-h3 text-black font-bold mt-5'>Taxes overview</h3>
         <p className='text-body-large text-black font-normal mt-[18px]'>

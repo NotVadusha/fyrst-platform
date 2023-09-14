@@ -20,6 +20,7 @@ import { defaultTaxes } from './data/taxes';
 import { TaxService } from '../tax/tax.service';
 import { NotificationService } from '../notification/notification.service';
 import { paymentApproveNotification } from 'shared/packages/notification/types/notificationTemplates';
+import { Facility } from '../facility/entities/facility.entity';
 
 @Injectable()
 export class PaymentService {
@@ -48,17 +49,23 @@ export class PaymentService {
             {
               model: Booking,
               attributes: ['id', 'createdBy'],
+              include: [Facility],
             },
           ],
-          attributes: ['id'],
+          attributes: ['id', 'createdBy', 'approvedBy'],
         },
       ],
     });
+    const user = await this.userService.findOne(userId);
     if (!payment) throw new NotFoundException('Payment not found');
-    if (payment.timecard.employee.id !== userId && payment.timecard.booking.createdBy !== userId)
-      throw new ForbiddenException('Access denied');
-    delete payment.timecard.booking;
-    return payment;
+    if (
+      (user.role_id === userRoles.WORKER && payment.timecard.employee.id === userId) ||
+      (user.role_id === userRoles.FACILITY_MANAGER &&
+        payment.timecard.booking.facility.id === user.facility_id) ||
+      user.role_id === userRoles.PLATFORM_ADMIN
+    )
+      return payment;
+    throw new ForbiddenException('Access denied');
   }
 
   async findOneByPaymentId(id: string) {
@@ -73,8 +80,13 @@ export class PaymentService {
               attributes: ['id', 'first_name', 'last_name'],
               as: 'employee',
             },
+            {
+              model: Booking,
+              attributes: ['id', 'createdBy'],
+              include: [Facility],
+            },
           ],
-          attributes: ['id'],
+          attributes: ['id', 'approvedBy', 'createdBy'],
         },
       ],
     });
@@ -89,7 +101,7 @@ export class PaymentService {
 
     if (user.role_id === userRoles.WORKER) where['$timecard.employee.id$'] = user.id;
     else if (user.role_id === userRoles.FACILITY_MANAGER) {
-      where['$timecard.booking.createdBy$'] = user.id;
+      where['$timecard.booking.facilityId$'] = user.facility_id;
       if (!!filters.worker) {
         where['$timecard.employee.id$'] = filters.worker;
       }

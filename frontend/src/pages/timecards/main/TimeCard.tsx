@@ -94,7 +94,7 @@ const TimeCardPage = () => {
     <section className='min-h-full'>
       <Header title='Timecards'>
         <div className='flex flex-1 justify-end'>
-          <div className='flex gap-x-4'>
+          <div className='flex gap-x-4 mr-[-35px]'>
             <Button
               className='px-[16px] md:px-[32px]'
               variant='secondary'
@@ -104,7 +104,7 @@ const TimeCardPage = () => {
               <span className='hidden md:inline'>
                 {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </span>
-              <ExportIcon className='md:hidden w-6 h-6' />
+              <ExportIcon className='md:hidden w-4 h-4' />
             </Button>
             {hasPermissions(['manageBookings'], user as User) && (
               <Button
@@ -113,7 +113,7 @@ const TimeCardPage = () => {
                 onClick={() => navigate('/booking/create')}
               >
                 <span className='hidden md:inline'>Create booking</span>
-                <AddIcon className='md:hidden w-8 h-8' />
+                <AddIcon className='md:hidden w-6 h-6' />
               </Button>
             )}
           </div>

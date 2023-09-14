@@ -18,12 +18,16 @@ import { DragDropContext, DragUpdate } from 'react-beautiful-dnd';
 import { useUpdateEventMutation } from 'src/common/store/api/packages/calendar/calendarApi';
 
 import { CalendarRow } from './CalendarRow';
+import { EventModal } from './EventModal';
+import { Event } from 'src/common/packages/event/types/models/Event.model';
 
 interface CalendarGridProps {
   userId: number;
 }
 
 export const CalendarGrid = ({ userId }: CalendarGridProps) => {
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
   const [editEvent] = useUpdateEventMutation();
 
   const { data } = useGetUserWithEventsQuery(userId || 1);
@@ -81,40 +85,53 @@ export const CalendarGrid = ({ userId }: CalendarGridProps) => {
   };
 
   return (
-    <div className='lg:w-[955px] mx-auto pb-11 md:w-full'>
-      <div className='flex justify-between w-full items-center mb-8'>
-        <div className='flex gap-2 items-center'>
-          <button onClick={prevMonth}>
-            <ArrowRight className='rotate-[180deg]' />
-          </button>
-          <p className='text-h6 text-dark-grey w-40 text-center'>{currentMonth}</p>
-          <button onClick={nextMonth}>
-            <ArrowRight />
+    <div className='mx-4'>
+      <div className='lg:w-[955px] mx-auto pb-11 md:w-full'>
+        <div className='flex justify-between w-full items-center mb-8'>
+          <div className='flex gap-2 items-center'>
+            <button onClick={prevMonth}>
+              <ArrowRight className='rotate-[180deg]' />
+            </button>
+            <p className='text-h6 text-dark-grey w-40 text-center'>{currentMonth}</p>
+            <button onClick={nextMonth}>
+              <ArrowRight />
+            </button>
+          </div>
+          <button
+            className='border border-[#686565]/[0.15] h-12 px-4 hover:bg-grey/[0.15] rounded-lg text-dark-grey'
+            onClick={goToCurrentMonth}
+          >
+            Today
           </button>
         </div>
-        <button
-          className='border border-[#686565]/[0.15] h-12 px-4 hover:bg-grey/[0.15] rounded-lg text-dark-grey'
-          onClick={goToCurrentMonth}
-        >
-          Today
-        </button>
-      </div>
-      <div className='grid grid-cols-7 text-center text-dark-grey text-body-small '>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
-        <div>Sun</div>
-      </div>
-      <DragDropContext onDragEnd={dragEnd}>
-        <div className='flex flex-col border-t-grey border-t border-l-grey border-l h-full'>
-          {weeks.map((week, i) => (
-            <CalendarRow events={events} week={week} key={i}></CalendarRow>
-          ))}
+        <div className='grid grid-cols-7 text-center text-dark-grey text-body-small '>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+          <div>Sun</div>
         </div>
-      </DragDropContext>
+        <DragDropContext onDragEnd={dragEnd}>
+          <div className='flex flex-col border-t-grey border-t border-l-grey border-l h-full'>
+            {weeks.map((week, i) => (
+              <CalendarRow
+                events={events}
+                week={week}
+                key={i}
+                setEvent={setSelectedEvent}
+              ></CalendarRow>
+            ))}
+          </div>
+        </DragDropContext>
+        {selectedEvent && (
+          <EventModal
+            event={selectedEvent}
+            setOpenModal={() => setSelectedEvent(null)}
+          ></EventModal>
+        )}
+      </div>
     </div>
   );
 };

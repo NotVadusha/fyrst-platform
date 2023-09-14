@@ -105,7 +105,7 @@ export function UserListPage() {
       <Header>
         <div className='flex w-full  items-center justify-between'>
           <h2 className='ml-[-15px] md:ml-[15px] text-2xl font-semibold text-dark-grey'>Users</h2>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 ml-4 mr-[-46px]'>
             <Button
               className='px-[16px] md:px-[32px]'
               variant='secondary'
@@ -115,7 +115,7 @@ export function UserListPage() {
               <span className='hidden md:inline'>
                 {isCSVLoading ? 'Exporting...' : 'Export CSV'}
               </span>
-              <ExportIcon className='md:hidden w-6 h-6' />
+              <ExportIcon className='md:hidden w-4 h-4' />
             </Button>
             {hasRole('PLATFORM_ADMIN', user as User, false) && (
               <>
@@ -124,7 +124,7 @@ export function UserListPage() {
                   htmlFor='files'
                 >
                   <span className='hidden md:inline'>Import Users</span>
-                  <ImportIcon className='md:hidden w-6 h-6' />
+                  <ImportIcon className='md:hidden w-4 h-4' />
                 </label>
                 <input
                   id='files'

@@ -158,7 +158,8 @@ export class TimecardService {
     const where = {};
 
     if (user.role_id === userRoles.WORKER) throw new ForbiddenException('Access denied');
-    if (user.role_id === userRoles.FACILITY_MANAGER) where['$booking.createdBy$'] = id;
+    if (user.role_id === userRoles.FACILITY_MANAGER)
+      where['$booking.facilityId$'] = user.facility_id;
 
     return await this.timecardModel.findAll({
       where,
