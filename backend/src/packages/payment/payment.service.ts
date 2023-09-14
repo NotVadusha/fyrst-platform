@@ -20,6 +20,7 @@ import { defaultTaxes } from './data/taxes';
 import { TaxService } from '../tax/tax.service';
 import { NotificationService } from '../notification/notification.service';
 import { paymentApproveNotification } from 'shared/packages/notification/types/notificationTemplates';
+import { Facility } from '../facility/entities/facility.entity';
 
 @Injectable()
 export class PaymentService {
@@ -48,9 +49,10 @@ export class PaymentService {
             {
               model: Booking,
               attributes: ['id', 'createdBy'],
+              include: [Facility],
             },
           ],
-          attributes: ['id'],
+          attributes: ['id', 'createdBy'],
         },
       ],
     });
@@ -62,7 +64,6 @@ export class PaymentService {
       user.role_id !== userRoles.PLATFORM_ADMIN
     )
       throw new ForbiddenException('Access denied');
-    delete payment.timecard.booking;
     return payment;
   }
 
