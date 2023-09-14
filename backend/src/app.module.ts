@@ -27,6 +27,8 @@ import {
   TaxModule,
   NotificationModule,
   WebSocketModule,
+  PermissionsModule,
+  StatisticsModule,
 } from './packages';
 @Module({
   imports: [
