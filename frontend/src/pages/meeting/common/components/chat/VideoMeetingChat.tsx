@@ -5,14 +5,12 @@ import { SendHorizontal } from 'lucide-react';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
 import { useAppSelector } from 'src/common/hooks/redux';
 import { selectUser } from 'src/common/store/slices/packages/user/userSelectors';
-
-interface Message {
-  username: string;
-  messageContent: string;
-}
+import { format } from 'date-fns';
+import { MeetingMessage } from 'shared/socketEvents';
+import { v4 as uuidv4 } from 'uuid';
 
 export function VideoMeetingChat({ meetingId }: { meetingId: string }) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MeetingMessage[]>([]);
 
   const [value, setValue] = useState<string>('');
   const socket = useContext(SocketContext);
@@ -23,15 +21,21 @@ export function VideoMeetingChat({ meetingId }: { meetingId: string }) {
     if (!value) return;
 
     socket.emit('new-meeting-message', {
+      id: uuidv4(),
       messageContent: value,
+      time: format(new Date(), 'p'),
       username: `${user.first_name} ${user.last_name ?? ''}`,
       meetingId,
     });
+    setValue('');
   }
 
   useEffect(() => {
     socket.on('new-meeting-message', payload => {
-      setMessages(prev => [...prev, payload]);
+      setMessages(prev => {
+        if (prev.some(m => m.id === payload.id)) return prev;
+        return [...prev, payload];
+      });
     });
 
     return () => {
@@ -51,106 +55,10 @@ export function VideoMeetingChat({ meetingId }: { meetingId: string }) {
               <p className='text-black font-semibold text-xs'>{message.messageContent}</p>
               <div className='flex justify-between text-xs text-dark-grey'>
                 <span>From {message.username}</span>
-                <span>10:01</span>
+                <span>{message.time}</span>
               </div>
             </div>
           ))}
-          {/* <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 p-4 rounded-md bg-inactive'>
-            <p className='text-black font-semibold text-xs'>
-              Have you had any exciting adventures or interesting developments recently? I&apos;d
-              love to hear about them. Feel free to share any news, stories, or even just your
-              thoughts on what&apos;s been keeping you busy. Let&apos;s not let too much time pass
-              before we catch up properly. Looking forward to hearing from you and reconnecting!{' '}
-            </p>
-            <div className='flex justify-between text-xs text-dark-grey'>
-              <span>From Jacob Jones</span>
-              <span>10:01</span>
-            </div>
-          </div> */}
         </div>
       </ScrollArea>
       <input
@@ -158,6 +66,11 @@ export function VideoMeetingChat({ meetingId }: { meetingId: string }) {
         placeholder='Message'
         className='md:absolute bottom-2 focus:outline-blue mt-5 md:mt-0 p-4 mx:pr-12 rounded-2xl w-full bg-[#DBDBDB]'
         value={value}
+        onKeyDown={event => {
+          if (event.key === 'Enter') {
+            sendMessage();
+          }
+        }}
         onChange={e => setValue(e.target.value)}
       />
       <SendHorizontal

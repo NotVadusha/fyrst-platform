@@ -37,8 +37,6 @@ const ParticipantView = ({ participantId }: { participantId: string }) => {
     setQuality('high');
   }, []);
 
-  console.log(isActiveSpeaker);
-
   return (
     <div
       key={participantId}

@@ -16,7 +16,6 @@ import { format } from 'date-fns';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { cn } from 'src/common/helpers/helpers';
 import { createMeeting } from 'src/pages/meeting/common/api/meeting.api';
-import { SITE_URL } from 'src/pages/meeting/common/constants/constants';
 
 export default function InvitationPage() {
   const { id } = useParams();

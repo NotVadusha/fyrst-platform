@@ -60,14 +60,11 @@ function ConversationLink({ chat, onSelect }: { chat: Chat; onSelect?: () => voi
 
   const isAuthor = lastMessage?.userId === user.id;
 
-  console.log(otherMember);
-
   return (
     <Link
       to={`/chat/${chat.id}`}
       key={chat.id}
       onClick={() => {
-        console.log('here');
         onSelect?.();
       }}
     >

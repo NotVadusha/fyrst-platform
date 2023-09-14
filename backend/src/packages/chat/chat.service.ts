@@ -22,7 +22,8 @@ import * as crypto from 'crypto';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
 @Injectable()
 export class ChatService {
-  MAX_IMAGE_SIZE = 100 * 1024;
+  MAX_IMAGE_SIZE = 2e6;
+
   WEEK_IN_MILLISECONDS = 604800000;
 
   constructor(
@@ -217,7 +218,7 @@ export class ChatService {
     this.logger.log('Buffer byte length ', Buffer.byteLength(imgBuffer));
     if (Buffer.byteLength(imgBuffer) > this.MAX_IMAGE_SIZE) {
       throw new HttpException(
-        'Image is too large. Maximum allowed size is 100KB.',
+        'Image is too large. Maximum allowed size is 2MB.',
         HttpStatus.BAD_REQUEST,
       );
     }

@@ -39,15 +39,10 @@ const MeetingView = ({
 
   const { participants } = useMeeting({
     onMeetingJoined: () => {
-      console.log('joined');
       setIsLoading(false);
     },
     onMeetingLeft: () => {
-      console.log('left');
       onMeetingLeave();
-    },
-    onSpeakerChanged: activeSpeakerId => {
-      console.log('active speaker', activeSpeakerId);
     },
   });
 
@@ -63,8 +58,6 @@ const MeetingView = ({
 
   useEffect(() => {
     if (user?.id) return;
-
-    console.log('data: ', data);
 
     socket.emit('user-join-meeting', { meetingId });
 

@@ -11,6 +11,7 @@ import { ClientToServerEvents, ServerToClientEvents, TypingUser } from 'shared/s
 import { ChatService } from '../chat/chat.service';
 import { SocketAuthMiddleware } from '../auth/ws.md';
 import { WsJwtGuard } from '../auth/guards/ws-jwt.guard';
+import { randomUUID } from 'crypto';
 
 @WebSocketGateway()
 @UseGuards(WsJwtGuard)
@@ -109,13 +110,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('new-meeting-message')
   async handleNewMeetingMessage(
     client: Socket,
-    data: { meetingId: string; messageContent: string; username: string },
+    data: { meetingId: string; messageContent: string; username: string; time: string; id: string },
   ) {
     this.logger.log(`${client.id} sent a message to ${data.meetingId}`);
 
     this.wss.to(data.meetingId).emit('new-meeting-message', {
       messageContent: data.messageContent,
       username: data.username,
+      time: data.time,
+      id: data.id,
     });
   }
 

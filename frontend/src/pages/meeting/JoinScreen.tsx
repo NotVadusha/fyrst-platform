@@ -9,9 +9,7 @@ const JoinScreen = () => {
   const navigate = useNavigate();
 
   const onCreate = async () => {
-    console.log('here');
     const newMeetingId = await createMeeting();
-    console.log('created new meeting');
     navigate(`/meeting-chat/${newMeetingId}`);
   };
 
