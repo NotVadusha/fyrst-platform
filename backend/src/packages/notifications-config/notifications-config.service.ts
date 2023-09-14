@@ -1,7 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NotificationsConfig } from './entities/notifications-config.entity';
-import { UserService } from '../user/user.service';
 import { UpdateNotificationsConfigDto } from './dto/update-config.dto';
 import { CreateNotificationsConfigDto } from './dto/create-config-dto';
 
@@ -9,7 +8,6 @@ import { CreateNotificationsConfigDto } from './dto/create-config-dto';
 export class NotificationsConfigService {
   constructor(
     @InjectModel(NotificationsConfig)
-    @Inject(UserService)
     private readonly notificationConfigRepository: typeof NotificationsConfig,
   ) {}
 

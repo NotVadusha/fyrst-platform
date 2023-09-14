@@ -4,7 +4,7 @@ export interface NotificationsConfig {
   timecards: boolean;
   bookings: boolean;
   weeklyReport: boolean;
-  passwordChange: boolean;
+  messenger: boolean;
   paymentSuccess: boolean;
   moneySent: boolean;
 }

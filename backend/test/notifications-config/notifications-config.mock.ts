@@ -8,7 +8,7 @@ export interface TestNotificationsConfig {
   timecards: boolean;
   bookings: boolean;
   paymentSuccess: boolean;
-  passwordChange: boolean;
+  messenger: boolean;
   weeklyReport: boolean;
   moneySent: boolean;
 }
@@ -20,7 +20,7 @@ export const notificationsConfigsMock: TestNotificationsConfig[] = [
     timecards: true,
     bookings: true,
     paymentSuccess: true,
-    passwordChange: true,
+    messenger: true,
     weeklyReport: true,
     moneySent: true,
   },
@@ -30,7 +30,7 @@ export const notificationsConfigsMock: TestNotificationsConfig[] = [
     timecards: true,
     bookings: false,
     paymentSuccess: false,
-    passwordChange: true,
+    messenger: true,
     weeklyReport: false,
     moneySent: true,
   },
@@ -40,7 +40,7 @@ export const notificationsConfigsMock: TestNotificationsConfig[] = [
     timecards: true,
     bookings: false,
     paymentSuccess: true,
-    passwordChange: true,
+    messenger: true,
     weeklyReport: false,
     moneySent: true,
   },

@@ -43,7 +43,7 @@ class NotificationsConfig extends Model<
     type: DataType.BOOLEAN,
     defaultValue: true,
   })
-  passwordChange: boolean;
+  messenger: boolean;
 
   @Column({
     type: DataType.BOOLEAN,

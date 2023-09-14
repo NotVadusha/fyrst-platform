@@ -3,6 +3,7 @@ import { InvoicesFiltersDto } from 'src/common/packages/invoices/types/dto/Invoi
 import { GetAllInvoicesDto } from 'src/common/packages/invoices/types/dto/GetAllInvoicesDto';
 import { Invoice } from 'src/common/packages/invoices/types/models/Invoice.model';
 import { InvoicePdfDto } from 'src/common/packages/invoices/types/dto/InvoicePdfDto';
+import { InvoiceBase64Dto } from 'src/common/packages/invoices/types/dto/InvoiceBase64Dto';
 
 export const invoicesApi = apiSlice.injectEndpoints({
   endpoints: build => ({
@@ -21,6 +22,11 @@ export const invoicesApi = apiSlice.injectEndpoints({
     getPdfLink: build.query<InvoicePdfDto, number>({
       query: id => ({
         url: `/invoice/${id}/pdf`,
+      }),
+    }),
+    getPdfBase64: build.query<InvoiceBase64Dto, number>({
+      query: id => ({
+        url: `/invoice/${id}/base64`,
       }),
     }),
   }),

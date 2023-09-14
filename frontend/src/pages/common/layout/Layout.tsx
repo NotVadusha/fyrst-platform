@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import jwtDecode from 'jwt-decode';
 import { cn } from 'src/common/helpers/helpers';
+import Notifications from '../../../common/components/ui/layout/notifications/Notifications';
 import { selectUser } from '../../../common/store/slices/packages/user/userSelectors';
 import { ScrollArea } from '../../../common/components/ui/common/ScrollArea/ScrollArea';
 import {
@@ -52,8 +53,8 @@ const Layout = () => {
   return (
     <div className='flex flex-col lg:flex-row relative'>
       <Sheet open={open} onOpenChange={setIsOpen}>
-        <SheetContent side={'left'}>
-          <SheetHeader>
+        <SheetContent side={'left'} className='bg-white w-full text-h6-body-default'>
+          <SheetHeader className='text-left'>
             <SheetTitle>{routerConfig.name}</SheetTitle>
             <MainNav onSelect={() => setIsOpen(false)} />
           </SheetHeader>

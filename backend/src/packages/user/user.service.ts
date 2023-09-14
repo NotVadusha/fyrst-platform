@@ -13,6 +13,8 @@ import { RolesService } from '../roles/roles.service';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { Op } from 'sequelize';
 import * as bcrypt from 'bcryptjs';
+import { NotificationService } from '../notification/notification.service';
+import { notificationTemplatePasswordChange } from 'shared/packages/notification/types/notificationTemplates';
 import { Permissions } from '../permissions/entities/permissions.entity';
 import jwtDecode from 'jwt-decode';
 import { Roles } from '../roles/entities/roles.entity';
@@ -206,6 +208,7 @@ export class UserService {
     if (!isMatch) throw new BadRequestException('Current password is incorrect');
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
     return this.update({ password: hashedNewPassword }, userId);
   }
 

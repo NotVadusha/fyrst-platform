@@ -6,9 +6,17 @@ import { TimecardService } from './timecard.service';
 import { UserModule } from '../user/user.module';
 import { InvoiceModule } from '../invoice/invoice.module';
 import { PaymentModule } from '../payment/payment.module';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Timecard]), UserModule, InvoiceModule, PaymentModule],
+  imports: [
+    SequelizeModule.forFeature([Timecard]),
+    UserModule,
+    InvoiceModule,
+    PaymentModule,
+    NotificationModule,
+  ],
+
   providers: [TimecardService],
   controllers: [TimecardController],
   exports: [TimecardService],
