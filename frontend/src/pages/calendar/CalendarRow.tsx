@@ -9,15 +9,16 @@ import { CalendarEvent } from './CalendarEvent';
 interface CalendarRowProps {
   week: Date[];
   events?: Event[];
+  setEvent: (event: Event) => void;
 }
 
-export const CalendarRow = ({ week, events }: CalendarRowProps) => {
+export const CalendarRow = ({ week, events, setEvent }: CalendarRowProps) => {
   const isCurrentDate = (day: Date) => {
     return isSameDay(day, new Date());
   };
 
   return (
-    <div className='relative flex overflow-hidden flex-1 border-b border-b-grey'>
+    <div className='relative flex flex-1 border-b border-b-grey'>
       <WeekWrapper />
       <div className='absolute top-0 bottom-0 left-0 right-0 flex '>
         {week.map((day, i) => (
@@ -74,7 +75,9 @@ export const CalendarRow = ({ week, events }: CalendarRowProps) => {
                 >
                   {eventsForDate.map((event, i) => {
                     return (
-                      <CalendarEvent key={i} event={event} week={week} index={i}></CalendarEvent>
+                      <button key={i} onClick={() => setEvent(event)}>
+                        <CalendarEvent event={event} week={week} index={i}></CalendarEvent>
+                      </button>
                     );
                   })}
                   {provided.placeholder}

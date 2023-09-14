@@ -18,12 +18,16 @@ import { DragDropContext, DragUpdate } from 'react-beautiful-dnd';
 import { useUpdateEventMutation } from 'src/common/store/api/packages/calendar/calendarApi';
 
 import { CalendarRow } from './CalendarRow';
+import { EventModal } from './EventModal';
+import { Event } from 'src/common/packages/event/types/models/Event.model';
 
 interface CalendarGridProps {
   userId: number;
 }
 
 export const CalendarGrid = ({ userId }: CalendarGridProps) => {
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
   const [editEvent] = useUpdateEventMutation();
 
   const { data } = useGetUserWithEventsQuery(userId || 1);
@@ -112,10 +116,21 @@ export const CalendarGrid = ({ userId }: CalendarGridProps) => {
         <DragDropContext onDragEnd={dragEnd}>
           <div className='flex flex-col border-t-grey border-t border-l-grey border-l h-full'>
             {weeks.map((week, i) => (
-              <CalendarRow events={events} week={week} key={i}></CalendarRow>
+              <CalendarRow
+                events={events}
+                week={week}
+                key={i}
+                setEvent={setSelectedEvent}
+              ></CalendarRow>
             ))}
           </div>
         </DragDropContext>
+        {selectedEvent && (
+          <EventModal
+            event={selectedEvent}
+            setOpenModal={() => setSelectedEvent(null)}
+          ></EventModal>
+        )}
       </div>
     </div>
   );

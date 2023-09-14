@@ -52,19 +52,20 @@ export class PaymentService {
               include: [Facility],
             },
           ],
-          attributes: ['id', 'createdBy'],
+          attributes: ['id', 'createdBy', 'approvedBy'],
         },
       ],
     });
     const user = await this.userService.findOne(userId);
     if (!payment) throw new NotFoundException('Payment not found');
     if (
-      payment.timecard.employee.id !== userId &&
-      payment.timecard.booking.createdBy !== userId &&
-      user.role_id !== userRoles.PLATFORM_ADMIN
+      (user.role_id === userRoles.WORKER && payment.timecard.employee.id === userId) ||
+      (user.role_id === userRoles.FACILITY_MANAGER &&
+        payment.timecard.booking.facility.id === user.facility_id) ||
+      user.role_id === userRoles.PLATFORM_ADMIN
     )
-      throw new ForbiddenException('Access denied');
-    return payment;
+      return payment;
+    throw new ForbiddenException('Access denied');
   }
 
   async findOneByPaymentId(id: string) {
@@ -79,8 +80,13 @@ export class PaymentService {
               attributes: ['id', 'first_name', 'last_name'],
               as: 'employee',
             },
+            {
+              model: Booking,
+              attributes: ['id', 'createdBy'],
+              include: [Facility],
+            },
           ],
-          attributes: ['id'],
+          attributes: ['id', 'approvedBy', 'createdBy'],
         },
       ],
     });
@@ -95,7 +101,7 @@ export class PaymentService {
 
     if (user.role_id === userRoles.WORKER) where['$timecard.employee.id$'] = user.id;
     else if (user.role_id === userRoles.FACILITY_MANAGER) {
-      where['$timecard.booking.createdBy$'] = user.id;
+      where['$timecard.booking.facilityId$'] = user.facility_id;
       if (!!filters.worker) {
         where['$timecard.employee.id$'] = filters.worker;
       }

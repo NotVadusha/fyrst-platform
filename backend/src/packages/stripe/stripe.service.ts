@@ -101,6 +101,10 @@ export class StripeService {
             status: PaymentStatus.Completed,
           });
 
+          this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
+            status: PaymentStatus.Completed,
+          });
+
           this.timecardService.update(payment.timecardId, {
             status: TimecardStatus.Paid,
           });
@@ -122,6 +126,10 @@ export class StripeService {
           const payment = await this.paymentService.findOneByPaymentId(paymentIntentFailed.id);
 
           this.invoiceService.updateByTimecardId(payment.timecardId, {
+            status: PaymentStatus.Failed,
+          });
+
+          this.paymentService.updateByPaymentId(paymentIntentFailed.id, {
             status: PaymentStatus.Failed,
           });
         } catch (err) {
