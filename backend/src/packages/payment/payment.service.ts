@@ -54,8 +54,13 @@ export class PaymentService {
         },
       ],
     });
+    const user = await this.userService.findOne(userId);
     if (!payment) throw new NotFoundException('Payment not found');
-    if (payment.timecard.employee.id !== userId && payment.timecard.booking.createdBy !== userId)
+    if (
+      payment.timecard.employee.id !== userId &&
+      payment.timecard.booking.createdBy !== userId &&
+      user.role_id !== userRoles.PLATFORM_ADMIN
+    )
       throw new ForbiddenException('Access denied');
     delete payment.timecard.booking;
     return payment;
