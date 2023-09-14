@@ -44,7 +44,6 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     this.server
       .to(this.connectedClients.get(notification.recipientId))
       .emit('notificationCreated', notification);
-
   }
 
   async markAsRead(notification: Notification) {
