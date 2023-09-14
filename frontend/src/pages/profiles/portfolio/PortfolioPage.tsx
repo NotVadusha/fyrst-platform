@@ -192,7 +192,6 @@ export default function PortfolioPage() {
                     value={langValue}
                     onChange={e => setLangValue(e.target.value)}
                     onKeyDown={e => {
-                      console.log(e);
                       if (e.key === 'Enter') {
                         e.preventDefault();
                         e.stopPropagation();
