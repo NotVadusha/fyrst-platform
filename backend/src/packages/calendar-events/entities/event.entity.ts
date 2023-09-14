@@ -1,6 +1,18 @@
-import { Table, Model, Column, PrimaryKey, AutoIncrement, ForeignKey } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  PrimaryKey,
+  AutoIncrement,
+  ForeignKey,
+  DataType,
+} from 'sequelize-typescript';
 
 import { User } from 'src/packages/user/entities/user.entity';
+
+export enum AssociatedModel {
+  BOOKING = 'booking',
+}
 
 @Table({ tableName: 'Event', createdAt: false, updatedAt: false, deletedAt: false })
 export class Event extends Model {
@@ -15,13 +27,19 @@ export class Event extends Model {
   @Column
   description: string;
 
-  @Column
+  @Column(DataType.DATE)
   startDate: Date;
 
-  @Column
+  @Column(DataType.DATE)
   endDate: Date;
 
   @ForeignKey(() => User)
   @Column
   user_id: number;
+
+  @Column(DataType.ENUM(...Object.values(AssociatedModel)))
+  associatedType: AssociatedModel;
+
+  @Column
+  associatedId: number;
 }

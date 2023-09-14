@@ -41,12 +41,7 @@ export const ChatPage: React.FC = () => {
 
   const otherMembers = chat?.members.filter(({ id }) => id !== user?.id);
 
-  const attachmentFile = useAppSelector(state => state.messanger.attachmentFile);
-
-  const imageUrl = React.useMemo(() => {
-    if (!attachmentFile) return null;
-    return URL.createObjectURL(attachmentFile);
-  }, []);
+  const attachmentFileUrl = useAppSelector(state => state.messanger.attachmentFileUrl);
 
   const scrollToLastMessage = React.useCallback(
     ({ behavior }: { behavior?: ScrollBehavior }) => {
@@ -151,7 +146,6 @@ export const ChatPage: React.FC = () => {
             })}
         </div>
       </div>
-      <div className='absolute bottom-20 w-full'></div>
       <div className='absolute bottom-0 z-10 w-full'>
         <NewMessageInput chatId={chatId} />
       </div>

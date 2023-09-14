@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCalendarEventDto } from './dto/create-calendar-event.dto';
 import { UpdateCalendarEventDto } from './dto/update-calendar-event.dto';
-import { Event } from './entities/event.entity';
+import { AssociatedModel, Event } from './entities/event.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { BookingService } from '../booking/booking.service';
 import { format } from 'date-fns';
@@ -81,7 +81,10 @@ export class CalendarEventsService {
       startDate,
       endDate,
       user_id: userId,
+      associatedId: bookingId,
+      associatedType: AssociatedModel.BOOKING,
     };
+
     await this.googleCalendarService.createEvent(event, userId);
     return await this.create(event);
   }

@@ -24,6 +24,13 @@ export interface UpdateConversationPayload {
   message: Message;
 }
 
+export interface MeetingMessage {
+  id: string;
+  messageContent: string;
+  time: string;
+  username: string;
+}
+
 export interface ServerToClientEvents {
   'new-message': (payload: Message) => void;
   onFindAll: (payload: Message[]) => void;
@@ -38,6 +45,7 @@ export interface ServerToClientEvents {
   'user-offline': (payload: { userId: number }) => void;
   'user-typing': (payload: { user: TypingUser }) => void;
   'user-stop-typing': (payload: { user: TypingUser }) => void;
+  'new-meeting-message': (payload: MeetingMessage) => void;
 }
 
 export interface SendMessagePayload {
@@ -55,4 +63,13 @@ export interface ClientToServerEvents {
   'get-conversations': (payload: { userId: number }) => void;
   'user-type': (payload: { user: TypingUser; chatId: string }) => void;
   'user-stop-type': (payload: { user: TypingUser; chatId: string }) => void;
+  'user-join-meeting': (payload: { meetingId: string }) => void;
+  'user-leave-meeting': (payload: { meetingId: string }) => void;
+  'new-meeting-message': (payload: {
+    id: string;
+    meetingId: string;
+    time: string;
+    messageContent: string;
+    username: string;
+  }) => void;
 }

@@ -16,8 +16,9 @@ import { useAppDispatch, useAppSelector } from 'src/common/hooks/redux';
 import { SocketContext } from 'src/common/config/packages/socket/socket.config';
 import {
   setAttachmentPath,
-  setAttachmentFile,
+  setAttachmentFileUrl,
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
+import { cn } from 'src/common/helpers/helpers';
 
 const messageSchema = yup.object().shape({
   messageContent: yup.string().max(500, 'Message is too long'),
@@ -41,6 +42,8 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
   const attachment = useAppSelector(state => state.messanger.attachment);
   const dispatch = useAppDispatch();
 
+  const attachmentFileUrl = useAppSelector(state => state.messanger.attachmentFileUrl);
+
   const socket = useContext(SocketContext);
 
   function handleNewMessage({
@@ -59,7 +62,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
     });
     form.resetField('messageContent');
     dispatch(setAttachmentPath(undefined));
-    dispatch(setAttachmentFile(undefined));
+    dispatch(setAttachmentFileUrl(undefined));
   }
 
   const form = useForm<Inputs>({
@@ -125,7 +128,7 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
       .unwrap()
       .then(res => {
         dispatch(setAttachmentPath(undefined));
-        dispatch(setAttachmentFile(undefined));
+        dispatch(setAttachmentFileUrl(undefined));
       })
       .catch(err => err);
   };
@@ -144,7 +147,9 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
                     <input
                       type='text'
                       placeholder='Message'
-                      className='p-4 pr-12 rounded-2xl w-full bg-[#DBDBDB]'
+                      className={cn('p-4 pr-12 rounded-2xl w-full bg-[#DBDBDB]', {
+                        'pr-24': attachmentFileUrl,
+                      })}
                       onKeyDown={event => {
                         if (event.key === 'Enter') {
                           form.handleSubmit(onSubmit);
@@ -162,6 +167,11 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
               />
             </form>
           </Form>
+          {attachmentFileUrl && (
+            <div className='absolute top-2 right-12 w-fit h-fit'>
+              <img src={attachmentFileUrl} alt='your image' height={10} width={40} />
+            </div>
+          )}
           {!attachment ? (
             <Button
               variant={'tertiary'}

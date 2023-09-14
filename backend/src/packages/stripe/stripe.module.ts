@@ -1,7 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { StripeController } from './stripe.controller';
 import { StripeService } from './stripe.service';
-
 import {
   InvoiceModule,
   PaymentModule,

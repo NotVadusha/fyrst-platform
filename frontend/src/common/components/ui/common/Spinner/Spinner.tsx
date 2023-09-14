@@ -19,7 +19,11 @@ export const spinnerVariants = cva('bg-black rounded-full absolute inset-0 m-aut
 export function Spinner({
   size,
   className,
-}: NonNullableMapped<VariantProps<typeof spinnerVariants>> & { className?: string }) {
+  color,
+}: NonNullableMapped<VariantProps<typeof spinnerVariants>> & {
+  className?: string;
+  color?: string;
+}) {
   const dots: ReactElement[] = [];
 
   function getSpinnerDotSize(size: 'sm' | 'lg' | 'base' | undefined, order: number) {
@@ -39,7 +43,7 @@ export function Spinner({
     dots.push(
       <span
         key={i}
-        className={spinnerVariants({ size })}
+        className={cn(spinnerVariants({ size }), color)}
         style={{
           animationDelay: `-${500 + i * 300}ms`,
           width: `${getSpinnerDotSize(size, i)}px`,

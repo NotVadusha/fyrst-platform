@@ -10,7 +10,9 @@ export const createMeeting = async () => {
     body: JSON.stringify({}),
   });
 
-  const { roomId }: { roomId: string } = await res.json();
+  const body = await res.json();
+
+  const { roomId }: { roomId: string } = body;
   return roomId;
 };
 

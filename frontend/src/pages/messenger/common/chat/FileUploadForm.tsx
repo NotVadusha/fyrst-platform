@@ -5,7 +5,7 @@ import { useAppDispatch } from 'src/common/hooks/redux';
 import { useUploadAttachmentMutation } from 'src/common/store/api/packages/chat/chatApi';
 import {
   setAttachmentPath,
-  setAttachmentFile,
+  setAttachmentFileUrl,
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
 
 const MAX_IMAGE_SIZE = 2e6;
@@ -26,7 +26,7 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
       .then(res => {
         toast({ title: 'Image successfully uploaded' });
         dispatch(setAttachmentPath(res));
-        dispatch(setAttachmentFile(file));
+        if (file) dispatch(setAttachmentFileUrl(URL.createObjectURL(file)));
         onUpload();
       })
       .catch(err => err);
@@ -43,9 +43,10 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
         description: 'Please, choose another image less than 2MB size',
         variant: 'destructive',
       });
-      setFile(event.target?.files?.[0]);
       return;
     }
+
+    setFile(event.target?.files?.[0]);
 
     const reader = new FileReader();
 
