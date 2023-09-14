@@ -42,7 +42,7 @@ const NotificationsForm = () => {
 
     updateNotificationsConfig({ ...rest });
     toast({
-      variant: 'default',
+      variant: 'success',
       title: 'Success',
       description: 'Your notification settings have been successfully updated.',
     });

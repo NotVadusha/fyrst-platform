@@ -38,7 +38,7 @@ export function InviteButton({ bookingId }: { bookingId: number }) {
     createInvitation({ bookingId, employeeId: employee.id, ...values })
       .unwrap()
       .then(res => {
-        toast({ title: 'Invitation successfully created' });
+        toast({ title: 'Invitation successfully created', variant: 'success' });
         setIsOpen(false);
       });
   }

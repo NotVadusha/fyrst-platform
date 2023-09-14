@@ -46,7 +46,7 @@ export default function ViewTimeCardPage() {
       approvedAt: new Date().toISOString(),
     });
 
-    toast({ title: 'Success', description: 'Successfully approved timecard' });
+    toast({ title: 'Success', description: 'Successfully approved timecard', variant: 'success' });
   }
 
   function handleRejectTimecard() {
@@ -57,7 +57,7 @@ export default function ViewTimeCardPage() {
       approvedAt: null,
     });
 
-    toast({ title: 'Success', description: 'Successfully rejected timecard' });
+    toast({ title: 'Success', description: 'Successfully rejected timecard', variant: 'success' });
   }
 
   return (
