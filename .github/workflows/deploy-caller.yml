@@ -9,7 +9,7 @@ jobs:
       contents: 'read'
     uses: Radency/internship-2023-fyrst/.github/workflows/deploy.yml@develop
     with:
-      HOST: github-actions@35.198.150.202
+      HOST: github-actions@35.246.132.176
     secrets:
       GCP_SSH_PRIVATE_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY_INSTANCE1 }}
       GCP_SSH_DEPLOY_ENV: ${{ secrets.GCP_SSH_DEPLOY_ENV }}
