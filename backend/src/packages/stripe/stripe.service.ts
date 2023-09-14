@@ -15,6 +15,7 @@ import { InvoiceService } from '../invoice/invoice.service';
 import { TimecardStatus } from 'shared/timecard-status';
 import { TaxService } from '../tax/tax.service';
 import { getTotal } from 'shared/getTotal';
+import { getTotalTax } from 'shared/getTotalTax';
 
 @Injectable()
 export class StripeService {
@@ -37,9 +38,10 @@ export class StripeService {
     const payment = await this.paymentService.findOneById(id, userId);
     const taxes = await this.taxService.findAllTaxesByPaymentId(payment.id);
 
-    const stripeTax = taxes.find(tax => tax.name === 'Stripe fee');
+    const totalTax = getTotalTax(taxes);
+
     const total = getTotal(
-      { percentage: stripeTax.percentage, additionalAmount: stripeTax.additionalAmount },
+      { percentage: totalTax.percentage, additionalAmount: totalTax.additionalAmount },
       payment.amountPaid,
     );
 
@@ -85,12 +87,49 @@ export class StripeService {
             destination: profile.stripeAccountId,
           });
 
-          this.paymentService.updateByPaymentId(paymentIntentSucceeded.id, {
+          await this.stripe.payouts.create(
+            {
+              amount: Math.round(payment.amountPaid * 100),
+              currency: 'usd',
+            },
+            {
+              stripeAccount: profile.stripeAccountId,
+            },
+          );
+
+          this.invoiceService.updateByTimecardId(payment.timecardId, {
             status: PaymentStatus.Completed,
+          });
+
+          this.timecardService.update(payment.timecardId, {
+            status: TimecardStatus.Paid,
+          });
+
+          this.notificationService.create({
+            recipientId: payment.timecard.approvedBy,
+            content: successPaymentNotification(payment.timecard.booking.facility.name),
+            type: 'payments',
+            refId: payment.id,
           });
         } catch (err) {
           throw new InternalServerErrorException(`Payment Error: ${err.message}`);
         }
+        break;
+      case 'payment_intent.payment_failed':
+        try {
+          const paymentIntentFailed = event.data.object;
+
+          const payment = await this.paymentService.findOneByPaymentId(paymentIntentFailed.id);
+
+          this.invoiceService.updateByTimecardId(payment.timecardId, {
+            status: PaymentStatus.Failed,
+          });
+        } catch (err) {
+          throw new InternalServerErrorException(`Payment Error: ${err.message}`);
+        }
+        break;
+      default:
+        break;
     }
   }
 

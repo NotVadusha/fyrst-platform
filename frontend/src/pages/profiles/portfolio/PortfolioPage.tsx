@@ -31,8 +31,8 @@ import { ProfileDto } from 'src/common/packages/user/common/user-profile/types/d
 import { X } from 'lucide-react';
 
 const portfolioSchema = yup.object().shape({
-  sex: yup.mixed().oneOf(['male', 'female', '']),
-  education: yup.string(),
+  sex: yup.mixed().oneOf(['male', 'female', '']).nullable(),
+  education: yup.string().nullable(),
   description: yup.string(),
 });
 
@@ -111,9 +111,13 @@ export default function PortfolioPage() {
                     <FormItem>
                       <FormLabel>Your education</FormLabel>
                       <FormControl>
-                        <TextInput label='education' control={form.control} {...field} />
+                        <TextInput
+                          label='education'
+                          control={form.control}
+                          {...field}
+                          value={field.value ?? ''}
+                        />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -188,7 +192,6 @@ export default function PortfolioPage() {
                     value={langValue}
                     onChange={e => setLangValue(e.target.value)}
                     onKeyDown={e => {
-                      console.log(e);
                       if (e.key === 'Enter') {
                         e.preventDefault();
                         e.stopPropagation();

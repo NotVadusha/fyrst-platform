@@ -9,4 +9,5 @@ export interface Invitation {
   date: string;
   time: Date;
   status: InvitationStatus;
+  meetingId: string;
 }

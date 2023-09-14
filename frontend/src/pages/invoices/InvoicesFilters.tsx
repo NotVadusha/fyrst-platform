@@ -101,7 +101,7 @@ export const InvoicesFilters: React.FC<InvoicesFiltersProps> = ({
                                 <SelectItem value=''>All</SelectItem>
                               </span>
                               {payeeOptions.map(option => (
-                                <span className='font-semibold text-dark-blue' key={status}>
+                                <span className='font-semibold text-dark-blue' key={option.value}>
                                   <SelectItem value={option.value.toString()}>
                                     {option.label}
                                   </SelectItem>

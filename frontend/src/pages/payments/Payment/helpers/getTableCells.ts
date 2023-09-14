@@ -3,17 +3,10 @@ import { TaxCell } from '../../../../common/packages/payments/types/models/TaxCe
 import { Tax } from '../../../../common/packages/tax/types/models/Tax.model';
 import { getTax } from 'shared/getTax';
 import { getTotal } from 'shared/getTotal';
+import { getTotalTax } from 'shared/getTotalTax';
 
 export const getTableCells = (payment: Payment, taxes: Tax[]): TaxCell[] => {
-  const totalTax = {
-    percentage: 0,
-    additionalAmount: 0,
-  };
-
-  taxes.forEach(tax => {
-    totalTax.percentage += tax.percentage;
-    if (tax.additionalAmount) totalTax.additionalAmount += tax.additionalAmount;
-  });
+  const totalTax = getTotalTax(taxes);
 
   const total = getTotal(totalTax, payment.amountPaid);
   const taxesCells: TaxCell[] = [];

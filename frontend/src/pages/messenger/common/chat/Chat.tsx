@@ -41,6 +41,8 @@ export const ChatPage: React.FC = () => {
 
   const otherMembers = chat?.members.filter(({ id }) => id !== user?.id);
 
+  const attachmentFileUrl = useAppSelector(state => state.messanger.attachmentFileUrl);
+
   const scrollToLastMessage = React.useCallback(
     ({ behavior }: { behavior?: ScrollBehavior }) => {
       if (!scrollAreaRef?.current || !lastMessageRef.current) return;
@@ -179,7 +181,7 @@ const MessageElement = ({
       )}
       <div
         className={cn(
-          'inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl bg-inactive break-all',
+          'inline-flex flex flex-col max-w-md mx-3 my-4 p-2 rounded-tr-2xl rounded-tl-2xl bg-inactive break-words w-[200px] sm:w-auto',
           { 'rounded-bl-2xl': isAuthor, 'rounded-br-2xl': !isAuthor },
         )}
       >

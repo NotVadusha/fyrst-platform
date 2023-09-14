@@ -9,6 +9,7 @@ type MessangerState = {
   onlineUsers: number[];
   currentChat?: Chat;
   attachment?: string;
+  attachmentFileUrl?: string;
 };
 
 const initialState: MessangerState = {
@@ -17,6 +18,7 @@ const initialState: MessangerState = {
   onlineUsers: [],
   currentChat: undefined,
   attachment: undefined,
+  attachmentFileUrl: undefined,
 };
 
 const messangerSlice = createSlice({
@@ -64,8 +66,12 @@ const messangerSlice = createSlice({
     removeOnlineUser(state, action: PayloadAction<{ userId: number }>) {
       state.onlineUsers = state.onlineUsers.filter(id => id !== action.payload.userId);
     },
-    setAttachment(state, action: PayloadAction<string | undefined>) {
+    setAttachmentPath(state, action: PayloadAction<string | undefined>) {
       state.attachment = action.payload;
+    },
+    setAttachmentFileUrl(state, action: PayloadAction<string | undefined>) {
+      console.log(action.payload);
+      state.attachmentFileUrl = action.payload;
     },
   },
 });
@@ -81,7 +87,8 @@ export const {
   addConversation,
   updateConversation,
   setCurrentChat,
-  setAttachment,
+  setAttachmentPath,
+  setAttachmentFileUrl,
 } = messangerSlice.actions;
 
 export const getConversationsByUserNames = (state: RootState, names: string[]) =>

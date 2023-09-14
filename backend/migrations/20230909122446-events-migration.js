@@ -27,6 +27,15 @@ module.exports = {
           key: 'id',
         },
       },
+
+      associatedType: {
+        type: Sequelize.INTEGER,
+      },
+
+      associatedId: {
+        type: Sequelize.ENUM('booking'),
+      },
+
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

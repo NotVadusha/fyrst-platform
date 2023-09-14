@@ -1,5 +1,6 @@
 import { TimecardStatus } from 'shared/timecard-status';
 import { PaymentStatus } from 'shared/payment-status';
+import { Tax } from 'shared/packages/tax/Tax';
 
 export interface Role {
   id: number;
@@ -59,6 +60,9 @@ export interface Timecard {
   status: TimecardStatus;
   bookingId: number;
   booking: Booking;
+  payment: Payment;
+  hoursWorked: number;
+  lunchHours: number;
 }
 
 export interface Invoice {
@@ -69,4 +73,18 @@ export interface Invoice {
   timecardId: number;
   createdAt: Date;
   timecard: Timecard;
+}
+
+export interface Payment {
+  id: number;
+  stripePaymentId: string;
+  amountPaid: number;
+  type: string;
+  instapay: number;
+  status: PaymentStatus;
+  approved: boolean;
+  timecardId: number;
+  createdAt: Date;
+  timecard: Partial<Timecard>;
+  taxes: Tax[];
 }

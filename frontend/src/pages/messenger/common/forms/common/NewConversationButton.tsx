@@ -6,10 +6,13 @@ import { ReactComponent as Pencil } from 'src/assets/icons/pencil.svg';
 import { User } from 'src/common/packages/user/types/models/User.model';
 import { useCreateChatMutation } from 'src/common/store/api/packages/chat/chatApi';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
+import { useNavigate } from 'react-router-dom';
 
 export function NewConversationButton() {
   const [createChat, result] = useCreateChatMutation();
   const [open, setIsOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   async function createConversation(user: User) {
     if (!user) return;
@@ -18,6 +21,7 @@ export function NewConversationButton() {
       .then(res => {
         toast({ title: 'Success', description: 'New chat successfully created' });
         setIsOpen(false);
+        navigate(`/chat/${res?.id}`);
       })
       .catch(err => err);
   }
