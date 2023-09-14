@@ -54,7 +54,7 @@ const BookingPageLayout = () => {
       <Header title='Bookings'>
         {user.permissions && hasPermissions(['manageBookings'], user as User) && (
           <div className='flex flex-1 justify-end'>
-            <div className='flex gap-x-4'>
+            <div className='flex gap-x-4 mr-[-22px]'>
               <Button
                 variant='secondary'
                 onClick={handleExportCSV}
@@ -64,12 +64,12 @@ const BookingPageLayout = () => {
                 <span className='hidden md:inline'>
                   {isCSVLoading ? 'Exporting...' : 'Export CSV'}
                 </span>
-                <ExportIcon className='md:hidden w-6 h-6' />
+                <ExportIcon className='md:hidden w-4 h-4' />
               </Button>
               <Link to='create'>
                 <Button variant='primary' className='px-[16px] md:px-[32px]'>
                   <span className='hidden md:inline'>Create new booking</span>
-                  <AddIcon className='md:hidden w-8 h-8' />
+                  <AddIcon className='md:hidden w-6 h-6' />
                 </Button>
               </Link>
             </div>

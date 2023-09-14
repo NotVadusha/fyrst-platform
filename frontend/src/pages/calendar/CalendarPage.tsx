@@ -18,7 +18,7 @@ export const CalendarPage = () => {
   return (
     <>
       <Header title='Calendar' className='mb-10'>
-        <div className='flex flex-1 justify-end'>
+        <div className='flex flex-1 justify-end mr-[-20px]'>
           <Button variant='secondary' onClick={handleExportCalendar}>
             Export calendar
           </Button>
