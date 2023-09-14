@@ -9,12 +9,14 @@ import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { InvoicesFiltersDto } from './dto/invoices-filters.dto';
 import { UserService } from '../user/user.service';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, generate } from 'rxjs';
 import { userRoles } from 'shared/packages/roles/userRoles';
 import { BucketService } from '../bucket/bucket.service';
 import { Facility } from '../facility/entities/facility.entity';
 import { WEEK_IN_MILLISECONDS } from 'src/helpers/constants';
 import { PdfResponseDto } from 'shared/packages/invoice/PdfResponseDto';
+import { Payment } from '../payment/entities/payment.entity';
+import { Tax } from '../tax/entities/tax.entity';
 
 @Injectable()
 export class InvoiceService {
@@ -36,15 +38,17 @@ export class InvoiceService {
           include: [
             {
               model: User,
-              attributes: ['id', 'first_name', 'last_name'],
               as: 'employee',
             },
             {
               model: Booking,
-              attributes: ['id', 'startDate', 'endDate'],
+              include: [Facility],
+            },
+            {
+              model: Payment,
+              include: [Tax],
             },
           ],
-          attributes: ['id'],
         },
       ],
     });
@@ -159,26 +163,7 @@ export class InvoiceService {
   }
 
   async getInvoice(invoiceId: number) {
-    const invoice = await this.invoiceRepository.findOne({
-      where: {
-        id: invoiceId,
-      },
-      include: [
-        {
-          model: Timecard,
-          include: [
-            {
-              model: User,
-              as: 'employee',
-            },
-            {
-              model: Booking,
-              include: [Facility],
-            },
-          ],
-        },
-      ],
-    });
+    const invoice = await this.findOneById(invoiceId);
 
     if (invoice.path)
       return {
@@ -189,6 +174,29 @@ export class InvoiceService {
         ),
       };
 
+    const invoiceData = await this.generateInvoice(invoice);
+
+    return {
+      link: invoiceData.link,
+    };
+  }
+
+  async getInvoiceBase64(invoiceId: number) {
+    const invoice = await this.findOneById(invoiceId);
+
+    if (invoice.path)
+      return {
+        base64: (await this.bucketService.get(invoice.path)).toString('base64'),
+      };
+
+    const invoiceData = await this.generateInvoice(invoice);
+
+    return {
+      base64: invoiceData.base64,
+    };
+  }
+
+  async generateInvoice(invoice: Invoice) {
     const pdfResponse: PdfResponseDto = await firstValueFrom(
       this.invoiceService.send('get_invoice_pdf_link', {
         invoice,
@@ -196,15 +204,16 @@ export class InvoiceService {
     );
 
     const pdfBuffer = Buffer.from(pdfResponse.pdf, 'base64');
-    const fileName = `invoice_${invoiceId}.pdf`;
+    const fileName = `invoice_${invoice.id}.pdf`;
 
     const link = await this.bucketService.save(`pdf-files/${fileName}`, pdfBuffer);
 
-    this.update(invoiceId, {
+    this.update(invoice.id, {
       path: `pdf-files/${fileName}`,
     });
 
     return {
+      base64: pdfResponse.pdf,
       link,
     };
   }

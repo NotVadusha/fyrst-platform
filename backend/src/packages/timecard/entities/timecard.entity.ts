@@ -9,10 +9,12 @@ import {
   Index,
   Model,
   Table,
+  HasOne,
 } from 'sequelize-typescript';
 import { TimecardStatus } from 'shared/timecard-status';
 import { User } from '../../user/entities/user.entity';
 import { Booking } from '../../booking/entities/booking.entity';
+import { Payment } from 'src/packages/payment/entities/payment.entity';
 
 @Table({ updatedAt: false, deletedAt: false })
 export class Timecard extends Model {
@@ -60,4 +62,7 @@ export class Timecard extends Model {
   @AllowNull(false)
   @Column
   lunchHours: number;
+
+  @HasOne(() => Payment)
+  payment: Payment;
 }
