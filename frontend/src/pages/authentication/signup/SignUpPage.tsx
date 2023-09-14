@@ -55,8 +55,7 @@ const SignUpPage = () => {
           description: "You're almost there. Please proceed to verify your email.",
         });
         navigate(redirect);
-      })
-      .catch(() => console.log(error));
+      });
   };
 
   const handleClick = () => {

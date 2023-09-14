@@ -93,9 +93,7 @@ function MainNav({ onSelect }: { onSelect?: () => void }) {
       localStorage.removeItem('refreshToken');
       dispatch(clearUser());
       navigate('/auth/signin');
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

@@ -70,7 +70,6 @@ const messangerSlice = createSlice({
       state.attachment = action.payload;
     },
     setAttachmentFileUrl(state, action: PayloadAction<string | undefined>) {
-      console.log(action.payload);
       state.attachmentFileUrl = action.payload;
     },
   },

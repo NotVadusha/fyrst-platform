@@ -47,8 +47,6 @@ const BookingPageLayout = () => {
     setSearchParams('');
   }, []);
 
-  console.log(location);
-
   return (
     <>
       <Header title='Bookings'>
