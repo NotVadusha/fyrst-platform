@@ -4,18 +4,18 @@ import { ReactComponent as Close } from '../../assets/icons/gray-x.svg';
 
 interface EventModalProps {
   event: Event;
-  date: Date;
-  setOpenModal: (bool: boolean) => void;
+
+  setOpenModal: () => void;
 }
 
-export const EventModal = ({ event, date, setOpenModal }: EventModalProps) => {
-  console.log(date);
+export const EventModal = ({ event, setOpenModal }: EventModalProps) => {
+  console.log(event);
   return (
-    <div className='absolute z-[1000] top-0 left-0 bottom-0 right-0 flex mt-[200px] justify-center  overflow-hidden'>
+    <div className='absolute z-50 top-[40%] left-0 bottom-0 right-0 flex  justify-center'>
       <div className='bg-white shadow-lg h-fit rounded-lg '>
         <div className='flex justify-between w-full px-8 py-6 border-b-[1px] border-[#686565]/[0.15] gap-10'>
           <h1 className='text-h6 text-blue'>{event.name}</h1>
-          <button onClick={() => setOpenModal(false)}>
+          <button onClick={setOpenModal}>
             <Close className='h-4 w-4'></Close>
           </button>
         </div>
