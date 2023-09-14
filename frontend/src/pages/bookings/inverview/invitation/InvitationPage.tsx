@@ -77,6 +77,7 @@ export default function InvitationPage() {
                       <Link
                         target='_blank'
                         to={`/meeting-chat/${data?.meetingId}`}
+                        className='underline underline-offset-8	hover:text-blue'
                       >{`https://www.fyrst.site/meeting-chat/${data?.meetingId}`}</Link>
                     </p>
                   </>

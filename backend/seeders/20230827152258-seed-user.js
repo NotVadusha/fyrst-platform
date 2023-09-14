@@ -23,8 +23,8 @@ module.exports = {
     }
 
     const platformAdmin = {
-      first_name: 'Alex',
-      last_name: 'Artur',
+      first_name: 'Dan',
+      last_name: 'Olekh',
       email: 'platform-admin@fyrst.site',
       city: 'Kyiv',
       birthdate: faker.date.birthdate(),

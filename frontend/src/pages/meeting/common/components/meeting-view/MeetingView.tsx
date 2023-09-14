@@ -23,6 +23,7 @@ import { useGetUserQuery } from 'src/common/store/api/packages/user/userApi';
 import { DecodedUser } from 'src/common/packages/user/types/models/User.model';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { setUser } from 'src/common/store/slices/packages/user/userSlice';
+import { addMessage } from 'src/common/store/slices/packages/meeting/meetingSlice';
 
 const MeetingView = ({
   onMeetingLeave,
@@ -66,9 +67,15 @@ const MeetingView = ({
     return () => leave();
   }, [data, meetingId]);
 
-  useEffect(() => {}, [meetingId]);
+  useEffect(() => {
+    socket.on('new-meeting-message', payload => {
+      dispatch(addMessage(payload));
+    });
 
-  const [showMeetingChat, setShowMeetingChat] = useState(false);
+    return () => {
+      socket.off('new-meeting-message');
+    };
+  }, []);
 
   return (
     <div className='flex justify-center items-center h-screen bg-black'>

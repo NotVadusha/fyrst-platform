@@ -48,7 +48,11 @@ export function CreateGroupChatForm({ onCreate }: { onCreate: () => void }) {
     createChat({ name: 'Any', members: selectedUsers.map(({ id }) => id) })
       .unwrap()
       .then(res => {
-        toast({ title: 'Success', description: 'New chat successfully created' });
+        toast({
+          title: 'Success',
+          description: 'New chat successfully created',
+          variant: 'success',
+        });
         onCreate();
         setIsCreating(false);
       })

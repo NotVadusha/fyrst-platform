@@ -34,7 +34,7 @@ const BookingHeader: React.FC<BookingHeaderProps> = ({ facility, booking, users,
       await addUserToBooking({ bookingId: booking.id, userId });
       await createEvent({ bookingId: booking.id, userId });
       toast({
-        variant: 'default',
+        variant: 'success',
         title: 'Success',
         description: 'User has been successfully added to the booking.',
       });

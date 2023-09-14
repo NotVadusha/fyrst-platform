@@ -31,7 +31,7 @@ export function Pagination({ value, totalCount, siblingsCount, onChange }: Pagin
 
   return (
     <div className='flex items-center justify-center'>
-      <PaginationButton onClick={() => onChange(1)}>
+      <PaginationButton onClick={() => onChange(1)} disabled={value === 1}>
         <DoubleChevronLeft className='w-6 h-6 font-semibold inline-block' />
       </PaginationButton>
       <PaginationButton onClick={() => onChange(value - 1)} disabled={value === 1}>
@@ -52,7 +52,7 @@ export function Pagination({ value, totalCount, siblingsCount, onChange }: Pagin
       <PaginationButton onClick={() => onChange(value + 1)} disabled={value === totalCount}>
         <ChevronRight className='w-6 h-6 inline-block' />
       </PaginationButton>
-      <PaginationButton onClick={() => onChange(totalCount)}>
+      <PaginationButton onClick={() => onChange(totalCount)} disabled={value === totalCount}>
         <DoubleChevronRight className='w-6 h-6 font-semibold inline-block' />
       </PaginationButton>
     </div>
