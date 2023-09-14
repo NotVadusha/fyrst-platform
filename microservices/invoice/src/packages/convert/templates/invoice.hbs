@@ -209,7 +209,7 @@
         <p class="placeholder-small black">BILL TO</p>
         <p class="placeholder-small dark-gray">{{invoice.timecard.employee.first_name}} {{invoice.timecard.employee.last_name}}</p>
         <p class="placeholder-small dark-gray">{{invoice.timecard.employee.city}}</p>
-        <p class="placeholder-small dark-gray">{{invoice.timecard.employee.phone}}</p>
+        <p class="placeholder-small dark-gray">{{invoice.timecard.employee.phone_number}}</p>
         <p class="placeholder-small dark-gray">{{invoice.timecard.employee.email}}</p>
       </div>
       <div class="invoice-info">
@@ -221,8 +221,8 @@
           </div>
           <div class="info-content">
             <p class="placeholder-small dark-gray">{{invoice.id}}</p>
-            <p class="placeholder-small dark-gray">{{date}}</p>
-            <p class="placeholder-small dark-gray">{{date}}</p>
+            <p class="placeholder-small dark-gray">{{invoiceDate}}</p>
+            <p class="placeholder-small dark-gray">{{paymentDate}}</p>
           </div>
         </div>
       </div>
@@ -237,7 +237,7 @@
       </div>
       <div class="body">
         <p class="placeholder-small black" style="width: 200px;">Healthcare worker</p>
-        <p class="placeholder-small black" style="width: 70px;">{{invoice.timecard.booking.workingHours}}</p>
+        <p class="placeholder-small black" style="width: 70px;">{{totalHours}}</p>
         <p class="placeholder-small black" style="width: 70px; text-align: right">${{invoice.timecard.booking.pricePerHour}}</p>
         <p class="placeholder-small black" style="width: 70px; text-align: right">${{invoice.amountPaid}}</p>
       </div>
@@ -250,16 +250,16 @@
       </div>
       <div class="body">
         <p class="placeholder-small black" style="width: 200px;"></p>
-        <p class="placeholder-small black" style="width: 70px;"></p>
-        <p class="placeholder-small black" style="width: 70px; text-align: right">Tax 5%:</p>
-        <p class="placeholder-small black" style="width: 70px; text-align: right">${{countTax invoice.amountPaid 5}}</p>
+        <p class="placeholder-small black" style="width: 20px;"></p>
+        <p class="placeholder-small black" style="width: 120px; text-align: right">{{totalRate}}</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{tax}}</p>
       </div>
       <div class="table-hr"></div>
       <div class="body">
         <p class="placeholder-small black" style="width: 200px;"></p>
         <p class="placeholder-small black" style="width: 70px;"></p>
         <p class="placeholder-small black" style="width: 70px; text-align: right">Total:</p>
-        <p class="placeholder-small black" style="width: 70px; text-align: right">${{countAmountTotal invoice.amountPaid 5}}</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{total}}</p>
       </div>
     </section>
   </div>

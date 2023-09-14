@@ -15,6 +15,7 @@ import { InvoiceService } from '../invoice/invoice.service';
 import { TimecardStatus } from 'shared/timecard-status';
 import { TaxService } from '../tax/tax.service';
 import { getTotal } from 'shared/getTotal';
+import { getTotalTax } from 'shared/getTotalTax';
 
 @Injectable()
 export class StripeService {
@@ -37,9 +38,10 @@ export class StripeService {
     const payment = await this.paymentService.findOneById(id, userId);
     const taxes = await this.taxService.findAllTaxesByPaymentId(payment.id);
 
-    const stripeTax = taxes.find(tax => tax.name === 'Stripe fee');
+    const totalTax = getTotalTax(taxes);
+
     const total = getTotal(
-      { percentage: stripeTax.percentage, additionalAmount: stripeTax.additionalAmount },
+      { percentage: totalTax.percentage, additionalAmount: totalTax.additionalAmount },
       payment.amountPaid,
     );
 

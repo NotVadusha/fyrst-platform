@@ -10,10 +10,12 @@ import {
   AllowNull,
   Index,
   Default,
+  HasMany,
 } from 'sequelize-typescript';
 import { InferAttributes, InferCreationAttributes } from 'sequelize/types';
 import { Timecard } from 'src/packages/timecard/entities/timecard.entity';
 import { PaymentStatus } from 'shared/payment-status';
+import { Tax } from 'src/packages/tax/entities/tax.entity';
 
 @Table({ timestamps: true })
 class Payment extends Model<InferAttributes<Payment>, InferCreationAttributes<Payment>> {
@@ -59,6 +61,9 @@ class Payment extends Model<InferAttributes<Payment>, InferCreationAttributes<Pa
   @Default(new Date())
   @Column
   createdAt: Date;
+
+  @HasMany(() => Tax)
+  taxes: Tax[];
 }
 
 export { Payment };

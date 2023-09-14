@@ -65,4 +65,9 @@ export class InvoiceController {
   async getInvoicePdfLink(@Param('id', ParseIntPipe) invoiceId: number) {
     return await this.invoiceService.getInvoice(invoiceId);
   }
+
+  @Get(':id/base64')
+  async getInvoiceBase64(@Param('id', ParseIntPipe) invoiceId: number) {
+    return await this.invoiceService.getInvoiceBase64(invoiceId);
+  }
 }
