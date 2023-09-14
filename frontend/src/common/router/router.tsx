@@ -36,16 +36,17 @@ import SelectMessagePage from 'src/pages/messenger/SelectMessagePage';
 import { SharedMediaPage } from 'src/pages/messenger/common/chat/media/SharedMediaPage';
 import VerifyEmailPage from '../../pages/authentication/verify-email/VerifyEmailPage';
 import PortfolioPage from 'src/pages/profiles/portfolio/PortfolioPage';
+import JobRecommendations from 'src/pages/bookings/recommendations/JobRecommendations';
+import { JoinScreen } from 'src/pages/meeting/JoinScreen';
 
-import { MeetingChat } from 'src/pages/meeting-chat/MeetingChat';
 import InvoicesPage from 'src/pages/invoices/InvoicesPage';
 import { CalendarPage } from 'src/pages/calendar/CalendarPage';
 import { Payment } from 'src/pages/payments/Payment/Payment';
 import BookingPageLayout from '../../pages/bookings/ListBookingPage/BookingPageLayout';
-import JobRecommendations from 'src/pages/bookings/recommendations/JobRecommendations';
 import InterviewPage from 'src/pages/bookings/inverview/InterviewPage';
 import InvitationPage from 'src/pages/bookings/inverview/invitation/InvitationPage';
 import { BurgerMenuProvider } from '../context/BurgerMenuContext';
+import { VideoMeeting } from 'src/pages/meeting/VideoMeeting';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -197,11 +198,11 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          {
-            path: '/meeting-chat',
-            errorElement: <ErrorPage />,
-            element: <MeetingChat />,
-          },
+          // {
+          //   path: '/meeting-chat',
+          //   errorElement: <ErrorPage />,
+          //   element: <JoinScreen />,
+          // },
           {
             path: 'payments',
             errorElement: <ErrorPage />,
@@ -272,6 +273,11 @@ export const router = createBrowserRouter([
             element: <Navigate to='/booking' replace />,
           },
         ],
+      },
+      {
+        path: '/meeting-chat/:id',
+        errorElement: <ErrorPage />,
+        element: <VideoMeeting />,
       },
       {
         path: '/auth',

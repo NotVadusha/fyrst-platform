@@ -53,7 +53,7 @@ export function SearchChatMessagesPage() {
           value={searchQuery}
           onChange={handleChange}
           placeholder='Search'
-          className='w-full'
+          className='w-full mr-2 mt-2'
         />
       </div>
       {isSuccess && !!data.length && (

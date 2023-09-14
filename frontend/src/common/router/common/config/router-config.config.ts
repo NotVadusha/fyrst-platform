@@ -104,12 +104,12 @@ export const routerConfig = {
       isPrivate: true,
       neededRoles: ['FACILITY_MANAGER'],
     },
-    {
-      title: 'Interview',
-      icon: Proposal,
-      mainPath: '/meeting-chat',
-      path: '/meeting-chat',
-    },
+    // {
+    //   title: 'Interview',
+    //   icon: Proposal,
+    //   mainPath: '/meeting-chat',
+    //   path: '/meeting-chat',
+    // },
     { title: 'Calendar', icon: Calendar, mainPath: '/calendar', path: '/calendar', items: [] },
   ] as NavItem[],
 };

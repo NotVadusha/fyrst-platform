@@ -14,7 +14,6 @@ import {
 @Module({
   controllers: [StripeController],
   providers: [StripeService],
-
   imports: [
     forwardRef(() => PaymentModule),
     UserProfileModule,

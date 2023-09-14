@@ -21,12 +21,15 @@ export const invitationApi = apiSlice.injectEndpoints({
     getInvitation: build.query<Invitation, string>({
       query: id => `/invitation/${id}`,
     }),
-    updateInvitation: build.mutation<Invitation, { id: string; status: Invitation['status'] }>({
+    updateInvitation: build.mutation<
+      Invitation,
+      { id: string; meetingId?: string; status: Invitation['status'] }
+    >({
       query: args => {
         return {
           url: `/invitation/${args.id}`,
           method: 'PATCH',
-          body: { status: args.status },
+          body: { status: args.status, meetingId: args.meetingId },
         };
       },
     }),

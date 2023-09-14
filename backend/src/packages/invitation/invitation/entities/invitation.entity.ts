@@ -48,6 +48,10 @@ class Invitation extends Model<InferAttributes<Invitation>, InferCreationAttribu
   @Column(DataType.STRING)
   time: string;
 
+  @Default('')
+  @Column(DataType.STRING)
+  meetingId: string;
+
   @Default(InvitationStatus.Pending)
   @Column(DataType.ENUM(...Object.values(InvitationStatus)))
   status: InvitationStatus;

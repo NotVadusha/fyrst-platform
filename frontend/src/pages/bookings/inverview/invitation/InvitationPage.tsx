@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Button } from 'src/common/components/ui/common/Button';
 import { GoBackButton } from 'src/common/components/ui/common/Button/common/go-back-button/GoBackButton';
 import { Header } from 'src/common/components/ui/layout/Header/Header';
@@ -15,6 +15,7 @@ import { useFormattedDate } from 'src/common/hooks/use-formatted-date/useFormatt
 import { format } from 'date-fns';
 import { toast } from 'src/common/components/ui/common/Toast/useToast';
 import { cn } from 'src/common/helpers/helpers';
+import { createMeeting } from 'src/pages/meeting/common/api/meeting.api';
 
 export default function InvitationPage() {
   const { id } = useParams();
@@ -35,8 +36,12 @@ export default function InvitationPage() {
   });
   const endDate = useFormattedDate({ dateString: String(data?.booking?.endDate), format: 'dot' });
 
-  const handleInvitationUpdate = (status: 'accepted' | 'declined') => {
-    updateInvitation({ id, status })
+  const handleInvitationUpdate = async (status: 'accepted' | 'declined') => {
+    let meetingId = '';
+    if (status === 'accepted') {
+      meetingId = await createMeeting();
+    }
+    updateInvitation({ id, status, meetingId })
       .unwrap()
       .then(res => {
         refetch();
@@ -65,6 +70,17 @@ export default function InvitationPage() {
                 </p>
                 <h2 className='text-black font-semibold'>Attendees</h2>
                 <p className='text-black'>{data?.organizer && data.organizer.email} - organizer</p>
+                {data?.status === 'accepted' && (
+                  <>
+                    <h2 className='text-black font-semibold'>Interview link</h2>
+                    <p className='text-black'>
+                      <Link
+                        target='_blank'
+                        to={`/meeting-chat/${data?.meetingId}`}
+                      >{`https://www.fyrst.site/meeting-chat/${data?.meetingId}`}</Link>
+                    </p>
+                  </>
+                )}
               </div>
               <div className='flex gap-2'>
                 <Button variant={'secondary'} onClick={() => handleInvitationUpdate('declined')}>
