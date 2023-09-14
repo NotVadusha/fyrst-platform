@@ -24,8 +24,6 @@ import { UpdateUserBody } from 'src/common/packages/user/types/dto/UserDto';
 
 type Inputs = y.InferType<typeof profileSchema>;
 export type parseInfo = {
-  first_name: string;
-  last_name: string;
   birthDate: Date;
   sex: string;
   documentNumber: string;
@@ -70,8 +68,8 @@ export function ProfileEditForm() {
   useEffect(() => {
     if (parsedData && user) {
       const infoToUpdate: UpdateUserBody = {
-        first_name: capitalize(parsedData.first_name),
-        last_name: capitalize(parsedData.last_name),
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
         phone_number: user.phone_number,
         city: user.city,
