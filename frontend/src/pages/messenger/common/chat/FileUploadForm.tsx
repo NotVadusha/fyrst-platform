@@ -62,10 +62,16 @@ export function FileUploadForm({ onUpload }: { onUpload: () => void }) {
   return (
     <div className='flex flex-col gap-4'>
       <div className='grid w-full max-w-sm items-center gap-1.5'>
-        <label htmlFor='picture' className='text-xl text-dark'>
-          Picture
-        </label>
-        <input accept='image/*' id='picture' type='file' onChange={handleImageChange} />
+        {!file && (
+          <>
+            {' '}
+            <label htmlFor='picture' className='text-xl text-dark'>
+              Picture
+            </label>
+            <input accept='image/*' id='picture' type='file' onChange={handleImageChange} />{' '}
+          </>
+        )}
+        {file && <img src={URL.createObjectURL(file)} alt='picture' />}
       </div>
       <Button className='w-full' disabled={!base64String} onClick={() => uploadFile()}>
         Upload

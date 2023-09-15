@@ -9,7 +9,6 @@ interface EventModalProps {
 }
 
 export const EventModal = ({ event, setOpenModal }: EventModalProps) => {
-  console.log(event);
   return (
     <div className='absolute z-50 top-[40%] left-0 bottom-0 right-0 flex  justify-center'>
       <div className='bg-white shadow-lg h-fit rounded-lg '>
