@@ -20,6 +20,13 @@ import {
 } from 'src/common/store/slices/packages/messenger/messangerSlice';
 import { cn } from 'src/common/helpers/helpers';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from 'src/common/components/ui/common/Tooltip/Tooltip';
+
 const messageSchema = yup.object().shape({
   messageContent: yup.string().max(500, 'Message is too long'),
 });
@@ -173,13 +180,23 @@ export function NewMessageInput({ chatId }: { chatId: string }) {
             </div>
           )}
           {!attachment ? (
-            <Button
-              variant={'tertiary'}
-              className='absolute top-4 right-4 w-fit h-fit p-0 text-dark-grey'
-              onClick={() => setIsOpen(true)}
-            >
-              <Paperclip className='w-6 h-6' />
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className='absolute top-4 right-4 text-dark-grey'>
+                  <Paperclip className='w-6 h-6' />
+                </TooltipTrigger>
+                <TooltipContent className='mb-4 mr-16 border-none text-sm bg-white'>
+                  <div className='flex flex-col gap-4 text-black'>
+                    <div onClick={() => setIsOpen(true)} className='cursor-pointer w-full'>
+                      Photo or video
+                    </div>
+                    <div className='cursor-pointer w-full' onClick={() => setIsOpen(true)}>
+                      File
+                    </div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ) : (
             <Button
               variant={'tertiary'}

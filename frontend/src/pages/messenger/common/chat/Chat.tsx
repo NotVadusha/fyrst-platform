@@ -185,8 +185,12 @@ const MessageElement = ({
           { 'rounded-bl-2xl': isAuthor, 'rounded-br-2xl': !isAuthor },
         )}
       >
-        <p className='text-black text-sm font-medium'>{message.messageContent}</p>
-        {!!message.attachment && <img loading='lazy' src={message.attachment} />}
+        {!!message.attachment && (
+          <img loading='lazy' src={message.attachment} className='rounded-md' />
+        )}
+        <p className={cn('text-black text-sm text-[16px]', { 'mt-2': !!message.attachment })}>
+          {message.messageContent}
+        </p>
         <span className='text-dark-grey text-body-small font-medium text-end text-sm '>
           {!!message.createdAt && format(new Date(message.createdAt), 'HH:mm')}
         </span>
