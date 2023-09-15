@@ -95,6 +95,7 @@ BUCKET_CLIENT_EMAIL=
 BUCKET_NAME=
 ENVIRONMENT=develop
 
+# We used https://www.videosdk.live/ as a third-party service
 REACT_APP_AUTH_TOKEN=
 
 INVOICE_SERVICE_PORT=4000
