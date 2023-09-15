@@ -3,27 +3,42 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "prepare": "husky install",
     "init:backend": "cd backend && npm install",
     "link-shared:backend": "cd backend && npm link shared",
+    "init:invoice": "cd microservices/invoice && npm install",
+    "link-shared:invoice": "cd microservices/invoice && npm link shared",
     "init:frontend": "cd frontend && npm install",
     "link-shared:frontend": "cd frontend && npm link shared",
     "init:shared": "cd shared && npm install",
     "build:shared": "cd shared && npm run build",
     "link-shared:global": "cd shared/dist && npm link",
-    "link-shared": "npm run link-shared:global && npm run link-shared:backend && npm run link-shared:frontend",
+    "link-shared": "npm run link-shared:global && npm run link-shared:backend && npm run link-shared:frontend && npm run link-shared:invoice",
     "init": "npm install && npm-run-all -p init:* && npm run build:shared && npm run link-shared",
     "seed:dev": "docker compose --env-file=.env.dev exec backend npx sequelize-cli db:seed:all",
     "start": "docker compose --env-file=.env.dev up -d",
     "start:build": "docker compose --env-file=.env.dev up --build -d",
-    "stop": "docker compose --env-file=.env.dev down"
+    "stop": "docker compose --env-file=.env.dev down",
+    "test": "npm run test --prefix backend && npm run test:all --prefix frontend",
+    "lint:format": "npm run lint:format --prefix backend && npm run lint:format --prefix frontend"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run test"
+    }
   },
   "author": "",
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
+    "chromatic": "^6.24.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"

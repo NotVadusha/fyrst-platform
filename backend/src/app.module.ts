@@ -1,14 +1,62 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { development } from 'src/config';
+import { CalendarEventsModule } from './packages/calendar-events/calendar-events.module';
+import { InvitationModule } from './packages/invitation/invitation/invitation.module';
 
-import { sequelizeDevelopmentConfig } from 'src/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user';
-
+import {
+  EmailConfirmationModule,
+  UserModule,
+  TimecardModule,
+  BookingModule,
+  RolesModule,
+  AuthModule,
+  RedisModule,
+  ResetPasswordModule,
+  UserProfileModule,
+  FacilityModule,
+  ChatModule,
+  MessageModule,
+  NotificationsConfigModule,
+  BucketModule,
+  PermissionsModule,
+  StatisticsModule,
+  PaymentModule,
+  StripeModule,
+  InvoiceModule,
+  TaxModule,
+  NotificationModule,
+  WebSocketModule,
+} from './packages';
 @Module({
-  imports: [SequelizeModule.forRoot(sequelizeDevelopmentConfig), UserModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    SequelizeModule.forRoot(development),
+    RolesModule,
+    UserModule,
+    EmailConfirmationModule,
+    AuthModule,
+    RedisModule,
+    ResetPasswordModule,
+    TimecardModule,
+    BookingModule,
+    UserProfileModule,
+    FacilityModule,
+    ChatModule,
+    MessageModule,
+    NotificationsConfigModule,
+    BucketModule,
+    PermissionsModule,
+    StatisticsModule,
+    CalendarEventsModule,
+    TaxModule,
+    InvitationModule,
+    PaymentModule,
+    StripeModule,
+    InvoiceModule,
+    NotificationModule,
+    WebSocketModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

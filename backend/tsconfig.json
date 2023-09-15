@@ -6,6 +6,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "paths": {
+      "shared/*": [
+        "../shared/src/*"
+      ]
+    },
     "target": "es2017",
     "inlineSourceMap": true,
     "outDir": "./dist",

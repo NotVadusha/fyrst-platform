@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 40px 40px 24px 40px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      > h2 {
+        color: var(--Blue, #083D77);
+      }
+    }
+
+    .hr {
+      height: 1px;
+      background: rgba(104, 101, 101, 0.15);
+      width: 100%;
+      margin: 24px 0;
+    }
+
+    .table-hr {
+      height: 1px;
+      background: rgba(104, 101, 101, 0.15);
+      width: 100%;
+      margin: 0;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 48px */
+      font-family: 'Mukta', sans-serif;
+    }
+
+    h4 {
+      font-family: 'Mukta', sans-serif;
+      font-size: 30px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 100%;
+    }
+
+    .body-small-medium {
+      font-family: 'Mukta', sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 18px;
+    }
+
+    .body-small {
+      font-family: 'Mukta', sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .placeholder-small {
+      font-family: 'Mukta', sans-serif;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%;
+    }
+
+    .black {
+      color: var(--Black, #202020);
+    }
+
+    .dark-gray {
+      color: var(--Dark-Grey, #4C5767);
+    }
+
+    .header-info {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .company-info__name {
+      color: var(--Black, #202020);
+      text-align: right;
+    }
+
+    .company-info__address {
+      color: var(--Black, #202020);
+      text-align: right;
+    }
+
+    .header-text {
+      color: var(--Black, #202020);
+      text-align: right;
+    }
+
+    .company-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      align-self: stretch;
+    }
+
+    .bill-to {
+      padding: 0 40px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .receiver {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .invoice-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-table {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    .info-headers {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 8px;
+    }
+
+    .info-content {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 8px;
+    }
+
+    .booking-table {
+      padding: 0 40px;
+      width: calc(100% - 80px);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .headers {
+      width: calc(100% - 16px);
+      display: flex;
+      padding: 8px;
+      align-items: flex-start;
+      justify-content: space-between;
+      background: var(--Clicked, rgba(188, 195, 206, 0.30));
+    }
+
+    .body {
+      width: calc(100% - 16px);
+      display: flex;
+      padding: 0px 8px 8px 8px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <section class="header">
+      <h2>Fyrst</h2>
+      <div class="header-info">
+        <h4 class="header-text">INVOICE</h4>
+        <div class="company-info">
+          <p class="company-info__name body-small-medium">{{invoice.timecard.booking.facility.name}}</p>
+          <p class="company-info__address body-small">{{invoice.timecard.booking.facility.address}}, {{invoice.timecard.booking.facility.city}}</p>
+        </div>
+      </div>
+    </section>
+    <div class="hr"></div>
+    <section class="bill-to">
+      <div class="receiver">
+        <p class="placeholder-small black">BILL TO</p>
+        <p class="placeholder-small dark-gray">{{invoice.timecard.employee.first_name}} {{invoice.timecard.employee.last_name}}</p>
+        <p class="placeholder-small dark-gray">{{invoice.timecard.employee.city}}</p>
+        <p class="placeholder-small dark-gray">{{invoice.timecard.employee.phone_number}}</p>
+        <p class="placeholder-small dark-gray">{{invoice.timecard.employee.email}}</p>
+      </div>
+      <div class="invoice-info">
+        <div class="info-table">
+          <div class="info-headers">
+            <p class="placeholder-small black">Invoice Number:</p>
+            <p class="placeholder-small black">Invoice Date:</p>
+            <p class="placeholder-small black">Payment Date:</p>
+          </div>
+          <div class="info-content">
+            <p class="placeholder-small dark-gray">{{invoice.id}}</p>
+            <p class="placeholder-small dark-gray">{{invoiceDate}}</p>
+            <p class="placeholder-small dark-gray">{{paymentDate}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="hr"></div>
+    <section class="booking-table">
+      <div class="headers">
+        <p class="placeholder-small black" style="width: 200px;">Services</p>
+        <p class="placeholder-small black" style="width: 70px;">Hours worked</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">$ per hour</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">Amount</p>
+      </div>
+      <div class="body">
+        <p class="placeholder-small black" style="width: 200px;">Healthcare worker</p>
+        <p class="placeholder-small black" style="width: 70px;">{{totalHours}}</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{invoice.timecard.booking.pricePerHour}}</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{invoice.amountPaid}}</p>
+      </div>
+      <div class="table-hr"></div>
+      <div class="body" style="padding-bottom: 0;">
+        <p class="placeholder-small black" style="width: 200px;"></p>
+        <p class="placeholder-small black" style="width: 70px;"></p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">Subtotal</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{invoice.amountPaid}}</p>
+      </div>
+      <div class="body">
+        <p class="placeholder-small black" style="width: 200px;"></p>
+        <p class="placeholder-small black" style="width: 20px;"></p>
+        <p class="placeholder-small black" style="width: 120px; text-align: right">{{totalRate}}</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{tax}}</p>
+      </div>
+      <div class="table-hr"></div>
+      <div class="body">
+        <p class="placeholder-small black" style="width: 200px;"></p>
+        <p class="placeholder-small black" style="width: 70px;"></p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">Total:</p>
+        <p class="placeholder-small black" style="width: 70px; text-align: right">${{total}}</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
+
+  

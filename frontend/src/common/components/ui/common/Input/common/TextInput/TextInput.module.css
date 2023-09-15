@@ -1,0 +1,43 @@
+.wrapper {
+  @apply relative block;
+}
+
+.label {
+  @apply text-placeholder absolute text-sm font-medium left-3 top-4 m-0 pointer-events-none transition-all;
+}
+
+.input {
+  @apply px-2.5 pb-2 pt-5 rounded-lg outline-none border-grey border text-sm leading-4 font-medium text-blue w-full;
+}
+.input[type='date'] {
+  -webkit-appearance: none;
+}
+
+.input[type='date'] ~ .label,
+.label.active {
+  @apply text-xs -translate-y-3;
+}
+
+.input:focus-within ~ .label,
+.label.active {
+  @apply text-xs -translate-y-3;
+}
+
+.input:focus {
+  @apply border-blue;
+}
+
+.input.invalid {
+  @apply border-red;
+}
+
+.input:disabled {
+  @apply border-transparent bg-input-disabled;
+}
+
+.input.shadows {
+  @apply border-transparent shadow-dropdown;
+}
+.error {
+  @apply m-0 mt-1 pl-3 text-xs text-red;
+}
