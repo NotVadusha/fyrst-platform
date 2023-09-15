@@ -1,6 +1,7 @@
-# Project name
+# Fyrst
 
-Project description
+A place where employers can look for an employee they find the most suitable for their job and employees themselves can sell their skills for real money. 
+We have a lot of cool features integrated within our platform, like messenger, video meetings, calendar, and even a payment system.
 
 ---
 
