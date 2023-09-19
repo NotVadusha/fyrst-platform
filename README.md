@@ -1,6 +1,7 @@
-# Project name
+# Fyrst
 
-Project description
+A place where employers can look for an employee they find the most suitable for their job and employees themselves can sell their skills for real money. 
+We have a lot of cool features integrated within our platform, like messenger, video meetings, calendar, and even a payment system.
 
 ---
 
@@ -94,6 +95,7 @@ BUCKET_CLIENT_EMAIL=
 BUCKET_NAME=
 ENVIRONMENT=develop
 
+# We used https://www.videosdk.live/ as a third-party service
 REACT_APP_AUTH_TOKEN=
 
 INVOICE_SERVICE_PORT=4000
