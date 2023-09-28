@@ -1,0 +1,18 @@
+.notificationsContainer {
+  @apply max-w-[515px] md:mx-16 mb-[80px] mt-[40px] mx-4;
+}
+.notificationsTitle {
+  @apply text-dark-grey text-h6 mb-[20px] font-semibold;
+}
+
+.notificationsText {
+  @apply text-dark-grey text-[16px] mb-[24px];
+}
+
+.notificationsCard {
+  @apply bg-white rounded-lg shadow-lg;
+}
+
+.checkboxContainer > * {
+  @apply mb-8;
+}
