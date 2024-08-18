@@ -138,4 +138,3 @@ STRIPE_WEBHOOK_KEY=
 - It's a good thing to keep your branch in sync with develop, so once in a while you should merge
   develop into your branch
 - Prefer small but frequent pull requests over infrequent and huge ones
-```
